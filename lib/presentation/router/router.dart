@@ -1,3 +1,4 @@
+import 'package:dereruministic/presentation/pages/home/home_page.dart';
 import 'package:dereruministic/presentation/router/router_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,7 +14,7 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: RouterPaths.home.path,
         name: RouterPaths.home.name,
-        builder: (context, state) => const Placeholder(),
+        builder: (context, state) => const HomePage(),
       ),
       GoRoute(
         path: RouterPaths.library.path,
