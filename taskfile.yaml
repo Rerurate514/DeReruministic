@@ -1,0 +1,13 @@
+version: "3"
+
+tasks:
+  lgen:
+    desc: "gen-l10nを実行"
+    cmds:
+      - flutter gen-l10n
+  format:
+    desc: "コードフォーマットを実行"
+    cmds:
+      - dart format .
+      - dart fix --apply
+      - flutter analyze
