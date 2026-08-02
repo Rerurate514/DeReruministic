@@ -14,7 +14,7 @@ void main() {
       debugPrint('catch on runZonedGuarded: $e /// $s');
     },
   );
-  runApp(const MainApp());
+  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends ConsumerWidget {
