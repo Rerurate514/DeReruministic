@@ -43,3 +43,28 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+*env.g.dart
+*.env
+.env.local
+.env.pub
+
+# generateファイルの除外
+# Freezed生成ファイル
+**/*.freezed.dart
+**/*.freezed.dart.g.dart
+
+# Mockitoモックファイル
+**/*.mocks.dart
+
+# g.dartファイル（一般）
+**/*.g.dart
+
+# fvm関連ファイル
+.fvm/flutter_sdk
+.fvm/versions/
+.fvm/release
+.fvm/version
+
+# intlファイル
+**/app_localizations*.dart
