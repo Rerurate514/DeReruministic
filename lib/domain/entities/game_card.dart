@@ -3,6 +3,7 @@ import 'package:dereruministic/domain/value_object/id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'game_card.freezed.dart';
+part 'game_card.g.dart';
 
 @freezed
 sealed class GameCard with _$GameCard {
@@ -12,4 +13,7 @@ sealed class GameCard with _$GameCard {
     required int currentCost,
     required int enteredHandAtTurn,
   }) = _GameCard;
+
+  factory GameCard.fromJson(Map<String, dynamic> json) =>
+      _$GameCardFromJson(json);
 }
