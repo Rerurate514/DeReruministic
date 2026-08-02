@@ -1,1 +1,22 @@
-include: package:flutter_lints/flutter.yaml
+include: package:very_good_analysis/analysis_options.yaml
+
+linter:
+  rules:
+
+analyzer:
+  errors:
+    deprecated_member_use: ignore
+    invalid_annotation_target: ignore
+    one_member_abstracts: ignore
+    public_member_api_docs: ignore
+    use_setters_to_change_properties: ignore
+    sort_pub_dependencies: ignore
+    avoid_catches_without_on_clauses: ignore
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - openapi/**
+    - build/**
+    - .dart_tool/**
+    - web/**
+    - windows/**
