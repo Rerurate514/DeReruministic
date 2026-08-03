@@ -1,4 +1,7 @@
 {
     "@@locale": "ja",
-    "appTitle": "DeReruministic"
+    "app_title": "DeReruministic",
+
+    "home_page_title": "ホームページ",
+    "home_page_fight_button": "たたかう"
 }
