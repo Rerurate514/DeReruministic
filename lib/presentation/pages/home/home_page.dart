@@ -1,3 +1,4 @@
+import 'package:dereruministic/presentation/pages/home/components/fight_button.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,8 +8,10 @@ class HomePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return UiPageWrapper(
-      child: Container(),
+    return const UiPageWrapper(
+      child: Column(
+        children: [FightButton()],
+      ),
     );
   }
 }
