@@ -1,4 +1,4 @@
-import 'package:dereruministic/domain/value_object/card_sub_effects.dart';
+import 'package:dereruministic/domain/value_object/card_states.dart';
 import 'package:dereruministic/domain/value_object/id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -12,7 +12,7 @@ sealed class CardDefinition with _$CardDefinition {
     required String name,
     required int baseCost,
     // required List<CardEffect> mainEffects,
-    required List<CardSubEffects> subEffects,
+    required List<CardStates> states,
     required List<String> mainEffects,
   }) = _CardDefinition;
 
