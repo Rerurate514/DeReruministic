@@ -1,5 +1,5 @@
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
-import 'package:dereruministic/domain/common/value_object/id.dart';
+import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'game_card.freezed.dart';
@@ -8,7 +8,7 @@ part 'game_card.g.dart';
 @freezed
 sealed class GameCard with _$GameCard {
   const factory GameCard({
-    required Id instanceId,
+    required GameCardInstanceId instanceId,
     required CardDefinition definition,
     required int currentCost,
     required int enteredHandAtTurn,
