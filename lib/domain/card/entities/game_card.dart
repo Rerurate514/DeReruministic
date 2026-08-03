@@ -1,5 +1,5 @@
-import 'package:dereruministic/domain/entities/card_definition.dart';
-import 'package:dereruministic/domain/value_object/id.dart';
+import 'package:dereruministic/domain/card/entities/card_definition.dart';
+import 'package:dereruministic/domain/common/value_object/id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'game_card.freezed.dart';

@@ -1,5 +1,5 @@
-import 'package:dereruministic/domain/value_object/card_states.dart';
-import 'package:dereruministic/domain/value_object/id.dart';
+import 'package:dereruministic/domain/card/value_objects/card_states.dart';
+import 'package:dereruministic/domain/common/value_object/id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'card_definition.freezed.dart';

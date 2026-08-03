@@ -1,6 +1,6 @@
-import 'package:dereruministic/domain/entities/game_card.dart';
-import 'package:dereruministic/domain/value_object/buff_state.dart';
-import 'package:dereruministic/domain/value_object/debuff_state.dart';
+import 'package:dereruministic/domain/card/entities/game_card.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'player_state.freezed.dart';

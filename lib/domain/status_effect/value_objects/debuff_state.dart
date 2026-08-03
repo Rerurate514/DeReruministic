@@ -1,4 +1,4 @@
-import 'package:dereruministic/domain/value_object/debuff_types.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'debuff_state.freezed.dart';
