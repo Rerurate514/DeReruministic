@@ -1,4 +1,6 @@
 import 'package:dereruministic/domain/entities/game_card.dart';
+import 'package:dereruministic/domain/value_object/buff_state.dart';
+import 'package:dereruministic/domain/value_object/debuff_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'enemy_state.freezed.dart';
@@ -12,8 +14,8 @@ sealed class EnemyState with _$EnemyState {
     required int handCount,
     required int deckCount,
     required List<GameCard> graveyard,
-    // required List<BuffDebuff> buffs,
-    required List<String> buffs,
+    required List<BuffState> buffs,
+    required List<DebuffState> debuffs,
   }) = _EnemyState;
 
   factory EnemyState.fromJson(Map<String, dynamic> json) =>

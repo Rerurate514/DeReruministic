@@ -1,4 +1,6 @@
 import 'package:dereruministic/domain/entities/game_card.dart';
+import 'package:dereruministic/domain/value_object/buff_state.dart';
+import 'package:dereruministic/domain/value_object/debuff_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'player_state.freezed.dart';
@@ -13,8 +15,8 @@ sealed class PlayerState with _$PlayerState {
     required List<GameCard> hand,
     required List<GameCard> deck,
     required List<GameCard> graveyard,
-    // required List<BuffDebuff> buffs,
-    required List<String> buffs,
+    required List<BuffState> buffs,
+    required List<DebuffState> debuffs,
     required int cardsPlayedThisTurn,
     required int maxHandSize,
   }) = _PlayerState;
