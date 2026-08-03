@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/value_objects/card_effects_details.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/common/value_object/id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -11,9 +12,8 @@ sealed class CardDefinition with _$CardDefinition {
     required Id cardDefId,
     required String name,
     required int baseCost,
-    // required List<CardEffect> mainEffects,
+    required List<CardEffectsDetails> effects,
     required List<CardStates> states,
-    required List<String> mainEffects,
   }) = _CardDefinition;
 
   factory CardDefinition.fromJson(Map<String, dynamic> json) =>
