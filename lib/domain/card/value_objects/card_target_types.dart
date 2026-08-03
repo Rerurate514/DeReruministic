@@ -1,1 +1,1 @@
-enum CardTargetTypes { self, enemy, area, all }
+enum CardTargetTypes { self, enemy, }
