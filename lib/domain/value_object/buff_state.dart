@@ -1,4 +1,4 @@
-import 'package:dereruministic/domain/constants/buff_types.dart';
+import 'package:dereruministic/domain/value_object/buff_types.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'buff_state.freezed.dart';

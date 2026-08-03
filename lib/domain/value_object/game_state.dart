@@ -1,5 +1,5 @@
-import 'package:dereruministic/domain/constants/game_phase.dart';
 import 'package:dereruministic/domain/value_object/enemy_state.dart';
+import 'package:dereruministic/domain/value_object/game_phase.dart';
 import 'package:dereruministic/domain/value_object/player_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
