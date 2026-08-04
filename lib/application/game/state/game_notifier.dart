@@ -33,26 +33,51 @@ class GameNotifier extends _$GameNotifier {
   }
 
   void startGame() {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState == null) return;
+    state = currentState.copyWith(
+      phase: currentState.phase.copyWith(battlePhase: .battleStart),
+    );
   }
 
   void startTurn() {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState == null) return;
+    state = currentState.copyWith(
+      phase: currentState.phase.copyWith(battlePhase: .turnStart),
+    );
+  }
+
+  void startMainTurn() {
+    final currentState = state;
+    if (currentState == null) return;
+    state = currentState.copyWith(
+      phase: currentState.phase.copyWith(battlePhase: .main),
+    );
   }
 
   void playCard(GameCard card) {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState == null) return;
+
+    //cardEffectResolveServiceなどでカード効果を適用したGameStateを返す
   }
 
   void endTurn() {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState == null) return;
+    state = currentState.copyWith(
+      phase: currentState.phase.copyWith(battlePhase: .turnEnd),
+    );
   }
 
   void processEnemyTurn() {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState == null) return;
   }
 
   void checkGameOver() {
-    if (state == null) return;
+    final currentState = state;
+    if (currentState == null) return;
   }
 }
