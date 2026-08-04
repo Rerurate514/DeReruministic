@@ -52,4 +52,39 @@ class GameFlowUsecase {
       seed: context.seed,
     );
   }
+
+  GameState _applyPlayCard(
+    GameState current,
+    GameActionPlayCard action,
+  ) {
+    return current;
+  }
+
+  GameState _applyDiscardCard(
+    GameState current,
+    GameActionDiscardCard action,
+  ) {
+    return current;
+  }
+
+  GameState _applyOverflowDiscards(
+    GameState current,
+    GameActionSelectOverflowDiscards action,
+  ) {
+    return current;
+  }
+
+  GameState _applyTurnEndAndAutoAdvance(
+    GameState current,
+    GameActionTurnEnd action,
+  ) {
+    return current;
+  }
+
+  GameState _applySurrender(
+    GameState current,
+    GameActionSurrender action,
+  ) {
+    return current;
+  }
 }
