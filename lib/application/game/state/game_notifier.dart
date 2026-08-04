@@ -69,11 +69,12 @@ class GameNotifier extends _$GameNotifier {
     if (currentState != null) return;
 
     final currentSeed = seed ?? Random().nextInt(1 << 32);
+    final cardDefs = ref.read(cardCatalogProvider);
 
     final initialState = _buildInitialState(
       player: player,
       enemy: enemy,
-      cardDefs: ref.read(cardCatalogProvider),
+      cardDefs: cardDefs,
       seed: currentSeed,
     );
 
@@ -85,7 +86,16 @@ class GameNotifier extends _$GameNotifier {
       firstTurn: initialState.phase.owner,
     );
 
-    await _dispatch(action: action, base: initialState);
+    await _dispatch(
+      action: action,
+      base: initialState,
+      setupContext: GameSetupContext(
+        player: player,
+        enemy: enemy,
+        cardDefs: cardDefs,
+        seed: currentSeed,
+      ),
+    );
   }
 
   void playCard(GameCard card) {
