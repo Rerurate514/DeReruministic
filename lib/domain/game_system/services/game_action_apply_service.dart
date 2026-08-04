@@ -19,12 +19,12 @@ class GameActionApplyService {
 
   final GameSetupService gameSetupService;
 
-  GameState applyGameStart(
-    GameActions action,
-    Player player,
-    Player enemy,
-    List<CardDefinition> cardDefs,
-  ) {
+  GameState applyGameStart({
+    required GameActions action,
+    required Player player,
+    required Player enemy,
+    required List<CardDefinition> cardDefs,
+  }) {
     final seed = (action as GameActionGameStart).seed;
     return gameSetupService.execute(
       player: player,
