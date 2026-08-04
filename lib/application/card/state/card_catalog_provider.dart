@@ -6,6 +6,7 @@ part 'card_catalog_provider.g.dart';
 
 @riverpod
 List<CardDefinition> cardCatalog(Ref ref) {
+  //main.dartにてoverrideWithValueを行う。
   throw UnimplementedError();
 }
 
