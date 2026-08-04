@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/player/constants/player_constants.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -10,6 +11,7 @@ part 'player_state.g.dart';
 @freezed
 sealed class PlayerState with _$PlayerState {
   const factory PlayerState({
+    required PlayerId id,
     required int hp,
     required int maxHp,
     required int shield,
@@ -25,8 +27,12 @@ sealed class PlayerState with _$PlayerState {
     required int drawCount,
   }) = _PlayerState;
 
-  factory PlayerState.create({required List<GameCard> deck}) {
+  factory PlayerState.create({
+    required PlayerId id,
+    required List<GameCard> deck,
+  }) {
     return PlayerState(
+      id: id,
       hp: PlayerConstants.defaultInitialHp,
       maxHp: PlayerConstants.defaultMaxHp,
       shield: 0,
