@@ -1,22 +1,31 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/game_setup_service.dart';
+import 'package:dereruministic/domain/game_system/services/remove_shield_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_flow_usecase.g.dart';
 
 @riverpod
 GameFlowUsecase gameFlowUsecase(Ref ref) {
-  return GameFlowUsecase(gameSetupService: ref.read(gameSetupServiceProvider));
+  return GameFlowUsecase(
+    gameSetupService: ref.read(gameSetupServiceProvider),
+    removeShieldService: ref.read(removeShieldServiceProvider),
+  );
 }
 
 class GameFlowUsecase {
-  const GameFlowUsecase({required this.gameSetupService});
+  const GameFlowUsecase({
+    required this.removeShieldService,
+    required this.gameSetupService,
+  });
 
   final GameSetupService gameSetupService;
+  final RemoveShieldService removeShieldService;
 
-  GameState applyAction({
+  ({GameState gameState, List<GameStepEvent> steps}) applyAction({
     required GameState current,
     required GameActions action,
     GameSetupContext? setupContext,
@@ -74,11 +83,23 @@ class GameFlowUsecase {
     return current;
   }
 
-  GameState _applyTurnEndAndAutoAdvance(
+  ({GameState gameState, List<GameStepEvent> steps})
+  _applyTurnEndAndAutoAdvance(
     GameState current,
     GameActionTurnEnd action,
+    List<GameStepEvent> steps,
   ) {
-    return current;
+    final steps = <GameStepEvent>[];
+    final (:state, :event) = removeShieldService.execute(current: current);
+    steps.add(event);
+
+    // final (:state, :event) = ResolveTurnEndEffectsService.execute(current: current);
+    // steps.add(event);
+
+    // final (:state, :event) = ResolveTurnStartEffectsService.execute(current: current);
+    // steps.add(event);
+
+    return (gameState: state, steps: steps);
   }
 
   GameState _applySurrender(
