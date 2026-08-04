@@ -1,21 +1,34 @@
 import 'dart:async';
 
+import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
+import 'package:dereruministic/infrastructure/card/repositories/local_card_reposory_impl.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/router/router.dart';
 import 'package:dereruministic/presentation/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-void main() {
-  runZonedGuarded(
-    () {
-      runApp(const ProviderScope(child: MainApp()));
+void main() async {
+  await runZonedGuarded(
+    () async {
+      WidgetsFlutterBinding.ensureInitialized();
+
+      final cardRepository = LocalCardReposoryImpl();
+      final cards = await cardRepository.fetchAllCards();
+
+      runApp(
+        ProviderScope(
+          overrides: [
+            cardCatalogProvider.overrideWithValue(cards),
+          ],
+          child: const MainApp(),
+        ),
+      );
     },
     (e, s) {
       debugPrint('catch on runZonedGuarded: $e /// $s');
     },
   );
-  runApp(const ProviderScope(child: MainApp()));
 }
 
 class MainApp extends ConsumerWidget {
