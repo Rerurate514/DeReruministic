@@ -14,8 +14,8 @@ sealed class GamePhase with _$GamePhase {
 
   factory GamePhase.init() {
     return const GamePhase(
-      battlePhase: BattlePhase.battleStart,
-      owner: TurnOwner.player,
+      battlePhase: BattlePhase.initialize,
+      owner: TurnOwner.initialize,
     );
   }
 

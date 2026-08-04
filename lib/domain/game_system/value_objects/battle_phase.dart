@@ -1,4 +1,5 @@
 enum BattlePhase {
+  initialize,
   battleStart,
   turnStart,
   draw,
