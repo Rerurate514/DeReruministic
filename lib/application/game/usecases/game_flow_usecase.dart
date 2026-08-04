@@ -96,13 +96,23 @@ class GameFlowUsecase {
     List<GameStepEvent> steps,
   ) {
     final removeShieldResult = removeShieldService.execute(current: current);
-    steps.addAll(steps);
+    steps.addAll(removeShieldResult.steps);
 
-    // final (:state, :event) = ResolveTurnEndEffectsService.execute(current: current);
+    // 3. ターン終了時に発動する効果の解決（パッシブ効果、毒・ドットダメージ、バフ減衰など）
+    // final (:state, :event) = ResolveTurnEndEffectsService.execute(current: removeShieldResult.state);
     // steps.add(event);
 
-    // final (:state, :event) = ResolveTurnStartEffectsService.execute(current: current);
+    // 4. ターン所有権の切り替え（プレイヤー ↔ 敵のターン交代）
+    // final switchedState = switchTurnOwner(current);
+
+    // 5. 新ターンの開始処理（ドロー、AP/マナの回復、ターン開始時イベントの発行など）
+    // final startTurnResult = startTurnService.execute(current: switchedState);
+
+    // 6. ターン開始時に発動する効果の解決（ターン開始時カード効果、時限仕掛けの発動など）
+    // final (:state, :event) = ResolveTurnStartEffectsService.execute(current: startTurnResult.state);
     // steps.add(event);
+
+    // 7. 最終的なゲーム状態（GameState）と集約された一連の演出ステップ（steps）を返却
 
     return ApplyActionResult(state: removeShieldResult.state, steps: steps);
   }

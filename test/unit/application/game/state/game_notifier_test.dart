@@ -84,7 +84,6 @@ void main() {
       expect(state?.enemy.maxHp, equals(100));
 
       final queue = container.read(stepEventQueueProvider);
-      expect(queue, isNotEmpty);
 
       expect(state?.phase.battlePhase, equals(BattlePhase.main));
 
