@@ -9,6 +9,8 @@ part 'game_step_event.g.dart';
 
 @freezed
 sealed class GameStepEvent with _$GameStepEvent {
+  factory GameStepEvent.fromJson(Map<String, dynamic> json) =>
+      _$GameStepEventFromJson(json);
   const factory GameStepEvent.transition({
     required GameStepType type,
   }) = GameStepEventTransition;
@@ -40,10 +42,11 @@ sealed class GameStepEvent with _$GameStepEvent {
   }) = GameStepEventCardAction;
 
   const factory GameStepEvent.gameEnded({
+    required GameStepType type,
     required PlayerId? winnerPlayerId,
     required String reason,
   }) = GameStepEventGameEnded;
 
-  factory GameStepEvent.fromJson(Map<String, dynamic> json) =>
-      _$GameStepEventFromJson(json);
+  @override
+  GameStepType get type;
 }
