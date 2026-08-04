@@ -39,6 +39,7 @@ class GameSetupService {
     );
 
     final playerState = PlayerState.create(
+      id: player.id,
       deck: playerDeck,
     );
 
