@@ -12,10 +12,10 @@ sealed class GamePhase with _$GamePhase {
     required TurnOwner owner,
   }) = _GamePhase;
 
-  factory GamePhase.init() {
-    return const GamePhase(
+  factory GamePhase.init(TurnOwner initialTurnOwner) {
+    return GamePhase(
       battlePhase: BattlePhase.initialize,
-      owner: TurnOwner.initialize,
+      owner: initialTurnOwner,
     );
   }
 
