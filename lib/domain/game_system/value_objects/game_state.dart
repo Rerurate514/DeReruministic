@@ -30,4 +30,14 @@ extension GameStateEx on GameState {
         return enemy.id;
     }
   }
+
+  GameState clearPlayerShieldByTurn() {
+    switch (phase.owner) {
+      case TurnOwner.player:
+        return copyWith(enemy: enemy.copyWith(shield: 0));
+
+      case TurnOwner.enemy:
+        return copyWith(player: player.copyWith(shield: 0));
+    }
+  }
 }
