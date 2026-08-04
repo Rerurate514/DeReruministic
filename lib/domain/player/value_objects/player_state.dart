@@ -10,15 +10,18 @@ part 'player_state.g.dart';
 sealed class PlayerState with _$PlayerState {
   const factory PlayerState({
     required int hp,
+    required int maxHp,
     required int shield,
     required int currentCost,
     required List<GameCard> hand,
     required List<GameCard> deck,
     required List<GameCard> graveyard,
+    required List<GameCard> exhausted,
     required List<BuffState> buffs,
     required List<DebuffState> debuffs,
     required int cardsPlayedThisTurn,
     required int maxHandSize,
+    required int drawCount,
   }) = _PlayerState;
 
   factory PlayerState.fromJson(Map<String, dynamic> json) =>
