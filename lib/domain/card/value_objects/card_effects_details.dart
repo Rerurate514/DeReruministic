@@ -9,7 +9,7 @@ part 'card_effects_details.g.dart';
 sealed class CardEffectsDetails with _$CardEffectsDetails {
   const factory CardEffectsDetails({
     required CardEffects cardEffect,
-    required EffectConditions effectCondition,
+    EffectConditions? effectCondition,
   }) = _CardEffectsDetails;
 
   factory CardEffectsDetails.fromJson(Map<String, dynamic> json) =>
