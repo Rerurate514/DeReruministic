@@ -1,12 +1,14 @@
-// ignore_for_all: type=lint_rule_name
+// ignore_for_all: type=lint
 
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/application/game/state/game_notifier.dart';
+import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/card/data/basic_pack.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
-import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/main.dart' as BattlePhase;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -15,7 +17,9 @@ void main() {
 
   setUp(() {
     container = ProviderContainer(
-      overrides: [cardCatalogProvider.overrideWithValue(basicPack)],
+      overrides: [
+        cardCatalogProvider.overrideWithValue(basicPack),
+      ],
     );
   });
 
@@ -46,10 +50,10 @@ void main() {
       expect(gameState, isNull);
     });
 
-    test('initialize 呼び出し後に GameState が正常に構築されること', () {
-      container
+    test('startGame 呼び出し後に GameState が正常に構築され、キューにステップが追加されること', () async {
+      await container
           .read(gameProvider.notifier)
-          .initialize(
+          .startGame(
             dummyPlayer,
             dummyEnemy,
             seed: 514,
@@ -60,40 +64,54 @@ void main() {
       expect(state, isNotNull);
       expect(state?.player.maxHp, equals(100));
       expect(state?.enemy.maxHp, equals(100));
+
+      final queue = container.read(stepEventQueueProvider);
+      expect(queue, isNotEmpty);
     });
 
-    test('フェーズ遷移が正常に行われること', () {
-      final notifier = container.read(gameProvider.notifier)
-        // 1. 初期化
-        ..initialize(dummyPlayer, dummyEnemy, seed: 42)
-        // 2. ゲーム開始
-        ..startGame();
+    test('startGame 呼び出し後に GameState が正常に構築され、キューにステップが追加されること', () async {
+      await container
+          .read(gameProvider.notifier)
+          .startGame(
+            dummyPlayer,
+            dummyEnemy,
+            seed: 514,
+          );
+
+      final state = container.read(gameProvider);
+      expect(state, isNotNull);
+      expect(state?.player.maxHp, equals(100));
+      expect(state?.enemy.maxHp, equals(100));
+
+      final queue = container.read(stepEventQueueProvider);
+      expect(queue, isNotEmpty);
+
+      expect(state?.phase.battlePhase, equals(BattlePhase.main));
 
       expect(
-        container.read(gameProvider)?.phase.battlePhase,
-        equals(BattlePhase.battleStart),
+        queue.any((s) => s.type == GameStepType.cardsDrawn),
+        isTrue,
+      );
+    });
+
+    test('endTurn 実行時に GameState とキューが正常に更新されること', () async {
+      final notifier = container.read(gameProvider.notifier);
+
+      await notifier.startGame(
+        dummyPlayer,
+        dummyEnemy,
+        seed: 42,
       );
 
-      // 3. ターン開始
-      notifier.startTurn();
-      expect(
-        container.read(gameProvider)?.phase.battlePhase,
-        equals(BattlePhase.turnStart),
-      );
+      final initialQueueLength = container.read(stepEventQueueProvider).length;
 
-      // 4. メインフェーズ開始
-      notifier.startMainTurn();
-      expect(
-        container.read(gameProvider)?.phase.battlePhase,
-        equals(BattlePhase.main),
-      );
+      await notifier.endTurn();
 
-      // 5. ターン終了
-      notifier.endTurn();
-      expect(
-        container.read(gameProvider)?.phase.battlePhase,
-        equals(BattlePhase.turnEnd),
-      );
+      final updatedState = container.read(gameProvider);
+      expect(updatedState, isNotNull);
+
+      final updatedQueue = container.read(stepEventQueueProvider);
+      expect(updatedQueue.length, greaterThan(initialQueueLength));
     });
   });
 }
