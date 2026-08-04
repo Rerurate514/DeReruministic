@@ -12,36 +12,36 @@ sealed class GameActions with _$GameActions {
     required GameActionsId id,
     required PlayerId playerId,
     required int seed,
-  }) = _GameActionGameStart;
+  }) = GameActionGameStart;
 
   const factory GameActions.playCard({
     required GameActionsId id,
     required PlayerId playerId,
     required GameCard card,
     PlayerId? targetPlayerId,
-  }) = _GameActionPlayCard;
+  }) = GameActionPlayCard;
 
   const factory GameActions.discardCard({
     required GameActionsId id,
     required PlayerId playerId,
     required GameCard card,
-  }) = _GameActionDiscardCard;
+  }) = GameActionDiscardCard;
 
   const factory GameActions.selectOverflowDiscards({
     required GameActionsId id,
     required PlayerId playerId,
     required List<GameCard> selectedCards,
-  }) = _GameActionSelectOverflowDiscards;
+  }) = GameActionSelectOverflowDiscards;
 
   const factory GameActions.turnEnd({
     required GameActionsId id,
     required PlayerId playerId,
-  }) = _GameActionTurnEnd;
+  }) = GameActionTurnEnd;
 
   const factory GameActions.surrender({
     required GameActionsId id,
     required PlayerId playerId,
-  }) = _GameActionSurrender;
+  }) = GameActionSurrender;
 
   factory GameActions.fromJson(Map<String, dynamic> json) =>
       _$GameActionsFromJson(json);
