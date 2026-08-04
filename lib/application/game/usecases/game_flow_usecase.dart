@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/remove_shield_service.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -25,11 +26,12 @@ class GameFlowUsecase {
   final GameSetupService gameSetupService;
   final RemoveShieldService removeShieldService;
 
-  ({GameState gameState, List<GameStepEvent> steps}) applyAction({
+  ApplyActionResult applyAction({
     required GameState current,
     required GameActions action,
     GameSetupContext? setupContext,
   }) {
+    final steps = <GameStepEvent>[];
     switch (action) {
       case GameActionGameStart():
         return _applyGameStart(current, action, setupContext!);
@@ -43,55 +45,55 @@ class GameFlowUsecase {
           action,
         );
       case GameActionTurnEnd():
-        return _applyTurnEndAndAutoAdvance(current, action);
+        return _applyTurnEndAndAutoAdvance(current, action, steps);
       case GameActionSurrender():
         return _applySurrender(current, action);
     }
   }
 
-  GameState _applyGameStart(
+  ApplyActionResult _applyGameStart(
     GameState current,
     GameActionGameStart action,
     GameSetupContext context,
   ) {
-    return gameSetupService.execute(
-      player: context.player,
-      enemy: context.enemy,
-      cardDefs: context.cardDefs,
-      seed: context.seed,
+    return ApplyActionResult.noSteps(
+      state: gameSetupService.execute(
+        player: context.player,
+        enemy: context.enemy,
+        cardDefs: context.cardDefs,
+        seed: context.seed,
+      ),
     );
   }
 
-  GameState _applyPlayCard(
+  ApplyActionResult _applyPlayCard(
     GameState current,
     GameActionPlayCard action,
   ) {
-    return current;
+    return ApplyActionResult.noSteps(state: current);
   }
 
-  GameState _applyDiscardCard(
+  ApplyActionResult _applyDiscardCard(
     GameState current,
     GameActionDiscardCard action,
   ) {
-    return current;
+    return ApplyActionResult.noSteps(state: current);
   }
 
-  GameState _applyOverflowDiscards(
+  ApplyActionResult _applyOverflowDiscards(
     GameState current,
     GameActionSelectOverflowDiscards action,
   ) {
-    return current;
+    return ApplyActionResult.noSteps(state: current);
   }
 
-  ({GameState gameState, List<GameStepEvent> steps})
-  _applyTurnEndAndAutoAdvance(
+  ApplyActionResult _applyTurnEndAndAutoAdvance(
     GameState current,
     GameActionTurnEnd action,
     List<GameStepEvent> steps,
   ) {
-    final steps = <GameStepEvent>[];
-    final (:state, :event) = removeShieldService.execute(current: current);
-    steps.add(event);
+    final removeShieldResult = removeShieldService.execute(current: current);
+    steps.addAll(steps);
 
     // final (:state, :event) = ResolveTurnEndEffectsService.execute(current: current);
     // steps.add(event);
@@ -99,13 +101,13 @@ class GameFlowUsecase {
     // final (:state, :event) = ResolveTurnStartEffectsService.execute(current: current);
     // steps.add(event);
 
-    return (gameState: state, steps: steps);
+    return ApplyActionResult(state: removeShieldResult.state, steps: steps);
   }
 
-  GameState _applySurrender(
+  ApplyActionResult _applySurrender(
     GameState current,
     GameActionSurrender action,
   ) {
-    return current;
+    return ApplyActionResult.noSteps(state: current);
   }
 }

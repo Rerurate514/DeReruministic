@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
@@ -11,7 +12,7 @@ RemoveShieldService removeShieldService(Ref ref) {
 }
 
 class RemoveShieldService {
-  ({GameState state, GameStepEvent event}) execute({
+  ApplyActionResult execute({
     required GameState current,
   }) {
     final targetPlayerId = current.shieldClearTargetId;
@@ -22,9 +23,9 @@ class RemoveShieldService {
       amount: 0,
     );
 
-    return (
+    return ApplyActionResult(
       state: current.clearShield(targetPlayerId),
-      event: event,
+      steps: [event],
     );
   }
 }
