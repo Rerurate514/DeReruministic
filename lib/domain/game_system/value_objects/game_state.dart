@@ -31,13 +31,22 @@ extension GameStateEx on GameState {
     }
   }
 
-  GameState clearPlayerShieldByTurn() {
+  PlayerId get shieldClearTargetId {
     switch (phase.owner) {
       case TurnOwner.player:
-        return copyWith(enemy: enemy.copyWith(shield: 0));
-
+        return enemy.id;
       case TurnOwner.enemy:
-        return copyWith(player: player.copyWith(shield: 0));
+        return player.id;
     }
+  }
+
+  GameState clearShield(PlayerId targetId) {
+    if (player.id == targetId) {
+      return copyWith(player: player.copyWith(shield: 0));
+    }
+    if (enemy.id == targetId) {
+      return copyWith(enemy: enemy.copyWith(shield: 0));
+    }
+    return this;
   }
 }
