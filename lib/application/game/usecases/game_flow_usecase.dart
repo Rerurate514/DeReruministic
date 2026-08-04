@@ -34,7 +34,10 @@ class GameFlowUsecase {
     final steps = <GameStepEvent>[];
     switch (action) {
       case GameActionGameStart():
-        return _applyGameStart(current, action, setupContext!);
+        {
+          if (setupContext == null) throw ArgumentError();
+          return _applyGameStart(current, action, setupContext);
+        }
       case GameActionPlayCard():
         return _applyPlayCard(current, action);
       case GameActionDiscardCard():
