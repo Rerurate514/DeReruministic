@@ -3,7 +3,7 @@ import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/repositories/i_card_repository.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 
-class LocalCardReposoryImpl implements ICardRepository {
+class LocalCardRepositoryImpl implements ICardRepository {
   @override
   Future<List<CardDefinition>> fetchAllCards() {
     return Future(() => basicPack);

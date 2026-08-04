@@ -13,7 +13,7 @@ void main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      final cardRepository = LocalCardReposoryImpl();
+      final cardRepository = LocalCardRepositoryImpl();
       final cards = await cardRepository.fetchAllCards();
 
       runApp(

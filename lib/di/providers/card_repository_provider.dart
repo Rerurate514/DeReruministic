@@ -4,5 +4,5 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 @riverpod
 ICardRepository cardRepository(Ref ref) {
-  return LocalCardReposoryImpl();
+  return LocalCardRepositoryImpl();
 }
