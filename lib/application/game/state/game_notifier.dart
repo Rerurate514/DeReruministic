@@ -1,6 +1,11 @@
+import 'dart:math';
+
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
+import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/services/game_action_apply_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_setup_service.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/turn_owner.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
@@ -22,13 +27,20 @@ class GameNotifier extends _$GameNotifier {
     TurnOwner? firstTurn,
   }) {
     final cardDefs = ref.read(cardCatalogProvider);
-    final gameSetupService = ref.read(gameSetupServiceProvider);
+    final applyService = ref.read(gameActionApplyServiceProvider);
 
-    state = gameSetupService.execute(
+    final action = GameActions.gameStart(
+      id: GameActionsId.generate(),
+      playerId: player.id,
+      seed: seed ?? Random().nextInt(1 << 32),
+    );
+
+    state = applyService.applyGameState(
+      null,
+      action,
       player: player,
       enemy: enemy,
       cardDefs: cardDefs,
-      seed: seed,
     );
   }
 
