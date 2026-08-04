@@ -63,13 +63,12 @@ void main() {
     });
 
     test('フェーズ遷移が正常に行われること', () {
-      final notifier = container.read(gameProvider.notifier);
+      final notifier = container.read(gameProvider.notifier)
+        // 1. 初期化
+        ..initialize(dummyPlayer, dummyEnemy, seed: 42)
+        // 2. ゲーム開始
+        ..startGame();
 
-      // 1. 初期化
-      notifier.initialize(dummyPlayer, dummyEnemy, seed: 42);
-
-      // 2. ゲーム開始
-      notifier.startGame();
       expect(
         container.read(gameProvider)?.phase.battlePhase,
         equals(BattlePhase.battleStart),
