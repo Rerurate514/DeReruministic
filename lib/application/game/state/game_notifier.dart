@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
+import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
@@ -30,11 +31,16 @@ class GameNotifier extends _$GameNotifier {
   }) async {
     final current = base ?? state;
     if (current == null) return;
-    state = _flow.applyAction(
+    final applyActionResult = _flow.applyAction(
       current: current,
       action: action,
       setupContext: setupContext,
     );
+
+    state = applyActionResult.state;
+    ref
+        .read(stepEventQueueProvider.notifier)
+        .enqueueAll(applyActionResult.steps);
     //await eventSourcingRepository.sendAction(action);
   }
 
@@ -104,11 +110,6 @@ class GameNotifier extends _$GameNotifier {
     final currentState = state;
     if (currentState == null) return;
     //state = gameActionResolveService.apply(currentState, action);
-  }
-
-  void checkGameOver() {
-    final currentState = state;
-    if (currentState == null) return;
   }
 
   void surrender() {
