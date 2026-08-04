@@ -12,6 +12,13 @@ sealed class GamePhase with _$GamePhase {
     required TurnOwner owner,
   }) = _GamePhase;
 
+  factory GamePhase.init() {
+    return const GamePhase(
+      battlePhase: BattlePhase.battleStart,
+      owner: TurnOwner.player,
+    );
+  }
+
   factory GamePhase.fromJson(Map<String, dynamic> json) =>
       _$GamePhaseFromJson(json);
 }
