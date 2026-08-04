@@ -19,9 +19,9 @@ GameSetupService gameSetupService(Ref ref) {
 }
 
 class GameSetupService {
-  final CreateDeckService createDeckService;
-
   const GameSetupService({required this.createDeckService});
+
+  final CreateDeckService createDeckService;
 
   GameState execute({
     required Player player,
