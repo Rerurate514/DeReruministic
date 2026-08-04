@@ -43,22 +43,6 @@ sealed class GameActions with _$GameActions {
     required PlayerId playerId,
   }) = _GameActionSurrender;
 
-  const factory GameActions.processTurnStart({
-    required GameActionsId id,
-    required PlayerId activePlayerId,
-  }) = _GameActionProcessTurnStart;
-
-  const factory GameActions.processDrawPhase({
-    required GameActionsId id,
-    required PlayerId activePlayerId,
-    required int drawAmount,
-  }) = _GameActionProcessDrawPhase;
-
-  const factory GameActions.processTurnEnd({
-    required GameActionsId id,
-    required PlayerId activePlayerId,
-  }) = _GameActionProcessTurnEnd;
-
   factory GameActions.fromJson(Map<String, dynamic> json) =>
       _$GameActionsFromJson(json);
 }
