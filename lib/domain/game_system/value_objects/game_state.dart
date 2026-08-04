@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/player/value_objects/enemy_state.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -13,6 +14,7 @@ sealed class GameState with _$GameState {
     required EnemyState enemy,
     required GamePhase phase,
     required int turnCount,
+    required PlayerId currentTurnPlayerId,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>
