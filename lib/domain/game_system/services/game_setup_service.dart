@@ -56,7 +56,6 @@ class GameSetupService {
       enemy: enemyState,
       phase: GamePhase.init(initialTurnOwner),
       turnCount: 0,
-      currentTurnPlayerId: isPlayerFirst ? playerState.id : enemyState.id,
     );
   }
 }
