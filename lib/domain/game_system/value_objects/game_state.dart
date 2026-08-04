@@ -22,7 +22,7 @@ sealed class GameState with _$GameState {
 }
 
 extension GameStateEx on GameState {
-  PlayerId getCurrentTurnPlayerId() {
+  PlayerId get currentTurnPlayerId {
     switch (phase.owner) {
       case TurnOwner.player:
         return player.id;
