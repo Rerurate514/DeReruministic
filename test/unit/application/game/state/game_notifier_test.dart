@@ -119,15 +119,13 @@ void main() {
         514,
       );
 
-      final initialQueueLength = container.read(stepEventQueueProvider).length;
-
       await notifier.endTurn();
 
-      final updatedState = container.read(gameProvider);
-      expect(updatedState, isNotNull);
+      final updatedState = container.read(gameProvider)!;
 
-      final updatedQueue = container.read(stepEventQueueProvider);
-      expect(updatedQueue.length, greaterThan(initialQueueLength));
+      expect(updatedState.phase.turnOwner, equals(dummyEnemy.id));
+      expect(updatedState.turnCount, equals(1));
+      expect(updatedState.phase.battlePhase, equals(BattlePhase.mainPhase));
     });
 
     test('未実装メソッドの呼び出しで例外が発生しないこと', () async {
