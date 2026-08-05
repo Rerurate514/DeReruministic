@@ -14,7 +14,7 @@ DefeatProcessService defeatProcessService(Ref ref) {
   return const DefeatProcessService();
 }
 
-final class DefeatProcessService {
+class DefeatProcessService {
   const DefeatProcessService();
 
   ApplyActionResult execute(
