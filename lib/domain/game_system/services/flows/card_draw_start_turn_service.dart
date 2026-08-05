@@ -3,8 +3,6 @@ import 'package:dereruministic/domain/game_system/services/card_draw_service.dar
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_process_step.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -31,19 +29,13 @@ class CardDrawStartTurnService implements TurnProcessStep {
 
     final amount = _calculateDrawAmount(targetPlayer!);
 
-    final newState = cardDrawService.execute(
+    final result = cardDrawService.execute(
       state,
       targetPlayerId,
       amount,
     );
 
-    final event = GameStepEvent.valueChanged(
-      type: GameStepType.cardsDrawn,
-      targetPlayerId: targetPlayerId,
-      amount: amount,
-    );
-
-    return ApplyActionResult(state: newState, steps: [event]);
+    return result;
   }
 
   int _calculateDrawAmount(PlayerState player) {
