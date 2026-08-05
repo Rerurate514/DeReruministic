@@ -5,10 +5,10 @@ import 'package:dereruministic/application/game/state/game_notifier.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/card/data/basic_pack.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
+import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/main.dart' as BattlePhase;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -85,7 +85,7 @@ void main() {
 
       final queue = container.read(stepEventQueueProvider);
 
-      expect(state?.phase.battlePhase, equals(BattlePhase.main));
+      expect(state?.phase.battlePhase, equals(BattlePhase.mainPhase));
 
       expect(
         queue.any((s) => s.type == GameStepType.cardsDrawn),
