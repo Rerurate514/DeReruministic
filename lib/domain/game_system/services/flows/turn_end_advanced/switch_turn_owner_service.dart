@@ -15,8 +15,12 @@ SwitchTurnOwnerService switchTurnOwnerService(Ref ref) {
 class SwitchTurnOwnerService implements TurnProcessStep {
   @override
   ApplyActionResult execute(GameState current) {
-    const event = GameStepEventTransition(type: GameStepType.phaseChanged);
+    final newState = current.nextTurn();
+    final event = GameStepEventTransition(
+      type: GameStepType.phaseChanged,
+      phase: newState.phase,
+    );
 
-    return ApplyActionResult(state: current.nextTurn(), steps: [event]);
+    return ApplyActionResult(state: newState, steps: [event]);
   }
 }
