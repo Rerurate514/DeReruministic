@@ -1,9 +1,9 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
-import 'package:dereruministic/domain/game_system/services/calculate_turn_cost_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/calculate_turn_cost_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/game_setup_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/remove_shield_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline.dart';
-import 'package:dereruministic/domain/game_system/services/game_setup_service.dart';
-import 'package:dereruministic/domain/game_system/services/remove_shield_service.dart';
-import 'package:dereruministic/domain/game_system/services/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -15,10 +15,10 @@ part 'game_flow_usecase.g.dart';
 @riverpod
 GameFlowUsecase gameFlowUsecase(Ref ref) {
   return GameFlowUsecase(
+    turnPipeline: ref.read(turnPipelineProvider),
     gameSetupService: ref.read(gameSetupServiceProvider),
     removeShieldService: ref.read(removeShieldServiceProvider),
     switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
-    turnPipeline: ref.read(turnPipelineProvider),
     calculateTurnCostService: ref.read(calculateTurnCostServiceProvider),
   );
 }
@@ -26,10 +26,10 @@ GameFlowUsecase gameFlowUsecase(Ref ref) {
 class GameFlowUsecase {
   const GameFlowUsecase({
     required this.calculateTurnCostService,
-    required this.turnPipeline,
     required this.switchTurnOwnerService,
     required this.removeShieldService,
     required this.gameSetupService,
+    required this.turnPipeline,
   });
 
   final TurnPipeline turnPipeline;
@@ -135,7 +135,6 @@ class GameFlowUsecase {
         // triggerOnTurnStartEventService,
 
         // ドローフェーズ
-        // calculateDrawAmountService,
         // cardDrawService,
         // checkHandLimitService,
       ],
