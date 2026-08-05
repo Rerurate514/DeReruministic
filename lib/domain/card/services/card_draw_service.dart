@@ -71,7 +71,7 @@ class CardDrawService {
       typeTo: CardZone.hand,
     );
 
-    if (currentPlayer.deck.isNotEmpty) {
+    if (remainingDeck.isNotEmpty) {
       return ApplyActionResult(
         state: newState,
         steps: [
