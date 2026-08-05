@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_process_step.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -11,10 +12,9 @@ RemoveShieldService removeShieldService(Ref ref) {
   return RemoveShieldService();
 }
 
-class RemoveShieldService {
-  ApplyActionResult execute({
-    required GameState current,
-  }) {
+class RemoveShieldService implements TurnProcessStep {
+  @override
+  ApplyActionResult execute(GameState current) {
     final targetPlayerId = current.shieldClearTargetId;
 
     final event = GameStepEvent.valueChanged(
