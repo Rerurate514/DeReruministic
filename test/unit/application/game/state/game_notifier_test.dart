@@ -19,6 +19,28 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 void main() {
+  final basicPackCardDefIds = <CardDefinitionId>[
+    const CardDefinitionId(value: 'basic_pack_hit'),
+    const CardDefinitionId(value: 'basic_pack_defence_stance'),
+    const CardDefinitionId(value: 'basic_pack_first_aid'),
+    const CardDefinitionId(value: 'basic_pack_poisonous_snake_fangs'),
+    const CardDefinitionId(value: 'basic_pack_final_below'),
+    const CardDefinitionId(value: 'basic_pack_shield_bash'),
+    const CardDefinitionId(value: 'basic_pack_meditation'),
+    const CardDefinitionId(value: 'naguru'),
+    const CardDefinitionId(value: 'basic_pack_purifying_blow'),
+    const CardDefinitionId(value: 'basic_pack_energy_steal'),
+    const CardDefinitionId(value: 'basic_pack_last_resort'),
+    const CardDefinitionId(value: 'basic_pack_accumulation_talisman'),
+    const CardDefinitionId(value: 'basic_pack_overloaded_blow'),
+    const CardDefinitionId(value: 'basic_pack_time_bomb'),
+    const CardDefinitionId(value: 'basic_pack_ominous_curse'),
+    const CardDefinitionId(value: 'basic_pack_infinite_blade'),
+    const CardDefinitionId(value: 'basic_pack_secretry_stance'),
+    const CardDefinitionId(value: 'basic_pack_chain_slash'),
+    const CardDefinitionId(value: 'basic_pack_secret_art_corrousion'),
+  ];
+
   late ProviderContainer container;
 
   setUp(() {
@@ -37,18 +59,12 @@ void main() {
     final dummyPlayer = Player(
       id: PlayerId.generate(),
       name: 'Player 1',
-      deckRecipe: const [
-        CardDefinitionId(value: 'basic_pack_hit'),
-        CardDefinitionId(value: 'basic_pack_defence_stance'),
-      ],
+      deckRecipe: basicPackCardDefIds,
     );
     final dummyEnemy = Player(
       id: PlayerId.generate(),
       name: 'Enemy 1',
-      deckRecipe: const [
-        CardDefinitionId(value: 'basic_pack_hit'),
-        CardDefinitionId(value: 'basic_pack_defence_stance'),
-      ],
+      deckRecipe: basicPackCardDefIds,
     );
 
     test('初期状態は null であること', () {
@@ -119,13 +135,47 @@ void main() {
         514,
       );
 
+      final initialState = container.read(gameProvider)!;
+      final firstPlayerId = initialState.phase.turnOwner;
+      final expectedNextPlayerId = firstPlayerId == dummyPlayer.id
+          ? dummyEnemy.id
+          : dummyPlayer.id;
+
       await notifier.endTurn();
 
       final updatedState = container.read(gameProvider)!;
 
-      expect(updatedState.phase.turnOwner, equals(dummyEnemy.id));
+      expect(updatedState.phase.turnOwner, equals(expectedNextPlayerId));
       expect(updatedState.turnCount, equals(1));
       expect(updatedState.phase.battlePhase, equals(BattlePhase.mainPhase));
+    });
+
+    test('10ターン目まで正常に手番交代とターンカウントのインクリメントが継続すること', () async {
+      final notifier = container.read(gameProvider.notifier);
+
+      await notifier.startGame(
+        dummyPlayer,
+        dummyEnemy,
+        514,
+      );
+
+      var currentState = container.read(gameProvider)!;
+      final playerAId = currentState.phase.turnOwner;
+      final playerBId = playerAId == dummyPlayer.id
+          ? dummyEnemy.id
+          : dummyPlayer.id;
+
+      for (var expectedTurn = 1; expectedTurn <= 10; expectedTurn++) {
+        await notifier.endTurn();
+
+        currentState = container.read(gameProvider)!;
+
+        final expectedOwnerId = expectedTurn.isOdd ? playerBId : playerAId;
+
+        expect(currentState.turnCount, equals(expectedTurn));
+        expect(currentState.phase.turnOwner, equals(expectedOwnerId));
+        expect(currentState.phase.battlePhase, equals(BattlePhase.mainPhase));
+      }
     });
 
     test('未実装メソッドの呼び出しで例外が発生しないこと', () async {
