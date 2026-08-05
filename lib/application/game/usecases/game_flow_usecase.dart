@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_turn_start_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/calculate_turn_cost_service.dart';
@@ -24,11 +25,13 @@ GameFlowUsecase gameFlowUsecase(Ref ref) {
     switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
     calculateTurnCostService: ref.read(calculateTurnCostServiceProvider),
     cardDrawStartTurnService: ref.read(cardDrawStartTurnServiceProvider),
+    advancedToTurnStartService: ref.read(advancedToTurnStartServiceProvider),
   );
 }
 
 class GameFlowUsecase {
   const GameFlowUsecase({
+    required this.advancedToTurnStartService,
     required this.cardDrawStartTurnService,
     required this.calculateTurnCostService,
     required this.switchTurnOwnerService,
@@ -45,6 +48,7 @@ class GameFlowUsecase {
   final SwitchTurnOwnerService switchTurnOwnerService;
   final CalculateTurnCostService calculateTurnCostService;
   final CardDrawStartTurnService cardDrawStartTurnService;
+  final AdvancedToTurnStartService advancedToTurnStartService;
 
   ApplyActionResult applyAction({
     required GameState? current,
@@ -92,7 +96,9 @@ class GameFlowUsecase {
 
     return turnPipeline.process(initialState.state, initialState.steps, [
       gameStartDrawCardsService,
+      advancedToTurnStartService,
       calculateTurnCostService,
+      
     ]);
   }
 
