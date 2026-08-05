@@ -35,8 +35,6 @@ extension GameStateEx on GameState {
   }
 
   GameState nextTurn() {
-    if (phase.battlePhase != BattlePhase.turnEnd) return this;
-
     final nextOwner = players.keys.firstWhere(
       (id) => id != phase.turnOwner,
     );
