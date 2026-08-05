@@ -92,6 +92,9 @@ class TurnPipelineFactory implements ITurnPipelineFactory {
         // ドローフェーズ
         _cardDrawStartTurnService,
         // checkHandLimitService,
+
+        // メインフェーズ
+        _advanceToMainPhaseService,
       ],
     );
   }
