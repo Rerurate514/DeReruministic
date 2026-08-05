@@ -42,6 +42,7 @@ extension GameStateEx on GameState {
     );
 
     return copyWith(
+      turnCount: turnCount + 1,
       phase: phase.copyWith(
         battlePhase: BattlePhase.turnStart,
         turnOwner: nextOwner,
