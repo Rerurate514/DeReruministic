@@ -53,11 +53,11 @@ class GameNotifier extends _$GameNotifier {
       playerAId: playerA.id,
       playerBId: playerB.id,
       seed: seed,
-      firstTurnOwner: FirstTurnResolver.resolve(
+      firstTurn: FirstTurnResolver.resolve(
         playerAId: playerA.id,
         playerBId: playerB.id,
         random: Random(seed),
-      );
+      ),
     );
 
     await _dispatch(
