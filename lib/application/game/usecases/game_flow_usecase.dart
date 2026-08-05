@@ -107,11 +107,33 @@ class GameFlowUsecase {
       current,
       initialSteps,
       [
-        removeShieldService,
-        //resolveTurnEndEffectsService
+        //　ターン終了フェーズ（現プレイヤー）カード状態更新
+        // updateCardCountersService,
+        // resolveTimedCardEffectsService,
+        // resolveTurnEndStatusService,
+        // processRottenCardExhaustService,
+
+        //　ターン終了フェーズ（現プレイヤー）バフデバフ更新
+        // resolveTurnEndStatusService,
+        // triggerOnTurnEndEventService,
+
+        // 手番交代
         switchTurnOwnerService,
-        //startTurnService,
-        //resolveTurnStartEffectsService
+
+        // ターン開始フェーズ（新プレイヤー）
+        removeShieldService,
+        // resolveRegenService,
+        // resolvePoisonService,
+        // checkDeathService,
+        // calculateTurnCostService,
+        // applyGuardBoostService,
+        // resetComboService,
+        // triggerOnTurnStartEventService,
+
+        // ドローフェーズ
+        // calculateDrawAmountService,
+        // cardDrawService,
+        // checkHandLimitService,
       ],
     );
   }
