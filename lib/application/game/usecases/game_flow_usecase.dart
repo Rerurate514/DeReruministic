@@ -43,35 +43,39 @@ class GameFlowUsecase {
   final CardDrawStartTurnService cardDrawStartTurnService;
 
   ApplyActionResult applyAction({
-    required GameState current,
+    required GameState? current,
     required GameActions action,
     GameSetupContext? setupContext,
   }) {
+    if (action is GameActionGameStart) {
+      if (setupContext == null) {
+        throw ArgumentError('setupContext is required for GameStart');
+      }
+      return _applyGameStart(action, setupContext);
+    }
+
+    if (current == null) {
+      throw StateError('State cannot be null for action: $action');
+    }
+
     final steps = <GameStepEvent>[];
     switch (action) {
-      case GameActionGameStart():
-        {
-          if (setupContext == null) throw ArgumentError();
-          return _applyGameStart(current, action, setupContext);
-        }
       case GameActionPlayCard():
         return _applyPlayCard(current, action);
       case GameActionDiscardCard():
         return _applyDiscardCard(current, action);
       case GameActionSelectOverflowDiscards():
-        return _applyOverflowDiscards(
-          current,
-          action,
-        );
+        return _applyOverflowDiscards(current, action);
       case GameActionTurnEnd():
         return _applyTurnEndAndAutoAdvance(current, action, steps);
       case GameActionSurrender():
         return _applySurrender(current, action);
+      case GameActionGameStart():
+        throw ArgumentError('setupContext is required for GameStart');
     }
   }
 
   ApplyActionResult _applyGameStart(
-    GameState current,
     GameActionGameStart action,
     GameSetupContext context,
   ) {

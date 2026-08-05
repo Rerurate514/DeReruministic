@@ -29,7 +29,6 @@ class GameNotifier extends _$GameNotifier {
     GameSetupContext? setupContext,
   }) async {
     final current = base ?? state;
-    if (current == null) return;
     final applyActionResult = _flow.applyAction(
       current: current,
       action: action,
