@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/calculate_turn_cost_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/card_draw_start_turn_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
@@ -18,6 +19,7 @@ GameFlowUsecase gameFlowUsecase(Ref ref) {
   return GameFlowUsecase(
     turnPipeline: ref.read(turnPipelineProvider),
     gameSetupService: ref.read(gameSetupServiceProvider),
+    gameStartDrawCardsService: ref.read(gameStartDrawCardsServiceProvider),
     removeShieldService: ref.read(removeShieldServiceProvider),
     switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
     calculateTurnCostService: ref.read(calculateTurnCostServiceProvider),
@@ -31,12 +33,14 @@ class GameFlowUsecase {
     required this.calculateTurnCostService,
     required this.switchTurnOwnerService,
     required this.removeShieldService,
+    required this.gameStartDrawCardsService,
     required this.gameSetupService,
     required this.turnPipeline,
   });
 
   final TurnPipeline turnPipeline;
   final GameSetupService gameSetupService;
+  final GameStartDrawCardsService gameStartDrawCardsService;
   final RemoveShieldService removeShieldService;
   final SwitchTurnOwnerService switchTurnOwnerService;
   final CalculateTurnCostService calculateTurnCostService;
@@ -88,7 +92,7 @@ class GameFlowUsecase {
 
     return turnPipeline.process(initialState.state, initialState.steps, [
       calculateTurnCostService,
-      cardDrawStartTurnService,
+      gameStartDrawCardsService,
     ]);
   }
 
