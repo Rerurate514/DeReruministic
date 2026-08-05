@@ -8,6 +8,7 @@ enum GameStepType {
   drawCalculated,
   deckShuffled,
   cardsDrawn,
+  deckRestored,
   overflowCheckTriggered,
   phaseChanged,
   cardPlayed,

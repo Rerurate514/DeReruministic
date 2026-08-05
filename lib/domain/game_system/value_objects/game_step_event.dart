@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/status_effect_type.dart';
@@ -40,6 +41,20 @@ sealed class GameStepEvent with _$GameStepEvent {
     required GameCardInstanceId cardInstanceId,
     PlayerId? targetPlayerId,
   }) = GameStepEventCardAction;
+
+  const factory GameStepEvent.deckRestored({
+    required GameStepType type,
+    required PlayerId playerId,
+    required int count,
+  }) = GameStepEventDeckRestored;
+
+  const factory GameStepEvent.cardZoneMoved({
+    required GameStepType type,
+    required PlayerId playerId,
+    required List<GameCardInstanceId> cardInstanceIds,
+    required CardZone typeFrom,
+    required CardZone typeTo,
+  }) = GameStepEventCardZoneMoved;
 
   const factory GameStepEvent.gameEnded({
     required GameStepType type,
