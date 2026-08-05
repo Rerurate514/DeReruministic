@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/services/calculate_turn_cost_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline.dart';
 import 'package:dereruministic/domain/game_system/services/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/remove_shield_service.dart';
@@ -18,11 +19,13 @@ GameFlowUsecase gameFlowUsecase(Ref ref) {
     removeShieldService: ref.read(removeShieldServiceProvider),
     switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
     turnPipeline: ref.read(turnPipelineProvider),
+    calculateTurnCostService: ref.read(calculateTurnCostServiceProvider),
   );
 }
 
 class GameFlowUsecase {
   const GameFlowUsecase({
+    required this.calculateTurnCostService,
     required this.turnPipeline,
     required this.switchTurnOwnerService,
     required this.removeShieldService,
@@ -33,6 +36,7 @@ class GameFlowUsecase {
   final GameSetupService gameSetupService;
   final RemoveShieldService removeShieldService;
   final SwitchTurnOwnerService switchTurnOwnerService;
+  final CalculateTurnCostService calculateTurnCostService;
 
   ApplyActionResult applyAction({
     required GameState current,
@@ -125,7 +129,7 @@ class GameFlowUsecase {
         // resolveRegenService,
         // resolvePoisonService,
         // checkDeathService,
-        // calculateTurnCostService,
+        calculateTurnCostService,
         // applyGuardBoostService,
         // resetComboService,
         // triggerOnTurnStartEventService,
