@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_turn_start_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
@@ -23,17 +24,19 @@ GameFlowUsecase gameFlowUsecase(Ref ref) {
     gameStartDrawCardsService: ref.read(gameStartDrawCardsServiceProvider),
     removeShieldService: ref.read(removeShieldServiceProvider),
     switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
-    calculateTurnCostService: ref.read(calculateTurnCostServiceProvider),
     cardDrawStartTurnService: ref.read(cardDrawStartTurnServiceProvider),
     advancedToTurnStartService: ref.read(advancedToTurnStartServiceProvider),
+    calculateTurnCostService: ref.read(calculateTurnCostServiceProvider),
+    advanceToMainPhaseService: ref.read(advanceToMainPhaseServiceProvider),
   );
 }
 
 class GameFlowUsecase {
   const GameFlowUsecase({
+    required this.advanceToMainPhaseService,
+    required this.calculateTurnCostService,
     required this.advancedToTurnStartService,
     required this.cardDrawStartTurnService,
-    required this.calculateTurnCostService,
     required this.switchTurnOwnerService,
     required this.removeShieldService,
     required this.gameStartDrawCardsService,
@@ -46,9 +49,10 @@ class GameFlowUsecase {
   final GameStartDrawCardsService gameStartDrawCardsService;
   final RemoveShieldService removeShieldService;
   final SwitchTurnOwnerService switchTurnOwnerService;
-  final CalculateTurnCostService calculateTurnCostService;
   final CardDrawStartTurnService cardDrawStartTurnService;
   final AdvancedToTurnStartService advancedToTurnStartService;
+  final CalculateTurnCostService calculateTurnCostService;
+  final AdvanceToMainPhaseService advanceToMainPhaseService;
 
   ApplyActionResult applyAction({
     required GameState? current,
@@ -98,7 +102,7 @@ class GameFlowUsecase {
       gameStartDrawCardsService,
       advancedToTurnStartService,
       calculateTurnCostService,
-      
+      advanceToMainPhaseService,
     ]);
   }
 
