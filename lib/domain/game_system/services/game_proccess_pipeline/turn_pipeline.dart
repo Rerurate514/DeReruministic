@@ -2,20 +2,17 @@ import 'package:dereruministic/domain/game_system/services/game_proccess_pipelin
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-
-part 'turn_pipeline.g.dart';
-
-@riverpod
-TurnPipeline turnPipeline(Ref ref) {
-  return TurnPipeline();
-}
 
 class TurnPipeline {
+  const TurnPipeline({
+    required this.turnProcessSteps,
+  });
+
+  final List<TurnProcessStep> turnProcessSteps;
+
   ApplyActionResult process(
     GameState current,
     List<GameStepEvent> initialSteps,
-    List<TurnProcessStep> turnProcessSteps,
   ) {
     final accumulatedSteps = <GameStepEvent>[];
     var currentState = current;

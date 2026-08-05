@@ -2,14 +2,8 @@ import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart'
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
-import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_turn_start_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/calculate_turn_cost_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/card_draw_start_turn_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
+import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/i_turn_pipeline_factory.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
@@ -28,26 +22,14 @@ import 'package:mockito/mockito.dart';
 import 'game_flow_usecase_test.mocks.dart';
 
 @GenerateNiceMocks([
+  MockSpec<ITurnPipelineFactory>(),
   MockSpec<TurnPipeline>(),
   MockSpec<GameSetupService>(),
-  MockSpec<GameStartDrawCardsService>(),
-  MockSpec<RemoveShieldService>(),
-  MockSpec<SwitchTurnOwnerService>(),
-  MockSpec<CardDrawStartTurnService>(),
-  MockSpec<AdvancedToTurnStartService>(),
-  MockSpec<CalculateTurnCostService>(),
-  MockSpec<AdvanceToMainPhaseService>(),
 ])
 void main() {
+  late MockITurnPipelineFactory mockPipelineFactory;
   late MockTurnPipeline mockTurnPipeline;
   late MockGameSetupService mockGameSetupService;
-  late MockGameStartDrawCardsService mockGameStartDrawCardsService;
-  late MockRemoveShieldService mockRemoveShieldService;
-  late MockSwitchTurnOwnerService mockSwitchTurnOwnerService;
-  late MockCardDrawStartTurnService mockCardDrawStartTurnService;
-  late MockAdvancedToTurnStartService mockAdvancedToTurnStartService;
-  late MockCalculateTurnCostService mockCalculateTurnCostService;
-  late MockAdvanceToMainPhaseService mockAdvanceToMainPhaseService;
 
   late Player mockPlayer;
   late Player mockEnemy;
@@ -80,15 +62,9 @@ void main() {
       ),
     );
 
+    mockPipelineFactory = MockITurnPipelineFactory();
     mockTurnPipeline = MockTurnPipeline();
     mockGameSetupService = MockGameSetupService();
-    mockGameStartDrawCardsService = MockGameStartDrawCardsService();
-    mockRemoveShieldService = MockRemoveShieldService();
-    mockSwitchTurnOwnerService = MockSwitchTurnOwnerService();
-    mockCardDrawStartTurnService = MockCardDrawStartTurnService();
-    mockAdvancedToTurnStartService = MockAdvancedToTurnStartService();
-    mockCalculateTurnCostService = MockCalculateTurnCostService();
-    mockAdvanceToMainPhaseService = MockAdvanceToMainPhaseService();
 
     mockPlayer = Player(
       id: PlayerId.generate(),
@@ -102,15 +78,8 @@ void main() {
     );
 
     gameFlowUsecase = GameFlowUsecase(
-      turnPipeline: mockTurnPipeline,
+      pipelineFactory: mockPipelineFactory,
       gameSetupService: mockGameSetupService,
-      gameStartDrawCardsService: mockGameStartDrawCardsService,
-      removeShieldService: mockRemoveShieldService,
-      switchTurnOwnerService: mockSwitchTurnOwnerService,
-      cardDrawStartTurnService: mockCardDrawStartTurnService,
-      advancedToTurnStartService: mockAdvancedToTurnStartService,
-      calculateTurnCostService: mockCalculateTurnCostService,
-      advanceToMainPhaseService: mockAdvanceToMainPhaseService,
     );
   });
 
@@ -191,15 +160,13 @@ void main() {
       ).thenReturn(setupResult);
 
       when(
+        mockPipelineFactory.createGameStartPipeline(),
+      ).thenReturn(mockTurnPipeline);
+
+      when(
         mockTurnPipeline.process(
           baseState,
           [setupStep],
-          [
-            mockGameStartDrawCardsService,
-            mockAdvancedToTurnStartService,
-            mockCalculateTurnCostService,
-            mockAdvanceToMainPhaseService,
-          ],
         ),
       ).thenReturn(expectedPipelineResult);
 
@@ -218,16 +185,12 @@ void main() {
         ),
       ).called(1);
 
+      verify(mockPipelineFactory.createGameStartPipeline()).called(1);
+
       verify(
         mockTurnPipeline.process(
           baseState,
           [setupStep],
-          [
-            mockGameStartDrawCardsService,
-            mockAdvancedToTurnStartService,
-            mockCalculateTurnCostService,
-            mockAdvanceToMainPhaseService,
-          ],
         ),
       ).called(1);
 
@@ -236,7 +199,7 @@ void main() {
   });
 
   group('GameFlowUsecase - GameActionTurnEnd', () {
-    test('TurnEndアクションが実行された時、ターン終了用パイプラインが正しく組み立てられて実行されること', () {
+    test('TurnEndアクションが実行された時、ターン終了用パイプラインが正しく取得されて実行されること', () {
       const action = GameActions.turnEnd(
         id: actionId,
         playerId: playerAId,
@@ -248,15 +211,13 @@ void main() {
       );
 
       when(
+        mockPipelineFactory.createTurnEndPipeline(),
+      ).thenReturn(mockTurnPipeline);
+
+      when(
         mockTurnPipeline.process(
           baseState,
           const [],
-          [
-            mockSwitchTurnOwnerService,
-            mockRemoveShieldService,
-            mockCalculateTurnCostService,
-            mockCardDrawStartTurnService,
-          ],
         ),
       ).thenReturn(expectedPipelineResult);
 
@@ -265,16 +226,12 @@ void main() {
         action: action,
       );
 
+      verify(mockPipelineFactory.createTurnEndPipeline()).called(1);
+
       verify(
         mockTurnPipeline.process(
           baseState,
           const [],
-          [
-            mockSwitchTurnOwnerService,
-            mockRemoveShieldService,
-            mockCalculateTurnCostService,
-            mockCardDrawStartTurnService,
-          ],
         ),
       ).called(1);
 
