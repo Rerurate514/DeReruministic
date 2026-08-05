@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/calculate_turn_cost_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/card_draw_start_turn_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/remove_shield_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/switch_turn_owner_service.dart';
@@ -20,11 +21,13 @@ GameFlowUsecase gameFlowUsecase(Ref ref) {
     removeShieldService: ref.read(removeShieldServiceProvider),
     switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
     calculateTurnCostService: ref.read(calculateTurnCostServiceProvider),
+    cardDrawStartTurnService: ref.read(cardDrawStartTurnServiceProvider),
   );
 }
 
 class GameFlowUsecase {
   const GameFlowUsecase({
+    required this.cardDrawStartTurnService,
     required this.calculateTurnCostService,
     required this.switchTurnOwnerService,
     required this.removeShieldService,
@@ -37,6 +40,7 @@ class GameFlowUsecase {
   final RemoveShieldService removeShieldService;
   final SwitchTurnOwnerService switchTurnOwnerService;
   final CalculateTurnCostService calculateTurnCostService;
+  final CardDrawStartTurnService cardDrawStartTurnService;
 
   ApplyActionResult applyAction({
     required GameState current,
@@ -135,7 +139,7 @@ class GameFlowUsecase {
         // triggerOnTurnStartEventService,
 
         // ドローフェーズ
-        // cardDrawService,
+        cardDrawStartTurnService,
         // checkHandLimitService,
       ],
     );
