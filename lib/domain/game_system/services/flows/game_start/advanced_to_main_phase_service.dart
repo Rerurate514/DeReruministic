@@ -19,7 +19,7 @@ class AdvanceToMainPhaseService implements TurnProcessStep {
   @override
   ApplyActionResult execute(GameState state) {
     final updatedPhase = state.phase.copyWith(
-      battlePhase: BattlePhase.main,
+      battlePhase: BattlePhase.mainPhase,
     );
 
     final newState = state.copyWith(
