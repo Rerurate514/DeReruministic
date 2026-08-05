@@ -56,6 +56,11 @@ sealed class GameStepEvent with _$GameStepEvent {
     required CardZone typeTo,
   }) = GameStepEventCardZoneMoved;
 
+  const factory GameStepEvent.gameStarted({
+    required GameStepType type,
+    required PlayerId firstTurnPlayerId,
+  }) = GameStepEventGameStarted;
+
   const factory GameStepEvent.gameEnded({
     required GameStepType type,
     required PlayerId? winnerPlayerId,

@@ -21,5 +21,6 @@ enum GameStepType {
   turnEndEffectsResolved,
   cardExhausted,
   turnOwnerSwitched,
+  gameStarted,
   gameEnded,
 }
