@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/remove_shield_service.dart';
+import 'package:dereruministic/domain/game_system/services/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -14,17 +15,20 @@ GameFlowUsecase gameFlowUsecase(Ref ref) {
   return GameFlowUsecase(
     gameSetupService: ref.read(gameSetupServiceProvider),
     removeShieldService: ref.read(removeShieldServiceProvider),
+    switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
   );
 }
 
 class GameFlowUsecase {
   const GameFlowUsecase({
+    required this.switchTurnOwnerService,
     required this.removeShieldService,
     required this.gameSetupService,
   });
 
   final GameSetupService gameSetupService;
   final RemoveShieldService removeShieldService;
+  final SwitchTurnOwnerService switchTurnOwnerService;
 
   ApplyActionResult applyAction({
     required GameState current,
@@ -99,23 +103,26 @@ class GameFlowUsecase {
     steps.addAll(removeShieldResult.steps);
 
     // 3. ターン終了時に発動する効果の解決（パッシブ効果、毒・ドットダメージ、バフ減衰など）
-    // final (:state, :event) = ResolveTurnEndEffectsService.execute(current: removeShieldResult.state);
-    // steps.add(event);
+    // final resolveTurnEndEffectsResult = ResolveTurnEndEffectsService.execute(current: removeShieldResult.state);
+    // steps.add(resolveTurnEndEffectsResult.steps);
 
     // 4. ターン所有権の切り替え（プレイヤー ↔ 敵のターン交代）
-    // final (:state, :event) = switchTurnOwner(current);
-    // steps.add(event);
+    final switchTurnOwnerResult = switchTurnOwnerService.execute(
+      state: removeShieldResult.state,
+    );
+    steps.addAll(switchTurnOwnerResult.steps);
 
     // 5. 新ターンの開始処理（ドロー、AP/マナの回復、ターン開始時イベントの発行など）
     // final startTurnResult = startTurnService.execute(current: switchedState);
+    // steps.addAll(startTurnResult.steps);
 
     // 6. ターン開始時に発動する効果の解決（ターン開始時カード効果、時限仕掛けの発動など）
-    // final (:state, :event) = ResolveTurnStartEffectsService.execute(current: startTurnResult.state);
-    // steps.add(event);
+    // final resolveTurnStartEffectsResult = ResolveTurnStartEffectsService.execute(current: startTurnResult.state);
+    // steps.add(resolveTurnStartEffectsResult.steps);
 
     // 7. 最終的なゲーム状態（GameState）と集約された一連の演出ステップ（steps）を返却
 
-    return ApplyActionResult(state: removeShieldResult.state, steps: steps);
+    return ApplyActionResult(state: switchTurnOwnerResult.state, steps: steps);
   }
 
   ApplyActionResult _applySurrender(

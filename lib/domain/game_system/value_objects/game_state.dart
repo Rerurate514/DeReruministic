@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/turn_owner.dart';
 import 'package:dereruministic/domain/player/value_objects/enemy_state.dart';
@@ -48,5 +49,32 @@ extension GameStateEx on GameState {
       return copyWith(enemy: enemy.copyWith(shield: 0));
     }
     return this;
+  }
+
+  GameState switchTurnOwner() {
+    final nextOwner = phase.owner == TurnOwner.player
+        ? TurnOwner.enemy
+        : TurnOwner.player;
+
+    return copyWith(
+      phase: phase.copyWith(
+        owner: nextOwner,
+      ),
+    );
+  }
+
+  GameState nextTurn() {
+    if (phase.battlePhase != BattlePhase.turnEnd) return this;
+
+    final nextOwner = phase.owner == TurnOwner.player
+        ? TurnOwner.enemy
+        : TurnOwner.player;
+
+    return copyWith(
+      phase: phase.copyWith(
+        owner: nextOwner,
+        battlePhase: BattlePhase.turnStart,
+      ),
+    );
   }
 }
