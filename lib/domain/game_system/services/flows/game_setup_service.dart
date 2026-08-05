@@ -47,7 +47,7 @@ class GameSetupService {
 
     final playerBDeck = createDeckService.execute(
       cardDefs,
-      playerA.deckRecipe,
+      playerB.deckRecipe,
       random,
     );
 
@@ -68,7 +68,7 @@ class GameSetupService {
         playerB.id: playerBState,
       },
       seed: seed,
-      phase: GamePhase.init(initialTurnOwner),
+      phase: GamePhase(battlePhase: .battleStart, turnOwner: initialTurnOwner),
       turnCount: 0,
     );
 
