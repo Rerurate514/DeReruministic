@@ -103,7 +103,8 @@ class GameFlowUsecase {
     // steps.add(event);
 
     // 4. ターン所有権の切り替え（プレイヤー ↔ 敵のターン交代）
-    // final switchedState = switchTurnOwner(current);
+    // final (:state, :event) = switchTurnOwner(current);
+    // steps.add(event);
 
     // 5. 新ターンの開始処理（ドロー、AP/マナの回復、ターン開始時イベントの発行など）
     // final startTurnResult = startTurnService.execute(current: switchedState);
