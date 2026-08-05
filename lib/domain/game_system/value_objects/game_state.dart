@@ -1,7 +1,5 @@
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/turn_owner.dart';
-import 'package:dereruministic/domain/player/value_objects/enemy_state.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -12,8 +10,8 @@ part 'game_state.g.dart';
 @freezed
 sealed class GameState with _$GameState {
   const factory GameState({
-    required PlayerState player,
-    required EnemyState enemy,
+    required Map<PlayerId, PlayerState> players,
+    required int seed,
     required GamePhase phase,
     required int turnCount,
   }) = _GameState;
@@ -23,57 +21,29 @@ sealed class GameState with _$GameState {
 }
 
 extension GameStateEx on GameState {
-  PlayerId get currentTurnPlayerId {
-    switch (phase.owner) {
-      case TurnOwner.player:
-        return player.id;
-      case TurnOwner.enemy:
-        return enemy.id;
-    }
-  }
-
-  PlayerId get shieldClearTargetId {
-    switch (phase.owner) {
-      case TurnOwner.player:
-        return player.id;
-      case TurnOwner.enemy:
-        return enemy.id;
-    }
-  }
-
   GameState clearShield(PlayerId targetId) {
-    if (player.id == targetId) {
-      return copyWith(player: player.copyWith(shield: 0));
-    }
-    if (enemy.id == targetId) {
-      return copyWith(enemy: enemy.copyWith(shield: 0));
-    }
-    return this;
-  }
-
-  GameState switchTurnOwner() {
-    final nextOwner = phase.owner == TurnOwner.player
-        ? TurnOwner.enemy
-        : TurnOwner.player;
+    final targetPlayer = players[targetId];
+    if (targetPlayer == null) return this;
 
     return copyWith(
-      phase: phase.copyWith(
-        owner: nextOwner,
-      ),
+      players: {
+        ...players,
+        targetId: targetPlayer.copyWith(shield: 0),
+      },
     );
   }
 
   GameState nextTurn() {
     if (phase.battlePhase != BattlePhase.turnEnd) return this;
 
-    final nextOwner = phase.owner == TurnOwner.player
-        ? TurnOwner.enemy
-        : TurnOwner.player;
+    final nextOwner = players.keys.firstWhere(
+      (id) => id != phase.turnOwner,
+    );
 
     return copyWith(
       phase: phase.copyWith(
-        owner: nextOwner,
         battlePhase: BattlePhase.turnStart,
+        turnOwner: nextOwner,
       ),
     );
   }

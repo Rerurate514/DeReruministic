@@ -1,4 +1,0 @@
-enum TurnOwner {
-  player,
-  enemy,
-}
