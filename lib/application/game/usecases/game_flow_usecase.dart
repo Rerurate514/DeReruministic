@@ -91,8 +91,8 @@ class GameFlowUsecase {
     );
 
     return turnPipeline.process(initialState.state, initialState.steps, [
-      calculateTurnCostService,
       gameStartDrawCardsService,
+      calculateTurnCostService,
     ]);
   }
 
