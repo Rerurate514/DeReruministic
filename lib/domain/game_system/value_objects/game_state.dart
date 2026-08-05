@@ -35,9 +35,9 @@ extension GameStateEx on GameState {
   PlayerId get shieldClearTargetId {
     switch (phase.owner) {
       case TurnOwner.player:
-        return enemy.id;
-      case TurnOwner.enemy:
         return player.id;
+      case TurnOwner.enemy:
+        return enemy.id;
     }
   }
 
