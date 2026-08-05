@@ -3,14 +3,13 @@ import 'dart:math';
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
-import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
-import 'package:dereruministic/domain/game_system/services/flows/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_notifier.g.dart';
@@ -44,56 +43,30 @@ class GameNotifier extends _$GameNotifier {
     //await eventSourcingRepository.sendAction(action);
   }
 
-  GameState _buildInitialState({
-    required Player player,
-    required Player enemy,
-    required List<CardDefinition> cardDefs,
-    required int seed,
-  }) {
-    final gameSetupService = ref.read(gameSetupServiceProvider);
+  Future<void> startGame(Player playerA, Player playerB, int seed) async {
+    if (state != null) return;
 
-    return gameSetupService.execute(
-      playerA: player,
-      playerB: enemy,
-      cardDefs: cardDefs,
-      seed: seed,
-    );
-  }
-
-  Future<void> startGame(
-    Player player,
-    Player enemy, {
-    int? seed,
-  }) async {
-    final currentState = state;
-    if (currentState != null) return;
-
-    final currentSeed = seed ?? Random().nextInt(1 << 32);
     final cardDefs = ref.read(cardCatalogProvider);
-
-    final initialState = _buildInitialState(
-      player: player,
-      enemy: enemy,
-      cardDefs: cardDefs,
-      seed: currentSeed,
-    );
 
     final action = GameActions.gameStart(
       id: GameActionsId.generate(),
-      playerAId: player.id,
-      playerBId: enemy.id,
-      seed: currentSeed,
-      firstTurn: initialState.phase.turnOwner,
+      playerAId: playerA.id,
+      playerBId: playerB.id,
+      seed: seed,
+      firstTurnOwner: FirstTurnResolver.resolve(
+        playerAId: playerA.id,
+        playerBId: playerB.id,
+        random: Random(seed),
+      );
     );
 
     await _dispatch(
       action: action,
-      base: initialState,
       setupContext: GameSetupContext(
-        player: player,
-        enemy: enemy,
+        player: playerA,
+        enemy: playerB,
         cardDefs: cardDefs,
-        seed: currentSeed,
+        seed: seed,
       ),
     );
   }
