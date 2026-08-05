@@ -69,8 +69,8 @@ class GameFlowUsecase {
   ) {
     return ApplyActionResult.noSteps(
       state: gameSetupService.execute(
-        player: context.player,
-        enemy: context.enemy,
+        playerA: context.player,
+        playerB: context.enemy,
         cardDefs: context.cardDefs,
         seed: context.seed,
       ),

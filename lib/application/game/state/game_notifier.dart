@@ -53,8 +53,8 @@ class GameNotifier extends _$GameNotifier {
     final gameSetupService = ref.read(gameSetupServiceProvider);
 
     return gameSetupService.execute(
-      player: player,
-      enemy: enemy,
+      playerA: player,
+      playerB: enemy,
       cardDefs: cardDefs,
       seed: seed,
     );

@@ -4,9 +4,8 @@ import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
-import 'package:dereruministic/domain/game_system/value_objects/turn_owner.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
-import 'package:dereruministic/domain/player/value_objects/enemy_state.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -24,36 +23,48 @@ class GameSetupService {
   final CreateDeckService createDeckService;
 
   GameState execute({
-    required Player player,
-    required Player enemy,
+    required Player playerA,
+    required Player playerB,
     required List<CardDefinition> cardDefs,
-    int? seed,
-    TurnOwner? firstTurn,
+    required int seed,
+    PlayerId? firstTurn,
   }) {
     final random = Random(seed);
 
-    final playerDeck = createDeckService.execute(
+    final playerADeck = createDeckService.execute(
       cardDefs,
-      player.deckRecipe,
+      playerA.deckRecipe,
       random,
     );
 
-    final playerState = PlayerState.create(
-      id: player.id,
-      deck: playerDeck,
+    final playerAState = PlayerState.create(
+      id: playerA.id,
+      deck: playerADeck,
     );
 
-    final enemyState = EnemyState.create(enemy: enemy);
+    final playerBDeck = createDeckService.execute(
+      cardDefs,
+      playerA.deckRecipe,
+      random,
+    );
+
+    final playerBState = PlayerState.create(
+      id: playerB.id,
+      deck: playerBDeck,
+    );
 
     final isPlayerFirst = firstTurn != null
-        ? firstTurn == TurnOwner.player
+        ? firstTurn == playerA.id
         : random.nextBool();
 
-    final initialTurnOwner = isPlayerFirst ? TurnOwner.player : TurnOwner.enemy;
+    final initialTurnOwner = isPlayerFirst ? playerA.id : playerB.id;
 
     return GameState(
-      player: playerState,
-      enemy: enemyState,
+      players: {
+        playerA.id: playerAState,
+        playerB.id: playerBState,
+      },
+      seed: seed,
       phase: GamePhase.init(initialTurnOwner),
       turnCount: 0,
     );
