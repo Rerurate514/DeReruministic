@@ -62,8 +62,8 @@ void main() {
       final state = container.read(gameProvider);
 
       expect(state, isNotNull);
-      expect(state?.player.maxHp, equals(100));
-      expect(state?.enemy.maxHp, equals(100));
+      expect(state?.players[dummyPlayer.id]!.maxHp, equals(100));
+      expect(state?.players[dummyEnemy.id]!.maxHp, equals(100));
 
       final queue = container.read(stepEventQueueProvider);
       expect(queue, isNotEmpty);
@@ -80,8 +80,8 @@ void main() {
 
       final state = container.read(gameProvider);
       expect(state, isNotNull);
-      expect(state?.player.maxHp, equals(100));
-      expect(state?.enemy.maxHp, equals(100));
+      expect(state?.players[dummyPlayer.id]!.maxHp, equals(100));
+      expect(state?.players[dummyEnemy.id]!.maxHp, equals(100));
 
       final queue = container.read(stepEventQueueProvider);
 
