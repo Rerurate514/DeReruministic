@@ -1,9 +1,9 @@
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
-import 'package:dereruministic/domain/game_system/services/flows/calculate_turn_cost_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/card_draw_start_turn_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/game_setup_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/remove_shield_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/switch_turn_owner_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/calculate_turn_cost_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/card_draw_start_turn_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
