@@ -80,10 +80,10 @@ class GameNotifier extends _$GameNotifier {
 
     final action = GameActions.gameStart(
       id: GameActionsId.generate(),
-      playerId: player.id,
-      enemyId: enemy.id,
+      playerAId: player.id,
+      playerBId: enemy.id,
       seed: currentSeed,
-      firstTurn: initialState.phase.owner,
+      firstTurn: initialState.phase.turnOwner,
     );
 
     await _dispatch(
@@ -110,7 +110,7 @@ class GameNotifier extends _$GameNotifier {
     if (current == null) return;
     final action = GameActions.turnEnd(
       id: GameActionsId.generate(),
-      playerId: current.currentTurnPlayerId,
+      playerId: current.phase.turnOwner,
     );
 
     await _dispatch(action: action);

@@ -1,6 +1,5 @@
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
-import 'package:dereruministic/domain/game_system/value_objects/turn_owner.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -11,10 +10,10 @@ part 'game_actions.g.dart';
 sealed class GameActions with _$GameActions {
   const factory GameActions.gameStart({
     required GameActionsId id,
-    required PlayerId playerId,
-    required PlayerId enemyId,
+    required PlayerId playerAId,
+    required PlayerId playerBId,
     required int seed,
-    required TurnOwner firstTurn,
+    required PlayerId firstTurn,
   }) = GameActionGameStart;
 
   const factory GameActions.playCard({
