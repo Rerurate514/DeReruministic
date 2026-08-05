@@ -24,7 +24,6 @@ sealed class PlayerState with _$PlayerState {
     required List<DebuffState> debuffs,
     required int cardsPlayedThisTurn,
     required int maxHandSize,
-    required int drawCount,
     required int pendingRecoilCost,
   }) = _PlayerState;
 
@@ -46,7 +45,6 @@ sealed class PlayerState with _$PlayerState {
       debuffs: [],
       cardsPlayedThisTurn: 0,
       maxHandSize: PlayerConstants.defaultMaxHandSize,
-      drawCount: PlayerConstants.defaultDrawCount,
       pendingRecoilCost: 0,
     );
   }
