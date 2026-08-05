@@ -56,7 +56,7 @@ void main() {
           .startGame(
             dummyPlayer,
             dummyEnemy,
-            seed: 514,
+            514,
           );
 
       final state = container.read(gameProvider);
@@ -75,7 +75,7 @@ void main() {
           .startGame(
             dummyPlayer,
             dummyEnemy,
-            seed: 514,
+            514,
           );
 
       final state = container.read(gameProvider);
@@ -99,7 +99,7 @@ void main() {
       await notifier.startGame(
         dummyPlayer,
         dummyEnemy,
-        seed: 42,
+        514,
       );
 
       final initialQueueLength = container.read(stepEventQueueProvider).length;
