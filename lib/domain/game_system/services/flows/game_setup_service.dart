@@ -2,8 +2,11 @@ import 'dart:math';
 
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -22,7 +25,7 @@ class GameSetupService {
 
   final CreateDeckService createDeckService;
 
-  GameState execute({
+  ApplyActionResult execute({
     required Player playerA,
     required Player playerB,
     required List<CardDefinition> cardDefs,
@@ -53,13 +56,13 @@ class GameSetupService {
       deck: playerBDeck,
     );
 
-    final isPlayerFirst = firstTurn != null
-        ? firstTurn == playerA.id
-        : random.nextBool();
+    final initialTurnOwner = FirstTurnResolver.resolve(
+      playerAId: playerA.id,
+      playerBId: playerB.id,
+      random: random,
+    );
 
-    final initialTurnOwner = isPlayerFirst ? playerA.id : playerB.id;
-
-    return GameState(
+    final newState = GameState(
       players: {
         playerA.id: playerAState,
         playerB.id: playerBState,
@@ -68,5 +71,12 @@ class GameSetupService {
       phase: GamePhase.init(initialTurnOwner),
       turnCount: 0,
     );
+
+    final turnStartStep = GameStepEvent.gameStarted(
+      type: GameStepType.gameStarted,
+      firstTurnPlayerId: initialTurnOwner,
+    );
+
+    return ApplyActionResult(state: newState, steps: [turnStartStep]);
   }
 }

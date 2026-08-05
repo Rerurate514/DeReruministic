@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:uuid/uuid.dart';
 
@@ -16,4 +18,18 @@ sealed class PlayerId with _$PlayerId {
 
   factory PlayerId.fromJson(Map<String, dynamic> json) =>
       _$PlayerIdFromJson(json);
+}
+
+abstract class FirstTurnResolver {
+  static PlayerId resolve({
+    required PlayerId playerAId,
+    required PlayerId playerBId,
+    required Random random,
+    PlayerId? preferredFirstTurn,
+  }) {
+    if (preferredFirstTurn != null) {
+      return preferredFirstTurn;
+    }
+    return random.nextBool() ? playerAId : playerBId;
+  }
 }
