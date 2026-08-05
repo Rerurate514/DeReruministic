@@ -1,5 +1,5 @@
+import 'package:dereruministic/domain/card/services/card_draw_service.dart';
 import 'package:dereruministic/domain/game_system/constants/game_system_constants.dart';
-import 'package:dereruministic/domain/game_system/services/card_draw_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_process_step.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';

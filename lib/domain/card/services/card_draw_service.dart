@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dereruministic/domain/game_system/services/deck_restoration_service.dart';
+import 'package:dereruministic/domain/card/services/deck_restoration_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
