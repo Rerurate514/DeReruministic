@@ -79,12 +79,17 @@ class GameFlowUsecase {
     GameActionGameStart action,
     GameSetupContext context,
   ) {
-    return gameSetupService.execute(
+    final initialState = gameSetupService.execute(
       playerA: context.player,
       playerB: context.enemy,
       cardDefs: context.cardDefs,
-      seed: context.seed,
+      seed: action.seed,
     );
+
+    return turnPipeline.process(initialState.state, initialState.steps, [
+      calculateTurnCostService,
+      cardDrawStartTurnService,
+    ]);
   }
 
   ApplyActionResult _applyPlayCard(
