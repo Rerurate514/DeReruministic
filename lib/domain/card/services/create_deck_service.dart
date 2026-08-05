@@ -29,7 +29,7 @@ class CreateDeckService {
         throw ArgumentError('Unknown CardDefinitionId: $cardDefId');
       }
       return GameCard(
-        instanceId: GameCardInstanceId.generate(),
+        instanceId: GameCardInstanceId.generate(random),
         definition: cardDef,
         currentCost: cardDef.baseCost,
         enteredHandAtTurn: 0,
