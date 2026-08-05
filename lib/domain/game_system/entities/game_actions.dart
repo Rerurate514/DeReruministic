@@ -13,7 +13,6 @@ sealed class GameActions with _$GameActions {
     required PlayerId playerAId,
     required PlayerId playerBId,
     required int seed,
-    required PlayerId firstTurn,
   }) = GameActionGameStart;
 
   const factory GameActions.playCard({
