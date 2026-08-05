@@ -25,6 +25,7 @@ sealed class PlayerState with _$PlayerState {
     required int cardsPlayedThisTurn,
     required int maxHandSize,
     required int drawCount,
+    required int pendingRecoilCost,
   }) = _PlayerState;
 
   factory PlayerState.create({
@@ -46,9 +47,16 @@ sealed class PlayerState with _$PlayerState {
       cardsPlayedThisTurn: 0,
       maxHandSize: PlayerConstants.defaultMaxHandSize,
       drawCount: PlayerConstants.defaultDrawCount,
+      pendingRecoilCost: 0,
     );
   }
 
   factory PlayerState.fromJson(Map<String, dynamic> json) =>
       _$PlayerStateFromJson(json);
+}
+
+extension PlayerStateEx on PlayerState {
+  PlayerState updateCost(int amount) {
+    return copyWith(currentCost: currentCost + amount);
+  }
 }
