@@ -1,5 +1,7 @@
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
+import 'package:dereruministic/domain/game_system/value_objects/defeat_reason.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_end_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
@@ -65,8 +67,10 @@ sealed class GameStepEvent with _$GameStepEvent {
 
   const factory GameStepEvent.gameEnded({
     required GameStepType type,
+    required GameEndResult endResult,
     required PlayerId? winnerPlayerId,
-    required String reason,
+    required PlayerId? loserPlayerId,
+    required DefeatReason reason,
   }) = GameStepEventGameEnded;
 
   @override
