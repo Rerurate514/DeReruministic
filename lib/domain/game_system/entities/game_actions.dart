@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
@@ -12,6 +13,8 @@ sealed class GameActions with _$GameActions {
     required GameActionsId id,
     required PlayerId playerAId,
     required PlayerId playerBId,
+    required List<CardDefinitionId> playerADeckRecipe,
+    required List<CardDefinitionId> playerBDeckRecipe,
     required int seed,
   }) = GameActionGameStart;
 

@@ -1,11 +1,9 @@
-import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -24,13 +22,11 @@ class GameNotifier extends _$GameNotifier {
   Future<void> _dispatch({
     required GameActions action,
     GameState? base,
-    GameSetupContext? setupContext,
   }) async {
     final current = base ?? state;
     final applyActionResult = _flow.applyAction(
       current: current,
       action: action,
-      setupContext: setupContext,
     );
 
     state = applyActionResult.state;
@@ -43,23 +39,17 @@ class GameNotifier extends _$GameNotifier {
   Future<void> startGame(Player playerA, Player playerB, int seed) async {
     if (state != null) return;
 
-    final cardDefs = ref.read(cardCatalogProvider);
-
     final action = GameActions.gameStart(
       id: GameActionsId.generate(),
       playerAId: playerA.id,
       playerBId: playerB.id,
+      playerADeckRecipe: playerA.deckRecipe,
+      playerBDeckRecipe: playerB.deckRecipe,
       seed: seed,
     );
 
     await _dispatch(
       action: action,
-      setupContext: GameSetupContext(
-        player: playerA,
-        enemy: playerB,
-        cardDefs: cardDefs,
-        seed: seed,
-      ),
     );
   }
 

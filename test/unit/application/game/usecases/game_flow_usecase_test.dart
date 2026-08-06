@@ -8,7 +8,6 @@ import 'package:dereruministic/domain/game_system/services/game_proccess_pipelin
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
@@ -65,13 +64,13 @@ void main() {
     mockTurnPipeline = MockTurnPipeline();
     mockGameSetupService = MockGameSetupService();
 
-    mockPlayer = Player(
-      id: PlayerId.generate(),
+    mockPlayer = const Player(
+      id: playerAId,
       name: 'Player A',
       deckRecipe: [],
     );
-    mockEnemy = Player(
-      id: PlayerId.generate(),
+    mockEnemy = const Player(
+      id: playerBId,
       name: 'Player B',
       deckRecipe: [],
     );
@@ -79,28 +78,11 @@ void main() {
     gameFlowUsecase = GameFlowUsecase(
       pipelineFactory: mockPipelineFactory,
       gameSetupService: mockGameSetupService,
+      cardCatalog: [],
     );
   });
 
   group('GameFlowUsecase - 基本的な例外・ガード条件のテスト', () {
-    test(
-      'GameActionGameStartで setupContext が null の場合 ArgumentError をスローすること',
-      () {
-        expect(
-          () => gameFlowUsecase.applyAction(
-            current: null,
-            action: const GameActions.gameStart(
-              id: actionId,
-              playerAId: playerAId,
-              playerBId: playerBId,
-              seed: 12345,
-            ),
-          ),
-          throwsA(isA<ArgumentError>()),
-        );
-      },
-    );
-
     test(
       'GameActionGameStart 以外のケースで current が null の場合 StateError をスローすること',
       () {
@@ -120,17 +102,12 @@ void main() {
 
   group('GameFlowUsecase - GameActionGameStart', () {
     test('GameStartアクションが実行された時、GameSetupServiceおよび初期化パイプラインが正しく呼ばれること', () {
-      const action = GameActions.gameStart(
+      final action = GameActions.gameStart(
         id: actionId,
         playerAId: playerAId,
         playerBId: playerBId,
-        seed: 12345,
-      );
-
-      final setupContext = GameSetupContext(
-        player: mockPlayer,
-        enemy: mockEnemy,
-        cardDefs: const <CardDefinition>[],
+        playerADeckRecipe: mockPlayer.deckRecipe,
+        playerBDeckRecipe: mockEnemy.deckRecipe,
         seed: 12345,
       );
 
@@ -150,9 +127,11 @@ void main() {
 
       when(
         mockGameSetupService.execute(
-          playerA: setupContext.player,
-          playerB: setupContext.enemy,
-          cardDefs: setupContext.cardDefs,
+          playerAId: mockPlayer.id,
+          playerBId: mockEnemy.id,
+          playerADeckRecipe: mockPlayer.deckRecipe,
+          playerBDeckRecipe: mockEnemy.deckRecipe,
+          cardDefs: const <CardDefinition>[],
           seed: (action as GameActionGameStart).seed,
         ),
       ).thenReturn(setupResult);
@@ -171,14 +150,15 @@ void main() {
       final result = gameFlowUsecase.applyAction(
         current: null,
         action: action,
-        setupContext: setupContext,
       );
 
       verify(
         mockGameSetupService.execute(
-          playerA: setupContext.player,
-          playerB: setupContext.enemy,
-          cardDefs: setupContext.cardDefs,
+          playerAId: mockPlayer.id,
+          playerBId: mockEnemy.id,
+          playerADeckRecipe: mockPlayer.deckRecipe,
+          playerBDeckRecipe: mockEnemy.deckRecipe,
+          cardDefs: const <CardDefinition>[],
           seed: action.seed,
         ),
       ).called(1);

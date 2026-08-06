@@ -2,11 +2,11 @@ import 'dart:math';
 
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
+import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -25,8 +25,10 @@ class GameSetupService {
   final CreateDeckService createDeckService;
 
   ApplyActionResult execute({
-    required Player playerA,
-    required Player playerB,
+    required PlayerId playerAId,
+    required PlayerId playerBId,
+    required List<CardDefinitionId> playerADeckRecipe,
+    required List<CardDefinitionId> playerBDeckRecipe,
     required List<CardDefinition> cardDefs,
     required int seed,
     PlayerId? firstTurn,
@@ -35,36 +37,36 @@ class GameSetupService {
 
     final playerADeck = createDeckService.execute(
       cardDefs,
-      playerA.deckRecipe,
+      playerADeckRecipe,
       random,
     );
 
     final playerAState = PlayerState.create(
-      id: playerA.id,
+      id: playerAId,
       deck: playerADeck,
     );
 
     final playerBDeck = createDeckService.execute(
       cardDefs,
-      playerB.deckRecipe,
+      playerBDeckRecipe,
       random,
     );
 
     final playerBState = PlayerState.create(
-      id: playerB.id,
+      id: playerBId,
       deck: playerBDeck,
     );
 
     final initialTurnOwner = FirstTurnResolver.resolve(
-      playerAId: playerA.id,
-      playerBId: playerB.id,
+      playerAId: playerAId,
+      playerBId: playerBId,
       random: random,
     );
 
     final newState = GameState(
       players: {
-        playerA.id: playerAState,
-        playerB.id: playerBState,
+        playerAId: playerAState,
+        playerBId: playerBState,
       },
       seed: seed,
       phase: GamePhase(battlePhase: .battleStart, turnOwner: initialTurnOwner),

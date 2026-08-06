@@ -90,8 +90,10 @@ void main() {
       ).thenReturn([cardB]);
 
       final result = gameSetupService.execute(
-        playerA: playerA,
-        playerB: playerB,
+        playerAId: playerA.id,
+        playerBId: playerB.id,
+        playerADeckRecipe: playerA.deckRecipe,
+        playerBDeckRecipe: playerB.deckRecipe,
         cardDefs: allCardDefs,
         seed: seed,
       );
@@ -140,15 +142,19 @@ void main() {
       when(mockCreateDeckService.execute(any, any, any)).thenReturn([]);
 
       final result1 = gameSetupService.execute(
-        playerA: playerA,
-        playerB: playerB,
+        playerAId: playerA.id,
+        playerBId: playerB.id,
+        playerADeckRecipe: playerA.deckRecipe,
+        playerBDeckRecipe: playerB.deckRecipe,
         cardDefs: allCardDefs,
         seed: seed,
       );
 
       final result2 = gameSetupService.execute(
-        playerA: playerA,
-        playerB: playerB,
+        playerAId: playerA.id,
+        playerBId: playerB.id,
+        playerADeckRecipe: playerA.deckRecipe,
+        playerBDeckRecipe: playerB.deckRecipe,
         cardDefs: allCardDefs,
         seed: seed,
       );
