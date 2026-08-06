@@ -126,8 +126,8 @@ void main() {
       expect(cardMovedStep.type, equals(GameStepType.cardMovedZone));
       expect(cardMovedStep.playerId, equals(targetPlayerId));
       expect(cardMovedStep.cardInstanceIds, equals([card1InstanceId]));
-      expect(cardMovedStep.typeFrom, equals(CardZone.deck));
-      expect(cardMovedStep.typeTo, equals(CardZone.hand));
+      expect(cardMovedStep.zoneFrom, equals(CardZone.deck));
+      expect(cardMovedStep.zoneTo, equals(CardZone.hand));
 
       verifyNever(mockDeckRestorationService.execute(any, any, any));
     });

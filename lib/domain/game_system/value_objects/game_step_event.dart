@@ -31,7 +31,7 @@ sealed class GameStepEvent with _$GameStepEvent {
     required PlayerId targetPlayerId,
     required StatusEffectType effectType,
     required int stackCount,
-  }) = GameStepBuffChanged;
+  }) = GameStepEventStatusEffectChanged;
 
   const factory GameStepEvent.cardsAffected({
     required GameStepType type,
@@ -56,8 +56,8 @@ sealed class GameStepEvent with _$GameStepEvent {
     required GameStepType type,
     required PlayerId playerId,
     required List<GameCardInstanceId> cardInstanceIds,
-    required CardZone typeFrom,
-    required CardZone typeTo,
+    required CardZone zoneFrom,
+    required CardZone zoneTo,
   }) = GameStepEventCardZoneMoved;
 
   const factory GameStepEvent.gameStarted({

@@ -49,8 +49,8 @@ class DeckRestorationService {
       cardInstanceIds: restoredCards
           .map((gameCard) => gameCard.instanceId)
           .toList(),
-      typeFrom: CardZone.graveyard,
-      typeTo: CardZone.deck,
+      zoneFrom: CardZone.graveyard,
+      zoneTo: CardZone.deck,
     );
 
     final restoredEvent = GameStepEvent.deckRestored(

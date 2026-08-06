@@ -67,8 +67,8 @@ class CardDrawService {
       cardInstanceIds: drawnCards
           .map((gameCard) => gameCard.instanceId)
           .toList(),
-      typeFrom: CardZone.deck,
-      typeTo: CardZone.hand,
+      zoneFrom: CardZone.deck,
+      zoneTo: CardZone.hand,
     );
 
     if (remainingDeck.isNotEmpty) {

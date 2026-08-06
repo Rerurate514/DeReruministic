@@ -112,8 +112,8 @@ void main() {
       final moveEvent = result.steps[0] as GameStepEventCardZoneMoved;
       expect(moveEvent.type, equals(GameStepType.cardMovedZone));
       expect(moveEvent.playerId, equals(targetPlayerId));
-      expect(moveEvent.typeFrom, equals(CardZone.graveyard));
-      expect(moveEvent.typeTo, equals(CardZone.deck));
+      expect(moveEvent.zoneFrom, equals(CardZone.graveyard));
+      expect(moveEvent.zoneTo, equals(CardZone.deck));
       expect(moveEvent.cardInstanceIds.length, equals(2));
       expect(
         moveEvent.cardInstanceIds,
