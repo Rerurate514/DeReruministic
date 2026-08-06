@@ -26,7 +26,6 @@ sealed class GameStepEvent with _$GameStepEvent {
 
   const factory GameStepEvent.overflowCheckTriggered({
     required PlayerId playerId,
-    required GamePhase previousPhase,
     required int overflowCount,
   }) = GameStepEventOverflowCheckTriggered;
 

@@ -28,7 +28,6 @@ class CheckHandLimitService implements TurnProcessStep {
 
     final step = GameStepEvent.overflowCheckTriggered(
       playerId: player.id,
-      previousPhase: state.phase,
       overflowCount: overflowCount.abs(),
     );
 
