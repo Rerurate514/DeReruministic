@@ -150,33 +150,46 @@ void main() {
       expect(updatedState.phase.battlePhase, equals(BattlePhase.mainPhase));
     });
 
-    test('10ターン目まで正常に手番交代とターンカウントのインクリメントが継続すること', () async {
-      final notifier = container.read(gameProvider.notifier);
+    test(
+      '9ターン目まで正常に手番交代とターンカウントのインクリメントが継続し、'
+      '10ターン目でデッキアウトによりゲームが終了すること',
+      () async {
+        final notifier = container.read(gameProvider.notifier);
 
-      await notifier.startGame(
-        dummyPlayer,
-        dummyEnemy,
-        514,
-      );
+        await notifier.startGame(
+          dummyPlayer,
+          dummyEnemy,
+          514,
+        );
 
-      var currentState = container.read(gameProvider)!;
-      final playerAId = currentState.phase.turnOwner;
-      final playerBId = playerAId == dummyPlayer.id
-          ? dummyEnemy.id
-          : dummyPlayer.id;
+        var currentState = container.read(gameProvider)!;
+        final playerAId = currentState.phase.turnOwner;
+        final playerBId = playerAId == dummyPlayer.id
+            ? dummyEnemy.id
+            : dummyPlayer.id;
 
-      for (var expectedTurn = 1; expectedTurn <= 10; expectedTurn++) {
+        for (var expectedTurn = 1; expectedTurn <= 9; expectedTurn++) {
+          await notifier.endTurn();
+
+          currentState = container.read(gameProvider)!;
+
+          final expectedOwnerId = expectedTurn.isOdd ? playerBId : playerAId;
+
+          expect(currentState.turnCount, equals(expectedTurn));
+          expect(currentState.phase.turnOwner, equals(expectedOwnerId));
+          expect(currentState.phase.battlePhase, equals(BattlePhase.mainPhase));
+        }
+
         await notifier.endTurn();
 
         currentState = container.read(gameProvider)!;
 
-        final expectedOwnerId = expectedTurn.isOdd ? playerBId : playerAId;
+        expect(currentState.phase.battlePhase, equals(BattlePhase.battleEnd));
 
-        expect(currentState.turnCount, equals(expectedTurn));
-        expect(currentState.phase.turnOwner, equals(expectedOwnerId));
-        expect(currentState.phase.battlePhase, equals(BattlePhase.mainPhase));
-      }
-    });
+        expect(currentState.turnCount, equals(9));
+        expect(currentState.phase.turnOwner, equals(playerBId));
+      },
+    );
 
     test('未実装メソッドの呼び出しで例外が発生しないこと', () async {
       final notifier = container.read(gameProvider.notifier);
