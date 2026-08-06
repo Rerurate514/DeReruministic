@@ -23,7 +23,10 @@ class CheckHandLimitService implements TurnProcessStep {
     }
 
     final newState = state.copyWith(
-      phase: state.phase.copyWith(battlePhase: .selectDiscard),
+      phase: state.phase.copyWith(
+        battlePhase: .selectDiscard,
+        interruptedPhase: state.phase.battlePhase,
+      ),
     );
 
     final step = GameStepEvent.overflowCheckTriggered(
