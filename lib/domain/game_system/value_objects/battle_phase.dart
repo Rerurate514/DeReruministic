@@ -6,4 +6,5 @@ enum BattlePhase {
   resolving,
   turnEnd,
   battleEnd,
+  selectDiscard,
 }

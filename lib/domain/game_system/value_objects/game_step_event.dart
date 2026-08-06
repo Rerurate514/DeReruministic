@@ -25,7 +25,9 @@ sealed class GameStepEvent with _$GameStepEvent {
   }) = GameStepEventDeckShuffled;
 
   const factory GameStepEvent.overflowCheckTriggered({
-    required GamePhase phase,
+    required PlayerId playerId,
+    required GamePhase previousPhase,
+    required int overflowCount,
   }) = GameStepEventOverflowCheckTriggered;
 
   const factory GameStepEvent.phaseChanged({
