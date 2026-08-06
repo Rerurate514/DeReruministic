@@ -6,5 +6,10 @@ enum BattlePhase {
   resolving,
   turnEnd,
   battleEnd,
-  selectDiscard,
+  selectDiscard
+  ;
+
+  bool get isFinished => this == BattlePhase.battleEnd;
+
+  bool get requiresPlayerInput => this == BattlePhase.selectDiscard;
 }
