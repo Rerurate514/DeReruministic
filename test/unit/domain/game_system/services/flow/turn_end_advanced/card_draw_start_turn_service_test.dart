@@ -6,10 +6,10 @@ import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.d
 import 'package:dereruministic/domain/game_system/constants/game_system_constants.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/card_draw_start_turn_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -91,10 +91,11 @@ void main() {
 
   group('CardDrawStartTurnService', () {
     test('山札+墓地が十分な場合、defaultDrawCount分のドロー処理がCardDrawServiceに委譲される', () {
-      const step = GameStepEvent.valueChanged(
-        type: GameStepType.cardsDrawn,
-        targetPlayerId: PlayerId(value: 'player_a'),
-        amount: GameSystemConstants.defaultDrawCount,
+      const step = GameStepEventCardsDrawn(
+        playerId: PlayerId(value: 'player_a'),
+        cardInstanceIds: [],
+        zoneFrom: CardZone.deck,
+        zoneTo: CardZone.hand,
       );
 
       final expectedState = baseState.copyWith(

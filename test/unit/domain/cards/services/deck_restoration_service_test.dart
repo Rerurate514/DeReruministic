@@ -1,7 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter_test/flutter_test.dart';
-
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/deck_restoration_service.dart';
@@ -11,9 +9,9 @@ import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   late DeckRestorationService deckRestorationService;
@@ -109,8 +107,7 @@ void main() {
 
       expect(result.steps.length, equals(2));
 
-      final moveEvent = result.steps[0] as GameStepEventCardZoneMoved;
-      expect(moveEvent.type, equals(GameStepType.cardMovedZone));
+      final moveEvent = result.steps[0] as GameStepEventCardMovedZone;
       expect(moveEvent.playerId, equals(targetPlayerId));
       expect(moveEvent.zoneFrom, equals(CardZone.graveyard));
       expect(moveEvent.zoneTo, equals(CardZone.deck));
@@ -121,7 +118,6 @@ void main() {
       );
 
       final restoredEvent = result.steps[1] as GameStepEventDeckRestored;
-      expect(restoredEvent.type, equals(GameStepType.deckRestored));
       expect(restoredEvent.playerId, equals(targetPlayerId));
       expect(restoredEvent.count, equals(2));
     });
@@ -146,7 +142,7 @@ void main() {
 
       expect(result.steps.length, equals(2));
 
-      final moveEvent = result.steps[0] as GameStepEventCardZoneMoved;
+      final moveEvent = result.steps[0] as GameStepEventCardMovedZone;
       expect(moveEvent.cardInstanceIds, isEmpty);
 
       final restoredEvent = result.steps[1] as GameStepEventDeckRestored;

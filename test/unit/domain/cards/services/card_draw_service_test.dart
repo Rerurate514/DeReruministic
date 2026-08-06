@@ -11,7 +11,6 @@ import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -117,13 +116,12 @@ void main() {
 
       expect(result.steps.length, equals(2));
 
-      final valueChangedStep = result.steps[0] as GameStepEventValueChanged;
-      expect(valueChangedStep.type, equals(GameStepType.cardsDrawn));
-      expect(valueChangedStep.targetPlayerId, equals(targetPlayerId));
-      expect(valueChangedStep.amount, equals(1));
+      final valueChangedStep = result.steps[0] as GameStepEventCardsDrawn;
+      expect(valueChangedStep, isA<GameStepEventCardsDrawn>());
+      expect(valueChangedStep.playerId, equals(targetPlayerId));
+      expect(valueChangedStep.cardInstanceIds.length, equals(1));
 
-      final cardMovedStep = result.steps[1] as GameStepEventCardZoneMoved;
-      expect(cardMovedStep.type, equals(GameStepType.cardMovedZone));
+      final cardMovedStep = result.steps[1] as GameStepEventCardMovedZone;
       expect(cardMovedStep.playerId, equals(targetPlayerId));
       expect(cardMovedStep.cardInstanceIds, equals([card1InstanceId]));
       expect(cardMovedStep.zoneFrom, equals(CardZone.deck));
@@ -134,7 +132,6 @@ void main() {
 
     test('山札以上の枚数を要求された場合、山札の全カードを引く', () {
       const restorationStep = GameStepEvent.deckRestored(
-        type: GameStepType.deckRestored,
         playerId: targetPlayerId,
         count: 2,
       );
@@ -181,7 +178,6 @@ void main() {
       );
 
       const restorationStep = GameStepEvent.deckRestored(
-        type: GameStepType.deckRestored,
         playerId: targetPlayerId,
         count: 1,
       );

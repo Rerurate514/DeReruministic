@@ -2,7 +2,6 @@ import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanc
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -48,10 +47,8 @@ void main() {
       expect(statePlayerB.shield, equals(5));
 
       expect(result.steps.length, equals(1));
-      final step = result.steps.first as GameStepEventValueChanged;
-      expect(step.type, equals(GameStepType.shieldCleared));
+      final step = result.steps.first as GameStepEventShieldCleared;
       expect(step.targetPlayerId, equals(playerAId));
-      expect(step.amount, equals(0));
     });
   });
 }

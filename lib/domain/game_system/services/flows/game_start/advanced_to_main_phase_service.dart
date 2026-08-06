@@ -3,7 +3,6 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'advanced_to_main_phase_service.g.dart';
@@ -26,8 +25,7 @@ class AdvanceToMainPhaseService implements TurnProcessStep {
       phase: updatedPhase,
     );
 
-    final step = GameStepEvent.transition(
-      type: GameStepType.phaseChanged,
+    final step = GameStepEvent.phaseChanged(
       phase: updatedPhase,
     );
 

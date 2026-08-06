@@ -6,7 +6,6 @@ import 'package:dereruministic/domain/game_system/value_objects/defeat_rule.dart
 import 'package:dereruministic/domain/game_system/value_objects/game_end_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -51,7 +50,6 @@ class DefeatCheckService implements TurnProcessStep {
     if (loserIds.length == 2) {
       return [
         const GameStepEvent.gameEnded(
-          type: GameStepType.gameEnded,
           endResult: GameEndResult.draw,
           winnerPlayerId: null,
           loserPlayerId: null,
@@ -70,7 +68,6 @@ class DefeatCheckService implements TurnProcessStep {
 
     return [
       GameStepEvent.gameEnded(
-        type: GameStepType.gameEnded,
         endResult: GameEndResult.winnerDecided,
         winnerPlayerId: winner.id,
         loserPlayerId: loserId,

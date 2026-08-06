@@ -6,7 +6,6 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -73,7 +72,6 @@ class GameSetupService {
     );
 
     final turnStartStep = GameStepEvent.gameStarted(
-      type: GameStepType.gameStarted,
       firstTurnPlayerId: initialTurnOwner,
     );
 

@@ -5,7 +5,6 @@ import 'package:dereruministic/domain/game_system/services/game_proccess_pipelin
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -37,8 +36,7 @@ class CalculateTurnCostService implements TurnProcessStep {
     final finalCost = newState.players[targetPlayerId]!.currentCost;
     final diff = finalCost - initialCost;
 
-    final event = GameStepEvent.valueChanged(
-      type: GameStepType.costCalculated,
+    final event = GameStepEvent.costCalculated(
       targetPlayerId: targetPlayerId,
       amount: diff,
     );

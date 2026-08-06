@@ -6,10 +6,10 @@ import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.d
 import 'package:dereruministic/domain/game_system/constants/game_system_constants.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -85,16 +85,18 @@ void main() {
 
   group('GameStartDrawCardsService', () {
     test('全プレイヤーに対してCardDrawServiceが順次実行され、State更新とStepの累積が行われる', () {
-      const stepA = GameStepEvent.cardsAffected(
-        type: GameStepType.cardsDrawn,
-        targetPlayerId: playerAId,
+      const stepA = GameStepEventCardsDrawn(
+        playerId: playerAId,
         cardInstanceIds: [GameCardInstanceId(value: 'inst_a1')],
+        zoneFrom: CardZone.deck,
+        zoneTo: CardZone.hand,
       );
 
-      const stepB = GameStepEvent.cardsAffected(
-        type: GameStepType.cardsDrawn,
-        targetPlayerId: playerBId,
+      const stepB = GameStepEventCardsDrawn(
+        playerId: playerBId,
         cardInstanceIds: [GameCardInstanceId(value: 'inst_b1')],
+        zoneFrom: CardZone.deck,
+        zoneTo: CardZone.hand,
       );
 
       final stateAfterPlayerA = baseState.copyWith(

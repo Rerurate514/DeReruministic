@@ -5,7 +5,6 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -51,22 +50,20 @@ class CardDrawService {
       hand: [...currentPlayer.hand, ...drawnCards],
     );
 
-    final drawStep = GameStepEvent.valueChanged(
-      type: GameStepType.cardsDrawn,
-      targetPlayerId: targetPlayerId,
-      amount: drawnCards.length,
+    final drawStep = GameStepEvent.cardsDrawn(
+      playerId: targetPlayerId,
+      cardInstanceIds: drawnCards.map((card) => card.instanceId).toList(),
+      zoneFrom: CardZone.deck,
+      zoneTo: CardZone.hand,
     );
 
     final newState = state.copyWith(
       players: {...state.players, targetPlayerId: updatedPlayer},
     );
 
-    final cardMoveStep = GameStepEvent.cardZoneMoved(
-      type: GameStepType.cardMovedZone,
+    final cardMoveStep = GameStepEvent.cardMovedZone(
       playerId: targetPlayerId,
-      cardInstanceIds: drawnCards
-          .map((gameCard) => gameCard.instanceId)
-          .toList(),
+      cardInstanceIds: drawnCards.map((card) => card.instanceId).toList(),
       zoneFrom: CardZone.deck,
       zoneTo: CardZone.hand,
     );

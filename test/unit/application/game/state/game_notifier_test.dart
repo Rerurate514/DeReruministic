@@ -12,7 +12,7 @@ import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.d
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -92,7 +92,7 @@ void main() {
       expect(state?.phase.battlePhase, equals(BattlePhase.mainPhase));
 
       expect(
-        queue.any((s) => s.type == GameStepType.cardsDrawn),
+        queue.any((s) => s is GameStepEventCardsDrawn),
         isTrue,
       );
     });

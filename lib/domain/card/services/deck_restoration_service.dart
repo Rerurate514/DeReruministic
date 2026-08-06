@@ -5,7 +5,6 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -43,25 +42,21 @@ class DeckRestorationService {
       players: {...state.players, targetPlayerId: newPlayerState},
     );
 
-    final moveEvent = GameStepEvent.cardZoneMoved(
-      type: GameStepType.cardMovedZone,
+    final moveStep = GameStepEvent.cardMovedZone(
       playerId: targetPlayerId,
-      cardInstanceIds: restoredCards
-          .map((gameCard) => gameCard.instanceId)
-          .toList(),
+      cardInstanceIds: restoredCards.map((card) => card.instanceId).toList(),
       zoneFrom: CardZone.graveyard,
       zoneTo: CardZone.deck,
     );
 
-    final restoredEvent = GameStepEvent.deckRestored(
-      type: GameStepType.deckRestored,
+    final restoredStep = GameStepEvent.deckRestored(
       playerId: targetPlayerId,
       count: restoredCards.length,
     );
 
     return ApplyActionResult(
       state: newState,
-      steps: [moveEvent, restoredEvent],
+      steps: [moveStep, restoredStep],
     );
   }
 }

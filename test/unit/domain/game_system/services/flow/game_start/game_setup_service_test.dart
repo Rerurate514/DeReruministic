@@ -1,9 +1,5 @@
 import 'dart:math';
 
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
-import 'package:mockito/mockito.dart';
-
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
@@ -12,9 +8,11 @@ import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.d
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
 import 'game_setup_service_test.mocks.dart';
 
@@ -133,7 +131,6 @@ void main() {
 
       expect(result.steps.length, equals(1));
       final step = result.steps.first as GameStepEventGameStarted;
-      expect(step.type, equals(GameStepType.gameStarted));
       expect(step.firstTurnPlayerId, equals(state.phase.turnOwner));
     });
 

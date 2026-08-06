@@ -3,7 +3,6 @@ import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/defeat_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_end_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/status_effect_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -15,64 +14,135 @@ part 'game_step_event.g.dart';
 sealed class GameStepEvent with _$GameStepEvent {
   factory GameStepEvent.fromJson(Map<String, dynamic> json) =>
       _$GameStepEventFromJson(json);
-  const factory GameStepEvent.transition({
-    required GameStepType type,
-    required GamePhase phase,
-  }) = GameStepEventTransition;
 
-  const factory GameStepEvent.valueChanged({
-    required GameStepType type,
+  // --- 単純な状態遷移マーカー系 ---
+  const factory GameStepEvent.comboReset({
+    required GamePhase phase,
+  }) = GameStepEventComboReset;
+
+  const factory GameStepEvent.deckShuffled({
+    required GamePhase phase,
+  }) = GameStepEventDeckShuffled;
+
+  const factory GameStepEvent.overflowCheckTriggered({
+    required GamePhase phase,
+  }) = GameStepEventOverflowCheckTriggered;
+
+  const factory GameStepEvent.phaseChanged({
+    required GamePhase phase,
+  }) = GameStepEventPhaseChanged;
+
+  const factory GameStepEvent.turnEndEffectsResolved({
+    required GamePhase phase,
+  }) = GameStepEventTurnEndEffectsResolved;
+
+  // --- 数値変化系 ---
+  const factory GameStepEvent.regenApplied({
     required PlayerId targetPlayerId,
     required int amount,
-  }) = GameStepEventValueChanged;
+  }) = GameStepEventRegenApplied;
+
+  const factory GameStepEvent.costCalculated({
+    required PlayerId targetPlayerId,
+    required int amount,
+  }) = GameStepEventCostCalculated;
+
+  const factory GameStepEvent.drawCalculated({
+    required PlayerId targetPlayerId,
+    required int amount,
+  }) = GameStepEventDrawCalculated;
+
+  const factory GameStepEvent.comboUpdated({
+    required PlayerId targetPlayerId,
+    required int amount,
+  }) = GameStepEventComboUpdated;
+
+  const factory GameStepEvent.damageDealt({
+    required PlayerId targetPlayerId,
+    required int amount,
+  }) = GameStepEventDamageDealt;
+
+  const factory GameStepEvent.reflectDamageApplied({
+    required PlayerId targetPlayerId,
+    required int amount,
+  }) = GameStepEventReflectDamageApplied;
+
+  const factory GameStepEvent.shieldGained({
+    required PlayerId targetPlayerId,
+    required int amount,
+  }) = GameStepEventShieldGained;
+
+  const factory GameStepEvent.shieldCleared({
+    required PlayerId targetPlayerId,
+  }) = GameStepEventShieldCleared;
+
+  // --- ステータス効果（スタック）系 ---
+  const factory GameStepEvent.poisonApplied({
+    required PlayerId targetPlayerId,
+    required StatusEffectType effectType,
+    required int stackCount,
+  }) = GameStepEventPoisonApplied;
+
+  const factory GameStepEvent.guardBoostApplied({
+    required PlayerId targetPlayerId,
+    required StatusEffectType effectType,
+    required int stackCount,
+  }) = GameStepEventGuardBoostApplied;
 
   const factory GameStepEvent.statusEffectChanged({
-    required GameStepType type,
     required PlayerId targetPlayerId,
     required StatusEffectType effectType,
     required int stackCount,
   }) = GameStepEventStatusEffectChanged;
 
-  const factory GameStepEvent.cardsAffected({
-    required GameStepType type,
-    required PlayerId targetPlayerId,
-    required List<GameCardInstanceId> cardInstanceIds,
-  }) = GameStepEventCardsAffected;
-
-  const factory GameStepEvent.cardAction({
-    required GameStepType type,
+  // --- カードアクション系 ---
+  const factory GameStepEvent.cardPlayed({
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
     PlayerId? targetPlayerId,
-  }) = GameStepEventCardAction;
+  }) = GameStepEventCardPlayed;
 
+  const factory GameStepEvent.cardExhausted({
+    required PlayerId playerId,
+    required GameCardInstanceId cardInstanceId,
+    PlayerId? targetPlayerId,
+  }) = GameStepEventCardExhausted;
+
+  // --- デッキ復元 ---
   const factory GameStepEvent.deckRestored({
-    required GameStepType type,
     required PlayerId playerId,
     required int count,
   }) = GameStepEventDeckRestored;
 
-  const factory GameStepEvent.cardZoneMoved({
-    required GameStepType type,
+  // --- カードゾーン移動系 ---
+  const factory GameStepEvent.cardsDrawn({
     required PlayerId playerId,
     required List<GameCardInstanceId> cardInstanceIds,
     required CardZone zoneFrom,
     required CardZone zoneTo,
-  }) = GameStepEventCardZoneMoved;
+  }) = GameStepEventCardsDrawn;
 
+  const factory GameStepEvent.cardMovedZone({
+    required PlayerId playerId,
+    required List<GameCardInstanceId> cardInstanceIds,
+    required CardZone zoneFrom,
+    required CardZone zoneTo,
+  }) = GameStepEventCardMovedZone;
+
+  // --- ターン管理系 ---
+  const factory GameStepEvent.turnOwnerSwitched({
+    required PlayerId newTurnPlayerId,
+  }) = GameStepEventTurnOwnerSwitched;
+
+  // --- ゲーム開始・終了 ---
   const factory GameStepEvent.gameStarted({
-    required GameStepType type,
     required PlayerId firstTurnPlayerId,
   }) = GameStepEventGameStarted;
 
   const factory GameStepEvent.gameEnded({
-    required GameStepType type,
     required GameEndResult endResult,
     required PlayerId? winnerPlayerId,
     required PlayerId? loserPlayerId,
     required DefeatReason reason,
   }) = GameStepEventGameEnded;
-
-  @override
-  GameStepType get type;
 }

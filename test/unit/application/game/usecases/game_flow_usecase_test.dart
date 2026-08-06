@@ -11,7 +11,6 @@ import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart'
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -136,7 +135,6 @@ void main() {
       );
 
       const setupStep = GameStepEvent.gameStarted(
-        type: GameStepType.gameStarted,
         firstTurnPlayerId: playerAId,
       );
 
