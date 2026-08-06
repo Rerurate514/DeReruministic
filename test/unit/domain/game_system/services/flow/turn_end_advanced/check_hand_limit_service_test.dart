@@ -2,11 +2,11 @@ import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
-import 'package:dereruministic/domain/game_system/constants/game_system_constants.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/check_hand_limit_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,7 +32,7 @@ void main() {
     );
 
     final dummyHand = List.generate(
-      GameSystemConstants.defaultDrawCount,
+      handSize,
       (i) => GameCard(
         instanceId: GameCardInstanceId(value: 'inst_$i'),
         definition: cardDef,
@@ -110,7 +110,8 @@ void main() {
 
       final result = service.execute(state);
       expect(result.state.phase.battlePhase, equals(BattlePhase.selectDiscard));
-      expect(result.steps.length, equals(1));
+      final step = result.steps.first as GameStepEventOverflowCheckTriggered;
+      expect(step.overflowCount, equals(2));
     });
   });
 }

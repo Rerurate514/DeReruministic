@@ -18,7 +18,7 @@ class CheckHandLimitService implements TurnProcessStep {
 
     final overflowCount = player.hand.length - player.maxHandSize;
 
-    if (overflowCount >= 0) {
+    if (overflowCount <= 0) {
       return ApplyActionResult.noSteps(state: state);
     }
 
