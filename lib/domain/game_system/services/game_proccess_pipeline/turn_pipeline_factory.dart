@@ -1,5 +1,6 @@
 // domain/game_system/services/turn_pipeline_factory.dart
 
+import 'package:dereruministic/domain/game_system/services/flows/common/defeat_check_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_turn_start_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
@@ -16,6 +17,7 @@ part 'turn_pipeline_factory.g.dart';
 @riverpod
 TurnPipelineFactory turnPipelineFactory(Ref ref) {
   return TurnPipelineFactory(
+    defeatCheckService: ref.read(defeatCheckServiceProvider),
     gameStartDrawCardsService: ref.read(gameStartDrawCardsServiceProvider),
     advancedToTurnStartService: ref.read(advancedToTurnStartServiceProvider),
     calculateTurnCostService: ref.read(calculateTurnCostServiceProvider),
@@ -28,36 +30,33 @@ TurnPipelineFactory turnPipelineFactory(Ref ref) {
 
 class TurnPipelineFactory implements ITurnPipelineFactory {
   const TurnPipelineFactory({
-    required GameStartDrawCardsService gameStartDrawCardsService,
-    required AdvancedToTurnStartService advancedToTurnStartService,
-    required CalculateTurnCostService calculateTurnCostService,
-    required AdvanceToMainPhaseService advanceToMainPhaseService,
-    required SwitchTurnOwnerService switchTurnOwnerService,
-    required RemoveShieldService removeShieldService,
-    required CardDrawStartTurnService cardDrawStartTurnService,
-  }) : _gameStartDrawCardsService = gameStartDrawCardsService,
-       _advancedToTurnStartService = advancedToTurnStartService,
-       _calculateTurnCostService = calculateTurnCostService,
-       _advanceToMainPhaseService = advanceToMainPhaseService,
-       _switchTurnOwnerService = switchTurnOwnerService,
-       _removeShieldService = removeShieldService,
-       _cardDrawStartTurnService = cardDrawStartTurnService;
-  final GameStartDrawCardsService _gameStartDrawCardsService;
-  final AdvancedToTurnStartService _advancedToTurnStartService;
-  final CalculateTurnCostService _calculateTurnCostService;
-  final AdvanceToMainPhaseService _advanceToMainPhaseService;
-  final SwitchTurnOwnerService _switchTurnOwnerService;
-  final RemoveShieldService _removeShieldService;
-  final CardDrawStartTurnService _cardDrawStartTurnService;
+    required this.defeatCheckService,
+    required this.gameStartDrawCardsService,
+    required this.advancedToTurnStartService,
+    required this.calculateTurnCostService,
+    required this.advanceToMainPhaseService,
+    required this.switchTurnOwnerService,
+    required this.removeShieldService,
+    required this.cardDrawStartTurnService,
+  });
+
+  final DefeatCheckService defeatCheckService;
+  final GameStartDrawCardsService gameStartDrawCardsService;
+  final AdvancedToTurnStartService advancedToTurnStartService;
+  final CalculateTurnCostService calculateTurnCostService;
+  final AdvanceToMainPhaseService advanceToMainPhaseService;
+  final SwitchTurnOwnerService switchTurnOwnerService;
+  final RemoveShieldService removeShieldService;
+  final CardDrawStartTurnService cardDrawStartTurnService;
 
   @override
   TurnPipeline createGameStartPipeline() {
     return TurnPipeline(
       turnProcessSteps: [
-        _gameStartDrawCardsService,
-        _advancedToTurnStartService,
-        _calculateTurnCostService,
-        _advanceToMainPhaseService,
+        gameStartDrawCardsService,
+        advancedToTurnStartService,
+        calculateTurnCostService,
+        advanceToMainPhaseService,
       ],
     );
   }
@@ -75,26 +74,29 @@ class TurnPipelineFactory implements ITurnPipelineFactory {
         //　ターン終了フェーズ（現プレイヤー）バフデバフ更新
         // resolveTurnEndStatusService,
         // triggerOnTurnEndEventService,
+        defeatCheckService,
 
         // 手番交代
-        _switchTurnOwnerService,
+        switchTurnOwnerService,
 
         // ターン開始フェーズ（新プレイヤー）
-        _removeShieldService,
+        removeShieldService,
         // resolveRegenService,
         // resolvePoisonService,
-        // checkDeathService,
-        _calculateTurnCostService,
+        defeatCheckService,
+        calculateTurnCostService,
+
         // applyGuardBoostService,
         // resetComboService,
         // triggerOnTurnStartEventService,
 
         // ドローフェーズ
-        _cardDrawStartTurnService,
+        defeatCheckService,
+        cardDrawStartTurnService,
         // checkHandLimitService,
 
         // メインフェーズ
-        _advanceToMainPhaseService,
+        advanceToMainPhaseService,
       ],
     );
   }

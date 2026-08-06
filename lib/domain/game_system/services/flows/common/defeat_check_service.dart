@@ -8,6 +8,14 @@ import 'package:dereruministic/domain/game_system/value_objects/game_state.dart'
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_types.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'defeat_check_service.g.dart';
+
+@riverpod
+DefeatCheckService defeatCheckService(Ref ref) {
+  return DefeatCheckService(rules: [HpZeroDefeatRule(), DeckOutDefeatRule()]);
+}
 
 class DefeatCheckService implements TurnProcessStep {
   const DefeatCheckService({
