@@ -3,6 +3,7 @@ import 'package:dereruministic/application/game/state/step_event_queue_notifier.
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -72,6 +73,7 @@ class GameNotifier extends _$GameNotifier {
   Future<void> endTurn() async {
     final current = state;
     if (current == null) return;
+    if (current.phase.battlePhase == BattlePhase.battleEnd) return;
     final action = GameActions.turnEnd(
       id: GameActionsId.generate(),
       playerId: current.phase.turnOwner,

@@ -3,6 +3,7 @@ import 'package:dereruministic/domain/game_system/services/flows/game_start/game
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/i_turn_pipeline_factory.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline_factory.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
+import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_setup_context.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -101,6 +102,10 @@ class GameFlowUsecase {
     GameActionTurnEnd action,
     List<GameStepEvent> initialSteps,
   ) {
+    if (current.phase.battlePhase == BattlePhase.battleEnd) {
+      return ApplyActionResult.noSteps(state: current);
+    }
+
     final pipeline = pipelineFactory.createTurnEndPipeline();
     return pipeline.process(current, initialSteps);
   }
