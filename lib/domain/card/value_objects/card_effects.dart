@@ -12,62 +12,64 @@ sealed class CardEffects with _$CardEffects {
   const factory CardEffects.damage({
     required int amount,
     required CardTargetTypes target,
-  }) = _Damage;
+  }) = CardEffectDamage;
 
   const factory CardEffects.draw({
     required int amount,
-  }) = _Draw;
+  }) = CardEffectDraw;
 
-  const factory CardEffects.discard({required GameCard card}) = _Discard;
+  const factory CardEffects.discard({required GameCard card}) =
+      CardEffectDiscard;
 
-  const factory CardEffects.fetchCard({required GameCard card}) = _FetchCard;
+  const factory CardEffects.fetchCard({required GameCard card}) =
+      CardEffectFetchCard;
 
   const factory CardEffects.heal({
     required int amount,
     required CardTargetTypes target,
-  }) = _Heal;
+  }) = CardEffectHeal;
 
   const factory CardEffects.grantShield({
     required int amount,
     required CardTargetTypes target,
-  }) = _GrantShield;
+  }) = CardEffectGrantShield;
 
   const factory CardEffects.grantCost({
     required int amount,
     required CardTargetTypes target,
-  }) = _GrantCost;
+  }) = CardEffectGrantCost;
 
   const factory CardEffects.stealCost({
     required int amount,
-  }) = _StealCost;
+  }) = CardEffectStealCost;
 
   const factory CardEffects.stealShield({
     required int amount,
-  }) = _StealShield;
+  }) = CardEffectStealShield;
 
   const factory CardEffects.applyBuff({
     required BuffTypes buff,
     required int stacks,
     required CardTargetTypes target,
-  }) = _ApplyBuff;
+  }) = CardEffectApplyBuff;
 
   const factory CardEffects.applyDebuff({
     required DebuffTypes debuff,
     required int stacks,
     required CardTargetTypes target,
-  }) = _ApplyDebuff;
+  }) = CardEffectApplyDebuff;
 
   const factory CardEffects.removeBuff({
     required BuffTypes buff,
     required int stacks,
     required CardTargetTypes target,
-  }) = _RemoveBuffs;
+  }) = CardEffectRemoveBuffs;
 
   const factory CardEffects.removeDebuff({
     required DebuffTypes debuff,
     required int stacks,
     required CardTargetTypes target,
-  }) = _RemoveDebuffs;
+  }) = CardEffectRemoveDebuffs;
 
   factory CardEffects.fromJson(Map<String, dynamic> json) =>
       _$CardEffectsFromJson(json);
