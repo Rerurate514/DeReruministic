@@ -6,6 +6,7 @@ import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dar
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_notifier.g.dart';
@@ -53,11 +54,17 @@ class GameNotifier extends _$GameNotifier {
     );
   }
 
-  void playCard(GameCard card) {
+  Future<void> playCard(GameCard card, PlayerId cardUsedPlayerId) async {
     final currentState = state;
     if (currentState == null) return;
 
-    //cardEffectResolveServiceなどでカード効果を適用したGameStateを返す
+    final action = GameActions.playCard(
+      id: GameActionsId.generate(),
+      playerId: cardUsedPlayerId,
+      cardInstanceId: card.instanceId,
+    );
+
+    await _dispatch(action: action);
   }
 
   Future<void> endTurn() async {
