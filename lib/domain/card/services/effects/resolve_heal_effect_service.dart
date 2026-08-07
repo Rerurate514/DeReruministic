@@ -6,6 +6,14 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'resolve_heal_effect_service.g.dart';
+
+@riverpod
+ResolveHealEffectService resolveHealEffectService(Ref ref) {
+  return ResolveHealEffectService();
+}
 
 class ResolveHealEffectService {
   ApplyActionResult execute({

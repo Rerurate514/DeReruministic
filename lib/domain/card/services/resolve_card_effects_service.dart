@@ -59,7 +59,11 @@ class ResolveCardEffectsService {
       CardEffectDraw() => throw UnimplementedError(),
       CardEffectDiscard() => throw UnimplementedError(),
       CardEffectFetchCard() => throw UnimplementedError(),
-      CardEffectHeal() => throw UnimplementedError(),
+      CardEffectHeal() => effectResolver.resolveHealEffectService.execute(
+        state: current,
+        effect: effect,
+        sourcePlayerId: action.playerId,
+      ),
       CardEffectGrantShield() => throw UnimplementedError(),
       CardEffectGrantCost() => throw UnimplementedError(),
       CardEffectStealCost() => throw UnimplementedError(),
