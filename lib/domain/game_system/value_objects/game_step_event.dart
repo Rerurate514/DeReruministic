@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/defeat_reason.dart';
@@ -100,6 +101,7 @@ sealed class GameStepEvent with _$GameStepEvent {
   const factory GameStepEvent.cardPlayed({
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
+    required CardDefinitionId cardDefId,
     PlayerId? targetPlayerId,
   }) = GameStepEventCardPlayed;
 
