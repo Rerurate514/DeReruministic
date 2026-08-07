@@ -67,7 +67,7 @@ void main() {
   group('ResolveDamageEffectService.execute', () {
     test('シールドがない場合、ダメージは全てHPに入る', () {
       final attacker = buildPlayer(id: attackerId);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 0);
+      final defender = buildPlayer(id: defenderId);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 10,
@@ -88,7 +88,7 @@ void main() {
 
     test('シールドが十分にある場合、ダメージは全てシールドに吸収される', () {
       final attacker = buildPlayer(id: attackerId);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 15);
+      final defender = buildPlayer(id: defenderId, shield: 15);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 10,
@@ -109,7 +109,7 @@ void main() {
 
     test('シールドが一部しかない場合、シールドを使い切った上でHPが減る', () {
       final attacker = buildPlayer(id: attackerId);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 4);
+      final defender = buildPlayer(id: defenderId, shield: 4);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 10,
@@ -130,7 +130,7 @@ void main() {
 
     test('targetPlayerIdがnullかつtarget=enemyの場合、自分以外のプレイヤーが対象になる', () {
       final attacker = buildPlayer(id: attackerId);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 0);
+      final defender = buildPlayer(id: defenderId);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 7,
@@ -150,8 +150,8 @@ void main() {
     });
 
     test('targetPlayerIdがnullかつtarget=selfの場合、自分自身が対象になる', () {
-      final attacker = buildPlayer(id: attackerId, hp: 20, shield: 0);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 0);
+      final attacker = buildPlayer(id: attackerId);
+      final defender = buildPlayer(id: defenderId);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 5,
@@ -171,8 +171,8 @@ void main() {
     });
 
     test('targetPlayerIdが明示的に指定されている場合、effect.targetより優先される', () {
-      final attacker = buildPlayer(id: attackerId, hp: 20, shield: 0);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 0);
+      final attacker = buildPlayer(id: attackerId);
+      final defender = buildPlayer(id: defenderId);
       final state = buildState(playerA: attacker, playerB: defender);
       // targetはselfだが、targetPlayerIdでdefenderを明示的に指定
       const effect = CardEffects.damage(
@@ -198,7 +198,7 @@ void main() {
         id: attackerId,
         buffs: const [BuffState(buff: BuffTypes.atkBuff, stack: 5)],
       );
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 0);
+      final defender = buildPlayer(id: defenderId);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 10,
@@ -221,7 +221,7 @@ void main() {
         id: attackerId,
         debuffs: const [DebuffState(debuff: DebuffTypes.atkDebuff, stack: 100)],
       );
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 3);
+      final defender = buildPlayer(id: defenderId, shield: 3);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 10,
@@ -242,7 +242,7 @@ void main() {
 
     test('GameStepEvent.damageDealtが正しい内容で1件返る', () {
       final attacker = buildPlayer(id: attackerId);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 4);
+      final defender = buildPlayer(id: defenderId, shield: 4);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 10,
@@ -265,7 +265,7 @@ void main() {
 
     test('攻撃側プレイヤーの状態はplayersマップ内で保持される', () {
       final attacker = buildPlayer(id: attackerId, hp: 18);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 0);
+      final defender = buildPlayer(id: defenderId);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 5,
@@ -285,7 +285,7 @@ void main() {
 
     test('元のGameStateは変更されない(イミュータブル)', () {
       final attacker = buildPlayer(id: attackerId);
-      final defender = buildPlayer(id: defenderId, hp: 20, shield: 0);
+      final defender = buildPlayer(id: defenderId);
       final state = buildState(playerA: attacker, playerB: defender);
       const effect = CardEffects.damage(
         amount: 10,
