@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/value_objects/action_targets.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
@@ -22,7 +23,7 @@ sealed class GameActions with _$GameActions {
     required GameActionsId id,
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
-    PlayerId? targetPlayerId,
+    ActionTargets? target,
   }) = GameActionPlayCard;
 
   const factory GameActions.discardCard({

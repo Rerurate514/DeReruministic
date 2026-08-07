@@ -9,7 +9,6 @@ part 'action_targets.g.dart';
 sealed class ActionTargets with _$ActionTargets {
   const factory ActionTargets.player(PlayerId id) = ActionTargetPlayer;
   const factory ActionTargets.card(GameCardInstanceId id) = ActionTargetCard;
-  const factory ActionTargets.slot(int index) = ActionTargetSlot;
 
   factory ActionTargets.fromJson(Map<String, dynamic> json) =>
       _$ActionTargetsFromJson(json);
