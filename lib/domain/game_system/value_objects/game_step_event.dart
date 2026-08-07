@@ -79,6 +79,11 @@ sealed class GameStepEvent with _$GameStepEvent {
     required PlayerId targetPlayerId,
   }) = GameStepEventShieldCleared;
 
+  const factory GameStepEvent.healed({
+    required PlayerId targetPlayerId,
+    required int amount,
+  }) = GameStepEventHealed;
+
   // --- ステータス効果（スタック）系 ---
   const factory GameStepEvent.poisonApplied({
     required PlayerId targetPlayerId,

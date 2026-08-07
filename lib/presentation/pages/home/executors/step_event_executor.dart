@@ -22,6 +22,7 @@ class StepEventExecutor {
       case GameStepEventShieldGained():
       case GameStepEventShieldCleared():
       case GameStepEventPoisonApplied():
+      case GameStepEventHealed():
       case GameStepEventGuardBoostApplied():
       case GameStepEventStatusEffectChanged():
       case GameStepEventCardPlayed():
