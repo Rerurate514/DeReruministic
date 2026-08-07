@@ -7,3 +7,14 @@ enum BuffTypes {
   combo,
   drawBoost,
 }
+
+extension BuffTypesDamageModifier on BuffTypes {
+  bool get isOutgoingDamageModifier => switch (this) {
+    BuffTypes.atkBuff || BuffTypes.combo => true,
+    _ => false,
+  };
+
+  bool get isIncomingDamageModifier => switch (this) {
+    _ => false,
+  };
+}

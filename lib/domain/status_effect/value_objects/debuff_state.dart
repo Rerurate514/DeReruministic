@@ -7,10 +7,26 @@ part 'debuff_state.g.dart';
 @freezed
 sealed class DebuffState with _$DebuffState {
   const factory DebuffState({
-    required DebuffTypes deDebuff,
+    required DebuffTypes debuff,
     required int stack,
   }) = _DebuffState;
 
   factory DebuffState.fromJson(Map<String, dynamic> json) =>
       _$DebuffStateFromJson(json);
+}
+
+extension BuffStateDamageModifier on DebuffState {
+  int modifyOutgoingDamage(int currentDamage) {
+    return switch (debuff) {
+      DebuffTypes.atkDebuff => currentDamage - stack,
+      _ => currentDamage,
+    };
+  }
+
+  int modifyIncomingDamage(int currentDamage) {
+    return switch (debuff) {
+      DebuffTypes.vulnerable => currentDamage + stack,
+      _ => currentDamage,
+    };
+  }
 }

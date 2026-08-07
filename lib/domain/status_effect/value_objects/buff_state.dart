@@ -12,3 +12,19 @@ sealed class BuffState with _$BuffState {
   factory BuffState.fromJson(Map<String, dynamic> json) =>
       _$BuffStateFromJson(json);
 }
+
+extension BuffStateDamageModifier on BuffState {
+  int modifyOutgoingDamage(int currentDamage) {
+    return switch (buff) {
+      BuffTypes.atkBuff => currentDamage + stack,
+      BuffTypes.combo => currentDamage + stack,
+      _ => currentDamage,
+    };
+  }
+
+  int modifyIncomingDamage(int currentDamage) {
+    return switch (buff) {
+      _ => currentDamage,
+    };
+  }
+}
