@@ -75,10 +75,10 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -96,10 +96,10 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -117,10 +117,10 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -138,10 +138,9 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        null,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -160,10 +159,9 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        null,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
       );
 
       final updatedAttacker = result.state.players[attackerId]!;
@@ -183,10 +181,10 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -208,10 +206,10 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -231,10 +229,10 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -252,10 +250,10 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       expect(result.steps, hasLength(1));
@@ -275,10 +273,10 @@ void main() {
       );
 
       final result = service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       expect(result.state.players[attackerId], attacker);
@@ -295,10 +293,10 @@ void main() {
       );
 
       service.execute(
-        state,
-        effect as CardEffectDamage,
-        attackerId,
-        defenderId,
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
       );
 
       expect(state.players[defenderId]!.hp, 20);
