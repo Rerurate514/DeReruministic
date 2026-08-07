@@ -61,7 +61,8 @@ sealed class GameStepEvent with _$GameStepEvent {
 
   const factory GameStepEvent.damageDealt({
     required PlayerId targetPlayerId,
-    required int amount,
+    required int hpDamage,
+    required int shieldDamage,
   }) = GameStepEventDamageDealt;
 
   const factory GameStepEvent.reflectDamageApplied({
