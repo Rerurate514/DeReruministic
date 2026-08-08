@@ -5,6 +5,8 @@ import 'package:dereruministic/domain/game_system/value_objects/game_state.dart'
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+part 'check_target_hp_value_condition_service.g.dart';
+
 @riverpod
 CheckTargetHpValueConditionService checkTargetHpValueConditionService(
   Ref ref,
