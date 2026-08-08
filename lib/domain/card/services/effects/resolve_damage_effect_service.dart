@@ -58,6 +58,6 @@ class ResolveDamageEffectService {
       hpDamage: hpDamage,
     );
 
-    return ApplyActionResult(state: newState, steps: [step]);
+    return ApplyActionResult.success(state: newState, steps: [step]);
   }
 }

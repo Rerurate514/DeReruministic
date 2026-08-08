@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/card/services/effects/resolve_damage_effect_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -256,7 +257,7 @@ void main() {
         targetPlayerId: defenderId,
       );
 
-      expect(result.steps, hasLength(1));
+      expect((result as ApplyActionResultSuccess).steps, hasLength(1));
       final step = result.steps.single as GameStepEventDamageDealt;
       expect(step.targetPlayerId, defenderId);
       expect(step.shieldDamage, 4);

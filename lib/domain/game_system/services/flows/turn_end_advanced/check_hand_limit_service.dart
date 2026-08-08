@@ -34,6 +34,6 @@ class CheckHandLimitService implements TurnProcessStep {
       overflowCount: overflowCount.abs(),
     );
 
-    return ApplyActionResult(state: newState, steps: [step]);
+    return ApplyActionResult.success(state: newState, steps: [step]);
   }
 }

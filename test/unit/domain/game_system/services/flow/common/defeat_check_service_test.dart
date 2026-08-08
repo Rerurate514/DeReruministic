@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/game_system/services/flows/common/defeat_check_service.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/defeat_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/defeat_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/defeat_rule.dart';
@@ -41,7 +42,7 @@ void main() {
   test('敗北ルールに該当しない場合、noStepsが返ること', () {
     when(mockRule.evaluate(state)).thenReturn([]);
 
-    final result = service.execute(state);
+    final result = service.execute(state) as ApplyActionResultSuccess;
 
     expect(result.steps, isEmpty);
     verify(mockRule.evaluate(state)).called(1);
@@ -55,7 +56,7 @@ void main() {
 
     when(mockRule.evaluate(state)).thenReturn([defeatResult]);
 
-    final result = service.execute(state);
+    final result = service.execute(state) as ApplyActionResultSuccess;
 
     expect(result.steps.length, equals(1));
     expect(
@@ -76,7 +77,7 @@ void main() {
 
     when(mockRule.evaluate(state)).thenReturn([defeatResult]);
 
-    final result = service.execute(state);
+    final result = service.execute(state) as ApplyActionResultSuccess;
 
     expect(result.steps.length, equals(1));
     expect(
@@ -101,7 +102,7 @@ void main() {
 
     when(mockRule.evaluate(state)).thenReturn([defeatA, defeatB]);
 
-    final result = service.execute(state);
+    final result = service.execute(state) as ApplyActionResultSuccess;
 
     expect(result.steps.length, equals(1));
     expect(
@@ -126,7 +127,7 @@ void main() {
 
     when(mockRule.evaluate(state)).thenReturn([defeat1, defeat2]);
 
-    final result = service.execute(state);
+    final result = service.execute(state) as ApplyActionResultSuccess;
 
     expect(result.steps.length, equals(1));
     expect(

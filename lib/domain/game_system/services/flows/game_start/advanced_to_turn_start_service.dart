@@ -29,7 +29,7 @@ class AdvancedToTurnStartService implements TurnProcessStep {
       phase: updatedPhase,
     );
 
-    return ApplyActionResult(
+    return ApplyActionResult.success(
       state: newState,
       steps: [step],
     );

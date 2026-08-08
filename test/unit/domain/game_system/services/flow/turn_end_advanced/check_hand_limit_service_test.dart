@@ -3,6 +3,7 @@ import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/check_hand_limit_service.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -99,7 +100,7 @@ void main() {
     test('手札が上限以下の場合は状態が変更されずステップも発行されないこと', () {
       final state = createTestGameState(handSize: 5);
 
-      final result = service.execute(state);
+      final result = service.execute(state) as ApplyActionResultSuccess;
 
       expect(result.state, equals(state));
       expect(result.steps, isEmpty);
@@ -108,7 +109,7 @@ void main() {
     test('手札が上限を超えている場合は破棄フェーズへ遷移しイベントが発行されること', () {
       final state = createTestGameState(handSize: 7);
 
-      final result = service.execute(state);
+      final result = service.execute(state) as ApplyActionResultSuccess;
       expect(result.state.phase.battlePhase, equals(BattlePhase.selectDiscard));
       final step = result.steps.first as GameStepEventOverflowCheckTriggered;
       expect(step.overflowCount, equals(2));

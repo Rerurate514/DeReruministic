@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/card/services/effects/resolve_heal_effect_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -139,7 +140,9 @@ void main() {
       );
 
       final updatedSource = result.state.players[sourceId]!;
-      final step = result.steps.single as GameStepEventHealed;
+      final step =
+          (result as ApplyActionResultSuccess).steps.single
+              as GameStepEventHealed;
       expect(updatedSource.hp, 20);
       expect(step.amount, 0);
     });
@@ -156,7 +159,7 @@ void main() {
         sourcePlayerId: sourceId,
       );
 
-      expect(result.steps, hasLength(1));
+      expect((result as ApplyActionResultSuccess).steps, hasLength(1));
       final step = result.steps.single as GameStepEventHealed;
       expect(step.targetPlayerId, sourceId);
       expect(step.amount, 2);

@@ -39,7 +39,7 @@ class DefeatCheckService implements TurnProcessStep {
 
     final steps = _createEndSteps(state, results, loserIds);
 
-    return ApplyActionResult(state: newState, steps: steps);
+    return ApplyActionResult.success(state: newState, steps: steps);
   }
 
   List<GameStepEvent> _createEndSteps(

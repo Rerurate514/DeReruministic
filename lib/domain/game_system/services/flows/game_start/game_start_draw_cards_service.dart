@@ -34,11 +34,15 @@ class GameStartDrawCardsService implements TurnProcessStep {
         GameSystemConstants.initialGameStartDrawCardsCount,
       );
 
+      if (result case ApplyActionResultFailure()) {
+        return result;
+      }
+
       currentState = result.state;
-      accumulatedSteps.addAll(result.steps);
+      accumulatedSteps.addAll((result as ApplyActionResultSuccess).steps);
     }
 
-    return ApplyActionResult(
+    return ApplyActionResult.success(
       state: currentState,
       steps: accumulatedSteps,
     );

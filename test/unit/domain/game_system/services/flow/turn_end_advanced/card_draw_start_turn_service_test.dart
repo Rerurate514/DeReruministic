@@ -21,7 +21,7 @@ import 'card_draw_start_turn_service_test.mocks.dart';
 @GenerateNiceMocks([MockSpec<CardDrawService>()])
 void main() {
   provideDummy<ApplyActionResult>(
-    ApplyActionResult(
+    ApplyActionResult.success(
       state: GameState(
         seed: 0,
         players: const {},
@@ -108,7 +108,7 @@ void main() {
         },
       );
 
-      final expectedResult = ApplyActionResult(
+      final expectedResult = ApplyActionResult.success(
         state: expectedState,
         steps: const [step],
       );

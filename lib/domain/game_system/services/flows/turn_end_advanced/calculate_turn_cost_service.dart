@@ -41,7 +41,7 @@ class CalculateTurnCostService implements TurnProcessStep {
       amount: diff,
     );
 
-    return ApplyActionResult(state: newState, steps: [event]);
+    return ApplyActionResult.success(state: newState, steps: [event]);
   }
 }
 

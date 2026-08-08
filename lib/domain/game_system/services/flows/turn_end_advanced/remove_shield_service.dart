@@ -20,7 +20,7 @@ class RemoveShieldService implements TurnProcessStep {
       targetPlayerId: targetPlayerId,
     );
 
-    return ApplyActionResult(
+    return ApplyActionResult.success(
       state: current.clearShield(targetPlayerId),
       steps: [event],
     );

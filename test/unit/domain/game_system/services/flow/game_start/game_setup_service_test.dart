@@ -6,6 +6,7 @@ import 'package:dereruministic/domain/card/services/create_deck_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
@@ -89,14 +90,16 @@ void main() {
         mockCreateDeckService.execute(any, playerB.deckRecipe, any),
       ).thenReturn([cardB]);
 
-      final result = gameSetupService.execute(
-        playerAId: playerA.id,
-        playerBId: playerB.id,
-        playerADeckRecipe: playerA.deckRecipe,
-        playerBDeckRecipe: playerB.deckRecipe,
-        cardDefs: allCardDefs,
-        seed: seed,
-      );
+      final result =
+          gameSetupService.execute(
+                playerAId: playerA.id,
+                playerBId: playerB.id,
+                playerADeckRecipe: playerA.deckRecipe,
+                playerBDeckRecipe: playerB.deckRecipe,
+                cardDefs: allCardDefs,
+                seed: seed,
+              )
+              as ApplyActionResultSuccess;
 
       verify(
         mockCreateDeckService.execute(
@@ -141,23 +144,27 @@ void main() {
 
       when(mockCreateDeckService.execute(any, any, any)).thenReturn([]);
 
-      final result1 = gameSetupService.execute(
-        playerAId: playerA.id,
-        playerBId: playerB.id,
-        playerADeckRecipe: playerA.deckRecipe,
-        playerBDeckRecipe: playerB.deckRecipe,
-        cardDefs: allCardDefs,
-        seed: seed,
-      );
+      final result1 =
+          gameSetupService.execute(
+                playerAId: playerA.id,
+                playerBId: playerB.id,
+                playerADeckRecipe: playerA.deckRecipe,
+                playerBDeckRecipe: playerB.deckRecipe,
+                cardDefs: allCardDefs,
+                seed: seed,
+              )
+              as ApplyActionResultSuccess;
 
-      final result2 = gameSetupService.execute(
-        playerAId: playerA.id,
-        playerBId: playerB.id,
-        playerADeckRecipe: playerA.deckRecipe,
-        playerBDeckRecipe: playerB.deckRecipe,
-        cardDefs: allCardDefs,
-        seed: seed,
-      );
+      final result2 =
+          gameSetupService.execute(
+                playerAId: playerA.id,
+                playerBId: playerB.id,
+                playerADeckRecipe: playerA.deckRecipe,
+                playerBDeckRecipe: playerB.deckRecipe,
+                cardDefs: allCardDefs,
+                seed: seed,
+              )
+              as ApplyActionResultSuccess;
 
       expect(
         result1.state.phase.turnOwner,

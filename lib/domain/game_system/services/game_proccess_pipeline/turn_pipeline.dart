@@ -19,7 +19,12 @@ class TurnPipeline {
 
     for (final turnProcessStep in turnProcessSteps) {
       final result = turnProcessStep.execute(currentState);
-      accumulatedSteps.addAll(result.steps);
+
+      if (result case ApplyActionResultFailure()) {
+        return result;
+      }
+
+      accumulatedSteps.addAll((result as ApplyActionResultSuccess).steps);
       currentState = result.state;
 
       if (currentState.phase.battlePhase.isFinished ||
@@ -28,6 +33,9 @@ class TurnPipeline {
       }
     }
 
-    return ApplyActionResult(state: currentState, steps: accumulatedSteps);
+    return ApplyActionResult.success(
+      state: currentState,
+      steps: accumulatedSteps,
+    );
   }
 }

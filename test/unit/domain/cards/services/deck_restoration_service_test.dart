@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/deck_restoration_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -65,11 +66,13 @@ void main() {
     test('targetPlayerIdが存在しない場合、noStepsを返す', () {
       const nonExistentPlayerId = PlayerId(value: 'unknown_player');
 
-      final result = deckRestorationService.execute(
-        baseState,
-        nonExistentPlayerId,
-        Random(12345),
-      );
+      final result =
+          deckRestorationService.execute(
+                baseState,
+                nonExistentPlayerId,
+                Random(12345),
+              )
+              as ApplyActionResultSuccess;
 
       expect(result.steps, isEmpty);
       expect(result.state, equals(baseState));
@@ -83,22 +86,26 @@ void main() {
         players: {targetPlayerId: playerWithDeck},
       );
 
-      final result = deckRestorationService.execute(
-        stateWithDeck,
-        targetPlayerId,
-        Random(12345),
-      );
+      final result =
+          deckRestorationService.execute(
+                stateWithDeck,
+                targetPlayerId,
+                Random(12345),
+              )
+              as ApplyActionResultSuccess;
 
       expect(result.steps, isEmpty);
       expect(result.state, equals(stateWithDeck));
     });
 
     test('デッキが空の場合、墓地のカードがデッキに移動しシャッフルされる', () {
-      final result = deckRestorationService.execute(
-        baseState,
-        targetPlayerId,
-        Random(12345),
-      );
+      final result =
+          deckRestorationService.execute(
+                baseState,
+                targetPlayerId,
+                Random(12345),
+              )
+              as ApplyActionResultSuccess;
 
       final updatedPlayer = result.state.players[targetPlayerId]!;
       expect(updatedPlayer.graveyard, isEmpty);
@@ -130,11 +137,13 @@ void main() {
         players: {targetPlayerId: emptyGraveyardPlayer},
       );
 
-      final result = deckRestorationService.execute(
-        emptyGraveyardState,
-        targetPlayerId,
-        Random(12345),
-      );
+      final result =
+          deckRestorationService.execute(
+                emptyGraveyardState,
+                targetPlayerId,
+                Random(12345),
+              )
+              as ApplyActionResultSuccess;
 
       final updatedPlayer = result.state.players[targetPlayerId]!;
       expect(updatedPlayer.deck, isEmpty);

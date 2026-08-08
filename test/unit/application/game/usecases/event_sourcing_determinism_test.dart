@@ -2,6 +2,7 @@ import 'package:dereruministic/application/card/state/card_catalog_provider.dart
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
 import 'package:dereruministic/domain/card/data/basic_pack.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -52,11 +53,11 @@ void main() {
       for (final action in actionLogs) {
         final resultA = usecaseA.applyAction(current: stateA, action: action);
         stateA = resultA.state;
-        stepsA.addAll(resultA.steps);
+        stepsA.addAll((resultA as ApplyActionResultSuccess).steps);
 
         final resultB = usecaseB.applyAction(current: stateB, action: action);
         stateB = resultB.state;
-        stepsB.addAll(resultB.steps);
+        stepsB.addAll((resultB as ApplyActionResultSuccess).steps);
       }
 
       expect(stateA, equals(stateB));
@@ -116,12 +117,12 @@ void main() {
       for (final action in actionLogsA) {
         final resultA = usecaseA.applyAction(current: stateA, action: action);
         stateA = resultA.state;
-        stepsA.addAll(resultA.steps);
+        stepsA.addAll((resultA as ApplyActionResultSuccess).steps);
       }
       for (final action in actionLogsB) {
         final resultB = usecaseB.applyAction(current: stateB, action: action);
         stateB = resultB.state;
-        stepsB.addAll(resultB.steps);
+        stepsB.addAll((resultB as ApplyActionResultSuccess).steps);
       }
 
       final isSameState = stateA == stateB;
@@ -174,7 +175,7 @@ void main() {
           action: action,
         );
         stateDirect = result.state;
-        allSteps.addAll(result.steps);
+        allSteps.addAll((result as ApplyActionResultSuccess).steps);
       }
 
       final stateFromReplay = actionLogs.fold<GameState?>(

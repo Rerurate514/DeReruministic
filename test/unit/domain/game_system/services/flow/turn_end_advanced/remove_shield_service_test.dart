@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -38,7 +39,8 @@ void main() {
 
   group('RemoveShieldService', () {
     test('ターンプレイヤーのシールドのみがクリアされ、非ターンプレイヤーのシールドは維持される', () {
-      final result = removeShieldService.execute(baseState);
+      final result =
+          removeShieldService.execute(baseState) as ApplyActionResultSuccess;
 
       final statePlayerA = result.state.players[playerAId]!;
       final statePlayerB = result.state.players[playerBId]!;

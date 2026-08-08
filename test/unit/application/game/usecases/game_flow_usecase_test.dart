@@ -54,7 +54,7 @@ void main() {
 
   setUp(() {
     provideDummy<ApplyActionResult>(
-      ApplyActionResult(
+      ApplyActionResult.success(
         state: baseState,
         steps: const [],
       ),
@@ -115,12 +115,12 @@ void main() {
         firstTurnPlayerId: playerAId,
       );
 
-      final setupResult = ApplyActionResult(
+      final setupResult = ApplyActionResult.success(
         state: baseState,
         steps: const [setupStep],
       );
 
-      final expectedPipelineResult = ApplyActionResult(
+      final expectedPipelineResult = ApplyActionResult.success(
         state: baseState.copyWith(turnCount: 1),
         steps: const [setupStep],
       );
@@ -183,7 +183,7 @@ void main() {
         playerId: playerAId,
       );
 
-      final expectedPipelineResult = ApplyActionResult(
+      final expectedPipelineResult = ApplyActionResult.success(
         state: baseState.nextTurn(),
         steps: const [],
       );
@@ -231,7 +231,7 @@ void main() {
       );
 
       expect(result.state, equals(baseState));
-      expect(result.steps, isEmpty);
+      expect((result as ApplyActionResultSuccess).steps, isEmpty);
     });
 
     test('GameActionDiscardCard は Stateの変更がなく empty steps (noSteps) を返すこと', () {
@@ -247,7 +247,7 @@ void main() {
       );
 
       expect(result.state, equals(baseState));
-      expect(result.steps, isEmpty);
+      expect((result as ApplyActionResultSuccess).steps, isEmpty);
     });
 
     test(
@@ -265,7 +265,7 @@ void main() {
         );
 
         expect(result.state, equals(baseState));
-        expect(result.steps, isEmpty);
+        expect((result as ApplyActionResultSuccess).steps, isEmpty);
       },
     );
 
@@ -281,7 +281,7 @@ void main() {
       );
 
       expect(result.state, equals(baseState));
-      expect(result.steps, isEmpty);
+      expect((result as ApplyActionResultSuccess).steps, isEmpty);
     });
   });
 }

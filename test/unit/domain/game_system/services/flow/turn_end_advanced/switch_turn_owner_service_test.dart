@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -38,7 +39,8 @@ void main() {
 
   group('SwitchTurnOwnerService', () {
     test('nextTurnが呼び出されてターン所有者が更新され、GameStepEventTurnOwnerSwitchedが発行される', () {
-      final result = switchTurnOwnerService.execute(baseState);
+      final result =
+          switchTurnOwnerService.execute(baseState) as ApplyActionResultSuccess;
 
       expect(result.state, equals(baseState.nextTurn()));
 

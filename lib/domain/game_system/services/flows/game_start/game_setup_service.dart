@@ -77,6 +77,6 @@ class GameSetupService {
       firstTurnPlayerId: initialTurnOwner,
     );
 
-    return ApplyActionResult(state: newState, steps: [turnStartStep]);
+    return ApplyActionResult.success(state: newState, steps: [turnStartStep]);
   }
 }

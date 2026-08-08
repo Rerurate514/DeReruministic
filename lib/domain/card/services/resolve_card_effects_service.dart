@@ -4,6 +4,7 @@ import 'package:dereruministic/domain/card/value_objects/card_target_types.dart'
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'resolve_card_effects_service.g.dart';
@@ -27,15 +28,23 @@ class ResolveCardEffectsService {
     required GameActionPlayCard action,
     required List<CardEffects> effects,
   }) {
-    return effects.fold<ApplyActionResult>(
-      ApplyActionResult.noSteps(state: current),
-      (acc, effect) {
-        final result = _applySingleEffect(acc.state, action, effect);
-        return ApplyActionResult(
-          state: result.state,
-          steps: [...acc.steps, ...result.steps],
-        );
-      },
+    var currentState = current;
+    final allSteps = <GameStepEvent>[];
+
+    for (final effect in effects) {
+      final result = _applySingleEffect(currentState, action, effect);
+
+      if (result case ApplyActionResultFailure()) {
+        return result;
+      }
+
+      currentState = result.state;
+      allSteps.addAll((result as ApplyActionResultSuccess).steps);
+    }
+
+    return ApplyActionResult.success(
+      state: currentState,
+      steps: allSteps,
     );
   }
 

@@ -69,7 +69,7 @@ class CardDrawService {
     );
 
     if (remainingDeck.isNotEmpty) {
-      return ApplyActionResult(
+      return ApplyActionResult.success(
         state: newState,
         steps: [
           drawStep,
@@ -84,9 +84,11 @@ class CardDrawService {
       Random(state.seed),
     );
 
-    return ApplyActionResult(
-      state: result.state,
-      steps: [drawStep, cardMoveStep, ...result.steps],
+    return result.map(
+      success: (value) => value.copyWith(
+        steps: [drawStep, cardMoveStep, ...value.steps],
+      ),
+      failure: (value) => value,
     );
   }
 }

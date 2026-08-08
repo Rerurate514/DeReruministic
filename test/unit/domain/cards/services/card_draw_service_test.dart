@@ -64,7 +64,7 @@ void main() {
 
   setUp(() {
     provideDummy<ApplyActionResult>(
-      ApplyActionResult(
+      ApplyActionResult.success(
         state: baseState,
         steps: const [],
       ),
@@ -86,7 +86,7 @@ void main() {
         1,
       );
 
-      expect(result.steps, isEmpty);
+      expect((result as ApplyActionResultSuccess).steps, isEmpty);
       expect(result.state, equals(baseState));
       verifyNever(mockDeckRestorationService.execute(any, any, any));
     });
@@ -98,7 +98,7 @@ void main() {
         0,
       );
 
-      expect(result.steps, isEmpty);
+      expect((result as ApplyActionResultSuccess).steps, isEmpty);
       expect(result.state, equals(baseState));
       verifyNever(mockDeckRestorationService.execute(any, any, any));
     });
@@ -114,7 +114,7 @@ void main() {
       expect(updatedPlayer.deck, equals([dummyCard2]));
       expect(updatedPlayer.hand, equals([dummyCard1]));
 
-      expect(result.steps.length, equals(2));
+      expect((result as ApplyActionResultSuccess).steps.length, equals(2));
 
       final valueChangedStep = result.steps[0] as GameStepEventCardsDrawn;
       expect(valueChangedStep, isA<GameStepEventCardsDrawn>());
@@ -139,7 +139,7 @@ void main() {
       final restoredState = baseState.copyWith(seed: 99999);
 
       when(mockDeckRestorationService.execute(any, any, any)).thenReturn(
-        ApplyActionResult(
+        ApplyActionResult.success(
           state: restoredState,
           steps: const [restorationStep],
         ),
@@ -151,7 +151,7 @@ void main() {
         5,
       );
 
-      expect(result.steps.length, equals(3));
+      expect((result as ApplyActionResultSuccess).steps.length, equals(3));
       expect(result.steps[2], equals(restorationStep));
 
       verify(
@@ -183,7 +183,7 @@ void main() {
       );
 
       when(mockDeckRestorationService.execute(any, any, any)).thenReturn(
-        ApplyActionResult(
+        ApplyActionResult.success(
           state: singleCardState,
           steps: const [restorationStep],
         ),
@@ -195,7 +195,7 @@ void main() {
         1,
       );
 
-      expect(result.steps.length, equals(3));
+      expect((result as ApplyActionResultSuccess).steps.length, equals(3));
       expect(result.steps[2], equals(restorationStep));
 
       verify(

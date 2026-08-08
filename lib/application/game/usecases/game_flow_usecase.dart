@@ -70,7 +70,7 @@ class GameFlowUsecase {
   ApplyActionResult _applyGameStart(
     GameActionGameStart action,
   ) {
-    final initialState = gameSetupService.execute(
+    final initial = gameSetupService.execute(
       playerAId: action.playerAId,
       playerBId: action.playerBId,
       playerADeckRecipe: action.playerADeckRecipe,
@@ -80,7 +80,15 @@ class GameFlowUsecase {
     );
 
     final pipeline = pipelineFactory.createGameStartPipeline();
-    return pipeline.process(initialState.state, initialState.steps);
+
+    if (initial case ApplyActionResultFailure()) {
+      return initial;
+    }
+
+    return pipeline.process(
+      initial.state,
+      (initial as ApplyActionResultSuccess).steps,
+    );
   }
 
   ApplyActionResult _applyPlayCard(

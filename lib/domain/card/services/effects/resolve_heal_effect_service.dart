@@ -45,6 +45,6 @@ class ResolveHealEffectService {
       amount: actualHealAmount,
     );
 
-    return ApplyActionResult(state: newState, steps: [step]);
+    return ApplyActionResult.success(state: newState, steps: [step]);
   }
 }

@@ -54,7 +54,7 @@ class DeckRestorationService {
       count: restoredCards.length,
     );
 
-    return ApplyActionResult(
+    return ApplyActionResult.success(
       state: newState,
       steps: [moveStep, restoredStep],
     );

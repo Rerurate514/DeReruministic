@@ -2,6 +2,7 @@ import 'package:dereruministic/application/game/state/step_event_queue_notifier.
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -30,10 +31,14 @@ class GameNotifier extends _$GameNotifier {
       action: action,
     );
 
+    if (applyActionResult case ApplyActionResultFailure()) {
+      return;
+    }
+
     state = applyActionResult.state;
     ref
         .read(stepEventQueueProvider.notifier)
-        .enqueueAll(applyActionResult.steps);
+        .enqueueAll((applyActionResult as ApplyActionResultSuccess).steps);
     //await eventSourcingRepository.sendAction(action);
   }
 

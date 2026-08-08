@@ -19,6 +19,6 @@ class SwitchTurnOwnerService implements TurnProcessStep {
       newTurnPlayerId: newState.phase.turnOwner,
     );
 
-    return ApplyActionResult(state: newState, steps: [event]);
+    return ApplyActionResult.success(state: newState, steps: [event]);
   }
 }

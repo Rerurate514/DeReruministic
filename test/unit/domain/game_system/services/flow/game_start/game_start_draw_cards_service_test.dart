@@ -71,7 +71,7 @@ void main() {
 
   setUp(() {
     provideDummy<ApplyActionResult>(
-      ApplyActionResult(
+      ApplyActionResult.success(
         state: baseState,
         steps: const [],
       ),
@@ -129,7 +129,7 @@ void main() {
           GameSystemConstants.initialGameStartDrawCardsCount,
         ),
       ).thenReturn(
-        ApplyActionResult(
+        ApplyActionResult.success(
           state: stateAfterPlayerA,
           steps: const [stepA],
         ),
@@ -142,13 +142,15 @@ void main() {
           GameSystemConstants.initialGameStartDrawCardsCount,
         ),
       ).thenReturn(
-        ApplyActionResult(
+        ApplyActionResult.success(
           state: stateAfterPlayerB,
           steps: const [stepB],
         ),
       );
 
-      final result = gameStartDrawCardsService.execute(baseState);
+      final result =
+          gameStartDrawCardsService.execute(baseState)
+              as ApplyActionResultSuccess;
 
       verify(
         mockCardDrawService.execute(
@@ -174,7 +176,9 @@ void main() {
     test('プレイヤーリストが空の場合、状態は変化せず空のstepsを返す', () {
       final emptyPlayerState = baseState.copyWith(players: {});
 
-      final result = gameStartDrawCardsService.execute(emptyPlayerState);
+      final result =
+          gameStartDrawCardsService.execute(emptyPlayerState)
+              as ApplyActionResultSuccess;
 
       verifyNever(mockCardDrawService.execute(any, any, any));
 
