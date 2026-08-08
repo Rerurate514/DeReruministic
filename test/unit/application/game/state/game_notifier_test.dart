@@ -202,6 +202,7 @@ void main() {
             currentCost: 1,
             enteredHandAtTurn: 1,
           ),
+          dummyPlayer.id,
         ),
         returnsNormally,
       );
