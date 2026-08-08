@@ -12,24 +12,24 @@ sealed class EffectConditions with _$EffectConditions {
   const factory EffectConditions.targetHasBuffCondition({
     required BuffTypes buff,
     required CardTargetTypes target,
-  }) = TargetHasBuffCondition;
+  }) = EffectConditionTargetHasBuffCondition;
 
   const factory EffectConditions.targetHasDebuffCondition({
     required DebuffTypes debuff,
     required CardTargetTypes target,
-  }) = TargetHasDebuffCondition;
+  }) = EffectConditionTargetHasDebuffCondition;
 
   const factory EffectConditions.targetHpPercentageCondition({
     required CardTargetTypes target,
     required double percentage,
     required ComparisonOperator operator,
-  }) = TargetHpPercentageCondition;
+  }) = EffectConditionTargetHpPercentageCondition;
 
   const factory EffectConditions.targetHpValueCondition({
     required CardTargetTypes target,
     required int value,
     required ComparisonOperator operator,
-  }) = TargetHpValueCondition;
+  }) = EffectConditionTargetHpValueCondition;
 
   factory EffectConditions.fromJson(Map<String, dynamic> json) =>
       _$EffectConditionsFromJson(json);
