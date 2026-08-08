@@ -22,11 +22,11 @@ class ResolveCardEffectsService {
 
   final EffectResolver effectResolver;
 
-  ApplyActionResult execute(
-    GameState current,
-    GameActionPlayCard action,
-    List<CardEffects> effects,
-  ) {
+  ApplyActionResult execute({
+    required GameState current,
+    required GameActionPlayCard action,
+    required List<CardEffects> effects,
+  }) {
     return effects.fold<ApplyActionResult>(
       ApplyActionResult.noSteps(state: current),
       (acc, effect) {
