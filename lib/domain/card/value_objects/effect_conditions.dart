@@ -9,14 +9,17 @@ part 'effect_conditions.freezed.dart';
 
 @freezed
 sealed class EffectConditions with _$EffectConditions {
+  factory EffectConditions.fromJson(Map<String, dynamic> json) =>
+      _$EffectConditionsFromJson(json);
+
   const factory EffectConditions.targetHasBuffCondition({
-    required BuffTypes buff,
     required CardTargetTypes target,
+    required BuffTypes buff,
   }) = EffectConditionTargetHasBuffCondition;
 
   const factory EffectConditions.targetHasDebuffCondition({
-    required DebuffTypes debuff,
     required CardTargetTypes target,
+    required DebuffTypes debuff,
   }) = EffectConditionTargetHasDebuffCondition;
 
   const factory EffectConditions.targetHpPercentageCondition({
@@ -31,6 +34,6 @@ sealed class EffectConditions with _$EffectConditions {
     required ComparisonOperator operator,
   }) = EffectConditionTargetHpValueCondition;
 
-  factory EffectConditions.fromJson(Map<String, dynamic> json) =>
-      _$EffectConditionsFromJson(json);
+  @override
+  CardTargetTypes get target;
 }
