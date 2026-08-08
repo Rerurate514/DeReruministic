@@ -158,7 +158,7 @@ const List<CardDefinition> basicPack = [
         ),
         effectCondition: EffectConditions.targetHpPercentageCondition(
           target: CardTargetTypes.self,
-          percentage: 0.5,
+          percentage: 50,
           operator: ComparisonOperator.lessThan,
         ),
       ),
