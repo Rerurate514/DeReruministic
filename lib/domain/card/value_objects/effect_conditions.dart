@@ -24,7 +24,7 @@ sealed class EffectConditions with _$EffectConditions {
 
   const factory EffectConditions.targetHpPercentageCondition({
     required CardTargetTypes target,
-    required double percentage,
+    required int percentage,
     required ComparisonOperator operator,
   }) = EffectConditionTargetHpPercentageCondition;
 
