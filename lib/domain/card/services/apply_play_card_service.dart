@@ -1,9 +1,30 @@
-import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
+import 'package:dereruministic/domain/card/services/check_card_condition_service.dart';
+import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'apply_play_card_service.g.dart';
+
+@riverpod
+ApplyPlayCardService applyPlayCardService(Ref ref) {
+  return ApplyPlayCardService(
+    checkCardConditionService: ref.read(checkCardConditionServiceProvider),
+    resolveCardEffectsService: ref.read(resolveCardEffectsServiceProvider),
+  );
+}
 
 class ApplyPlayCardService {
-  GameState execute({
+  const ApplyPlayCardService({
+    required this.checkCardConditionService,
+    required this.resolveCardEffectsService,
+  });
+
+  final CheckCardConditionService checkCardConditionService;
+  final ResolveCardEffectsService resolveCardEffectsService;
+
+  ApplyActionResult execute({
     required GameState state,
     required GameActionPlayCard action,
   }) {
@@ -19,6 +40,25 @@ class ApplyPlayCardService {
       (card) => card.instanceId == cardInstanceId,
     );
 
-    
+    final applyEffects = usedCard.definition.effects
+        .where(
+          (effect) => checkCardConditionService.execute(
+            current: state,
+            action: action,
+            condition: effect.effectCondition,
+            cardUsedPlayer: cardUsedPlayer,
+          ),
+        )
+        .map((effectDetails) => effectDetails.cardEffect)
+        .toList();
+
+    //TODO
+    //カードの消費処理
+
+    return resolveCardEffectsService.execute(
+      current: state,
+      action: action,
+      effects: applyEffects,
+    );
   }
 }
