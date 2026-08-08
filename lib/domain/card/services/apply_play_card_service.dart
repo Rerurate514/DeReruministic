@@ -10,5 +10,15 @@ class ApplyPlayCardService {
     // TODO: ActionのplayerIdから現在のこのカードを使用したプレイヤーを選択し、
     // ActionのinstanceIdとplayerのhandからGameCardを選択し、
     // そこからeffectsResolverとstateResolverを処理する
+    //
+    final cardUsedPlayer = state.players[action.playerId]!;
+    final cardInstanceId = action.cardInstanceId;
+    final hand = cardUsedPlayer.hand;
+
+    final usedCard = hand.firstWhere(
+      (card) => card.instanceId == cardInstanceId,
+    );
+
+    
   }
 }
