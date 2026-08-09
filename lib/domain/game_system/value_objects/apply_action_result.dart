@@ -27,15 +27,3 @@ sealed class ApplyActionResult with _$ApplyActionResult {
   factory ApplyActionResult.fromJson(Map<String, dynamic> json) =>
       _$ApplyActionResultFromJson(json);
 }
-
-extension ApplyActionResultEx on ApplyActionResult {
-  ApplyActionResult switching(GameState state, List<GameStepEvent> steps) {
-    return switch (this) {
-      ApplyActionResultSuccess() => ApplyActionResult.success(
-        state: state,
-        steps: steps,
-      ),
-      ApplyActionResultFailure() => this,
-    };
-  }
-}
