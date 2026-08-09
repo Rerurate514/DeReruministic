@@ -84,7 +84,10 @@ class ApplyPlayCardService {
     );
 
     return switch (resolveResult) {
-      ApplyActionResultFailure() => resolveResult,
+      ApplyActionResultFailure() => ApplyActionResult.failure(
+        state: state,
+        reason: resolveResult.reason,
+      ),
       ApplyActionResultSuccess(:final state, :final steps) =>
         ApplyActionResult.success(
           state: state,
