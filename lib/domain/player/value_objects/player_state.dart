@@ -1,4 +1,7 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
+import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/player/constants/player_constants.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
@@ -56,5 +59,56 @@ sealed class PlayerState with _$PlayerState {
 extension PlayerStateEx on PlayerState {
   PlayerState updateCost(int amount) {
     return copyWith(currentCost: currentCost + amount);
+  }
+
+  PlayerState consumeCost(int amount) {
+    return copyWith(currentCost: currentCost + amount);
+  }
+
+  PlayerState consumeCard(GameCard card) {
+    return copyWith(
+      hand: hand
+          .where(
+            (handCard) => handCard.instanceId != card.instanceId,
+          )
+          .toList(),
+      graveyard: [...graveyard, card],
+    );
+  }
+
+  PlayerState exhaustCard(GameCard card) {
+    return copyWith(
+      hand: hand
+          .where(
+            (handCard) => handCard.instanceId != card.instanceId,
+          )
+          .toList(),
+      exhausted: [...exhausted, card],
+    );
+  }
+
+  PlayerState moveCardFromHand(GameCardInstanceId instanceId, CardZone to) {
+    final card = hand.firstWhereOrNull((c) => c.instanceId == instanceId);
+    if (card == null) {
+      return this;
+    }
+
+    final nextHand = hand.where((c) => c.instanceId != instanceId).toList();
+
+    return switch (to) {
+      CardZone.graveyard => copyWith(
+        hand: nextHand,
+        graveyard: [...graveyard, card],
+      ),
+      CardZone.exhausted => copyWith(
+        hand: nextHand,
+        exhausted: [...exhausted, card],
+      ),
+      CardZone.deck => copyWith(
+        hand: nextHand,
+        deck: [...deck, card],
+      ),
+      CardZone.hand => this,
+    };
   }
 }

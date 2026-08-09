@@ -1,4 +1,6 @@
+import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/player/converter/player_map_converter.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
@@ -47,6 +49,29 @@ extension GameStateEx on GameState {
         battlePhase: BattlePhase.turnStart,
         turnOwner: nextOwner,
       ),
+    );
+  }
+
+  GameState moveCardFromHand({
+    required PlayerId playerId,
+    required GameCardInstanceId cardInstanceId,
+    required CardZone to,
+  }) {
+    final player = players[playerId];
+    if (player == null) {
+      return this;
+    }
+
+    final updatedPlayer = player.moveCardFromHand(
+      cardInstanceId,
+      to,
+    );
+
+    return copyWith(
+      players: {
+        ...players,
+        playerId: updatedPlayer,
+      },
     );
   }
 }
