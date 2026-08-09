@@ -100,7 +100,11 @@ void main() {
       );
       final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(result, const ValidationResultSuccess());
     });
@@ -115,7 +119,11 @@ void main() {
       );
       final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(result, const ValidationResultSuccess());
     });
@@ -130,7 +138,11 @@ void main() {
       );
       final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(
         result,
@@ -151,7 +163,11 @@ void main() {
       );
       final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(
         result,
@@ -172,7 +188,11 @@ void main() {
       );
       final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(
         result,
@@ -193,7 +213,11 @@ void main() {
         cardInstanceId: 'card1',
       );
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(
         result,
@@ -215,7 +239,11 @@ void main() {
         cardInstanceId: 'not_in_hand',
       );
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(
         result,
@@ -235,7 +263,11 @@ void main() {
       );
       final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(
         result,
@@ -259,7 +291,11 @@ void main() {
       );
       final action = buildAction(playerId: playerId, cardInstanceId: 'cheap');
 
-      final result = validator.validate(state, action);
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: action.playerId,
+        usedCardInstanceId: action.cardInstanceId,
+      );
 
       expect(result, const ValidationResultSuccess());
     });
