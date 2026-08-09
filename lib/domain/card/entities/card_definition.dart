@@ -19,3 +19,7 @@ sealed class CardDefinition with _$CardDefinition {
   factory CardDefinition.fromJson(Map<String, dynamic> json) =>
       _$CardDefinitionFromJson(json);
 }
+
+extension CardDefinitionEx on CardDefinition {
+  bool get isExhaustCard => states.any((state) => state is CardStateExhaust);
+}
