@@ -11,7 +11,7 @@ sealed class CardRuntimeStates with _$CardRuntimeStates {
 
   const factory CardRuntimeStates.countdown({
     required int remainingTurns,
-  }) = CardRuntimeStateTimerState;
+  }) = CardRuntimeStateCountdownState;
 
   const factory CardRuntimeStates.decay({
     required int remainingTurns,
