@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
+import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/game_system/services/play_card_validator.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
@@ -51,9 +52,9 @@ class ConsumeCardService {
       );
     }
 
-    final destinationZone = card.definition.isExhaustCard
+    final destinationZone = card.definition.hasState<CardStateExhaust>()
         ? CardZone.exhausted
-        : card.definition.isRecycleCard
+        : card.definition.hasState<CardStateRecycle>()
         ? CardZone.deck
         : CardZone.graveyard;
 
