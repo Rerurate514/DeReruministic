@@ -1,5 +1,6 @@
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
+import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
@@ -23,11 +24,13 @@ import 'game_flow_usecase_test.mocks.dart';
   MockSpec<ITurnPipelineFactory>(),
   MockSpec<TurnPipeline>(),
   MockSpec<GameSetupService>(),
+  MockSpec<ApplyPlayCardService>(),
 ])
 void main() {
   late MockITurnPipelineFactory mockPipelineFactory;
   late MockTurnPipeline mockTurnPipeline;
   late MockGameSetupService mockGameSetupService;
+  late MockApplyPlayCardService mockApplyPlayCardService;
 
   late Player mockPlayer;
   late Player mockEnemy;
@@ -63,6 +66,7 @@ void main() {
     mockPipelineFactory = MockITurnPipelineFactory();
     mockTurnPipeline = MockTurnPipeline();
     mockGameSetupService = MockGameSetupService();
+    mockApplyPlayCardService = MockApplyPlayCardService();
 
     mockPlayer = const Player(
       id: playerAId,
@@ -78,6 +82,7 @@ void main() {
     gameFlowUsecase = GameFlowUsecase(
       pipelineFactory: mockPipelineFactory,
       gameSetupService: mockGameSetupService,
+      applyPlayCardService: mockApplyPlayCardService,
       cardCatalog: [],
     );
   });
@@ -218,22 +223,6 @@ void main() {
   });
 
   group('GameFlowUsecase - 未実装/Stubアクション (noSteps)', () {
-    test('GameActionPlayCard は Stateの変更がなく empty steps (noSteps) を返すこと', () {
-      const action = GameActions.playCard(
-        id: actionId,
-        playerId: playerAId,
-        cardInstanceId: cardInstanceId,
-      );
-
-      final result = gameFlowUsecase.applyAction(
-        current: baseState,
-        action: action,
-      );
-
-      expect(result.state, equals(baseState));
-      expect((result as ApplyActionResultSuccess).steps, isEmpty);
-    });
-
     test('GameActionDiscardCard は Stateの変更がなく empty steps (noSteps) を返すこと', () {
       const action = GameActions.discardCard(
         id: actionId,

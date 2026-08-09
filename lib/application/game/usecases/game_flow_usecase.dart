@@ -1,5 +1,6 @@
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
+import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/i_turn_pipeline_factory.dart';
@@ -17,6 +18,7 @@ GameFlowUsecase gameFlowUsecase(Ref ref) {
     cardCatalog: ref.read(cardCatalogProvider),
     pipelineFactory: ref.read(turnPipelineFactoryProvider),
     gameSetupService: ref.read(gameSetupServiceProvider),
+    applyPlayCardService: ref.read(applyPlayCardServiceProvider),
   );
 }
 
@@ -25,11 +27,13 @@ class GameFlowUsecase {
     required this.cardCatalog,
     required this.pipelineFactory,
     required this.gameSetupService,
+    required this.applyPlayCardService,
   });
 
   final List<CardDefinition> cardCatalog;
   final ITurnPipelineFactory pipelineFactory;
   final GameSetupService gameSetupService;
+  final ApplyPlayCardService applyPlayCardService;
 
   ApplyActionResult applyAction({
     required GameState? current,
@@ -95,7 +99,12 @@ class GameFlowUsecase {
     GameState current,
     GameActionPlayCard action,
   ) {
-    return ApplyActionResult.noSteps(state: current);
+    final applyResult = applyPlayCardService.execute(
+      state: current,
+      action: action,
+    );
+
+    return applyResult;
   }
 
   ApplyActionResult _applyDiscardCard(
