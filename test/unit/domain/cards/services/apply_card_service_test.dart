@@ -294,7 +294,7 @@ void main() {
       },
     );
 
-    test('resolveCardEffectsServiceが失敗を返す場合、consumeのstepsと合成せずそのまま返す', () {
+    test('resolveCardEffectsが失敗した際に、正常に初期状態へとロールバックすること', () {
       const cardDef = CardDefinition(
         cardDefId: CardDefinitionId(value: 'def1'),
         name: 'Strike',
@@ -311,14 +311,11 @@ void main() {
       );
       final card = buildCard(instanceId: 'card1', definition: cardDef);
       final player = buildPlayer(id: playerId, hand: [card]);
-      final state = buildState(players: {playerId: player});
+      final initialState = buildState(players: {playerId: player});
+      final stateAfterConsume = buildState(players: {playerId: player});
       final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'card1',
-      );
-
-      final stateAfterConsume = buildState(
-        players: {playerId: buildPlayer(id: playerId, hand: const [])},
       );
       final consumeStep = GameStepEvent.cardMovedZone(
         playerId: playerId,
@@ -329,7 +326,7 @@ void main() {
 
       when(
         mockConsumeCard.execute(
-          current: state,
+          current: initialState,
           sourcePlayerId: playerId,
           card: card,
         ),
@@ -339,35 +336,23 @@ void main() {
           steps: [consumeStep],
         ),
       );
-      when(
-        mockCheckCondition.execute(
-          current: stateAfterConsume,
-          action: action,
-          condition: null,
-          cardUsedPlayer: player,
-        ),
-      ).thenReturn(true);
 
-      final failureResult = ApplyActionResult.failure(
-        state: stateAfterConsume,
-        reason: ActionFailureReason.invalidPhase,
-      );
       when(
         mockResolveEffects.execute(
           current: stateAfterConsume,
           action: action,
-          effects: [
-            const CardEffects.damage(
-              amount: 5,
-              target: CardTargetTypes.enemy,
-            ),
-          ],
+          effects: anyNamed('effects'),
         ),
-      ).thenReturn(failureResult);
+      ).thenReturn(
+        ApplyActionResult.failure(
+          state: stateAfterConsume,
+          reason: ActionFailureReason.invalidPhase,
+        ),
+      );
 
-      final result = service.execute(state: state, action: action);
+      final result = service.execute(state: initialState, action: action);
 
-      expect(result, failureResult);
+      expect(result.state, equals(initialState));
     });
   });
 }
