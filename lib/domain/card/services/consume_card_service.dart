@@ -53,6 +53,8 @@ class ConsumeCardService {
 
     final destinationZone = card.definition.isExhaustCard
         ? CardZone.exhausted
+        : card.definition.isRecycleCard
+        ? CardZone.deck
         : CardZone.graveyard;
 
     final newState = current.moveCardFromHand(

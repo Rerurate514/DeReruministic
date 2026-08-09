@@ -22,4 +22,5 @@ sealed class CardDefinition with _$CardDefinition {
 
 extension CardDefinitionEx on CardDefinition {
   bool get isExhaustCard => states.any((state) => state is CardStateExhaust);
+  bool get isRecycleCard => states.any((state) => state is CardStateRecycle);
 }
