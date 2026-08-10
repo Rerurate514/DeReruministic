@@ -125,7 +125,7 @@ GameActionPlayCard buildAction({
   required String cardInstanceId,
 }) {
   return GameActionPlayCard(
-    id: GameActionsId(value: 'action_1'),
+    id: const GameActionsId(value: 'action_1'),
     playerId: playerId,
     cardInstanceId: GameCardInstanceId(value: cardInstanceId),
   );
