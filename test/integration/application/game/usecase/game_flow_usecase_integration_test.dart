@@ -19,6 +19,7 @@ import 'package:dereruministic/domain/card/value_objects/card_effects_details.da
 import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
+import 'package:dereruministic/domain/card/value_objects/comparison_operator.dart';
 import 'package:dereruministic/domain/card/value_objects/effect_conditions.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
@@ -37,6 +38,8 @@ import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 
@@ -94,6 +97,7 @@ PlayerState buildPlayer({
   List<GameCard> graveyard = const [],
   List<GameCard> exhausted = const [],
   List<BuffState> buffs = const [],
+  List<DebuffState> debuffs = const [],
 }) {
   return PlayerState(
     id: id,
@@ -106,7 +110,7 @@ PlayerState buildPlayer({
     graveyard: graveyard,
     exhausted: exhausted,
     buffs: buffs,
-    debuffs: const [],
+    debuffs: debuffs,
     cardsPlayedThisTurn: 0,
     maxHandSize: 5,
     pendingRecoilCost: 0,
@@ -488,5 +492,536 @@ void main() {
           .single;
       expect(recycleState.remainingCount, 0);
     });
+  });
+
+  group('GameFlowUsecase.applyAction - GameActionPlayCard(その他の効果・条件パターン)', () {
+    test('1枚のカードに複数効果(自分回復+相手ダメージ)がある場合、両方とも反映される', () {
+      const comboDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_combo'),
+        name: 'Life Drain',
+        baseCost: 2,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 6,
+              target: CardTargetTypes.enemy,
+            ),
+          ),
+          CardEffectsDetails(
+            cardEffect: CardEffects.heal(
+              amount: 4,
+              target: CardTargetTypes.self,
+            ),
+          ),
+        ],
+        states: [],
+      );
+      final card = buildCard(
+        instanceId: 'combo1',
+        definition: comboDef,
+        currentCost: 2,
+      );
+      final player = buildPlayer(id: playerId, hp: 10, hand: [card]);
+      final enemy = buildPlayer(id: enemyId);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(playerId: playerId, cardInstanceId: 'combo1');
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      final success = result as ApplyActionResultSuccess;
+      expect(success.state.players[enemyId]!.hp, 14); // 20 - 6
+      expect(success.state.players[playerId]!.hp, 14); // 10 + 4
+
+      // ダメージ・回復・ゾーン移動の3ステップ
+      expect(success.steps, hasLength(3));
+      expect(success.steps, contains(isA<GameStepEventDamageDealt>()));
+      expect(success.steps, contains(isA<GameStepEventHealed>()));
+      expect(success.steps, contains(isA<GameStepEventCardMovedZone>()));
+    });
+
+    test('targetHpPercentageConditionを満たさない場合、追加ダメージ効果は発動しない', () {
+      const finisherDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_finisher'),
+        name: 'Finisher',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 15,
+              target: CardTargetTypes.enemy,
+            ),
+            effectCondition: EffectConditions.targetHpPercentageCondition(
+              target: CardTargetTypes.enemy,
+              percentage: 30,
+              operator: ComparisonOperator.lessOrEqual,
+            ),
+          ),
+        ],
+        states: [],
+      );
+      final card = buildCard(
+        instanceId: 'finisher1',
+        definition: finisherDef,
+        currentCost: 1,
+      );
+      final player = buildPlayer(id: playerId, hand: [card]);
+      // 相手はHP満タン(30%以下ではない)なので条件を満たさない
+      final enemy = buildPlayer(id: enemyId);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(
+        playerId: playerId,
+        cardInstanceId: 'finisher1',
+      );
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      final success = result as ApplyActionResultSuccess;
+      expect(success.state.players[enemyId]!.hp, 20); // 変化なし
+      expect(success.steps, hasLength(1)); // ゾーン移動のみ
+    });
+
+    test('targetHpPercentageConditionを満たす場合、追加ダメージ効果が発動する', () {
+      const finisherDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_finisher'),
+        name: 'Finisher',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 15,
+              target: CardTargetTypes.enemy,
+            ),
+            effectCondition: EffectConditions.targetHpPercentageCondition(
+              target: CardTargetTypes.enemy,
+              percentage: 30,
+              operator: ComparisonOperator.lessOrEqual,
+            ),
+          ),
+        ],
+        states: [],
+      );
+      final card = buildCard(
+        instanceId: 'finisher1',
+        definition: finisherDef,
+        currentCost: 1,
+      );
+      final player = buildPlayer(id: playerId, hand: [card]);
+      // 相手のHPが30%(6/20)以下なので条件を満たす
+      final enemy = buildPlayer(id: enemyId, hp: 5);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(
+        playerId: playerId,
+        cardInstanceId: 'finisher1',
+      );
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      final success = result as ApplyActionResultSuccess;
+      expect(success.state.players[enemyId]!.hp, 0); // 5 - 15 -> 0でクランプ
+      expect(success.steps, hasLength(2));
+    });
+
+    test('targetHasDebuffConditionを満たす場合のみ発動する追加効果', () {
+      const punishDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_punish'),
+        name: 'Punish',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 8,
+              target: CardTargetTypes.enemy,
+            ),
+            effectCondition: EffectConditions.targetHasDebuffCondition(
+              target: CardTargetTypes.enemy,
+              debuff: DebuffTypes.vulnerable,
+            ),
+          ),
+        ],
+        states: [],
+      );
+      final card = buildCard(
+        instanceId: 'punish1',
+        definition: punishDef,
+        currentCost: 1,
+      );
+      final player = buildPlayer(id: playerId, hand: [card]);
+      final enemyWithoutDebuff = buildPlayer(id: enemyId);
+      final stateWithout = buildState(
+        players: {playerId: player, enemyId: enemyWithoutDebuff},
+        turnOwner: playerId,
+      );
+      final action = buildAction(playerId: playerId, cardInstanceId: 'punish1');
+
+      final resultWithout = usecase.applyAction(
+        current: stateWithout,
+        action: action,
+      );
+      final successWithout = resultWithout as ApplyActionResultSuccess;
+      expect(successWithout.state.players[enemyId]!.hp, 20); // 未発動
+
+      // vulnerableを付与した状態で再度プレイ
+      final cardAgain = buildCard(
+        instanceId: 'punish2',
+        definition: punishDef,
+        currentCost: 1,
+      );
+      final playerAgain = buildPlayer(
+        id: playerId,
+        hand: [cardAgain],
+      );
+      final enemyWithDebuff = buildPlayer(
+        id: enemyId,
+        debuffs: const [
+          DebuffState(debuff: DebuffTypes.vulnerable, stack: 1),
+        ],
+      );
+      final stateWith = buildState(
+        players: {playerId: playerAgain, enemyId: enemyWithDebuff},
+        turnOwner: playerId,
+      );
+      final actionAgain = buildAction(
+        playerId: playerId,
+        cardInstanceId: 'punish2',
+      );
+
+      final resultWith = usecase.applyAction(
+        current: stateWith,
+        action: actionAgain,
+      );
+      final successWith = resultWith as ApplyActionResultSuccess;
+      expect(successWith.state.players[enemyId]!.hp, 11); // 20 - (8 + 1)
+    });
+
+    test('回復量がmaxHpを超える場合、maxHpでクランプされる', () {
+      const bigHealDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_big_heal'),
+        name: 'Full Restore',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.heal(
+              amount: 100,
+              target: CardTargetTypes.self,
+            ),
+          ),
+        ],
+        states: [],
+      );
+      final card = buildCard(
+        instanceId: 'heal1',
+        definition: bigHealDef,
+        currentCost: 1,
+      );
+      final player = buildPlayer(id: playerId, hp: 18, hand: [card]);
+      final enemy = buildPlayer(id: enemyId);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(playerId: playerId, cardInstanceId: 'heal1');
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      final success = result as ApplyActionResultSuccess;
+      expect(success.state.players[playerId]!.hp, 20); // maxHpでクランプ
+
+      final healStep = success.steps.whereType<GameStepEventHealed>().single;
+      expect(healStep.amount, 2); // 実際の回復量は20-18=2
+    });
+
+    test('攻撃側のatkDebuffが大きい場合、ダメージは0未満にならず0でクランプされる', () {
+      const weakStrikeDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_weak_strike'),
+        name: 'Weak Strike',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 5,
+              target: CardTargetTypes.enemy,
+            ),
+          ),
+        ],
+        states: [],
+      );
+      final card = buildCard(
+        instanceId: 'weak1',
+        definition: weakStrikeDef,
+        currentCost: 1,
+      );
+      final player = buildPlayer(
+        id: playerId,
+        hand: [card],
+        debuffs: const [
+          DebuffState(debuff: DebuffTypes.atkDebuff, stack: 100),
+        ],
+      );
+      final enemy = buildPlayer(id: enemyId);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(playerId: playerId, cardInstanceId: 'weak1');
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      final success = result as ApplyActionResultSuccess;
+      expect(success.state.players[enemyId]!.hp, 20); // ダメージ0
+
+      final damageStep = success.steps
+          .whereType<GameStepEventDamageDealt>()
+          .single;
+      expect(damageStep.hpDamage, 0);
+      expect(damageStep.shieldDamage, 0);
+    });
+  });
+
+  group('GameFlowUsecase.applyAction - GameActionPlayCard(CardStatesの影響確認)', () {
+    test(
+      'exhaust以外の静的flag系state(undiscardable/overload/conceal/engrave/chain/infect)は'
+      'ゾーン遷移に影響せず、通常通りgraveyardへ送られる',
+      () {
+        const flagsDef = CardDefinition(
+          cardDefId: CardDefinitionId(value: 'def_flags'),
+          name: 'Flags Card',
+          baseCost: 1,
+          effects: [
+            CardEffectsDetails(
+              cardEffect: CardEffects.damage(
+                amount: 3,
+                target: CardTargetTypes.enemy,
+              ),
+            ),
+          ],
+          states: [
+            CardStates.undiscardable(),
+            CardStates.overload(amount: 2),
+            CardStates.conceal(),
+            CardStates.engrave(subTypeEffect: 'fire'),
+            CardStates.chain(subTypeEffect: 'fire', order: 1),
+            CardStates.infect(),
+          ],
+        );
+        final card = buildCard(
+          instanceId: 'flags1',
+          definition: flagsDef,
+          currentCost: 1,
+        );
+        final player = buildPlayer(id: playerId, hand: [card]);
+        final enemy = buildPlayer(id: enemyId);
+        final state = buildState(
+          players: {playerId: player, enemyId: enemy},
+          turnOwner: playerId,
+        );
+        final action = buildAction(
+          playerId: playerId,
+          cardInstanceId: 'flags1',
+        );
+
+        final result = usecase.applyAction(current: state, action: action);
+
+        final success = result as ApplyActionResultSuccess;
+        // 効果自体は普通に発動する
+        expect(success.state.players[enemyId]!.hp, 17); // 20 - 3
+        // どのstateもゾーン遷移には影響しない
+        expect(success.state.players[playerId]!.graveyard, hasLength(1));
+        expect(success.state.players[playerId]!.exhausted, isEmpty);
+        expect(success.state.players[playerId]!.deck, isEmpty);
+      },
+    );
+
+    test(
+      'countdown/decay/retainのstateは、プレイ時のゾーン遷移・効果発動に影響しない',
+      () {
+        const timedDef = CardDefinition(
+          cardDefId: CardDefinitionId(value: 'def_timed'),
+          name: 'Timed Card',
+          baseCost: 1,
+          effects: [
+            CardEffectsDetails(
+              cardEffect: CardEffects.damage(
+                amount: 5,
+                target: CardTargetTypes.enemy,
+              ),
+            ),
+          ],
+          states: [
+            CardStates.countdown(turns: 3),
+            CardStates.decay(turns: 2),
+            CardStates.retain(turnThreshold: 2, costReduction: 1),
+          ],
+        );
+        final card = buildCard(
+          instanceId: 'timed1',
+          definition: timedDef,
+          currentCost: 1,
+        );
+        final player = buildPlayer(id: playerId, hand: [card]);
+        final enemy = buildPlayer(id: enemyId);
+        final state = buildState(
+          players: {playerId: player, enemyId: enemy},
+          turnOwner: playerId,
+        );
+        final action = buildAction(
+          playerId: playerId,
+          cardInstanceId: 'timed1',
+        );
+
+        final result = usecase.applyAction(current: state, action: action);
+
+        final success = result as ApplyActionResultSuccess;
+        expect(success.state.players[enemyId]!.hp, 15); // 20 - 5
+        expect(success.state.players[playerId]!.graveyard, hasLength(1));
+      },
+    );
+
+    test('exhaustは、他のflag系stateやrecycle(定義)と併記されていても最優先でexhaustedへ行く', () {
+      const exhaustPriorityDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_exhaust_priority'),
+        name: 'Exhaust Priority',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 3,
+              target: CardTargetTypes.enemy,
+            ),
+          ),
+        ],
+        states: [
+          CardStates.exhaust(),
+          CardStates.recycle(count: 3),
+          CardStates.conceal(),
+        ],
+      );
+      final card = buildCard(
+        instanceId: 'exhaustPriority1',
+        definition: exhaustPriorityDef,
+        currentCost: 1,
+      );
+      final player = buildPlayer(id: playerId, hand: [card]);
+      final enemy = buildPlayer(id: enemyId);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(
+        playerId: playerId,
+        cardInstanceId: 'exhaustPriority1',
+      );
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      final success = result as ApplyActionResultSuccess;
+      expect(success.state.players[playerId]!.exhausted, hasLength(1));
+      expect(success.state.players[playerId]!.deck, isEmpty);
+      expect(success.state.players[playerId]!.graveyard, isEmpty);
+    });
+
+    test('recycle(count: null)は無限リサイクルとして扱われ、常にdeckへ戻る', () {
+      // buildInitialRuntimeStates()は count が null の場合、
+      // 意図的にruntime stateを作らない(=definition.hasState任せの無限リサイクル)。
+      // そのためGameCard側もruntimeStates: []のままで表現する。
+      const infiniteRecycleDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_infinite_recycle'),
+        name: 'Infinite Recycle Card',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 2,
+              target: CardTargetTypes.enemy,
+            ),
+          ),
+        ],
+        states: [CardStates.recycle()],
+      );
+      final card = buildCard(
+        instanceId: 'infiniteRecycle1',
+        definition: infiniteRecycleDef,
+        currentCost: 1,
+      );
+      final player = buildPlayer(id: playerId, hand: [card]);
+      final enemy = buildPlayer(id: enemyId);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(
+        playerId: playerId,
+        cardInstanceId: 'infiniteRecycle1',
+      );
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      final success = result as ApplyActionResultSuccess;
+      expect(success.state.players[enemyId]!.hp, 18); // 効果は発動する
+      expect(success.state.players[playerId]!.deck, hasLength(1));
+      expect(success.state.players[playerId]!.graveyard, isEmpty);
+
+      // remainingCountを持つruntime state自体が存在しない(=countの概念がない)
+      final deckCard = success.state.players[playerId]!.deck.single;
+      expect(
+        deckCard.runtimeStates.whereType<CardRuntimeStateRecycleState>(),
+        isEmpty,
+      );
+    });
+
+    test(
+      'recycle(count: 0)相当のruntime(remainingCount: 0)を持つカードは、graveyardへ送られる',
+      () {
+        // buildInitialRuntimeStates()がcount: 0から作るruntime stateを
+        // 手動で再現(remainingCount: 0, maxCount: 0)。
+        const zeroRecycleDef = CardDefinition(
+          cardDefId: CardDefinitionId(value: 'def_zero_recycle'),
+          name: 'Zero Recycle Card',
+          baseCost: 1,
+          effects: [
+            CardEffectsDetails(
+              cardEffect: CardEffects.damage(
+                amount: 2,
+                target: CardTargetTypes.enemy,
+              ),
+            ),
+          ],
+          states: [CardStates.recycle(count: 0)],
+        );
+        final card = buildCard(
+          instanceId: 'zeroRecycle1',
+          definition: zeroRecycleDef,
+          currentCost: 1,
+          runtimeStates: const [
+            CardRuntimeStates.recycle(maxCount: 0, remainingCount: 0),
+          ],
+        );
+        final player = buildPlayer(id: playerId, hand: [card]);
+        final enemy = buildPlayer(id: enemyId);
+        final state = buildState(
+          players: {playerId: player, enemyId: enemy},
+          turnOwner: playerId,
+        );
+        final action = buildAction(
+          playerId: playerId,
+          cardInstanceId: 'zeroRecycle1',
+        );
+
+        final result = usecase.applyAction(current: state, action: action);
+
+        final success = result as ApplyActionResultSuccess;
+        expect(success.state.players[enemyId]!.hp, 18); // 効果は発動する
+        expect(success.state.players[playerId]!.deck, isEmpty);
+        expect(success.state.players[playerId]!.graveyard, hasLength(1));
+      },
+    );
   });
 }
