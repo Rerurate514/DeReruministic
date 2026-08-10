@@ -13,15 +13,15 @@ RemoveShieldService removeShieldService(Ref ref) {
 
 class RemoveShieldService implements TurnProcessStep {
   @override
-  ApplyActionResult execute(GameState current) {
-    final targetPlayerId = current.phase.turnOwner;
+  ApplyActionResult execute(GameState state) {
+    final targetPlayerId = state.phase.turnOwner;
 
     final event = GameStepEvent.shieldCleared(
       targetPlayerId: targetPlayerId,
     );
 
     return ApplyActionResult.success(
-      state: current.clearShield(targetPlayerId),
+      state: state.clearShield(targetPlayerId),
       steps: [event],
     );
   }

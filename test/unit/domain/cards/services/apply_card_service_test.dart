@@ -120,7 +120,7 @@ void main() {
 
       when(
         mockConsumeCard.execute(
-          current: state,
+          state: state,
           sourcePlayerId: playerId,
           card: card,
         ),
@@ -215,7 +215,7 @@ void main() {
 
         when(
           mockConsumeCard.execute(
-            current: state,
+            state: state,
             sourcePlayerId: playerId,
             card: card,
           ),
@@ -229,7 +229,7 @@ void main() {
         // 各effectのcondition判定をスタブ
         when(
           mockCheckCondition.execute(
-            current: stateAfterConsume,
+            state: stateAfterConsume,
             action: action,
             condition: null,
             cardUsedPlayer: player,
@@ -237,7 +237,7 @@ void main() {
         ).thenReturn(true);
         when(
           mockCheckCondition.execute(
-            current: stateAfterConsume,
+            state: stateAfterConsume,
             action: action,
             condition: buffCondition,
             cardUsedPlayer: player,
@@ -245,7 +245,7 @@ void main() {
         ).thenReturn(true);
         when(
           mockCheckCondition.execute(
-            current: stateAfterConsume,
+            state: stateAfterConsume,
             action: action,
             condition: debuffCondition,
             cardUsedPlayer: player,
@@ -265,7 +265,7 @@ void main() {
 
         when(
           mockResolveEffects.execute(
-            current: stateAfterConsume,
+            state: stateAfterConsume,
             action: action,
             effects: [damageEffect, healEffect],
           ),
@@ -286,7 +286,7 @@ void main() {
         // excludedEffectを含む形では呼ばれていないことを確認
         verify(
           mockResolveEffects.execute(
-            current: stateAfterConsume,
+            state: stateAfterConsume,
             action: action,
             effects: [damageEffect, healEffect],
           ),
@@ -326,7 +326,7 @@ void main() {
 
       when(
         mockConsumeCard.execute(
-          current: initialState,
+          state: initialState,
           sourcePlayerId: playerId,
           card: card,
         ),
@@ -339,7 +339,7 @@ void main() {
 
       when(
         mockResolveEffects.execute(
-          current: stateAfterConsume,
+          state: stateAfterConsume,
           action: action,
           effects: anyNamed('effects'),
         ),

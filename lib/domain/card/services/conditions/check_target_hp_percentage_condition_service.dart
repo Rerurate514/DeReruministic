@@ -16,12 +16,12 @@ CheckTargetHpPercentageConditionService checkTargetHpPercentageConditionService(
 
 class CheckTargetHpPercentageConditionService {
   bool execute(
-    GameState current,
+    GameState state,
     EffectConditionTargetHpPercentageCondition condition,
     PlayerState sourcePlayer,
   ) {
     final targetPlayer = condition.target.getTargetPlayer(
-      current,
+      state,
       sourcePlayer.id,
     );
 

@@ -13,12 +13,12 @@ CheckTargetHasBuffConditionService checkTargetHasBuffConditionService(Ref ref) {
 
 class CheckTargetHasBuffConditionService {
   bool execute(
-    GameState current,
+    GameState state,
     EffectConditionTargetHasBuffCondition condition,
     PlayerState sourcePlayer,
   ) {
     final targetPlayer = condition.target.getTargetPlayer(
-      current,
+      state,
       sourcePlayer.id,
     );
 

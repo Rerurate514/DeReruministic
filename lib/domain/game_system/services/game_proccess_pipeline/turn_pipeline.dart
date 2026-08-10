@@ -11,11 +11,11 @@ class TurnPipeline {
   final List<TurnProcessStep> turnProcessSteps;
 
   ApplyActionResult process(
-    GameState current,
+    GameState state,
     List<GameStepEvent> initialSteps,
   ) {
     final accumulatedSteps = <GameStepEvent>[];
-    var currentState = current;
+    var currentState = state;
 
     for (final turnProcessStep in turnProcessSteps) {
       final result = turnProcessStep.execute(currentState);

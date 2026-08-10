@@ -26,33 +26,33 @@ class ConsumeCardService {
   final PlayCardValidator playCardValidator;
 
   ApplyActionResult execute({
-    required GameState current,
+    required GameState state,
     required PlayerId sourcePlayerId,
     required GameCard card,
   }) {
-    final sourcePlayer = current.players[sourcePlayerId];
+    final sourcePlayer = state.players[sourcePlayerId];
 
     if (sourcePlayer == null) {
       return ApplyActionResult.failure(
-        state: current,
+        state: state,
         reason: ActionFailureReason.playerNotFound,
       );
     }
 
     final validateResult = playCardValidator.validate(
-      state: current,
+      state: state,
       cardUsedPlayerId: sourcePlayer.id,
       usedCardInstanceId: card.instanceId,
     );
 
     if (validateResult case ValidationResultFailure()) {
       return ApplyActionResult.failure(
-        state: current,
+        state: state,
         reason: validateResult.reason,
       );
     }
 
-    final decrementedState = current.decrementRecycleCount(
+    final decrementedState = state.decrementRecycleCount(
       playerId: sourcePlayerId,
       cardInstanceId: card.instanceId,
     );

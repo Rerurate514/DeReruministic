@@ -13,8 +13,8 @@ SwitchTurnOwnerService switchTurnOwnerService(Ref ref) {
 
 class SwitchTurnOwnerService implements TurnProcessStep {
   @override
-  ApplyActionResult execute(GameState current) {
-    final newState = current.nextTurn();
+  ApplyActionResult execute(GameState state) {
+    final newState = state.nextTurn();
     final event = GameStepEvent.turnOwnerSwitched(
       newTurnPlayerId: newState.phase.turnOwner,
     );

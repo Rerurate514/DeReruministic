@@ -24,11 +24,11 @@ class ResolveCardEffectsService {
   final EffectResolver effectResolver;
 
   ApplyActionResult execute({
-    required GameState current,
+    required GameState state,
     required GameActionPlayCard action,
     required List<CardEffects> effects,
   }) {
-    var currentState = current;
+    var currentState = state;
     final allSteps = <GameStepEvent>[];
 
     for (final effect in effects) {
@@ -49,7 +49,7 @@ class ResolveCardEffectsService {
   }
 
   ApplyActionResult _applySingleEffect(
-    GameState current,
+    GameState state,
     GameActionPlayCard action,
     CardEffects effect,
   ) {
@@ -57,23 +57,23 @@ class ResolveCardEffectsService {
 
     return switch (effect) {
       CardEffectDamage() => effectResolver.resolveDamageEffectService.execute(
-        state: current,
+        state: state,
         effect: effect,
         sourcePlayerId: action.playerId,
         targetPlayerId: effect.target.getTargetPlayerId(
-          current,
+          state,
           sourcePlayerId,
         ),
       ),
       CardEffectDraw() => effectResolver.resolveDrawEffectsService.execute(
-        state: current,
+        state: state,
         effect: effect,
         sourcePlayerId: action.playerId,
       ),
       CardEffectDiscard() => throw UnimplementedError(),
       CardEffectFetchCard() => throw UnimplementedError(),
       CardEffectHeal() => effectResolver.resolveHealEffectService.execute(
-        state: current,
+        state: state,
         effect: effect,
         sourcePlayerId: action.playerId,
       ),

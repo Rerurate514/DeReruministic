@@ -22,7 +22,7 @@ class CheckCardConditionService {
   final ConditionsResolver conditionsResolver;
 
   bool execute({
-    required GameState current,
+    required GameState state,
     required GameActionPlayCard action,
     required EffectConditions? condition,
     required PlayerState cardUsedPlayer,
@@ -31,25 +31,25 @@ class CheckCardConditionService {
     return switch (condition) {
       EffectConditionTargetHasBuffCondition() =>
         conditionsResolver.checkTargetHasBuffConditionService.execute(
-          current,
+          state,
           condition,
           cardUsedPlayer,
         ),
       EffectConditionTargetHasDebuffCondition() =>
         conditionsResolver.checkTargetHasDebuffConditionService.execute(
-          current,
+          state,
           condition,
           cardUsedPlayer,
         ),
       EffectConditionTargetHpPercentageCondition() =>
         conditionsResolver.checkTargetHpPercentageConditionService.execute(
-          current,
+          state,
           condition,
           cardUsedPlayer,
         ),
       EffectConditionTargetHpValueCondition() =>
         conditionsResolver.checkTargetHpValueConditionService.execute(
-          current,
+          state,
           condition,
           cardUsedPlayer,
         ),

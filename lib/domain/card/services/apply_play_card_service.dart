@@ -53,7 +53,7 @@ class ApplyPlayCardService {
     }
 
     final consumeResult = consumeCardService.execute(
-      current: state,
+      state: state,
       sourcePlayerId: cardUsedPlayer.id,
       card: usedCard,
     );
@@ -68,7 +68,7 @@ class ApplyPlayCardService {
     final applyEffects = usedCard.definition.effects
         .where(
           (effect) => checkCardConditionService.execute(
-            current: asAfterConsume,
+            state: asAfterConsume,
             action: action,
             condition: effect.effectCondition,
             cardUsedPlayer: cardUsedPlayer,
@@ -78,7 +78,7 @@ class ApplyPlayCardService {
         .toList();
 
     final resolveResult = resolveCardEffectsService.execute(
-      current: asAfterConsume,
+      state: asAfterConsume,
       action: action,
       effects: applyEffects,
     );

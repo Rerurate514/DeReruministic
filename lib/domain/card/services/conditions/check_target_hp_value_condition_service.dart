@@ -16,12 +16,12 @@ CheckTargetHpValueConditionService checkTargetHpValueConditionService(
 
 class CheckTargetHpValueConditionService {
   bool execute(
-    GameState current,
+    GameState state,
     EffectConditionTargetHpValueCondition condition,
     PlayerState sourcePlayer,
   ) {
     final targetPlayer = condition.target.getTargetPlayer(
-      current,
+      state,
       sourcePlayer.id,
     );
 

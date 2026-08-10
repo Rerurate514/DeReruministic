@@ -77,7 +77,8 @@ PlayerState buildPlayer({
 
 GameState buildState({
   required Map<PlayerId, PlayerState> players,
-  required PlayerId turnOwner, BattlePhase battlePhase = BattlePhase.mainPhase,
+  required PlayerId turnOwner,
+  BattlePhase battlePhase = BattlePhase.mainPhase,
 }) {
   return GameState(
     seed: 0,
@@ -123,7 +124,7 @@ void main() {
         final card = buildCard(instanceId: 'card1');
 
         final result = service.execute(
-          current: state,
+          state: state,
           sourcePlayerId: otherPlayerId,
           card: card,
         );
@@ -163,7 +164,7 @@ void main() {
       );
 
       final result = service.execute(
-        current: state,
+        state: state,
         sourcePlayerId: playerId,
         card: card,
       );
@@ -193,7 +194,7 @@ void main() {
       ).thenReturn(const ValidationResultSuccess());
 
       final result = service.execute(
-        current: state,
+        state: state,
         sourcePlayerId: playerId,
         card: card,
       );
@@ -223,7 +224,7 @@ void main() {
       ).thenReturn(const ValidationResultSuccess());
 
       final result = service.execute(
-        current: state,
+        state: state,
         sourcePlayerId: playerId,
         card: card,
       );
@@ -253,7 +254,7 @@ void main() {
       ).thenReturn(const ValidationResultSuccess());
 
       final result = service.execute(
-        current: state,
+        state: state,
         sourcePlayerId: playerId,
         card: card,
       );
@@ -284,7 +285,7 @@ void main() {
       ).thenReturn(const ValidationResultSuccess());
 
       final result = service.execute(
-        current: state,
+        state: state,
         sourcePlayerId: playerId,
         card: card,
       );
@@ -314,7 +315,7 @@ void main() {
           ),
         ).thenReturn(const ValidationResultSuccess());
 
-        service.execute(current: state, sourcePlayerId: playerId, card: card);
+        service.execute(state: state, sourcePlayerId: playerId, card: card);
 
         verify(
           mockValidator.validate(
@@ -344,7 +345,7 @@ void main() {
       ).thenReturn(const ValidationResultSuccess());
 
       final result = service.execute(
-        current: state,
+        state: state,
         sourcePlayerId: playerId,
         card: card,
       );

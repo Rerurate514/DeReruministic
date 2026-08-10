@@ -96,11 +96,11 @@ class GameFlowUsecase {
   }
 
   ApplyActionResult _applyPlayCard(
-    GameState current,
+    GameState state,
     GameActionPlayCard action,
   ) {
     final applyResult = applyPlayCardService.execute(
-      state: current,
+      state: state,
       action: action,
     );
 
@@ -108,35 +108,35 @@ class GameFlowUsecase {
   }
 
   ApplyActionResult _applyDiscardCard(
-    GameState current,
+    GameState state,
     GameActionDiscardCard action,
   ) {
-    return ApplyActionResult.noSteps(state: current);
+    return ApplyActionResult.noSteps(state: state);
   }
 
   ApplyActionResult _applyOverflowDiscards(
-    GameState current,
+    GameState state,
     GameActionSelectOverflowDiscards action,
   ) {
-    return ApplyActionResult.noSteps(state: current);
+    return ApplyActionResult.noSteps(state: state);
   }
 
   ApplyActionResult _applyTurnEndAndAutoAdvance(
-    GameState current,
+    GameState state,
     GameActionTurnEnd action,
   ) {
-    if (current.phase.battlePhase == BattlePhase.battleEnd) {
-      return ApplyActionResult.noSteps(state: current);
+    if (state.phase.battlePhase == BattlePhase.battleEnd) {
+      return ApplyActionResult.noSteps(state: state);
     }
 
     final pipeline = pipelineFactory.createTurnEndPipeline();
-    return pipeline.process(current, []);
+    return pipeline.process(state, []);
   }
 
   ApplyActionResult _applySurrender(
-    GameState current,
+    GameState state,
     GameActionSurrender action,
   ) {
-    return ApplyActionResult.noSteps(state: current);
+    return ApplyActionResult.noSteps(state: state);
   }
 }
