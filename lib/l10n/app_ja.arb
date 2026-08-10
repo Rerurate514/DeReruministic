@@ -1,7 +1,11 @@
 {
     "@@locale": "ja",
     "app_title": "DeReruministic",
+    "app_subtitle": "TACTICAL COMBAT SIMULATION",
+    "app_subtitle_trailing": "DETERMINATION INITIALIZED",
 
     "home_page_title": "ホームページ",
-    "home_page_fight_button": "たたかう"
+    "home_page_start_battle_button_text": "START BATTLE",
+    "home_page_deck_editor_button_text": "DECK EDITOR",
+    "home_page_setting_button_text": "SETTING"
 }
