@@ -86,8 +86,6 @@ sealed class GameStepEvent with _$GameStepEvent {
 
   const factory GameStepEvent.handCardCountersUpdated({
     required PlayerId playerId,
-    required GameCardInstanceId instanceId,
-    required int delta,
   }) = GameStepEventHandCardCountersUpdated;
 
   // --- ステータス効果（スタック）系 ---
