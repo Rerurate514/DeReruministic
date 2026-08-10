@@ -5,6 +5,8 @@ import 'package:dereruministic/domain/game_system/value_objects/defeat_reason.da
 import 'package:dereruministic/domain/game_system/value_objects/game_end_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/status_effect_type.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
@@ -87,6 +89,31 @@ sealed class GameStepEvent with _$GameStepEvent {
   const factory GameStepEvent.handCardCountersUpdated({
     required PlayerId playerId,
   }) = GameStepEventHandCardCountersUpdated;
+
+  // --- バフ・デバフ（状態変化）系 ---
+  const factory GameStepEvent.buffApplied({
+    required PlayerId targetPlayerId,
+    required BuffTypes buff,
+    required int stack,
+    required int totalStack, // 付与後の合計スタック数
+  }) = GameStepEventBuffApplied;
+
+  const factory GameStepEvent.debuffApplied({
+    required PlayerId targetPlayerId,
+    required DebuffTypes debuff,
+    required int stack,
+    required int totalStack,
+  }) = GameStepEventDebuffApplied;
+
+  const factory GameStepEvent.buffRemoved({
+    required PlayerId targetPlayerId,
+    required BuffTypes buff,
+  }) = GameStepEventBuffRemoved;
+
+  const factory GameStepEvent.debuffRemoved({
+    required PlayerId targetPlayerId,
+    required DebuffTypes debuff,
+  }) = GameStepEventDebuffRemoved;
 
   // --- ステータス効果（スタック）系 ---
   const factory GameStepEvent.poisonApplied({

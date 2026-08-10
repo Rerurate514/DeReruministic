@@ -34,6 +34,10 @@ class StepEventExecutor {
       case GameStepEventGameStarted():
       case GameStepEventGameEnded():
       case GameStepEventHandCardCountersUpdated():
+      case GameStepEventBuffApplied():
+      case GameStepEventDebuffApplied():
+      case GameStepEventBuffRemoved():
+      case GameStepEventDebuffRemoved():
     }
   }
 }
