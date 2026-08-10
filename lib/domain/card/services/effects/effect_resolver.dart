@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/card/services/effects/resolve_damage_effect_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_draw_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_heal_effect_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -8,6 +9,7 @@ part 'effect_resolver.g.dart';
 EffectResolver effectResolver(Ref ref) {
   return EffectResolver(
     resolveDamageEffectService: ref.read(resolveDamageEffectServiceProvider),
+    resolveDrawEffectsService: ref.read(resolveDrawEffectServiceProvider),
     resolveHealEffectService: ref.read(resolveHealEffectServiceProvider),
   );
 }
@@ -15,9 +17,11 @@ EffectResolver effectResolver(Ref ref) {
 class EffectResolver {
   const EffectResolver({
     required this.resolveDamageEffectService,
+    required this.resolveDrawEffectsService,
     required this.resolveHealEffectService,
   });
 
   final ResolveDamageEffectService resolveDamageEffectService;
+  final ResolveDrawEffectService resolveDrawEffectsService;
   final ResolveHealEffectService resolveHealEffectService;
 }

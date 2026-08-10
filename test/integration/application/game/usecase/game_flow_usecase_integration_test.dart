@@ -2,6 +2,7 @@ import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart'
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
+import 'package:dereruministic/domain/card/services/card_draw_service.dart';
 import 'package:dereruministic/domain/card/services/check_card_condition_service.dart';
 import 'package:dereruministic/domain/card/services/conditions/check_target_has_buff_condition_service.dart';
 import 'package:dereruministic/domain/card/services/conditions/check_target_has_debuff_condition_service.dart';
@@ -9,8 +10,10 @@ import 'package:dereruministic/domain/card/services/conditions/check_target_hp_p
 import 'package:dereruministic/domain/card/services/conditions/check_target_hp_value_condition_service.dart';
 import 'package:dereruministic/domain/card/services/conditions/conditions_resolver.dart';
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
+import 'package:dereruministic/domain/card/services/deck_restoration_service.dart';
 import 'package:dereruministic/domain/card/services/effects/effect_resolver.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_damage_effect_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_draw_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_heal_effect_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
@@ -56,6 +59,11 @@ ApplyPlayCardService buildRealApplyPlayCardService() {
   );
   final effectResolver = EffectResolver(
     resolveDamageEffectService: ResolveDamageEffectService(),
+    resolveDrawEffectsService: ResolveDrawEffectService(
+      cardDrawService: CardDrawService(
+        deckRestorationService: DeckRestorationService(),
+      ),
+    ),
     resolveHealEffectService: ResolveHealEffectService(),
   );
   return ApplyPlayCardService(
