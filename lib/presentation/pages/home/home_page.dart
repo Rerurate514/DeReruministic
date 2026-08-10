@@ -2,6 +2,7 @@ import 'package:dereruministic/presentation/components/app_subtitle.dart';
 import 'package:dereruministic/presentation/components/app_subtitle_trailing.dart';
 import 'package:dereruministic/presentation/components/app_title.dart';
 import 'package:dereruministic/presentation/pages/home/components/deck_editor_button.dart';
+import 'package:dereruministic/presentation/pages/home/components/setting_button.dart';
 import 'package:dereruministic/presentation/pages/home/components/start_battle_button.dart';
 import 'package:dereruministic/presentation/widgets/ui_gap.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
@@ -25,6 +26,8 @@ class HomePage extends ConsumerWidget {
           StartBattleButton(),
           UiGap.s(),
           DeckEditorButton(),
+          UiGap.s(),
+          SettingButton(),
         ],
       ),
     );
