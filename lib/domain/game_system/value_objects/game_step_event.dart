@@ -84,6 +84,12 @@ sealed class GameStepEvent with _$GameStepEvent {
     required int amount,
   }) = GameStepEventHealed;
 
+  const factory GameStepEvent.handCardCountersUpdated({
+    required PlayerId playerId,
+    required GameCardInstanceId instanceId,
+    required int delta,
+  }) = GameStepEventHandCardCountersUpdated;
+
   // --- ステータス効果（スタック）系 ---
   const factory GameStepEvent.poisonApplied({
     required PlayerId targetPlayerId,
