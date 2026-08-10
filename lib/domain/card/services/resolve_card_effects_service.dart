@@ -53,17 +53,11 @@ class ResolveCardEffectsService {
     GameActionPlayCard action,
     CardEffects effect,
   ) {
-    final sourcePlayerId = action.playerId;
-
     return switch (effect) {
       CardEffectDamage() => effectResolver.resolveDamageEffectService.execute(
         state: state,
         effect: effect,
         sourcePlayerId: action.playerId,
-        targetPlayerId: effect.target.getTargetPlayerId(
-          state,
-          sourcePlayerId,
-        ),
       ),
       CardEffectDraw() => effectResolver.resolveDrawEffectsService.execute(
         state: state,

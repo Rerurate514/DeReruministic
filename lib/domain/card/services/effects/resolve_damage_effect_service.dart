@@ -21,18 +21,10 @@ class ResolveDamageEffectService {
     required GameState state,
     required CardEffectDamage effect,
     required PlayerId sourcePlayerId,
-    PlayerId? targetPlayerId,
   }) {
     final sourcePlayer = state.players[sourcePlayerId]!;
 
-    final targetPlayer = targetPlayerId != null
-        ? state.players[targetPlayerId]!
-        : switch (effect.target) {
-            CardTargetTypes.self => sourcePlayer,
-            CardTargetTypes.enemy => state.players.values.firstWhere(
-              (p) => p.id != sourcePlayerId,
-            ),
-          };
+    final targetPlayer = effect.target.getTargetPlayer(state, sourcePlayerId);
 
     final finalDamage = DamageCalculator.execute(
       baseDamage: effect.amount,

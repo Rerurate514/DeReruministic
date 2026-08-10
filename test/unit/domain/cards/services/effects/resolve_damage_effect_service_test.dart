@@ -79,7 +79,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -100,7 +99,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -121,7 +119,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -171,29 +168,6 @@ void main() {
       expect(updatedDefender.hp, 20); // 対象外プレイヤーは変化しない
     });
 
-    test('targetPlayerIdが明示的に指定されている場合、effect.targetより優先される', () {
-      final attacker = buildPlayer(id: attackerId);
-      final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
-      // targetはselfだが、targetPlayerIdでdefenderを明示的に指定
-      const effect = CardEffects.damage(
-        amount: 6,
-        target: CardTargetTypes.self,
-      );
-
-      final result = service.execute(
-        state: state,
-        effect: effect as CardEffectDamage,
-        sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
-      );
-
-      final updatedDefender = result.state.players[defenderId]!;
-      final updatedAttacker = result.state.players[attackerId]!;
-      expect(updatedDefender.hp, 14);
-      expect(updatedAttacker.hp, 20);
-    });
-
     test('DamageCalculatorのbuff/debuff補正が適用された上でシールド/HPが計算される', () {
       final attacker = buildPlayer(
         id: attackerId,
@@ -210,7 +184,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -233,7 +206,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       final updatedDefender = result.state.players[defenderId]!;
@@ -254,7 +226,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       expect((result as ApplyActionResultSuccess).steps, hasLength(1));
@@ -277,7 +248,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       expect(result.state.players[attackerId], attacker);
@@ -297,7 +267,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       expect(result.state.players[defenderId]!.hp, 0);
@@ -316,7 +285,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       expect(result.state.players[defenderId]!.hp, 0);
@@ -335,7 +303,6 @@ void main() {
         state: state,
         effect: effect as CardEffectDamage,
         sourcePlayerId: attackerId,
-        targetPlayerId: defenderId,
       );
 
       expect(state.players[defenderId]!.hp, 20);
