@@ -52,13 +52,22 @@ class ConsumeCardService {
       );
     }
 
-    final destinationZone = card.definition.hasState<CardStateExhaust>()
+    final decrementedState = current.decrementRecycleCount(
+      playerId: sourcePlayerId,
+      cardInstanceId: card.instanceId,
+    );
+
+    final updatedCard = decrementedState.players[sourcePlayerId]?.hand
+        .firstWhere((c) => c.instanceId == card.instanceId, orElse: () => card);
+
+    final destinationZone =
+        updatedCard?.definition.hasState<CardStateExhaust>() ?? false
         ? CardZone.exhausted
-        : card.definition.hasState<CardStateRecycle>()
+        : updatedCard?.isRecycleActive ?? false
         ? CardZone.deck
         : CardZone.graveyard;
 
-    final newState = current.moveCardFromHand(
+    final newState = decrementedState.moveCardFromHand(
       playerId: sourcePlayerId,
       cardInstanceId: card.instanceId,
       to: destinationZone,

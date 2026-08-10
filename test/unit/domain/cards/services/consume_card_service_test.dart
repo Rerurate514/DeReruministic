@@ -97,9 +97,17 @@ void main() {
   late ConsumeCardService service;
 
   setUp(() {
-    provideDummy<ValidationResult>(
-      const ValidationResult.success(),
+    provideDummy<ApplyActionResult>(
+      ApplyActionResult.success(
+        state: buildState(
+          players: {playerId: buildPlayer(id: playerId)},
+          turnOwner: playerId,
+        ),
+        steps: const [],
+      ),
     );
+
+    provideDummy<ValidationResult>(const ValidationResult.success());
 
     mockValidator = MockPlayCardValidator();
     service = ConsumeCardService(playCardValidator: mockValidator);
@@ -125,6 +133,13 @@ void main() {
         final failure = result as ApplyActionResultFailure;
         expect(failure.reason, ActionFailureReason.playerNotFound);
         expect(failure.state, state);
+        verifyNever(
+          mockValidator.validate(
+            state: anyNamed('state'),
+            cardUsedPlayerId: anyNamed('cardUsedPlayerId'),
+            usedCardInstanceId: anyNamed('usedCardInstanceId'),
+          ),
+        );
       },
     );
 
