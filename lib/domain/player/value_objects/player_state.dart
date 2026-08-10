@@ -5,7 +5,9 @@ import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/player/constants/player_constants.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'player_state.freezed.dart';
@@ -56,7 +58,7 @@ sealed class PlayerState with _$PlayerState {
       _$PlayerStateFromJson(json);
 }
 
-extension PlayerStateEx on PlayerState {
+extension PlayerStateCardEx on PlayerState {
   PlayerState updateCost(int amount) {
     return copyWith(currentCost: currentCost + amount);
   }
@@ -111,4 +113,61 @@ extension PlayerStateEx on PlayerState {
       CardZone.hand => this,
     };
   }
+}
+
+extension PlayerStateBuffDebuffEx on PlayerState {
+  PlayerState applyBuffState(BuffTypes buff, int stacks) {
+    if (stacks <= 0) return this;
+
+    final existingIndex = buffs.indexWhere((element) => element.buff == buff);
+
+    final updatedBuffs = List<BuffState>.from(buffs);
+    if (existingIndex >= 0) {
+      final existing = updatedBuffs[existingIndex];
+      updatedBuffs[existingIndex] = existing.copyWith(
+        stack: existing.stack + stacks,
+      );
+    } else {
+      updatedBuffs.add(BuffState(buff: buff, stack: stacks));
+    }
+
+    return copyWith(buffs: updatedBuffs);
+  }
+
+  PlayerState applyDebuffState(DebuffTypes debuff, int stacks) {
+    if (stacks <= 0) return this;
+
+    final existingIndex = debuffs.indexWhere(
+      (element) => element.debuff == debuff,
+    );
+
+    final updatedDebuffs = List<DebuffState>.from(debuffs);
+    if (existingIndex >= 0) {
+      final existing = updatedDebuffs[existingIndex];
+      updatedDebuffs[existingIndex] = existing.copyWith(
+        stack: existing.stack + stacks,
+      );
+    } else {
+      updatedDebuffs.add(DebuffState(debuff: debuff, stack: stacks));
+    }
+
+    return copyWith(debuffs: updatedDebuffs);
+  }
+}
+
+extension PlayerStateBuffDebuffQueryEx on PlayerState {
+  int getBuffStack(BuffTypes buff) {
+    final index = buffs.indexWhere((element) => element.buff == buff);
+    if (index == -1) return 0;
+    return buffs[index].stack;
+  }
+
+  int getDebuffStack(DebuffTypes debuff) {
+    final index = debuffs.indexWhere((element) => element.debuff == debuff);
+    if (index == -1) return 0;
+    return debuffs[index].stack;
+  }
+
+  bool hasBuff(BuffTypes buff) => getBuffStack(buff) > 0;
+  bool hasDebuff(DebuffTypes debuff) => getDebuffStack(debuff) > 0;
 }
