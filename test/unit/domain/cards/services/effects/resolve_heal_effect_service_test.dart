@@ -60,8 +60,8 @@ void main() {
 
   group('ResolveHealEffectService.execute', () {
     test('maxHpに達しない場合、amount分HPが回復する', () {
-      final source = buildPlayer(id: sourceId, hp: 10, maxHp: 20);
-      final other = buildPlayer(id: otherId, hp: 20, maxHp: 20);
+      final source = buildPlayer(id: sourceId, hp: 10);
+      final other = buildPlayer(id: otherId);
       final state = buildState(playerA: source, playerB: other);
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
@@ -76,8 +76,8 @@ void main() {
     });
 
     test('maxHpを超える回復量の場合、maxHpでクランプされる', () {
-      final source = buildPlayer(id: sourceId, hp: 18, maxHp: 20);
-      final other = buildPlayer(id: otherId, hp: 20, maxHp: 20);
+      final source = buildPlayer(id: sourceId, hp: 18);
+      final other = buildPlayer(id: otherId);
       final state = buildState(playerA: source, playerB: other);
       const effect = CardEffects.heal(amount: 10, target: CardTargetTypes.self);
 
@@ -92,8 +92,8 @@ void main() {
     });
 
     test('target=selfの場合、自分自身が回復対象になる', () {
-      final source = buildPlayer(id: sourceId, hp: 10, maxHp: 20);
-      final other = buildPlayer(id: otherId, hp: 10, maxHp: 20);
+      final source = buildPlayer(id: sourceId, hp: 10);
+      final other = buildPlayer(id: otherId, hp: 10);
       final state = buildState(playerA: source, playerB: other);
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
@@ -110,8 +110,8 @@ void main() {
     });
 
     test('target=enemyの場合、自分以外のプレイヤーが回復対象になる', () {
-      final source = buildPlayer(id: sourceId, hp: 10, maxHp: 20);
-      final other = buildPlayer(id: otherId, hp: 10, maxHp: 20);
+      final source = buildPlayer(id: sourceId, hp: 10);
+      final other = buildPlayer(id: otherId, hp: 10);
       final state = buildState(playerA: source, playerB: other);
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.enemy);
 
@@ -128,8 +128,8 @@ void main() {
     });
 
     test('既にmaxHpの場合、実際の回復量は0になる', () {
-      final source = buildPlayer(id: sourceId, hp: 20, maxHp: 20);
-      final other = buildPlayer(id: otherId, hp: 20, maxHp: 20);
+      final source = buildPlayer(id: sourceId);
+      final other = buildPlayer(id: otherId);
       final state = buildState(playerA: source, playerB: other);
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
@@ -148,8 +148,8 @@ void main() {
     });
 
     test('GameStepEvent.healedが実際の回復量(クランプ後)で正しく1件返る', () {
-      final source = buildPlayer(id: sourceId, hp: 18, maxHp: 20);
-      final other = buildPlayer(id: otherId, hp: 20, maxHp: 20);
+      final source = buildPlayer(id: sourceId, hp: 18);
+      final other = buildPlayer(id: otherId);
       final state = buildState(playerA: source, playerB: other);
       const effect = CardEffects.heal(amount: 10, target: CardTargetTypes.self);
 
@@ -166,8 +166,8 @@ void main() {
     });
 
     test('回復対象外のプレイヤーの状態はplayersマップ内で保持される', () {
-      final source = buildPlayer(id: sourceId, hp: 10, maxHp: 20);
-      final other = buildPlayer(id: otherId, hp: 15, maxHp: 20);
+      final source = buildPlayer(id: sourceId, hp: 10);
+      final other = buildPlayer(id: otherId, hp: 15);
       final state = buildState(playerA: source, playerB: other);
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
@@ -182,8 +182,8 @@ void main() {
     });
 
     test('元のGameStateは変更されない(イミュータブル)', () {
-      final source = buildPlayer(id: sourceId, hp: 10, maxHp: 20);
-      final other = buildPlayer(id: otherId, hp: 20, maxHp: 20);
+      final source = buildPlayer(id: sourceId, hp: 10);
+      final other = buildPlayer(id: otherId);
       final state = buildState(playerA: source, playerB: other);
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 

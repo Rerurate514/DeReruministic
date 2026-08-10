@@ -83,7 +83,7 @@ void main() {
     );
 
     test('指定カードが手札にない場合、cardNotFoundで失敗し他サービスは呼ばれない', () {
-      final player = buildPlayer(id: playerId, hand: const []);
+      final player = buildPlayer(id: playerId);
       final state = buildState(players: {playerId: player});
       final action = buildPlayCardAction(
         playerId: playerId,
@@ -182,16 +182,16 @@ void main() {
           effectCondition: debuffCondition,
         );
 
-        final cardDef = CardDefinition(
-          cardDefId: const CardDefinitionId(value: 'def1'),
+        const cardDef = CardDefinition(
+          cardDefId: CardDefinitionId(value: 'def1'),
           name: 'MultiEffectCard',
           baseCost: 2,
-          effects: const [
+          effects: [
             detailNoCondition,
             detailConditionTrue,
             detailConditionFalse,
           ],
-          states: const [],
+          states: [],
         );
         final card = buildCard(instanceId: 'card1', definition: cardDef);
         final player = buildPlayer(id: playerId, hand: [card]);
@@ -203,7 +203,7 @@ void main() {
 
         final stateAfterConsume = buildState(
           players: {
-            playerId: buildPlayer(id: playerId, hand: const []),
+            playerId: buildPlayer(id: playerId),
           },
         );
         final consumeStep = GameStepEvent.cardMovedZone(
@@ -254,10 +254,10 @@ void main() {
 
         final stateAfterResolve = buildState(
           players: {
-            playerId: buildPlayer(id: playerId, hp: 15, hand: const []),
+            playerId: buildPlayer(id: playerId, hp: 15),
           },
         );
-        final resolveStep = GameStepEvent.damageDealt(
+        const resolveStep = GameStepEvent.damageDealt(
           targetPlayerId: otherPlayerId,
           shieldDamage: 0,
           hpDamage: 5,

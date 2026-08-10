@@ -38,6 +38,7 @@ dev_dependencies:
   json_serializable: ^6.9.3
   go_router_linter: ^0.4.0
 
+  mockito: any
 flutter:
   uses-material-design: true
   generate: true

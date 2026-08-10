@@ -77,8 +77,7 @@ PlayerState buildPlayer({
 
 GameState buildState({
   required Map<PlayerId, PlayerState> players,
-  BattlePhase battlePhase = BattlePhase.mainPhase,
-  required PlayerId turnOwner,
+  required PlayerId turnOwner, BattlePhase battlePhase = BattlePhase.mainPhase,
 }) {
   return GameState(
     seed: 0,
@@ -178,7 +177,7 @@ void main() {
     });
 
     test('validatorが成功を返しexhaustカードでない場合、カードは手札からgraveyardへ移動する', () {
-      final card = buildCard(instanceId: 'card1', definition: normalCardDef);
+      final card = buildCard(instanceId: 'card1');
       final player = buildPlayer(id: playerId, hand: [card]);
       final state = buildState(
         players: {playerId: player},
@@ -238,7 +237,7 @@ void main() {
     });
 
     test('成功時、GameStepEvent.cardMovedZoneが正しい内容で1件返る(通常カード)', () {
-      final card = buildCard(instanceId: 'card1', definition: normalCardDef);
+      final card = buildCard(instanceId: 'card1');
       final player = buildPlayer(id: playerId, hand: [card]);
       final state = buildState(
         players: {playerId: player},
