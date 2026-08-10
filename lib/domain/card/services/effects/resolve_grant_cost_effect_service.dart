@@ -40,7 +40,7 @@ class ResolveGrantCostEffectService {
     }
 
     final newCardTargetPlayer = targetPlayer.copyWith(
-      shield: targetPlayer.shield + effect.amount,
+      currentCost: targetPlayer.currentCost + effect.amount,
     );
 
     final newState = state.copyWith(
