@@ -16,6 +16,7 @@ import 'package:dereruministic/domain/card/services/resolve_card_effects_service
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects_details.dart';
+import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
 import 'package:dereruministic/domain/card/value_objects/effect_conditions.dart';
@@ -27,6 +28,7 @@ import 'package:dereruministic/domain/game_system/services/play_card_validator.d
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -70,12 +72,14 @@ GameCard buildCard({
   required String instanceId,
   required CardDefinition definition,
   required int currentCost,
+  List<CardRuntimeStates> runtimeStates = const [],
 }) {
   return GameCard(
     instanceId: GameCardInstanceId(value: instanceId),
     definition: definition,
     currentCost: currentCost,
     enteredHandAtTurn: 0,
+    runtimeStates: runtimeStates,
   );
 }
 
@@ -85,6 +89,7 @@ PlayerState buildPlayer({
   int maxHp = 20,
   int shield = 0,
   int currentCost = 3,
+  List<GameCard> deck = const [],
   List<GameCard> hand = const [],
   List<GameCard> graveyard = const [],
   List<GameCard> exhausted = const [],
@@ -96,7 +101,7 @@ PlayerState buildPlayer({
     maxHp: maxHp,
     shield: shield,
     currentCost: currentCost,
-    deck: const [],
+    deck: deck,
     hand: hand,
     graveyard: graveyard,
     exhausted: exhausted,
@@ -370,6 +375,118 @@ void main() {
       // 相手のHP・自分の手札とも一切変化していない
       expect(result.state.players[enemyId]!.hp, 20);
       expect(result.state.players[playerId]!.hand, [card]);
+    });
+
+    test('リサイクル残数が残っているダメージカードをプレイすると、効果発動後にdeckへ戻る', () {
+      const recycleStrikeDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_recycle_strike'),
+        name: 'Recycle Strike',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 4,
+              target: CardTargetTypes.enemy,
+            ),
+          ),
+        ],
+        states: [],
+      );
+      final card = buildCard(
+        instanceId: 'recycle1',
+        definition: recycleStrikeDef,
+        currentCost: 1,
+        runtimeStates: const [
+          CardRuntimeStates.recycle(maxCount: null, remainingCount: 2),
+        ],
+      );
+      final player = buildPlayer(id: playerId, hand: [card]);
+      final enemy = buildPlayer(id: enemyId);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(
+        playerId: playerId,
+        cardInstanceId: 'recycle1',
+      );
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      expect(result, isA<ApplyActionResultSuccess>());
+      final success = result as ApplyActionResultSuccess;
+      final updatedEnemy = success.state.players[enemyId]!;
+      final updatedPlayer = success.state.players[playerId]!;
+
+      // 効果自体はきちんと発動している
+      expect(updatedEnemy.hp, 16); // 20 - 4
+
+      // 墓地ではなくdeckへ戻る
+      expect(updatedPlayer.hand, isEmpty);
+      expect(updatedPlayer.graveyard, isEmpty);
+      expect(updatedPlayer.deck, hasLength(1));
+
+      // 残数が1減った状態でdeckに積まれている
+      final deckCard = updatedPlayer.deck.single;
+      final recycleState = deckCard.runtimeStates
+          .whereType<CardRuntimeStateRecycleState>()
+          .single;
+      expect(recycleState.remainingCount, 1);
+
+      expect(success.steps, hasLength(2));
+      final zoneStep = success.steps
+          .whereType<GameStepEventCardMovedZone>()
+          .single;
+      expect(zoneStep.zoneTo, CardZone.deck);
+    });
+
+    test('リサイクル残数が0になるカードをプレイすると、通常通り墓地へ送られる', () {
+      const recycleStrikeDef = CardDefinition(
+        cardDefId: CardDefinitionId(value: 'def_recycle_strike'),
+        name: 'Recycle Strike',
+        baseCost: 1,
+        effects: [
+          CardEffectsDetails(
+            cardEffect: CardEffects.damage(
+              amount: 4,
+              target: CardTargetTypes.enemy,
+            ),
+          ),
+        ],
+        states: [],
+      );
+      final card = buildCard(
+        instanceId: 'recycle1',
+        definition: recycleStrikeDef,
+        currentCost: 1,
+        runtimeStates: const [
+          CardRuntimeStates.recycle(maxCount: null, remainingCount: 1),
+        ],
+      );
+      final player = buildPlayer(id: playerId, hand: [card]);
+      final enemy = buildPlayer(id: enemyId);
+      final state = buildState(
+        players: {playerId: player, enemyId: enemy},
+        turnOwner: playerId,
+      );
+      final action = buildAction(
+        playerId: playerId,
+        cardInstanceId: 'recycle1',
+      );
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      final success = result as ApplyActionResultSuccess;
+      final updatedPlayer = success.state.players[playerId]!;
+
+      expect(updatedPlayer.deck, isEmpty);
+      expect(updatedPlayer.graveyard, hasLength(1));
+
+      final graveyardCard = updatedPlayer.graveyard.single;
+      final recycleState = graveyardCard.runtimeStates
+          .whereType<CardRuntimeStateRecycleState>()
+          .single;
+      expect(recycleState.remainingCount, 0);
     });
   });
 }
