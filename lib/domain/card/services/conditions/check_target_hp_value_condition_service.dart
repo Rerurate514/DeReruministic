@@ -25,6 +25,8 @@ class CheckTargetHpValueConditionService {
       sourcePlayer.id,
     );
 
+    if (targetPlayer == null) return false;
+
     return condition.operator.evaluate(targetPlayer.hp, condition.value);
   }
 }

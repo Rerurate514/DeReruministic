@@ -8,11 +8,11 @@ enum CardTargetTypes {
 }
 
 extension CardTargetTypesEx on CardTargetTypes {
-  PlayerState getTargetPlayer(
+  PlayerState? getTargetPlayer(
     GameState state,
     PlayerId sourcePlayerId,
   ) {
-    return state.players[getTargetPlayerId(state, sourcePlayerId)]!;
+    return state.players[getTargetPlayerId(state, sourcePlayerId)];
   }
 
   PlayerId getTargetPlayerId(

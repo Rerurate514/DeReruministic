@@ -22,6 +22,8 @@ class CheckTargetHasBuffConditionService {
       sourcePlayer.id,
     );
 
+    if (targetPlayer == null) return false;
+
     return targetPlayer.buffs.any(
       (buffState) => buffState.buff == condition.buff,
     );

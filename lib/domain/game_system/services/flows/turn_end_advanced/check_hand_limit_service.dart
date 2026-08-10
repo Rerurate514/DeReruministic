@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_process_step.dart';
+import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -15,6 +16,13 @@ class CheckHandLimitService implements TurnProcessStep {
   @override
   ApplyActionResult execute(GameState state) {
     final player = state.currentTurnOwner;
+
+    if (player == null) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.playerNotFound,
+      );
+    }
 
     final overflowCount = player.hand.length - player.maxHandSize;
 

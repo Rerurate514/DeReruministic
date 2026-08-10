@@ -31,6 +31,14 @@ class ResolveGrantShieldEffectService {
     }
 
     final targetPlayer = effect.target.getTargetPlayer(state, sourcePlayerId);
+
+    if (targetPlayer == null) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.playerNotFound,
+      );
+    }
+
     final newCardTargetPlayer = targetPlayer.copyWith(
       shield: targetPlayer.shield + effect.amount,
     );

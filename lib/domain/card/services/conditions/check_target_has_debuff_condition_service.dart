@@ -24,6 +24,8 @@ class CheckTargetHasDebuffConditionService {
       sourcePlayer.id,
     );
 
+    if (targetPlayer == null) return false;
+
     return targetPlayer.debuffs.any(
       (debuffState) => debuffState.debuff == condition.debuff,
     );

@@ -25,7 +25,7 @@ sealed class GameState with _$GameState {
 }
 
 extension GameStateEx on GameState {
-  PlayerState get currentTurnOwner => players[phase.turnOwner]!;
+  PlayerState? get currentTurnOwner => players[phase.turnOwner];
 
   GameState clearShield(PlayerId targetId) {
     final targetPlayer = players[targetId];

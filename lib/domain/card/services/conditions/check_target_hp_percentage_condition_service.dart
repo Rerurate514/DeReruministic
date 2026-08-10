@@ -25,6 +25,8 @@ class CheckTargetHpPercentageConditionService {
       sourcePlayer.id,
     );
 
+    if (targetPlayer == null) return false;
+
     return condition.operator.evaluate(
       targetPlayer.hp * 100,
       targetPlayer.maxHp * condition.percentage,
