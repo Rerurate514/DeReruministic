@@ -1,6 +1,5 @@
 import 'package:dereruministic/domain/card/services/effects/effect_resolver.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
-import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
