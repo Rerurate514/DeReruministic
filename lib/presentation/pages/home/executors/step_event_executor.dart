@@ -33,6 +33,7 @@ class StepEventExecutor {
       case GameStepEventTurnOwnerSwitched():
       case GameStepEventGameStarted():
       case GameStepEventGameEnded():
+      case GameStepEventHandCardCountersUpdated():
     }
   }
 }
