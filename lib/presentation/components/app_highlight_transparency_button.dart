@@ -1,8 +1,8 @@
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 
-class AppHighlightButton extends StatelessWidget {
-  const AppHighlightButton({
+class AppHighlightTransparencyButton extends StatelessWidget {
+  const AppHighlightTransparencyButton({
     required this.onPressed,
     required this.child,
     super.key,
@@ -31,11 +31,12 @@ class AppHighlightButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? theme.brandColor,
-          foregroundColor: foregroundColor ?? theme.surfaceBackground,
+          backgroundColor: backgroundColor ?? Colors.transparent,
+          foregroundColor: foregroundColor ?? theme.brandColor,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(0),
+            side: BorderSide(color: foregroundColor ?? theme.brandColor),
           ),
         ),
         child: child,
