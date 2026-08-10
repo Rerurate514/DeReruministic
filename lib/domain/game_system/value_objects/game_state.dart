@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
@@ -72,6 +73,65 @@ extension GameStateEx on GameState {
         ...players,
         playerId: updatedPlayer,
       },
+    );
+  }
+
+  GameState advanceHandCardRuntimeStates({required PlayerId playerId}) {
+    final player = players[playerId];
+    if (player == null) return this;
+
+    final updatedHand = player.hand.map((card) {
+      final updatedRuntimeStates = card.runtimeStates.map((state) {
+        return switch (state) {
+          CardRuntimeStateCountdownState(:final remainingTurns) =>
+            state.copyWith(
+              remainingTurns: remainingTurns > 0 ? remainingTurns - 1 : 0,
+            ),
+          CardRuntimeStateDecayState(:final remainingTurns) => state.copyWith(
+            remainingTurns: remainingTurns > 0 ? remainingTurns - 1 : 0,
+          ),
+          CardRuntimeStateRetainState(:final turnsInHand) => state.copyWith(
+            turnsInHand: turnsInHand + 1,
+          ),
+          _ => state,
+        };
+      }).toList();
+
+      return card.copyWith(runtimeStates: updatedRuntimeStates);
+    }).toList();
+
+    final updatedPlayer = player.copyWith(hand: updatedHand);
+    return copyWith(
+      players: {...players, playerId: updatedPlayer},
+    );
+  }
+
+  GameState decrementRecycleCount({
+    required PlayerId playerId,
+    required GameCardInstanceId cardInstanceId,
+  }) {
+    final player = players[playerId];
+    if (player == null) return this;
+
+    final updatedHand = player.hand.map((card) {
+      if (card.instanceId != cardInstanceId) return card;
+
+      final updatedRuntimeStates = card.runtimeStates.map((state) {
+        if (state is CardRuntimeStateRecycleState) {
+          final currentCount = state.remainingCount;
+          return state.copyWith(
+            remainingCount: currentCount > 0 ? currentCount - 1 : 0,
+          );
+        }
+        return state;
+      }).toList();
+
+      return card.copyWith(runtimeStates: updatedRuntimeStates);
+    }).toList();
+
+    final updatedPlayer = player.copyWith(hand: updatedHand);
+    return copyWith(
+      players: {...players, playerId: updatedPlayer},
     );
   }
 }
