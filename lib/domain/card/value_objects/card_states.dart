@@ -68,16 +68,19 @@ extension CardStatesListEx on List<CardStates> {
         case CardStateRecycle(:final count):
           if (count != null) {
             runtimeStates.add(
-              CardRuntimeStates.recycle(remainingCount: count),
+              CardRuntimeStates.recycle(remainingCount: count, maxCount: count),
             );
           }
         case CardStateCountdown(:final turns):
           runtimeStates.add(
-            CardRuntimeStates.countdown(remainingTurns: turns),
+            CardRuntimeStates.countdown(
+              remainingTurns: turns,
+              initialTurns: turns,
+            ),
           );
         case CardStateDecay(:final turns):
           runtimeStates.add(
-            CardRuntimeStates.decay(remainingTurns: turns),
+            CardRuntimeStates.decay(remainingTurns: turns, initialTurns: turns),
           );
         case CardStateRetain():
           runtimeStates.add(

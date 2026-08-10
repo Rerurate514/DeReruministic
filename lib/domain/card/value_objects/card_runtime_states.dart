@@ -6,14 +6,17 @@ part 'card_runtime_states.g.dart';
 @freezed
 sealed class CardRuntimeStates with _$CardRuntimeStates {
   const factory CardRuntimeStates.recycle({
+    required int? maxCount,
     required int remainingCount,
   }) = CardRuntimeStateRecycleState;
 
   const factory CardRuntimeStates.countdown({
+    required int initialTurns,
     required int remainingTurns,
   }) = CardRuntimeStateCountdownState;
 
   const factory CardRuntimeStates.decay({
+    required int initialTurns,
     required int remainingTurns,
   }) = CardRuntimeStateDecayState;
 
