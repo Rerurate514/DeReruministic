@@ -38,8 +38,8 @@ class MainApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final router = ref.watch(routerProvider);
     return MaterialApp.router(
-      theme: AppTheme.light.copyWith(scaffoldBackgroundColor: Colors.white),
-      //darkTheme: AppTheme.dark.copyWith(scaffoldBackgroundColor: Colors.black),
+      //theme: AppTheme.light.copyWith(scaffoldBackgroundColor: Colors.white),
+      darkTheme: AppTheme.dark,
       debugShowCheckedModeBanner: false,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
