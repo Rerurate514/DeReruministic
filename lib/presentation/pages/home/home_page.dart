@@ -1,3 +1,4 @@
+import 'package:dereruministic/presentation/components/app_title.dart';
 import 'package:dereruministic/presentation/pages/home/components/deck_editor_button.dart';
 import 'package:dereruministic/presentation/pages/home/components/start_battle_button.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
@@ -12,7 +13,13 @@ class HomePage extends ConsumerWidget {
     return const UiPageWrapper(
       child: Column(
         spacing: 16,
-        children: [StartBattleButton(), DeckEditorButton()],
+        children: [
+          FittedBox(
+            child: AppTitle(),
+          ),
+          StartBattleButton(),
+          DeckEditorButton(),
+        ],
       ),
     );
   }
