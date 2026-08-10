@@ -70,7 +70,12 @@ class ResolveCardEffectsService {
         effect: effect,
         sourcePlayerId: action.playerId,
       ),
-      CardEffectGrantShield() => throw UnimplementedError(),
+      CardEffectGrantShield() =>
+        effectResolver.resolveGrantShieldEffectService.execute(
+          state: state,
+          effect: effect,
+          sourcePlayerId: action.playerId,
+        ),
       CardEffectGrantCost() => throw UnimplementedError(),
       CardEffectStealCost() => throw UnimplementedError(),
       CardEffectStealShield() => throw UnimplementedError(),
