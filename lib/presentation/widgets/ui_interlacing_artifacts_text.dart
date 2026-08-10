@@ -1,6 +1,7 @@
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class UiInterlacingArtifactsText extends HookWidget {
   const UiInterlacingArtifactsText({
@@ -60,10 +61,9 @@ class UiInterlacingArtifactsText extends HookWidget {
       children: [
         Text(
           text,
-          style: TextStyle(
+          style: GoogleFonts.shareTechMono(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
-            fontFamily: 'sans-serif',
             letterSpacing: 2,
             color: faceColor,
             shadows: [
