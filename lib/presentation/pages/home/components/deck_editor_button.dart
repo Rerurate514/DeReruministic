@@ -19,7 +19,7 @@ class DeckEditorButton extends StatelessWidget {
         spacing: 8,
         children: [
           Icon(Symbols.playing_cards, color: theme.brandColor),
-          Text(l10n.home_page_start_battle_button_text),
+          Text(l10n.home_page_deck_editor_button_text),
         ],
       ),
     );
