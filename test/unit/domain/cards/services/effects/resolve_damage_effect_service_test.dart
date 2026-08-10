@@ -284,6 +284,44 @@ void main() {
       expect(result.state.players.length, 2);
     });
 
+    test('HPを超えた攻撃をしたとき、相手のHPは0でクランプされる。(シールド無し)', () {
+      final attacker = buildPlayer(id: attackerId, hp: 1);
+      final defender = buildPlayer(id: defenderId);
+      final state = buildState(playerA: attacker, playerB: defender);
+      const effect = CardEffects.damage(
+        amount: 99,
+        target: CardTargetTypes.enemy,
+      );
+
+      final result = service.execute(
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
+      );
+
+      expect(result.state.players[defenderId]!.hp, 0);
+    });
+
+    test('HPを超えた攻撃をしたとき、相手のHPは0でクランプされる。(シールド有り)', () {
+      final attacker = buildPlayer(id: attackerId, hp: 50, shield: 50);
+      final defender = buildPlayer(id: defenderId);
+      final state = buildState(playerA: attacker, playerB: defender);
+      const effect = CardEffects.damage(
+        amount: 999,
+        target: CardTargetTypes.enemy,
+      );
+
+      final result = service.execute(
+        state: state,
+        effect: effect as CardEffectDamage,
+        sourcePlayerId: attackerId,
+        targetPlayerId: defenderId,
+      );
+
+      expect(result.state.players[defenderId]!.hp, 0);
+    });
+
     test('元のGameStateは変更されない(イミュータブル)', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(id: defenderId);

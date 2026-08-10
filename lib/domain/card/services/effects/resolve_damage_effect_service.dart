@@ -42,10 +42,11 @@ class ResolveDamageEffectService {
 
     final shieldDamage = min(targetPlayer.shield, finalDamage);
     final hpDamage = finalDamage - shieldDamage;
+    final finalHp = targetPlayer.hp - hpDamage;
 
     final newCardTargetPlayer = targetPlayer.copyWith(
       shield: targetPlayer.shield - shieldDamage,
-      hp: targetPlayer.hp - hpDamage,
+      hp: finalHp.clamp(0, targetPlayer.maxHp),
     );
 
     final newState = state.copyWith(
