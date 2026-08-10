@@ -13,6 +13,7 @@ import 'package:dereruministic/domain/card/services/consume_card_service.dart';
 import 'package:dereruministic/domain/card/services/deck_restoration_service.dart';
 import 'package:dereruministic/domain/card/services/effects/effect_resolver.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_apply_buff_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_apply_debuff_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_damage_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_draw_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_grant_cost_effect_service.dart';
@@ -71,6 +72,7 @@ ApplyPlayCardService buildRealApplyPlayCardService() {
     resolveGrantShieldEffectService: ResolveGrantShieldEffectService(),
     resolveGrantCostEffectService: ResolveGrantCostEffectService(),
     resolveApplyBuffService: ResolveApplyBuffService(),
+    resolveApplyDebuffService: ResolveApplyDebuffService(),
   );
   return ApplyPlayCardService(
     checkCardConditionService: CheckCardConditionService(

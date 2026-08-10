@@ -89,7 +89,12 @@ class ResolveCardEffectsService {
         effect: effect,
         sourcePlayerId: action.playerId,
       ),
-      CardEffectApplyDebuff() => throw UnimplementedError(),
+      CardEffectApplyDebuff() =>
+        effectResolver.resolveApplyDebuffService.execute(
+          state: state,
+          effect: effect,
+          sourcePlayerId: action.playerId,
+        ),
       CardEffectRemoveBuffs() => throw UnimplementedError(),
       CardEffectRemoveDebuffs() => throw UnimplementedError(),
     };
