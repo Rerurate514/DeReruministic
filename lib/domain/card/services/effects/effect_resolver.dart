@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/services/effects/resolve_apply_buff_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_damage_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_draw_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_grant_cost_effect_service.dart';
@@ -19,6 +20,7 @@ EffectResolver effectResolver(Ref ref) {
     resolveGrantCostEffectService: ref.read(
       resolveGrantCostEffectServiceProvider,
     ),
+    resolveApplyBuffService: ref.read(resolveApplyBuffServiceProvider),
   );
 }
 
@@ -29,6 +31,7 @@ class EffectResolver {
     required this.resolveHealEffectService,
     required this.resolveGrantShieldEffectService,
     required this.resolveGrantCostEffectService,
+    required this.resolveApplyBuffService,
   });
 
   final ResolveDamageEffectService resolveDamageEffectService;
@@ -36,4 +39,5 @@ class EffectResolver {
   final ResolveHealEffectService resolveHealEffectService;
   final ResolveGrantShieldEffectService resolveGrantShieldEffectService;
   final ResolveGrantCostEffectService resolveGrantCostEffectService;
+  final ResolveApplyBuffService resolveApplyBuffService;
 }
