@@ -1,4 +1,5 @@
 import 'package:dereruministic/presentation/pages/home/home_page.dart';
+import 'package:dereruministic/presentation/pages/lobby/lobby_page.dart';
 import 'package:dereruministic/presentation/router/router_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -17,14 +18,9 @@ GoRouter router(Ref ref) {
         builder: (context, state) => const HomePage(),
       ),
       GoRoute(
-        path: RouterPaths.library.path,
-        name: RouterPaths.library.name,
-        builder: (context, state) => const Placeholder(),
-      ),
-      GoRoute(
-        path: RouterPaths.waitingRoom.path,
-        name: RouterPaths.waitingRoom.name,
-        builder: (context, state) => const Placeholder(),
+        path: RouterPaths.lobby.path,
+        name: RouterPaths.lobby.name,
+        builder: (context, state) => const LobbyPage(),
       ),
       GoRoute(
         path: RouterPaths.gameRoom.path,
