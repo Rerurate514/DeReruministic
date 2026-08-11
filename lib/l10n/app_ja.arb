@@ -4,6 +4,8 @@
     "app_subtitle": "TACTICAL COMBAT SIMULATION",
     "app_subtitle_trailing": "DETERMINATION INITIALIZED",
 
+    "game_state_is_null": "NULL",
+
     "home_page_title": "ホームページ",
     "home_page_start_battle_button_text": "START BATTLE",
     "home_page_deck_editor_button_text": "DECK EDITOR",
