@@ -22,5 +22,16 @@
 
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
-    "battle_page_header_data_link_text": "DATA_LINK"
+    "battle_page_header_data_link_text": "DATA_LINK",
+    "battle_page_header_hp_bar": "HP: {hp} / {maxHp}",
+    "@battle_page_header_hp_bar": {
+        "placeholders": {
+            "hp": {
+                "type": "int"
+            },
+            "maxHp": {
+                "type": "int"
+            }
+        }
+    }
 }
