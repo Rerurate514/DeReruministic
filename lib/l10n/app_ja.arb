@@ -11,6 +11,8 @@
 
     "lobby_page_controls_panel_title": "LOBBY CONTROLS",
     "lobby_page_controls_panel_create_room_button_text": "CREATE ROOM",
+    "lobby_page_controls_panel_enter_room_button_text": "ENTER ROOM",
+    "lobby_page_controls_panel_enter_room_id_text": "_> ROOM #ID /// -----",
     "lobby_page_match_parameters_panel_title": "MATCH PARAMETERS",
     "lobby_page_match_parameters_panel_format": "FORMAT",
     "lobby_page_match_parameters_panel_time_limit": "TIME LIMIT"
