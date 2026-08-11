@@ -1,6 +1,7 @@
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/lobby/components/lobby_controls/create_room_button.dart';
+import 'package:dereruministic/presentation/pages/lobby/components/lobby_controls/ender_room_panel.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -31,6 +32,8 @@ class LobbyControlsPanel extends StatelessWidget {
             ),
           ),
           const CreateRoomButton(),
+          const Divider(),
+          const EnterRoomPanel(),
         ],
       ),
     );
