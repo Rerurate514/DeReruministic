@@ -1,8 +1,7 @@
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_text_field.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
-import 'package:dereruministic/presentation/widgets/ui_filled_circle.dart';
-import 'package:dereruministic/presentation/widgets/ui_flashing_widget.dart';
+import 'package:dereruministic/presentation/widgets/ui_active_filled_circle.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -21,10 +20,7 @@ class EnterRoomIdInput extends StatelessWidget {
         Row(
           spacing: 8,
           children: [
-            UiFlashingWidget(
-              color: theme.brandSecondary,
-              child: const UiFilledCircle(),
-            ),
+            const UiActiveFilledCircle(),
             Text(
               l10n.lobby_page_controls_panel_enter_room_id_text,
               style: GoogleFonts.shareTechMono(
