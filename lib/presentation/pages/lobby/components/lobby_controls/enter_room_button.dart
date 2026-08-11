@@ -1,6 +1,8 @@
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_highlight_transparency_button.dart';
+import 'package:dereruministic/presentation/router/router_paths.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class EnterRoomButton extends StatelessWidget {
@@ -12,7 +14,9 @@ class EnterRoomButton extends StatelessWidget {
 
     return AppHighlightTransparencyButton(
       borderRadius: 4,
-      onPressed: () {},
+      onPressed: () {
+        context.go(RouterPaths.battle.path);
+      },
       child: Row(
         mainAxisAlignment: .center,
         spacing: 8,
