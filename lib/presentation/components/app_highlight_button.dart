@@ -10,6 +10,8 @@ class AppHighlightButton extends StatelessWidget {
     this.height = 48,
     this.foregroundColor,
     this.backgroundColor,
+    this.isGlow = false,
+    this.borderRadius = 0,
   });
 
   final VoidCallback onPressed;
@@ -21,24 +23,42 @@ class AppHighlightButton extends StatelessWidget {
   final Color? foregroundColor;
   final Color? backgroundColor;
 
+  final bool isGlow;
+  final double borderRadius;
+
   @override
   Widget build(BuildContext context) {
     final theme = context.themePalette;
 
-    return SizedBox(
+    return Container(
       width: width,
       height: height,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: backgroundColor ?? theme.brandColor,
-          foregroundColor: foregroundColor ?? theme.surfaceBackground,
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+      decoration: BoxDecoration(
+        boxShadow: isGlow
+            ? [
+                BoxShadow(
+                  color: backgroundColor ?? theme.brandColor,
+                  spreadRadius: 1,
+                  blurRadius: 15,
+                ),
+              ]
+            : null,
+      ),
+      child: SizedBox(
+        width: width,
+        height: height,
+        child: ElevatedButton(
+          onPressed: onPressed,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: backgroundColor ?? theme.brandColor,
+            foregroundColor: foregroundColor ?? theme.surfaceBackground,
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(borderRadius),
+            ),
           ),
+          child: child,
         ),
-        child: child,
       ),
     );
   }
