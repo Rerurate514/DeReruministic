@@ -1,3 +1,4 @@
+import 'package:dereruministic/presentation/components/app_back_button.dart';
 import 'package:dereruministic/presentation/components/app_title.dart';
 import 'package:dereruministic/presentation/pages/lobby/components/lobby_controls/lobby_controls_panel.dart';
 import 'package:dereruministic/presentation/pages/lobby/components/match_parameters/match_parameters_panel.dart';
@@ -15,7 +16,13 @@ class LobbyPage extends StatelessWidget {
         crossAxisAlignment: .stretch,
         children: [
           FittedBox(
-            child: AppTitle(),
+            child: Row(
+              spacing: 16,
+              children: [
+                AppBackButton(),
+                AppTitle(),
+              ],
+            ),
           ),
           UiGap.s(),
           LobbyControlsPanel(),
