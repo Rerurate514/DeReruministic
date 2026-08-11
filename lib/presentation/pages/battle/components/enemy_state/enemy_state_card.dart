@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
+import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_cost.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_name.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_status.dart';
 import 'package:dereruministic/presentation/widgets/ui_gap.dart';
@@ -19,7 +20,15 @@ class EnemyStateCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: .stretch,
           children: [
-            EnemyStateName(enemy: enemy),
+            Row(
+              mainAxisAlignment: .spaceBetween,
+              children: [
+                EnemyStateName(enemy: enemy),
+                EnemyStateCost(
+                  enemy: enemy,
+                ),
+              ],
+            ),
             const UiGap.xs(),
             EnemyStateStatus(enemy: enemy),
             // EnemyStateBuffs(enemy: enemy),
