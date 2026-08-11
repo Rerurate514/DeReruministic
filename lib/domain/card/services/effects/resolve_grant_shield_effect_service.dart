@@ -14,7 +14,6 @@ ResolveGrantShieldEffectService resolveGrantShieldEffectService(Ref ref) {
   return ResolveGrantShieldEffectService();
 }
 
-//TODO(test): testの作成
 class ResolveGrantShieldEffectService {
   ApplyActionResult execute({
     required GameState state,
