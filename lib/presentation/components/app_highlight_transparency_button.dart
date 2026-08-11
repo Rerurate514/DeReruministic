@@ -10,6 +10,7 @@ class AppHighlightTransparencyButton extends StatelessWidget {
     this.height = 48,
     this.foregroundColor,
     this.backgroundColor,
+    this.borderRadius = 0,
   });
 
   final VoidCallback onPressed;
@@ -20,6 +21,8 @@ class AppHighlightTransparencyButton extends StatelessWidget {
 
   final Color? foregroundColor;
   final Color? backgroundColor;
+
+  final double borderRadius;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +38,7 @@ class AppHighlightTransparencyButton extends StatelessWidget {
           foregroundColor: foregroundColor ?? theme.brandColor,
           elevation: 0,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0),
+            borderRadius: BorderRadius.circular(borderRadius),
             side: BorderSide(color: foregroundColor ?? theme.brandColor),
           ),
         ),
