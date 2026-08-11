@@ -16,5 +16,9 @@
     "lobby_page_controls_panel_enter_room_id_hint_text": "_> Enter Room Id...",
     "lobby_page_match_parameters_panel_title": "MATCH PARAMETERS",
     "lobby_page_match_parameters_panel_format": "FORMAT",
-    "lobby_page_match_parameters_panel_time_limit": "TIME LIMIT"
+    "lobby_page_match_parameters_panel_time_limit": "TIME LIMIT",
+
+    "battle_page_header_sys_active_text": "SYS_ACTV",
+    "battle_page_header_turn_text": "Turn",
+    "battle_page_header_data_link_text": "DATA_LINK"
 }
