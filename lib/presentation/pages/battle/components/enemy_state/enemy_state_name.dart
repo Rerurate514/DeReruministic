@@ -5,6 +5,7 @@ import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 class EnemyStateName extends ConsumerWidget {
   const EnemyStateName({required this.enemy, super.key});
@@ -19,9 +20,19 @@ class EnemyStateName extends ConsumerWidget {
       enemyPlayerUiStateProvider(enemy).select((s) => s?.name),
     );
 
-    return Text(
-      name ?? l10n.game_state_is_null,
-      style: GoogleFonts.poppins(color: theme.textSecondary),
+    return Row(
+      spacing: 4,
+      children: [
+        Icon(
+          Symbols.warning,
+          size: 16,
+          color: theme.textSecondary,
+        ),
+        Text(
+          name ?? l10n.game_state_is_null,
+          style: GoogleFonts.poppins(color: theme.textSecondary, fontSize: 20),
+        ),
+      ],
     );
   }
 }
