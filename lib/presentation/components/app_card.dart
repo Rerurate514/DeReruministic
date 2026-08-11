@@ -8,12 +8,14 @@ class AppCard extends StatelessWidget {
     super.key,
     this.borderRadius = 0,
     this.borderColor,
+    this.borderWidth = 2,
   });
 
   final Widget child;
   final EdgeInsets? padding;
   final double borderRadius;
   final Color? borderColor;
+  final double borderWidth;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,10 @@ class AppCard extends StatelessWidget {
       elevation: 8,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
-        side: BorderSide(color: borderColor ?? theme.buttonSecondary, width: 2),
+        side: BorderSide(
+          color: borderColor ?? theme.buttonSecondary,
+          width: borderWidth,
+        ),
       ),
       child: Padding(
         padding: padding ?? const EdgeInsets.all(8),
