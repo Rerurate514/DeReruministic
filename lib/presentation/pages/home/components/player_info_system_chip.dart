@@ -1,5 +1,6 @@
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
+import 'package:dereruministic/presentation/widgets/ui_flashing_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
@@ -17,10 +18,13 @@ class PlayerInfoSystemChip extends StatelessWidget {
           Row(
             spacing: 16,
             children: [
-              Icon(
-                Symbols.check_circle_filled,
+              UiFlashingWidget(
                 color: theme.brandSecondary,
-                size: 16,
+                child: Icon(
+                  Symbols.check_circle_filled,
+                  color: theme.brandSecondary,
+                  size: 16,
+                ),
               ),
               Column(
                 crossAxisAlignment: .start,
