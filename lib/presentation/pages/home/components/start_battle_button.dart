@@ -14,7 +14,7 @@ class StartBattleButton extends StatelessWidget {
 
     return AppHighlightButton(
       onPressed: () {
-        context.go(RouterPaths.lobby.path);
+        context.push(RouterPaths.lobby.path);
       },
       child: Row(
         mainAxisAlignment: .center,
