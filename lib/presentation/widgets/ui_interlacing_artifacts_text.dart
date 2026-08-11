@@ -29,8 +29,8 @@ class UiInterlacingArtifactsText extends HookWidget {
 
     final leftAnimation = useAnimation(
       Tween<Offset>(
-        begin: Offset.zero,
-        end: const Offset(-3, 0),
+        begin: const Offset(4, -4),
+        end: const Offset(-4, 4),
       ).animate(
         CurvedAnimation(
           parent: controller,
@@ -41,8 +41,8 @@ class UiInterlacingArtifactsText extends HookWidget {
 
     final rightAnimation = useAnimation(
       Tween<Offset>(
-        begin: Offset.zero,
-        end: const Offset(3, 0),
+        begin: const Offset(-4, 4),
+        end: const Offset(4, -4),
       ).animate(
         CurvedAnimation(
           parent: controller,
