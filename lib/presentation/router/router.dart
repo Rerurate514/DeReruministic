@@ -1,3 +1,6 @@
+import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
+import 'package:dereruministic/domain/player/entities/player.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
 import 'package:dereruministic/presentation/pages/home/home_page.dart';
 import 'package:dereruministic/presentation/pages/lobby/lobby_page.dart';
@@ -26,7 +29,25 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: RouterPaths.battle.path,
         name: RouterPaths.battle.name,
-        builder: (context, state) => const BattlePage(),
+        builder: (context, state) => BattlePage(
+          playerA: Player(
+            id: PlayerId.generate(),
+            name: 'Player_01',
+            deckRecipe: List.generate(
+              40,
+              (_) => const CardDefinitionId(value: 'basic_pack_hit'),
+            ),
+          ),
+          playerB: Player(
+            id: PlayerId.generate(),
+            name: 'Player_02',
+            deckRecipe: List.generate(
+              40,
+              (_) => const CardDefinitionId(value: 'basic_pack_hit'),
+            ),
+          ),
+          seed: 514,
+        ),
       ),
       GoRoute(
         path: RouterPaths.result.path,
