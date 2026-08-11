@@ -25,6 +25,6 @@ sealed class EnemyPlayerUiState with _$EnemyPlayerUiState {
   }) = _EnemyPlayerUiState;
 }
 
-// extension EnemyPlayerUiStateEx on EnemyPlayerUiState {
-//   double get hpRatio => maxHp > 0 ? hp / maxHp : 0.0;
-// }
+extension EnemyPlayerUiStateEx on EnemyPlayerUiState {
+  double get hpRatio => maxHp > 0 ? hp / maxHp : 0.0;
+}
