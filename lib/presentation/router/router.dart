@@ -1,3 +1,4 @@
+import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
 import 'package:dereruministic/presentation/pages/home/home_page.dart';
 import 'package:dereruministic/presentation/pages/lobby/lobby_page.dart';
 import 'package:dereruministic/presentation/router/router_paths.dart';
@@ -23,9 +24,9 @@ GoRouter router(Ref ref) {
         builder: (context, state) => const LobbyPage(),
       ),
       GoRoute(
-        path: RouterPaths.gameRoom.path,
-        name: RouterPaths.gameRoom.name,
-        builder: (context, state) => const Placeholder(),
+        path: RouterPaths.battle.path,
+        name: RouterPaths.battle.name,
+        builder: (context, state) => const BattlePage(),
       ),
       GoRoute(
         path: RouterPaths.result.path,
