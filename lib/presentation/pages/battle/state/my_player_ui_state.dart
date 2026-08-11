@@ -1,4 +1,6 @@
+import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -23,6 +25,29 @@ sealed class MyPlayerUiState with _$MyPlayerUiState {
     required List<BuffState> buffs,
     required List<DebuffState> debuffs,
   }) = _MyPlayerUiState;
+
+  factory MyPlayerUiState.create({
+    required Player player,
+    required PlayerState playerState,
+    required bool isTurn,
+  }) {
+    return MyPlayerUiState(
+      id: player.id,
+      name: player.name,
+      hp: playerState.hp,
+      maxHp: playerState.maxHp,
+      cost: playerState.currentCost,
+      maxCost: 99, //TODO(cost): cost
+      shield: playerState.shield,
+      handCount: playerState.hand.length,
+      deckCount: playerState.deck.length,
+      graveyardCount: playerState.graveyard.length,
+      exhaustedCount: playerState.exhausted.length,
+      isTurn: isTurn,
+      buffs: playerState.buffs,
+      debuffs: playerState.debuffs,
+    );
+  }
 }
 
 extension MyPlayerUiStateEx on MyPlayerUiState {
