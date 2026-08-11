@@ -31,6 +31,7 @@ class BattlePage extends HookConsumerWidget {
     return UiPageWrapper(
       padding: const EdgeInsets.all(4),
       child: Column(
+        crossAxisAlignment: .stretch,
         children: [
           const BattleHeader(),
           EnemyStateCard(
