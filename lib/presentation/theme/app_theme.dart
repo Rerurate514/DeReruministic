@@ -53,7 +53,7 @@ const darkCustomTheme = AppColorScheme(
   costDp: Color(0xFF00F0FF),
   playerHp: Color(0xFFF5B5A1),
   enemyHp: Color(0xFFFF003C),
-  shield: Color(0xFF00F0FF),
+  shield: Color(0xFF727375),
   // 4. バフ・回復系
   buff: Color(0xFF00F0FF),
   hpHeal: Color(0xFF80CBC4),

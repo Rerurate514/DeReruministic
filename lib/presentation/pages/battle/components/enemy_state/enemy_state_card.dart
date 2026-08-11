@@ -1,7 +1,7 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
-import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_hp.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_name.dart';
+import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_status.dart';
 import 'package:dereruministic/presentation/widgets/ui_gap.dart';
 import 'package:flutter/material.dart';
 
@@ -21,8 +21,7 @@ class EnemyStateCard extends StatelessWidget {
           children: [
             EnemyStateName(enemy: enemy),
             const UiGap.xs(),
-            EnemyStateHp(enemy: enemy),
-            // EnemyStateShield(enemy: enemy),
+            EnemyStateStatus(enemy: enemy),
             // EnemyStateBuffs(enemy: enemy),
             // EnemyStateDebuffs(enemy: enemy),
             // EnemyStateCost(enemy: enemy),

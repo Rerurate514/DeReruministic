@@ -27,8 +27,9 @@ class EnemyStateHp extends ConsumerWidget {
     if (hp == null || maxHp == null) return const UiLoadingIndicator();
 
     return SizedBox(
-      height: 24,
+      height: 32,
       child: Stack(
+        alignment: .centerLeft,
         children: [
           Positioned.fill(
             child: CustomPaint(
