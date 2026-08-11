@@ -14,7 +14,6 @@ ResolveGrantCostEffectService resolveGrantCostEffectService(Ref ref) {
   return ResolveGrantCostEffectService();
 }
 
-//TODO(test): testの作成
 class ResolveGrantCostEffectService {
   ApplyActionResult execute({
     required GameState state,
