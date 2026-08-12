@@ -4,6 +4,7 @@ import 'package:dereruministic/presentation/pages/battle/components/phase/phase_
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:dereruministic/presentation/utils/game_phase_ex.dart';
 import 'package:dereruministic/presentation/widgets/ui_active_filled_circle.dart';
+import 'package:dereruministic/presentation/widgets/ui_gap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,16 +20,20 @@ class PhaseBanner extends HookWidget {
     final theme = context.themePalette;
     return SizedBox(
       height: 90,
-      width: 180,
-      child: Stack(
+      child: Row(
+        mainAxisSize: .min,
+        spacing: 8,
         children: [
-          const Positioned.fill(
-            child: PhaseBannerScanLine(),
+          _buildLine(theme),
+          ClipRRect(
+            child: Stack(
+              children: [
+                _buildContent(l10n, theme),
+                const PhaseBannerScanLine(),
+              ],
+            ),
           ),
-          Row(
-            spacing: 8,
-            children: [_buildLine(theme), _buildContent(l10n, theme)],
-          ),
+          const UiGap.l(),
         ],
       ),
     );
@@ -52,7 +57,7 @@ class PhaseBanner extends HookWidget {
 
   Widget _buildContent(AppLocalizations l10n, AppColorScheme theme) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.only(

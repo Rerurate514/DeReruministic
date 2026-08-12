@@ -61,18 +61,18 @@ class PhaseBannerAnimationContainer extends HookConsumerWidget {
 
     if (displayedPhase.value == null) return const SizedBox.shrink();
 
-    return Align(
-      alignment: .centerRight,
-      child: AnimatedBuilder(
-        animation: curvedAnimation,
-        child: PhaseBanner(
-          phase: displayedPhase.value!,
-        ),
-        builder: (context, child) {
-          final dx = (controller.value * -300) + 300;
-          return Transform.translate(offset: Offset(dx, 0), child: child);
-        },
+    return AnimatedBuilder(
+      animation: curvedAnimation,
+      child: PhaseBanner(
+        phase: displayedPhase.value!,
       ),
+      builder: (context, child) {
+        final dx = 1 - (controller.value) + 0.1;
+        return FractionalTranslation(
+          translation: Offset(dx, 0),
+          child: child,
+        );
+      },
     );
   }
 }

@@ -21,7 +21,7 @@ class BattlePageStack extends StatelessWidget {
           ),
         ),
         const Align(
-          alignment: Alignment(0, 0.3),
+          alignment: Alignment.centerRight,
           child: PhaseBannerAnimationContainer(),
         ),
         Align(

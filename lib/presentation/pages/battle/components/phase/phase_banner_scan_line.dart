@@ -18,29 +18,27 @@ class PhaseBannerScanLine extends HookWidget {
       return null;
     }, [controller]);
 
-    return ClipRRect(
-      child: AnimatedBuilder(
-        animation: controller,
-        builder: (context, child) {
-          final dx = controller.value * 180;
-          return Transform.translate(
-            offset: Offset(dx, 0),
-            child: child,
-          );
-        },
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Container(
-            width: 2,
-            decoration: BoxDecoration(
-              boxShadow: [
-                BoxShadow(
-                  color: theme.brandSecondary,
-                  spreadRadius: 3,
-                  blurRadius: 15,
-                ),
-              ],
-            ),
+    return AnimatedBuilder(
+      animation: controller,
+      builder: (context, child) {
+        final dx = controller.value * 280;
+        return Transform.translate(
+          offset: Offset(dx, 0),
+          child: child,
+        );
+      },
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: Container(
+          width: 2,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: theme.brandSecondary,
+                spreadRadius: 3,
+                blurRadius: 15,
+              ),
+            ],
           ),
         ),
       ),
