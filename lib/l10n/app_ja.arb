@@ -52,5 +52,7 @@
     "battle_page_phase_main_phase": "MAIN PHASE",
     "battle_page_phase_turn_end": "TURN END",
     "battle_page_phase_battle_end": "BATTLE END",
-    "battle_page_phase_select_discard": "SD"
+    "battle_page_phase_select_discard": "SD",
+
+    "battle_page_user_id_text": "USER ID"
 }

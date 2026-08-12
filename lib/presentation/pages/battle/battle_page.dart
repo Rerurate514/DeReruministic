@@ -40,6 +40,7 @@ class BattlePage extends HookConsumerWidget {
           const BattleHeader(),
           Expanded(
             child: BattlePageStack(
+              player: playerA,
               enemy: playerB,
             ),
           ),
