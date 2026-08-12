@@ -19,6 +19,7 @@ class EnemyStateCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: .stretch,
+          mainAxisSize: .min,
           children: [
             Row(
               mainAxisAlignment: .spaceBetween,
