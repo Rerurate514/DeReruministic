@@ -22,7 +22,7 @@ class PhaseBannerScanLine extends HookWidget {
       child: AnimatedBuilder(
         animation: controller,
         builder: (context, child) {
-          final dx = controller.value * 160;
+          final dx = controller.value * 180;
           return Transform.translate(
             offset: Offset(dx, 0),
             child: child,
