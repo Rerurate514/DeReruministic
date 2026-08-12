@@ -19,57 +19,62 @@ class UiActiveFilledCircle extends HookWidget {
       return null;
     }, [controller]);
 
-    final opacityAnimation = useAnimation(
-      useMemoized(() {
-        return TweenSequence<double>([
-          TweenSequenceItem(
-            tween: Tween<double>(
-              begin: 0.8,
-              end: 0,
-            ).chain(CurveTween(curve: Curves.easeInOut)),
-            weight: 50,
-          ),
-          TweenSequenceItem(
-            tween: ConstantTween<double>(0),
-            weight: 50,
-          ),
-        ]).animate(controller);
-      }, [controller]),
+    final opacityAnimation = useMemoized(
+      () => TweenSequence<double>([
+        TweenSequenceItem(
+          tween: Tween<double>(
+            begin: 0.8,
+            end: 0,
+          ).chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 50,
+        ),
+        TweenSequenceItem(
+          tween: ConstantTween<double>(0),
+          weight: 50,
+        ),
+      ]).animate(controller),
+      [controller],
     );
 
-    final scaleAnimation = useAnimation(
-      useMemoized(() {
-        return TweenSequence<double>([
-          TweenSequenceItem(
-            tween: Tween<double>(
-              begin: 1,
-              end: 3,
-            ).chain(CurveTween(curve: Curves.easeInOut)),
-            weight: 50,
-          ),
-          TweenSequenceItem(
-            tween: ConstantTween<double>(3),
-            weight: 50,
-          ),
-        ]).animate(controller);
-      }, [controller]),
+    final scaleAnimation = useMemoized(
+      () => TweenSequence<double>([
+        TweenSequenceItem(
+          tween: Tween<double>(
+            begin: 1,
+            end: 3,
+          ).chain(CurveTween(curve: Curves.easeInOut)),
+          weight: 50,
+        ),
+        TweenSequenceItem(
+          tween: ConstantTween<double>(3),
+          weight: 50,
+        ),
+      ]).animate(controller),
+      [controller],
     );
 
     return Stack(
+      alignment: Alignment.center,
       children: [
+        AnimatedBuilder(
+          animation: controller,
+          builder: (context, child) {
+            return Opacity(
+              opacity: opacityAnimation.value,
+              child: Transform.scale(
+                scale: scaleAnimation.value,
+                child: child,
+              ),
+            );
+          },
+          child: UiFilledCircle(
+            color: color,
+            size: size,
+          ),
+        ),
         UiFilledCircle(
           color: color,
           size: size,
-        ),
-        Opacity(
-          opacity: opacityAnimation,
-          child: Transform.scale(
-            scale: scaleAnimation,
-            child: UiFilledCircle(
-              color: color,
-              size: size,
-            ),
-          ),
         ),
       ],
     );
