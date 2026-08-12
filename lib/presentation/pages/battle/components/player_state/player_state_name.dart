@@ -2,6 +2,7 @@ import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
+import 'package:dereruministic/presentation/widgets/ui_active_filled_square.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -22,11 +23,20 @@ class PlayerStateName extends ConsumerWidget {
     return Column(
       crossAxisAlignment: .start,
       children: [
-        Text(
-          l10n.battle_page_user_id_text,
-          style: GoogleFonts.poppins(
-            color: theme.textSecondary.withAlpha(100),
-          ),
+        Row(
+          mainAxisSize: .min,
+          spacing: 16,
+          children: [
+            const UiActiveFilledSquare(
+              isOnlyBorder: true,
+            ),
+            Text(
+              l10n.battle_page_user_id_text,
+              style: GoogleFonts.poppins(
+                color: theme.textSecondary.withAlpha(100),
+              ),
+            ),
+          ],
         ),
         Text(
           name ?? l10n.game_state_is_null,
