@@ -1,5 +1,6 @@
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:real_liquid_glass/real_liquid_glass.dart';
 
 class AppCard extends StatelessWidget {
   const AppCard({
@@ -20,15 +21,8 @@ class AppCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.themePalette;
-    return Card(
-      elevation: 8,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
-        side: BorderSide(
-          color: borderColor ?? theme.buttonSecondary,
-          width: borderWidth,
-        ),
-      ),
+    return LiquidGlassContainer(
+      shape: const LiquidGlassShape.roundedRectangle(0),
       child: Padding(
         padding: padding ?? const EdgeInsets.all(8),
         child: child,

@@ -1,6 +1,7 @@
+import 'package:animated_background/animated_background.dart';
 import 'package:flutter/material.dart';
 
-class UiPageWrapper extends StatelessWidget {
+class UiPageWrapper extends StatefulWidget {
   const UiPageWrapper({
     required this.child,
     super.key,
@@ -17,18 +18,30 @@ class UiPageWrapper extends StatelessWidget {
   final Widget? bottomNavigationBar;
 
   @override
+  State<UiPageWrapper> createState() => _UiPageWrapperState();
+}
+
+class _UiPageWrapperState extends State<UiPageWrapper>
+    with TickerProviderStateMixin {
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar,
+      appBar: widget.appBar,
       body: SafeArea(
-        child: Padding(
-          key: const Key('page_wrapper_padding'),
-          padding: padding,
-          child: child,
+        child: AnimatedBackground(
+          behaviour: RandomParticleBehaviour(
+            options: const ParticleOptions(baseColor: Colors.red),
+          ),
+          vsync: this,
+          child: Padding(
+            key: const Key('page_wrapper_padding'),
+            padding: widget.padding,
+            child: widget.child,
+          ),
         ),
       ),
-      floatingActionButton: floatingActionButton,
-      bottomNavigationBar: bottomNavigationBar,
+      floatingActionButton: widget.floatingActionButton,
+      bottomNavigationBar: widget.bottomNavigationBar,
     );
   }
 }
