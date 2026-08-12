@@ -10,6 +10,7 @@ import 'package:dereruministic/domain/card/services/conditions/check_target_hp_p
 import 'package:dereruministic/domain/card/services/conditions/check_target_hp_value_condition_service.dart';
 import 'package:dereruministic/domain/card/services/conditions/conditions_resolver.dart';
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
+import 'package:dereruministic/domain/card/services/create_deck_service.dart';
 import 'package:dereruministic/domain/card/services/deck_restoration_service.dart';
 import 'package:dereruministic/domain/card/services/effects/effect_resolver.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_apply_buff_service.dart';
@@ -29,9 +30,15 @@ import 'package:dereruministic/domain/card/value_objects/card_target_types.dart'
 import 'package:dereruministic/domain/card/value_objects/comparison_operator.dart';
 import 'package:dereruministic/domain/card/value_objects/effect_conditions.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/game_system/constants/game_system_constants.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_turn_start_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/calculate_turn_cost_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/i_turn_pipeline_factory.dart';
+import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline.dart';
 import 'package:dereruministic/domain/game_system/services/play_card_validator.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
@@ -41,6 +48,7 @@ import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/player/constants/player_constants.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
@@ -49,8 +57,49 @@ import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.d
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
+import 'package:mockito/mockito.dart';
 
 import 'game_flow_usecase_integration_test.mocks.dart';
+
+class _GameStartOnlyPipelineFactory implements ITurnPipelineFactory {
+  _GameStartOnlyPipelineFactory({required this.cardDrawService});
+
+  final CardDrawService cardDrawService;
+
+  @override
+  TurnPipeline createGameStartPipeline() {
+    return TurnPipeline(
+      turnProcessSteps: [
+        GameStartDrawCardsService(cardDrawService: cardDrawService),
+        const AdvancedToTurnStartService(),
+        CalculateTurnCostService(),
+        const AdvanceToMainPhaseService(),
+      ],
+    );
+  }
+
+  @override
+  TurnPipeline createTurnEndPipeline() {
+    throw UnimplementedError('このテストではturnEndパイプラインは使わない');
+  }
+}
+
+CardDefinition buildSimpleCardDef(String id) {
+  return CardDefinition(
+    cardDefId: CardDefinitionId(value: id),
+    name: 'Card $id',
+    baseCost: 1,
+    effects: const [
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 1,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+    ],
+    states: const [],
+  );
+}
 
 ApplyPlayCardService buildRealApplyPlayCardService() {
   final conditionsResolver = ConditionsResolver(
@@ -159,18 +208,36 @@ GameActionPlayCard buildAction({
 @GenerateNiceMocks([
   MockSpec<ITurnPipelineFactory>(),
   MockSpec<GameSetupService>(),
+  MockSpec<TurnPipeline>(),
 ])
 void main() {
   const playerId = PlayerId(value: 'player1');
   const enemyId = PlayerId(value: 'player2');
 
+  late MockITurnPipelineFactory mockPipelineFactory;
+  late MockGameSetupService mockGameSetupService;
+  late MockTurnPipeline mockTurnPipeline;
   late GameFlowUsecase usecase;
 
   setUp(() {
+    mockPipelineFactory = MockITurnPipelineFactory();
+    mockGameSetupService = MockGameSetupService();
+    mockTurnPipeline = MockTurnPipeline();
+
+    provideDummy<ApplyActionResult>(
+      ApplyActionResult.noSteps(
+        state: buildState(
+          players: {playerId: buildPlayer(id: playerId)},
+          turnOwner: playerId,
+        ),
+      ),
+    );
+    provideDummy<TurnPipeline>(mockTurnPipeline);
+
     usecase = GameFlowUsecase(
       cardCatalog: const [],
-      pipelineFactory: MockITurnPipelineFactory(),
-      gameSetupService: MockGameSetupService(),
+      pipelineFactory: mockPipelineFactory,
+      gameSetupService: mockGameSetupService,
       applyPlayCardService: buildRealApplyPlayCardService(),
     );
   });
@@ -1039,5 +1106,530 @@ void main() {
         expect(success.state.players[playerId]!.graveyard, hasLength(1));
       },
     );
+  });
+
+  group('GameFlowUsecase.applyAction - GameActionGameStart', () {
+    const deckRecipeA = [
+      CardDefinitionId(value: 'def_a1'),
+      CardDefinitionId(value: 'def_a2'),
+    ];
+    const deckRecipeB = [
+      CardDefinitionId(value: 'def_b1'),
+    ];
+
+    GameActionGameStart buildGameStartAction({int seed = 42}) {
+      return const GameActions.gameStart(
+            id: GameActionsId(value: 'action_start'),
+            playerAId: playerId,
+            playerBId: enemyId,
+            playerADeckRecipe: deckRecipeA,
+            playerBDeckRecipe: deckRecipeB,
+            seed: 42,
+          )
+          as GameActionGameStart;
+    }
+
+    test('currentがnullでもStateErrorにならず、gameSetupServiceが呼ばれる', () {
+      final action = buildGameStartAction();
+      final setupState = buildState(
+        players: {
+          playerId: buildPlayer(id: playerId),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        turnOwner: playerId,
+      );
+      const setupStep = GameStepEvent.gameStarted(
+        firstTurnPlayerId: playerId,
+      );
+
+      when(
+        mockGameSetupService.execute(
+          playerAId: anyNamed('playerAId'),
+          playerBId: anyNamed('playerBId'),
+          playerADeckRecipe: anyNamed('playerADeckRecipe'),
+          playerBDeckRecipe: anyNamed('playerBDeckRecipe'),
+          cardDefs: anyNamed('cardDefs'),
+          seed: anyNamed('seed'),
+        ),
+      ).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: [setupStep]),
+      );
+      when(
+        mockPipelineFactory.createGameStartPipeline(),
+      ).thenReturn(mockTurnPipeline);
+      when(mockTurnPipeline.process(any, any)).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: [setupStep]),
+      );
+
+      // GameActionGameStartは_requireStateを通らないのでcurrent: nullでも動く
+      final result = usecase.applyAction(current: null, action: action);
+
+      expect(result, isA<ApplyActionResultSuccess>());
+    });
+
+    test('gameSetupServiceにactionの各フィールドとcardCatalogが正しく渡される', () {
+      final action = buildGameStartAction();
+      final setupState = buildState(
+        players: {
+          playerId: buildPlayer(id: playerId),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        turnOwner: playerId,
+      );
+
+      when(
+        mockGameSetupService.execute(
+          playerAId: anyNamed('playerAId'),
+          playerBId: anyNamed('playerBId'),
+          playerADeckRecipe: anyNamed('playerADeckRecipe'),
+          playerBDeckRecipe: anyNamed('playerBDeckRecipe'),
+          cardDefs: anyNamed('cardDefs'),
+          seed: anyNamed('seed'),
+        ),
+      ).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: const []),
+      );
+      when(
+        mockPipelineFactory.createGameStartPipeline(),
+      ).thenReturn(mockTurnPipeline);
+      when(mockTurnPipeline.process(any, any)).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: const []),
+      );
+
+      usecase.applyAction(current: null, action: action);
+
+      verify(
+        mockGameSetupService.execute(
+          playerAId: playerId,
+          playerBId: enemyId,
+          playerADeckRecipe: deckRecipeA,
+          playerBDeckRecipe: deckRecipeB,
+          cardDefs: const [], // usecaseのcardCatalogがそのまま渡される
+          seed: 42,
+        ),
+      ).called(1);
+    });
+
+    test('gameSetupServiceが失敗を返す場合、pipelineは実行されずその失敗がそのまま返る', () {
+      final action = buildGameStartAction();
+      final dummyState = buildState(
+        players: {playerId: buildPlayer(id: playerId)},
+        turnOwner: playerId,
+      );
+      final failure = ApplyActionResult.failure(
+        state: dummyState,
+        reason: ActionFailureReason.playerNotFound,
+      );
+
+      when(
+        mockGameSetupService.execute(
+          playerAId: anyNamed('playerAId'),
+          playerBId: anyNamed('playerBId'),
+          playerADeckRecipe: anyNamed('playerADeckRecipe'),
+          playerBDeckRecipe: anyNamed('playerBDeckRecipe'),
+          cardDefs: anyNamed('cardDefs'),
+          seed: anyNamed('seed'),
+        ),
+      ).thenReturn(failure);
+      when(
+        mockPipelineFactory.createGameStartPipeline(),
+      ).thenReturn(mockTurnPipeline);
+
+      final result = usecase.applyAction(current: null, action: action);
+
+      expect(result, failure);
+      verifyNever(mockTurnPipeline.process(any, any));
+    });
+
+    test('gameSetupService成功時、pipeline.processにsetupのstateとstepsが渡される', () {
+      final action = buildGameStartAction();
+      final setupState = buildState(
+        players: {
+          playerId: buildPlayer(id: playerId),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        turnOwner: enemyId,
+      );
+      const setupStep = GameStepEvent.gameStarted(firstTurnPlayerId: enemyId);
+
+      when(
+        mockGameSetupService.execute(
+          playerAId: anyNamed('playerAId'),
+          playerBId: anyNamed('playerBId'),
+          playerADeckRecipe: anyNamed('playerADeckRecipe'),
+          playerBDeckRecipe: anyNamed('playerBDeckRecipe'),
+          cardDefs: anyNamed('cardDefs'),
+          seed: anyNamed('seed'),
+        ),
+      ).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: const [setupStep]),
+      );
+      when(
+        mockPipelineFactory.createGameStartPipeline(),
+      ).thenReturn(mockTurnPipeline);
+      when(mockTurnPipeline.process(any, any)).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: const [setupStep]),
+      );
+
+      usecase.applyAction(current: null, action: action);
+
+      verify(
+        mockTurnPipeline.process(setupState, const [setupStep]),
+      ).called(1);
+    });
+
+    test('pipeline.processの結果がそのまま返る', () {
+      final action = buildGameStartAction();
+      final setupState = buildState(
+        players: {
+          playerId: buildPlayer(id: playerId),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        turnOwner: playerId,
+      );
+      // pipelineがフェーズを進めた後のstateを模擬
+      final pipelineState = buildState(
+        players: {
+          playerId: buildPlayer(id: playerId, currentCost: 5),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        turnOwner: playerId,
+      );
+      const setupStep = GameStepEvent.gameStarted(firstTurnPlayerId: playerId);
+      final pipelineResult = ApplyActionResult.success(
+        state: pipelineState,
+        steps: const [setupStep],
+      );
+
+      when(
+        mockGameSetupService.execute(
+          playerAId: anyNamed('playerAId'),
+          playerBId: anyNamed('playerBId'),
+          playerADeckRecipe: anyNamed('playerADeckRecipe'),
+          playerBDeckRecipe: anyNamed('playerBDeckRecipe'),
+          cardDefs: anyNamed('cardDefs'),
+          seed: anyNamed('seed'),
+        ),
+      ).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: const [setupStep]),
+      );
+      when(
+        mockPipelineFactory.createGameStartPipeline(),
+      ).thenReturn(mockTurnPipeline);
+      when(mockTurnPipeline.process(any, any)).thenReturn(pipelineResult);
+
+      final result = usecase.applyAction(current: null, action: action);
+
+      expect(result, pipelineResult);
+      expect(
+        (result as ApplyActionResultSuccess)
+            .state
+            .players[playerId]!
+            .currentCost,
+        5,
+      );
+    });
+
+    test('pipelineが失敗を返す場合、その失敗がそのまま返る', () {
+      final action = buildGameStartAction();
+      final setupState = buildState(
+        players: {
+          playerId: buildPlayer(id: playerId),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        turnOwner: playerId,
+      );
+      final pipelineFailure = ApplyActionResult.failure(
+        state: setupState,
+        reason: ActionFailureReason.invalidPhase,
+      );
+
+      when(
+        mockGameSetupService.execute(
+          playerAId: anyNamed('playerAId'),
+          playerBId: anyNamed('playerBId'),
+          playerADeckRecipe: anyNamed('playerADeckRecipe'),
+          playerBDeckRecipe: anyNamed('playerBDeckRecipe'),
+          cardDefs: anyNamed('cardDefs'),
+          seed: anyNamed('seed'),
+        ),
+      ).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: const []),
+      );
+      when(
+        mockPipelineFactory.createGameStartPipeline(),
+      ).thenReturn(mockTurnPipeline);
+      when(mockTurnPipeline.process(any, any)).thenReturn(pipelineFailure);
+
+      final result = usecase.applyAction(current: null, action: action);
+
+      expect(result, pipelineFailure);
+    });
+
+    test('createTurnEndPipelineではなくcreateGameStartPipelineが使われる', () {
+      final action = buildGameStartAction();
+      final setupState = buildState(
+        players: {
+          playerId: buildPlayer(id: playerId),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        turnOwner: playerId,
+      );
+
+      when(
+        mockGameSetupService.execute(
+          playerAId: anyNamed('playerAId'),
+          playerBId: anyNamed('playerBId'),
+          playerADeckRecipe: anyNamed('playerADeckRecipe'),
+          playerBDeckRecipe: anyNamed('playerBDeckRecipe'),
+          cardDefs: anyNamed('cardDefs'),
+          seed: anyNamed('seed'),
+        ),
+      ).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: const []),
+      );
+      when(
+        mockPipelineFactory.createGameStartPipeline(),
+      ).thenReturn(mockTurnPipeline);
+      when(mockTurnPipeline.process(any, any)).thenReturn(
+        ApplyActionResult.success(state: setupState, steps: const []),
+      );
+
+      usecase.applyAction(current: null, action: action);
+
+      verify(mockPipelineFactory.createGameStartPipeline()).called(1);
+      verifyNever(mockPipelineFactory.createTurnEndPipeline());
+    });
+  });
+
+  group('GameFlowUsecase.applyAction - GameActionGameStart(ターン遷移の検証)', () {
+    const playerId = PlayerId(value: 'player1');
+    const enemyId = PlayerId(value: 'player2');
+
+    // 各プレイヤー10枚のデッキ。初期ドロー4枚を引いても
+    // デッキが空にならないので、DeckRestorationServiceは走らない。
+    final cardCatalog = List.generate(
+      10,
+      (i) => buildSimpleCardDef('def_$i'),
+    );
+    final deckRecipe = List.generate(
+      10,
+      (i) => CardDefinitionId(value: 'def_$i'),
+    );
+
+    late GameFlowUsecase gameStartUsecase;
+
+    setUp(() {
+      gameStartUsecase = GameFlowUsecase(
+        cardCatalog: cardCatalog,
+        pipelineFactory: _GameStartOnlyPipelineFactory(
+          cardDrawService: CardDrawService(
+            deckRestorationService: DeckRestorationService(),
+          ),
+        ),
+        gameSetupService: GameSetupService(
+          createDeckService: CreateDeckService(),
+        ),
+        applyPlayCardService: buildRealApplyPlayCardService(),
+      );
+    });
+
+    GameActionGameStart buildGameStartAction({int seed = 42}) {
+      return GameActionGameStart(
+        id: const GameActionsId(value: 'action_start'),
+        playerAId: playerId,
+        playerBId: enemyId,
+        playerADeckRecipe: deckRecipe,
+        playerBDeckRecipe: deckRecipe,
+        seed: seed,
+      );
+    }
+
+    test('GameStart後、両プレイヤーが初期手札を引きデッキが正しく減っている', () {
+      final result = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(),
+      );
+
+      expect(result, isA<ApplyActionResultSuccess>());
+      final state = (result as ApplyActionResultSuccess).state;
+
+      for (final id in [playerId, enemyId]) {
+        final player = state.players[id]!;
+        expect(
+          player.hand,
+          hasLength(GameSystemConstants.initialGameStartDrawCardsCount),
+        );
+        expect(
+          player.deck,
+          hasLength(
+            deckRecipe.length -
+                GameSystemConstants.initialGameStartDrawCardsCount,
+          ),
+        );
+      }
+    });
+
+    test('GameStart後、battlePhaseがmainPhaseまで進んでいる', () {
+      final result = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(),
+      );
+
+      final state = (result as ApplyActionResultSuccess).state;
+      expect(state.phase.battlePhase, BattlePhase.mainPhase);
+      expect(state.turnCount, 0);
+    });
+
+    test('GameStart後、turnOwnerは2人のうちどちらかに決まっている', () {
+      final result = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(),
+      );
+
+      final state = (result as ApplyActionResultSuccess).state;
+      expect(state.phase.turnOwner, anyOf(playerId, enemyId));
+      expect(state.players, hasLength(2));
+    });
+
+    test('GameStart後、turnOwnerのみbaseTurnStartGainCost分コストが加算されている', () {
+      final result = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(),
+      );
+
+      final state = (result as ApplyActionResultSuccess).state;
+      final turnOwnerId = state.phase.turnOwner;
+      final nonTurnOwnerId = turnOwnerId == playerId ? enemyId : playerId;
+
+      expect(
+        state.players[turnOwnerId]!.currentCost,
+        PlayerConstants.defaultInitialCost +
+            GameSystemConstants.baseTurnStartGainCost,
+      );
+      // 手番でない方は初期コストのまま
+      expect(
+        state.players[nonTurnOwnerId]!.currentCost,
+        PlayerConstants.defaultInitialCost,
+      );
+    });
+
+    test('GameStart後、両プレイヤーのHPが初期値で設定されている', () {
+      final result = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(),
+      );
+
+      final state = (result as ApplyActionResultSuccess).state;
+      for (final id in [playerId, enemyId]) {
+        final player = state.players[id]!;
+        expect(player.hp, PlayerConstants.defaultInitialHp);
+        expect(player.maxHp, PlayerConstants.defaultMaxHp);
+        expect(player.shield, 0);
+        expect(player.graveyard, isEmpty);
+        expect(player.exhausted, isEmpty);
+      }
+    });
+
+    test('GameStart後、stateのseedがactionのseedを引き継いでいる', () {
+      final result = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(seed: 12345),
+      );
+
+      final state = (result as ApplyActionResultSuccess).state;
+      expect(state.seed, 12345);
+    });
+
+    test('同じseedでGameStartすると、同じ結果になる(決定的)', () {
+      final result1 = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(seed: 777),
+      );
+      // usecaseを作り直して同条件で再実行
+      final usecase2 = GameFlowUsecase(
+        cardCatalog: cardCatalog,
+        pipelineFactory: _GameStartOnlyPipelineFactory(
+          cardDrawService: CardDrawService(
+            deckRestorationService: DeckRestorationService(),
+          ),
+        ),
+        gameSetupService: GameSetupService(
+          createDeckService: CreateDeckService(),
+        ),
+        applyPlayCardService: buildRealApplyPlayCardService(),
+      );
+      final result2 = usecase2.applyAction(
+        current: null,
+        action: buildGameStartAction(seed: 777),
+      );
+
+      final state1 = (result1 as ApplyActionResultSuccess).state;
+      final state2 = (result2 as ApplyActionResultSuccess).state;
+
+      // 先攻・手札の中身まで含めて一致する
+      expect(state2.phase.turnOwner, state1.phase.turnOwner);
+      expect(
+        state2.players[playerId]!.hand.map((c) => c.definition.cardDefId),
+        state1.players[playerId]!.hand.map((c) => c.definition.cardDefId),
+      );
+      expect(
+        state2.players[enemyId]!.hand.map((c) => c.definition.cardDefId),
+        state1.players[enemyId]!.hand.map((c) => c.definition.cardDefId),
+      );
+    });
+
+    test('GameStartのstepsに、開始・ドロー・フェーズ遷移が含まれる', () {
+      final result = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(),
+      );
+
+      final steps = (result as ApplyActionResultSuccess).steps;
+      expect(steps, contains(isA<GameStepEventGameStarted>()));
+      expect(steps, contains(isA<GameStepEventCardsDrawn>()));
+      expect(steps, contains(isA<GameStepEventCostCalculated>()));
+      // turnStart / mainPhase の2回のフェーズ遷移
+      expect(
+        steps.whereType<GameStepEventPhaseChanged>(),
+        hasLength(2),
+      );
+    });
+
+    test('GameStart直後にカードをプレイでき、効果が反映される(mainPhaseに到達している証明)', () {
+      final startResult = gameStartUsecase.applyAction(
+        current: null,
+        action: buildGameStartAction(),
+      );
+      final state = (startResult as ApplyActionResultSuccess).state;
+
+      final turnOwnerId = state.phase.turnOwner;
+      final opponentId = turnOwnerId == playerId ? enemyId : playerId;
+      final cardToPlay = state.players[turnOwnerId]!.hand.first;
+
+      final playResult = gameStartUsecase.applyAction(
+        current: state,
+        action: GameActionPlayCard(
+          id: const GameActionsId(value: 'action_play'),
+          playerId: turnOwnerId,
+          cardInstanceId: cardToPlay.instanceId,
+        ),
+      );
+
+      expect(playResult, isA<ApplyActionResultSuccess>());
+      final afterPlay = (playResult as ApplyActionResultSuccess).state;
+
+      // 1ダメージのカードなので相手HPが1減る
+      expect(
+        afterPlay.players[opponentId]!.hp,
+        PlayerConstants.defaultInitialHp - 1,
+      );
+      // 手札が1枚減って墓地に入る
+      expect(
+        afterPlay.players[turnOwnerId]!.hand,
+        hasLength(GameSystemConstants.initialGameStartDrawCardsCount - 1),
+      );
+      expect(afterPlay.players[turnOwnerId]!.graveyard, hasLength(1));
+    });
   });
 }
