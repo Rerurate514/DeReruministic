@@ -35,7 +35,7 @@ class TurnPipeline {
 
     return ApplyActionResult.success(
       state: currentState,
-      steps: accumulatedSteps,
+      steps: [...initialSteps, ...accumulatedSteps],
     );
   }
 }
