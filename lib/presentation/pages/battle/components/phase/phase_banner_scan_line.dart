@@ -32,7 +32,6 @@ class PhaseBannerScanLine extends HookWidget {
           alignment: Alignment.centerLeft,
           child: Container(
             width: 2,
-            height: 120,
             decoration: BoxDecoration(
               boxShadow: [
                 BoxShadow(
