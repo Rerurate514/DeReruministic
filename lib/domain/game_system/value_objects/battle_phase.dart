@@ -3,7 +3,6 @@ enum BattlePhase {
   battleStart,
   turnStart,
   mainPhase,
-  resolving,
   turnEnd,
   battleEnd,
   selectDiscard
