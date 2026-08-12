@@ -23,14 +23,16 @@ class PlayerStateCard extends StatelessWidget {
           crossAxisAlignment: .stretch,
           mainAxisSize: .min,
           children: [
-            Row(
-              mainAxisAlignment: .spaceBetween,
+            Wrap(
+              alignment: .spaceBetween,
               children: [
                 PlayerStateName(
                   player: player,
                 ),
-                PlayerStateCost(
-                  player: player,
+                FittedBox(
+                  child: PlayerStateCost(
+                    player: player,
+                  ),
                 ),
               ],
             ),
