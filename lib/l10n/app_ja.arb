@@ -45,6 +45,7 @@
             }
         }
     },
+    "battle_page_phase_current_text": "CURRENT PHASE",
     "battle_page_phase_initialize": "INIT PHASE",
     "battle_page_phase_battle_start": "BATTLE START",
     "battle_page_phase_turn_start": "TURN START",
