@@ -24,8 +24,8 @@ class PhaseBannerAnimationContainer extends HookConsumerWidget {
     final curvedAnimation = useMemoized(
       () => CurvedAnimation(
         parent: controller,
-        curve: Curves.easeOutCubic,
-        reverseCurve: Curves.easeInCubic,
+        curve: Curves.easeOutQuad,
+        reverseCurve: Curves.easeInQuad,
       ),
       [controller],
     );
@@ -47,7 +47,7 @@ class PhaseBannerAnimationContainer extends HookConsumerWidget {
           from: 0,
         );
 
-        await Future<void>.delayed(const Duration(milliseconds: 800));
+        await Future<void>.delayed(const Duration(milliseconds: 900));
 
         await controller.reverse(
           from: 1,
@@ -62,7 +62,7 @@ class PhaseBannerAnimationContainer extends HookConsumerWidget {
     if (displayedPhase.value == null) return const SizedBox.shrink();
 
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: .centerRight,
       child: AnimatedBuilder(
         animation: curvedAnimation,
         child: PhaseBanner(
