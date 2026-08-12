@@ -13,7 +13,7 @@ class BattlePageStack extends StatelessWidget {
     return Stack(
       children: [
         Align(
-          alignment: Alignment.topCenter,
+          alignment: .topCenter,
           child: EnemyState(
             enemy: enemy,
           ),
