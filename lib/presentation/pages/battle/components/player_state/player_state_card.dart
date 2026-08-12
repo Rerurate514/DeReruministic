@@ -1,6 +1,10 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
+import 'package:dereruministic/presentation/pages/battle/components/common/state_status.dart';
+import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_hp.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_name.dart';
+import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_shield.dart';
+import 'package:dereruministic/presentation/widgets/ui_gap.dart';
 import 'package:flutter/widgets.dart';
 
 class PlayerStateCard extends StatelessWidget {
@@ -20,6 +24,15 @@ class PlayerStateCard extends StatelessWidget {
           children: [
             PlayerStateName(
               player: player,
+            ),
+            const UiGap.xs(),
+            StateStatus(
+              hpStateWidget: PlayerStateHp(
+                player: player,
+              ),
+              shieldStateWidget: PlayerStateShield(
+                player: player,
+              ),
             ),
           ],
         ),
