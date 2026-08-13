@@ -364,4 +364,24 @@ const List<CardDefinition> basicPack = [
       ),
     ],
   ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_doomsday_seal'),
+    name: '終焉の呪印',
+    baseCost: 2,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 15,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+    ],
+    states: [
+      CardStates.decay(turns: 3),
+      CardStates.countdown(turns: 2),
+      CardStates.retain(turnThreshold: 1, costReduction: 1),
+      CardStates.recycle(count: 2),
+      CardStates.exhaust(),
+    ],
+  ),
 ];
