@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class GameCardSubs extends StatelessWidget {
-  const GameCardSubs({required this.gameCard, super.key});
+class GameCardMeta extends StatelessWidget {
+  const GameCardMeta({required this.gameCard, super.key});
 
   final GameCard gameCard;
 
