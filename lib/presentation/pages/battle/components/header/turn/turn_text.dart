@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class TurnNext extends ConsumerWidget {
-  const TurnNext({super.key});
+class TurnText extends ConsumerWidget {
+  const TurnText({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,20 +15,21 @@ class TurnNext extends ConsumerWidget {
 
     final turnCount = ref.watch(gameProvider.select((s) => s?.turnCount));
 
-    return Column(
+    return Row(
+      spacing: 8,
       children: [
         Text(
-          l10n.battle_page_header_turn_text,
+          l10n.battle_page_header_turn_text.toUpperCase(),
           style: GoogleFonts.poppins(
-            fontSize: 12,
-            color: theme.brandColor,
+            fontSize: 16,
             fontWeight: .bold,
+            color: theme.brandColor,
           ),
         ),
         Text(
           '${turnCount ?? l10n.game_state_is_null}',
           style: GoogleFonts.poppins(
-            fontSize: 12,
+            fontSize: 16,
             fontWeight: .bold,
           ),
         ),
