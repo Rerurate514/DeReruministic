@@ -31,15 +31,21 @@ sealed class AppColorScheme extends ThemeExtension<AppColorScheme>
     // 4. バフ・回復系
     required Color buff,
     required Color hpHeal,
-    required Color comboBoost, // 連撃用
+    required Color comboBoost,
+
     // 5. デバフ・状態異常系
     required Color debuff,
-    required Color poison, // 毒 (HP直撃)
-    required Color recoil, // 反動・コスト阻害
-    // 6. カード属性・状態 (CardState)
-    required Color stateBurn, // 焼却 (除外)
-    required Color stateRecycle, // 循環 (山札底へ)
-    required Color stateInfect, // 感染 (相手山札底へ)
-    required Color stateHold, // 保留・時限・腐敗 (手札滞在系)
+    required Color poison,
+    required Color recoil,
+
+    // 6. カード領域 (Card Zones)
+    required Color zoneDeck,
+    required Color zoneGraveyard,
+    required Color zoneExhausted,
+    // 7. カード属性・特殊状態 (Card Effect States)
+    required Color stateBurn,
+    required Color stateRecycle,
+    required Color stateInfect,
+    required Color stateHold,
   }) = _AppColorScheme;
 }

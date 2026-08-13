@@ -21,14 +21,18 @@ const lightCustomTheme = AppColorScheme(
   enemyHp: Color(0xFFC62828),
   shield: Color(0xFF00838F),
   // 4. バフ・回復系
-  buff: Color(0xFF00B8D4),
+  buff: Color(0xFF0288D1), // 重複回避のためやや濃い青に変更を推奨
   hpHeal: Color(0xFF4CAF50),
   comboBoost: Color(0xFFFF8F00),
   // 5. デバフ・状態異常系
   debuff: Color(0xFFD50000),
   poison: Color(0xFF8E24AA),
   recoil: Color(0xFFBF360C),
-  // 6. カード属性・状態
+  // 6. カード領域 (追加分)
+  zoneDeck: Color(0xFF0288D1), // 山札
+  zoneGraveyard: Color(0xFF616161), // 墓地
+  zoneExhausted: Color(0xFFE64A19), // 除外 (stateBurnと色相を統一または独立)
+  // 7. カード属性・状態
   stateBurn: Color(0xFFD50000),
   stateRecycle: Color(0xFF00B8D4),
   stateInfect: Color(0xFF6A1B9A),
@@ -55,14 +59,18 @@ const darkCustomTheme = AppColorScheme(
   enemyHp: Color(0xFFFF003C),
   shield: Color(0xFF727375),
   // 4. バフ・回復系
-  buff: Color(0xFF00F0FF),
+  buff: Color(0xFF00E5FF), // 同上
   hpHeal: Color(0xFF80CBC4),
   comboBoost: Color(0xFFFF6B00),
   // 5. デバフ・状態異常系
   debuff: Color(0xFFFF003C),
   poison: Color(0xFFBA68C8),
   recoil: Color(0xFFFF5252),
-  // 6. カード属性・状態 (CardState)
+  // 6. カード領域 (追加分)
+  zoneDeck: Color(0xFF00E5FF), // 山札
+  zoneGraveyard: Color(0xFF757575), // 墓地
+  zoneExhausted: Color(0xFFFF3D00), // 除外
+  // 7. カード属性・状態 (CardState)
   stateBurn: Color(0xFFFF003C),
   stateRecycle: Color(0xFF00F0FF),
   stateInfect: Color(0xFF8E24AA),
