@@ -54,5 +54,30 @@
     "battle_page_phase_battle_end": "BATTLE END",
     "battle_page_phase_select_discard": "SD",
 
-    "battle_page_user_id_text": "USER ID"
+    "battle_page_user_id_text": "USER ID",
+
+    "battle_page_player_deck_count_text": "[DK]: {count}",
+    "@battle_page_player_deck_count_text": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "battle_page_player_graveyard_count_text": "[GY]: {count}",
+    "@battle_page_player_graveyard_count_text": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    },
+    "battle_page_player_exhausted_count_text": "[EX]: {count}",
+    "@battle_page_player_exhausted_count_text": {
+        "placeholders": {
+            "count": {
+                "type": "int"
+            }
+        }
+    }
 }
