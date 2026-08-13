@@ -32,10 +32,13 @@ class HomePage extends ConsumerWidget {
           SettingButton(),
           Expanded(
             child: FittedBox(
-              child: Align(
-                child: Row(
-                  children: [PlayerInfo(), PlayerInfoSystemChip()],
-                ),
+              fit: BoxFit.scaleDown,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  PlayerInfo(),
+                  PlayerInfoSystemChip(),
+                ],
               ),
             ),
           ),
