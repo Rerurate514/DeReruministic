@@ -59,6 +59,22 @@ sealed class CardStates with _$CardStates {
       _$CardStatesFromJson(json);
 }
 
+extension CardStatesLookupEx on CardStates {
+  CardRuntimeStates? findIn(List<CardRuntimeStates> runtimeStates) {
+    return switch (this) {
+      CardStateRecycle() =>
+        runtimeStates.whereType<CardRuntimeStateRecycleState>().firstOrNull,
+      CardStateCountdown() =>
+        runtimeStates.whereType<CardRuntimeStateCountdownState>().firstOrNull,
+      CardStateDecay() =>
+        runtimeStates.whereType<CardRuntimeStateDecayState>().firstOrNull,
+      CardStateRetain() =>
+        runtimeStates.whereType<CardRuntimeStateRetainState>().firstOrNull,
+      _ => null,
+    };
+  }
+}
+
 extension CardStatesListEx on List<CardStates> {
   List<CardRuntimeStates> buildInitialRuntimeStates() {
     final runtimeStates = <CardRuntimeStates>[];
