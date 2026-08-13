@@ -60,9 +60,40 @@
     "battle_page_player_graveyard_count_text": "[GY]",
     "battle_page_player_exhausted_count_text": "[EX]",
 
-    "battle_page_card_runtime_states_recycle_text": "",
+    "battle_page_card_runtime_states_recycle_text": "{remainingCount}/{maxCount}",
+    "@battle_page_card_runtime_states_recycle_text": {
+        "placeholders": {
+            "remainingCount": {
+                "type": "int"
+            },
+            "maxCount": {
+                "type": "int"
+            }
+        }
+    },
     "battle_page_card_runtime_states_recycle_infinity_text": "∞",
-    "battle_page_card_runtime_states_countdown_text": "",
-    "battle_page_card_runtime_states_decay_text": "",
-    "battle_page_card_runtime_states_retain_text": ""
+    "battle_page_card_runtime_states_countdown_text": "{remainingTurns}",
+    "@battle_page_card_runtime_states_countdown_text": {
+        "placeholders": {
+            "remainingTurns": {
+                "type": "int"
+            }
+        }
+    },
+    "battle_page_card_runtime_states_decay_text": "{remainingTurns}",
+    "@battle_page_card_runtime_states_decay_text": {
+        "placeholders": {
+            "remainingTurns": {
+                "type": "int"
+            }
+        }
+    },
+    "battle_page_card_runtime_states_retain_text": "{turnsInHand}",
+    "@battle_page_card_runtime_states_retain_text": {
+        "placeholders": {
+            "turnsInHand": {
+                "type": "int"
+            }
+        }
+    }
 }
