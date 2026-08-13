@@ -4,8 +4,8 @@ import 'package:dereruministic/presentation/pages/battle/components/card/game_ca
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 
-class GameCardBaseWidget extends StatelessWidget {
-  const GameCardBaseWidget({required this.gameCard, super.key});
+class GameCardBaseComponent extends StatelessWidget {
+  const GameCardBaseComponent({required this.gameCard, super.key});
 
   final GameCard gameCard;
 

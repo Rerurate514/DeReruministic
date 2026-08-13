@@ -1,6 +1,6 @@
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/presentation/components/app_glow_container.dart';
-import 'package:dereruministic/presentation/pages/battle/components/card/game_card_base_widget.dart';
+import 'package:dereruministic/presentation/pages/battle/components/card/game_card_base_component.dart';
 import 'package:dereruministic/presentation/pages/battle/components/card/game_card_meta.dart';
 import 'package:dereruministic/presentation/widgets/ui_interlacing_artifacts_text.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class GameCardComponent extends ConsumerWidget {
             child: AppGlowContainer(
               child: Stack(
                 children: [
-                  GameCardBaseWidget(
+                  GameCardBaseComponent(
                     gameCard: gameCard,
                   ),
                   Positioned.fill(
