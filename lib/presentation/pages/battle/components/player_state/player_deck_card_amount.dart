@@ -17,9 +17,11 @@ class PlayerDeckCardAmount extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
 
-    final deckCount = ref.watch(
-      myPlayerUiStateProvider(player).select((s) => s?.deckCount),
-    );
+    final deckCount = ref
+        .watch(
+          myPlayerUiStateProvider(player).select((s) => s?.deck),
+        )
+        ?.length;
 
     return Column(
       spacing: 2,

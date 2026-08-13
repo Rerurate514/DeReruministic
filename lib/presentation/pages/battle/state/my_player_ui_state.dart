@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -17,10 +18,10 @@ sealed class MyPlayerUiState with _$MyPlayerUiState {
     required int cost,
     required int maxCost,
     required int shield,
-    required int handCount,
-    required int deckCount,
-    required int graveyardCount,
-    required int exhaustedCount,
+    required List<GameCard> hand,
+    required List<GameCard> deck,
+    required List<GameCard> graveyard,
+    required List<GameCard> exhausted,
     required bool isTurn,
     required List<BuffState> buffs,
     required List<DebuffState> debuffs,
@@ -39,10 +40,10 @@ sealed class MyPlayerUiState with _$MyPlayerUiState {
       cost: playerState.currentCost,
       maxCost: 99, //TODO(cost): cost
       shield: playerState.shield,
-      handCount: playerState.hand.length,
-      deckCount: playerState.deck.length,
-      graveyardCount: playerState.graveyard.length,
-      exhaustedCount: playerState.exhausted.length,
+      hand: playerState.hand,
+      deck: playerState.deck,
+      graveyard: playerState.graveyard,
+      exhausted: playerState.exhausted,
       isTurn: isTurn,
       buffs: playerState.buffs,
       debuffs: playerState.debuffs,

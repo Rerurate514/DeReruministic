@@ -17,9 +17,11 @@ class PlayerGraveyardCardAmount extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
 
-    final graveyardCount = ref.watch(
-      myPlayerUiStateProvider(player).select((s) => s?.graveyardCount),
-    );
+    final graveyardCount = ref
+        .watch(
+          myPlayerUiStateProvider(player).select((s) => s?.graveyard),
+        )
+        ?.length;
 
     return Column(
       spacing: 2,

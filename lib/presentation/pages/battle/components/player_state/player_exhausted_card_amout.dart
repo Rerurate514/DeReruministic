@@ -17,9 +17,11 @@ class PlayerExhaustedCardAmount extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
 
-    final exhaustedCount = ref.watch(
-      myPlayerUiStateProvider(player).select((s) => s?.exhaustedCount),
-    );
+    final exhaustedCount = ref
+        .watch(
+          myPlayerUiStateProvider(player).select((s) => s?.exhausted),
+        )
+        ?.length;
 
     return Column(
       spacing: 2,
