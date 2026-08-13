@@ -17,7 +17,7 @@ class AppCard extends StatelessWidget {
   });
 
   final Widget child;
-  final EdgeInsets? padding;
+  final EdgeInsetsGeometry? padding;
   final double borderRadius;
   final Color? borderColor;
   final double borderWidth;
@@ -28,38 +28,33 @@ class AppCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = context.themePalette;
+    final effectiveBorderRadius = BorderRadius.circular(borderRadius);
+    final effectivePadding = padding ?? const EdgeInsets.all(8);
+
+    Widget content = Container(
+      padding: effectivePadding,
+      child: child,
+    );
+
+    if (isBlur) {
+      content = BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
+        child: content,
+      );
+    }
+
     return Card(
       elevation: 8,
+      clipBehavior: Clip.antiAlias,
       color: background ?? Colors.transparent,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(borderRadius),
+        borderRadius: effectiveBorderRadius,
         side: BorderSide(
           color: borderColor ?? theme.buttonSecondary,
           width: borderWidth,
         ),
       ),
-      child: isBlur
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(borderRadius),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
-                child: Container(
-                  padding: padding,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(borderRadius),
-                    border: Border.all(
-                      color: borderColor ?? theme.buttonSecondary,
-                      width: borderWidth,
-                    ),
-                  ),
-                  child: child,
-                ),
-              ),
-            )
-          : Padding(
-              padding: padding ?? const EdgeInsets.all(8),
-              child: child,
-            ),
+      child: content,
     );
   }
 }
