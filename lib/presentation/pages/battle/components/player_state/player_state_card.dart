@@ -1,16 +1,13 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/components/common/state_status.dart';
-import 'package:dereruministic/presentation/pages/battle/components/player_state/player_deck_card_amount.dart';
-import 'package:dereruministic/presentation/pages/battle/components/player_state/player_exhausted_card_amout.dart';
-import 'package:dereruministic/presentation/pages/battle/components/player_state/player_graveyard_card_amout.dart';
+import 'package:dereruministic/presentation/pages/battle/components/player_state/player_cards_amounts.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_cost.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_hp.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_name.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_shield.dart';
 import 'package:dereruministic/presentation/widgets/ui_gap.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class PlayerStateCard extends StatelessWidget {
   const PlayerStateCard({required this.player, super.key});
@@ -52,19 +49,8 @@ class PlayerStateCard extends StatelessWidget {
             const Divider(
               height: 32,
             ),
-            Row(
-              mainAxisAlignment: .spaceAround,
-              children: [
-                PlayerDeckCardAmount(
-                  player: player,
-                ),
-                PlayerGraveyardCardAmount(
-                  player: player,
-                ),
-                PlayerExhaustedCardAmount(
-                  player: player,
-                ),
-              ],
+            PlayerCardsAmounts(
+              player: player,
             ),
           ],
         ),
