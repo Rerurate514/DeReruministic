@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
+import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/enemy_ui_state_provider.dart';
 import 'package:dereruministic/presentation/painter/hp_painter.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
@@ -41,9 +42,15 @@ class EnemyStateHp extends ConsumerWidget {
               ),
             ),
           ),
-          Text(
-            l10n.battle_page_header_hp_bar(hp, maxHp),
-            style: GoogleFonts.shareTechMono(fontWeight: .bold),
+          AppCard(
+            padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 4),
+            background: theme.buttonSecondary.withAlpha(200),
+            child: FittedBox(
+              child: Text(
+                l10n.battle_page_header_hp_bar(hp, maxHp),
+                style: GoogleFonts.shareTechMono(fontWeight: .bold),
+              ),
+            ),
           ),
         ],
       ),

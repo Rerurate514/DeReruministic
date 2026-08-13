@@ -9,6 +9,7 @@ class AppCard extends StatelessWidget {
     this.borderRadius = 0,
     this.borderColor,
     this.borderWidth = 2,
+    this.background,
   });
 
   final Widget child;
@@ -16,12 +17,14 @@ class AppCard extends StatelessWidget {
   final double borderRadius;
   final Color? borderColor;
   final double borderWidth;
+  final Color? background;
 
   @override
   Widget build(BuildContext context) {
     final theme = context.themePalette;
     return Card(
       elevation: 8,
+      color: background ?? theme.surfaceContainer,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
         side: BorderSide(
