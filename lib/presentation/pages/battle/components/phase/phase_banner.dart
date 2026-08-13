@@ -1,6 +1,6 @@
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
-import 'package:dereruministic/presentation/pages/battle/components/phase/phase_banner_scan_line.dart';
+import 'package:dereruministic/presentation/components/app_scan_line.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:dereruministic/presentation/utils/game_phase_ex.dart';
 import 'package:dereruministic/presentation/widgets/ui_active_filled_circle.dart';
@@ -29,7 +29,14 @@ class PhaseBanner extends HookWidget {
             child: Stack(
               children: [
                 _buildContent(l10n, theme),
-                const PhaseBannerScanLine(),
+                const Positioned.fill(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    child: AppScanLine(
+                      lineWidth: 3,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
