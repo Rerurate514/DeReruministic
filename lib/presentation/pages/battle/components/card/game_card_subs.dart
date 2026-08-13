@@ -16,6 +16,7 @@ class GameCardSubs extends StatelessWidget {
     final theme = context.themePalette;
 
     return Column(
+      crossAxisAlignment: .end,
       children: [
         AppCard(
           background: theme.surfaceContainer.withAlpha(200),
