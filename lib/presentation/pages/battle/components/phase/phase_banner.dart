@@ -53,7 +53,7 @@ class PhaseBanner extends HookWidget {
           BoxShadow(
             color: theme.brandSecondary,
             spreadRadius: 1,
-            blurRadius: 15,
+            blurRadius: 4,
           ),
         ],
       ),
