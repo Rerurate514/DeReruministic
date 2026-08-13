@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
+import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:dereruministic/presentation/widgets/ui_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,6 +14,8 @@ class PlayerStateShield extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = context.themePalette;
+
     final shield = ref.watch(
       myPlayerUiStateProvider(player).select((s) => s?.shield),
     );
@@ -22,6 +25,7 @@ class PlayerStateShield extends ConsumerWidget {
     return FittedBox(
       child: AppCard(
         padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+        background: theme.surfaceContainer,
         child: Row(
           spacing: 4,
           children: [

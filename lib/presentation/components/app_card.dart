@@ -24,7 +24,7 @@ class AppCard extends StatelessWidget {
     final theme = context.themePalette;
     return Card(
       elevation: 8,
-      color: background ?? theme.surfaceContainer,
+      color: background ?? Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(borderRadius),
         side: BorderSide(
