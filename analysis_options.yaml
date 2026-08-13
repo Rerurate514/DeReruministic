@@ -20,3 +20,7 @@ analyzer:
     - .dart_tool/**
     - web/**
     - windows/**
+    - android/**
+    - ios/**
+    - macos/**
+    - linux/**
