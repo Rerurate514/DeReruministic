@@ -4,18 +4,20 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 
 class AppScanLine extends HookWidget {
   const AppScanLine({
+    this.direction = Axis.horizontal,
     this.duration = const Duration(seconds: 1),
     this.color,
-    this.lineWidth = 2.0,
+    this.lineThickness = 2.0,
     this.blurRadius = 15.0,
     this.spreadRadius = 3.0,
     this.repeat = true,
     super.key,
   });
 
+  final Axis direction;
   final Duration duration;
   final Color? color;
-  final double lineWidth;
+  final double lineThickness;
   final double blurRadius;
   final double spreadRadius;
   final bool repeat;
@@ -40,24 +42,30 @@ class AppScanLine extends HookWidget {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        final parentWidth = constraints.maxWidth;
+        final isHorizontal = direction == Axis.horizontal;
+        final maxExtent = isHorizontal
+            ? constraints.maxWidth
+            : constraints.maxHeight;
 
         return AnimatedBuilder(
           animation: controller,
           builder: (context, child) {
-            final startX = -lineWidth;
-            final endX = parentWidth;
-            final dx = startX + (controller.value * (endX - startX));
+            final start = -lineThickness;
+            final end = maxExtent;
+            final progress = start + (controller.value * (end - start));
 
             return Transform.translate(
-              offset: Offset(dx, 0),
+              offset: isHorizontal ? Offset(progress, 0) : Offset(0, progress),
               child: child,
             );
           },
           child: Align(
-            alignment: Alignment.centerLeft,
+            alignment: isHorizontal
+                ? Alignment.centerLeft
+                : Alignment.topCenter,
             child: Container(
-              width: lineWidth,
+              width: isHorizontal ? lineThickness : double.infinity,
+              height: isHorizontal ? double.infinity : lineThickness,
               decoration: BoxDecoration(
                 boxShadow: [
                   BoxShadow(

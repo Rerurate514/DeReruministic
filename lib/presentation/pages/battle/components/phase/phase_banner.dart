@@ -32,9 +32,7 @@ class PhaseBanner extends HookWidget {
                 const Positioned.fill(
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(8)),
-                    child: AppScanLine(
-                      lineWidth: 3,
-                    ),
+                    child: AppScanLine(),
                   ),
                 ),
               ],
