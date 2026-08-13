@@ -12,26 +12,28 @@ class LobbyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const UiPageWrapper(
-      child: Column(
-        crossAxisAlignment: .stretch,
-        children: [
-          Row(
-            spacing: 16,
-            children: [
-              AppBackButton(),
-              Expanded(
-                child: FittedBox(
-                  fit: .scaleDown,
-                  child: AppTitle(),
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: .stretch,
+          children: [
+            Row(
+              spacing: 16,
+              children: [
+                AppBackButton(),
+                Expanded(
+                  child: FittedBox(
+                    fit: .scaleDown,
+                    child: AppTitle(),
+                  ),
                 ),
-              ),
-            ],
-          ),
-          UiGap.s(),
-          LobbyControlsPanel(),
-          UiGap.m(),
-          MatchParametersPanel(),
-        ],
+              ],
+            ),
+            UiGap.s(),
+            LobbyControlsPanel(),
+            UiGap.m(),
+            MatchParametersPanel(),
+          ],
+        ),
       ),
     );
   }
