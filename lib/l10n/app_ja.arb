@@ -56,28 +56,7 @@
 
     "battle_page_user_id_text": "USER ID",
 
-    "battle_page_player_deck_count_text": "[DK]: {count}",
-    "@battle_page_player_deck_count_text": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "battle_page_player_graveyard_count_text": "[GY]: {count}",
-    "@battle_page_player_graveyard_count_text": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    },
-    "battle_page_player_exhausted_count_text": "[EX]: {count}",
-    "@battle_page_player_exhausted_count_text": {
-        "placeholders": {
-            "count": {
-                "type": "int"
-            }
-        }
-    }
+    "battle_page_player_deck_count_text": "[DK]",
+    "battle_page_player_graveyard_count_text": "[GY]",
+    "battle_page_player_exhausted_count_text": "[EX]"
 }
