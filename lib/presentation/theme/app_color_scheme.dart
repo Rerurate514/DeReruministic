@@ -44,15 +44,15 @@ sealed class AppColorScheme extends ThemeExtension<AppColorScheme>
     required Color zoneExhausted,
 
     // 7. カード属性・特殊状態 (Card Effect States)
-    required Color stateBurn,
-    required Color stateStagnation,
+    required Color stateExhausted,
+    required Color stateUndiscardable,
     required Color stateRecycle,
-    required Color stateRecoil,
-    required Color stateStealth,
-    required Color stateHold,
+    required Color stateOverload,
+    required Color stateConceal,
+    required Color stateRetain,
     required Color stateEngrave,
-    required Color stateSynergy,
-    required Color stateTimer,
+    required Color stateChain,
+    required Color stateCountdown,
     required Color stateDecay,
     required Color stateInfect,
   }) = _AppColorScheme;
