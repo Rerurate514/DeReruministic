@@ -39,6 +39,7 @@ class GameCardSubs extends StatelessWidget {
         ),
         CardStateList(
           states: gameCard.definition.states,
+          runtimeStates: gameCard.runtimeStates,
         ),
       ],
     );
