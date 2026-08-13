@@ -15,14 +15,17 @@ class LobbyPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: .stretch,
         children: [
-          FittedBox(
-            child: Row(
-              spacing: 16,
-              children: [
-                AppBackButton(),
-                AppTitle(),
-              ],
-            ),
+          Row(
+            spacing: 16,
+            children: [
+              AppBackButton(),
+              Expanded(
+                child: FittedBox(
+                  fit: .scaleDown,
+                  child: AppTitle(),
+                ),
+              ),
+            ],
           ),
           UiGap.s(),
           LobbyControlsPanel(),
