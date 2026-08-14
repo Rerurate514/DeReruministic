@@ -7,7 +7,6 @@ import 'package:dereruministic/application/game/state/game_notifier.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/card/data/basic_pack.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
-import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
@@ -19,27 +18,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 void main() {
-  final basicPackCardDefIds = <CardDefinitionId>[
-    const CardDefinitionId(value: 'basic_pack_hit'),
-    const CardDefinitionId(value: 'basic_pack_defence_stance'),
-    const CardDefinitionId(value: 'basic_pack_first_aid'),
-    const CardDefinitionId(value: 'basic_pack_poisonous_snake_fangs'),
-    const CardDefinitionId(value: 'basic_pack_final_below'),
-    const CardDefinitionId(value: 'basic_pack_shield_bash'),
-    const CardDefinitionId(value: 'basic_pack_meditation'),
-    const CardDefinitionId(value: 'naguru'),
-    const CardDefinitionId(value: 'basic_pack_purifying_blow'),
-    const CardDefinitionId(value: 'basic_pack_energy_steal'),
-    const CardDefinitionId(value: 'basic_pack_last_resort'),
-    const CardDefinitionId(value: 'basic_pack_accumulation_talisman'),
-    const CardDefinitionId(value: 'basic_pack_overloaded_blow'),
-    const CardDefinitionId(value: 'basic_pack_time_bomb'),
-    const CardDefinitionId(value: 'basic_pack_ominous_curse'),
-    const CardDefinitionId(value: 'basic_pack_infinite_blade'),
-    const CardDefinitionId(value: 'basic_pack_secretry_stance'),
-    const CardDefinitionId(value: 'basic_pack_chain_slash'),
-    const CardDefinitionId(value: 'basic_pack_secret_art_corrousion'),
-  ];
+  final basicPackCardDefIds = basicPack
+      .map((defs) => defs.cardDefId)
+      .take(19)
+      .toList();
 
   late ProviderContainer container;
 

@@ -15,10 +15,15 @@ class SwitchTurnOwnerService implements TurnProcessStep {
   @override
   ApplyActionResult execute(GameState state) {
     final newState = state.nextTurn();
-    final event = GameStepEvent.turnOwnerSwitched(
+    final switchEvent = GameStepEvent.turnOwnerSwitched(
       newTurnPlayerId: newState.phase.turnOwner,
     );
 
-    return ApplyActionResult.success(state: newState, steps: [event]);
+    final phaseEvent = GameStepEvent.phaseChanged(phase: newState.phase);
+
+    return ApplyActionResult.success(
+      state: newState,
+      steps: [switchEvent, phaseEvent],
+    );
   }
 }

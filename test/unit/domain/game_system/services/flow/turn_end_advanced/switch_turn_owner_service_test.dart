@@ -44,7 +44,7 @@ void main() {
 
       expect(result.state, equals(baseState.nextTurn()));
 
-      expect(result.steps.length, equals(1));
+      expect(result.steps.length, equals(2));
       final step = result.steps.first as GameStepEventTurnOwnerSwitched;
       expect(step.newTurnPlayerId, equals(playerBId));
     });
