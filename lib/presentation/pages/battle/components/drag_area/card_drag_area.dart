@@ -59,7 +59,7 @@ class CardDragArea extends HookConsumerWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(4),
               border: Border.all(
-                color: isHovering ? Colors.cyanAccent : Colors.transparent,
+                color: isHovering ? theme.brandSecondary : Colors.transparent,
                 width: 2,
               ),
             ),
