@@ -27,7 +27,11 @@ class BattlePageStack extends StatelessWidget {
             EnemyState(
               enemy: enemy,
             ),
-            const Expanded(child: CardDragArea()),
+            Expanded(
+              child: CardDragArea(
+                player: player,
+              ),
+            ),
             PlayerState(
               player: player,
             ),
