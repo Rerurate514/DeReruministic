@@ -2,6 +2,7 @@ import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
 import 'package:dereruministic/domain/card/services/check_card_condition_service.dart';
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
+import 'package:dereruministic/domain/card/services/consume_cost_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
@@ -26,6 +27,7 @@ import 'apply_card_service_test.mocks.dart';
   MockSpec<CheckCardConditionService>(),
   MockSpec<ResolveCardEffectsService>(),
   MockSpec<ConsumeCardService>(),
+  MockSpec<ConsumeCostService>(),
 ])
 void main() {
   const playerId = PlayerId(value: 'player1');
@@ -34,6 +36,7 @@ void main() {
   late MockCheckCardConditionService mockCheckCondition;
   late MockResolveCardEffectsService mockResolveEffects;
   late MockConsumeCardService mockConsumeCard;
+  late MockConsumeCostService mockConsumeCost;
   late ApplyPlayCardService service;
 
   setUp(() {
@@ -49,10 +52,12 @@ void main() {
     mockCheckCondition = MockCheckCardConditionService();
     mockResolveEffects = MockResolveCardEffectsService();
     mockConsumeCard = MockConsumeCardService();
+    mockConsumeCost = MockConsumeCostService();
     service = ApplyPlayCardService(
       checkCardConditionService: mockCheckCondition,
       resolveCardEffectsService: mockResolveEffects,
       consumeCardService: mockConsumeCard,
+      consumeCostService: mockConsumeCost,
     );
   });
 
@@ -201,6 +206,7 @@ void main() {
           cardInstanceId: 'card1',
         );
 
+        final playerAfterConsume = buildPlayer(id: playerId);
         final stateAfterConsume = buildState(
           players: {
             playerId: buildPlayer(id: playerId),
@@ -232,7 +238,7 @@ void main() {
             state: stateAfterConsume,
             action: action,
             condition: null,
-            cardUsedPlayer: player,
+            cardUsedPlayer: playerAfterConsume,
           ),
         ).thenReturn(true);
         when(
@@ -240,7 +246,7 @@ void main() {
             state: stateAfterConsume,
             action: action,
             condition: buffCondition,
-            cardUsedPlayer: player,
+            cardUsedPlayer: playerAfterConsume,
           ),
         ).thenReturn(true);
         when(
@@ -248,7 +254,7 @@ void main() {
             state: stateAfterConsume,
             action: action,
             condition: debuffCondition,
-            cardUsedPlayer: player,
+            cardUsedPlayer: playerAfterConsume,
           ),
         ).thenReturn(false);
 
@@ -274,6 +280,16 @@ void main() {
             state: stateAfterResolve,
             steps: [resolveStep],
           ),
+        );
+
+        when(
+          mockConsumeCost.execute(
+            state: stateAfterResolve,
+            sourcePlayerId: playerId,
+            card: card,
+          ),
+        ).thenReturn(
+          ApplyActionResult.success(state: stateAfterResolve, steps: []),
         );
 
         final result = service.execute(state: state, action: action);

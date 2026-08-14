@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/services/check_card_condition_service.dart';
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
+import 'package:dereruministic/domain/card/services/consume_cost_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
@@ -16,6 +17,7 @@ ApplyPlayCardService applyPlayCardService(Ref ref) {
     checkCardConditionService: ref.read(checkCardConditionServiceProvider),
     resolveCardEffectsService: ref.read(resolveCardEffectsServiceProvider),
     consumeCardService: ref.read(consumeCardServiceProvider),
+    consumeCostService: ref.read(consumeCostServiceProvider),
   );
 }
 
@@ -24,11 +26,13 @@ class ApplyPlayCardService {
     required this.checkCardConditionService,
     required this.resolveCardEffectsService,
     required this.consumeCardService,
+    required this.consumeCostService,
   });
 
   final CheckCardConditionService checkCardConditionService;
   final ResolveCardEffectsService resolveCardEffectsService;
   final ConsumeCardService consumeCardService;
+  final ConsumeCostService consumeCostService;
 
   ApplyActionResult execute({
     required GameState state,
@@ -71,7 +75,7 @@ class ApplyPlayCardService {
             state: asAfterConsume,
             action: action,
             condition: effect.effectCondition,
-            cardUsedPlayer: cardUsedPlayer,
+            cardUsedPlayer: asAfterConsume.players[cardUsedPlayer.id]!,
           ),
         )
         .map((effectDetails) => effectDetails.cardEffect)
@@ -83,15 +87,30 @@ class ApplyPlayCardService {
       effects: applyEffects,
     );
 
-    return switch (resolveResult) {
-      ApplyActionResultFailure() => ApplyActionResult.failure(
-        state: state,
-        reason: resolveResult.reason,
-      ),
+    if (resolveResult case ApplyActionResultFailure()) {
+      return resolveResult;
+    }
+
+    final consumeCostResult = consumeCostService.execute(
+      state: resolveResult.state,
+      sourcePlayerId: cardUsedPlayer.id,
+      card: usedCard,
+    );
+
+    return switch (consumeCostResult) {
+      ApplyActionResultFailure(:final state, :final reason) =>
+        ApplyActionResult.failure(
+          state: state,
+          reason: reason,
+        ),
       ApplyActionResultSuccess(:final state, :final steps) =>
         ApplyActionResult.success(
           state: state,
-          steps: [...consumeSteps, ...steps],
+          steps: [
+            ...consumeSteps,
+            ...(resolveResult as ApplyActionResultSuccess).steps,
+            ...steps,
+          ],
         ),
     };
   }

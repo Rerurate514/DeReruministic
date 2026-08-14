@@ -10,6 +10,7 @@ import 'package:dereruministic/domain/card/services/conditions/check_target_hp_p
 import 'package:dereruministic/domain/card/services/conditions/check_target_hp_value_condition_service.dart';
 import 'package:dereruministic/domain/card/services/conditions/conditions_resolver.dart';
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
+import 'package:dereruministic/domain/card/services/consume_cost_service.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
 import 'package:dereruministic/domain/card/services/deck_restoration_service.dart';
 import 'package:dereruministic/domain/card/services/effects/effect_resolver.dart';
@@ -133,6 +134,7 @@ ApplyPlayCardService buildRealApplyPlayCardService() {
     consumeCardService: ConsumeCardService(
       playCardValidator: PlayCardValidator(),
     ),
+    consumeCostService: ConsumeCostService(),
   );
 }
 
