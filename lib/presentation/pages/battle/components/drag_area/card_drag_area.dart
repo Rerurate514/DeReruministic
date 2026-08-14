@@ -41,13 +41,13 @@ class CardDragArea extends ConsumerWidget {
               child: Stack(
                 alignment: .center,
                 children: [
-                  FittedBox(
-                    child: Column(
-                      mainAxisAlignment: .center,
-                      spacing: 8,
-                      children: [
-                        const Icon(Symbols.radar),
-                        Text(
+                  Column(
+                    mainAxisAlignment: .center,
+                    spacing: 8,
+                    children: [
+                      const Icon(Symbols.radar),
+                      FittedBox(
+                        child: Text(
                           l10n.battle_page_card_drag_area_text,
                           style: GoogleFonts.shareTechMono(
                             color: theme.brandSecondary,
@@ -59,8 +59,8 @@ class CardDragArea extends ConsumerWidget {
                             ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   const AppScanLine(
                     duration: Duration(seconds: 6),
