@@ -10,9 +10,10 @@ import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dar
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 
 const List<CardDefinition> basicPack = [
+  // ===== 攻撃系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_hit'),
-    name: '殴る',
+    name: 'Ping',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -26,7 +27,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_strike'),
-    name: '強打',
+    name: 'DDoS攻撃',
     baseCost: 2,
     effects: [
       CardEffectsDetails(
@@ -40,7 +41,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_heavy_swing'),
-    name: '大振り',
+    name: 'オーバークロック',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -56,7 +57,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_double_slash'),
-    name: '二段斬り',
+    name: 'マルチスレッド攻撃',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -74,9 +75,11 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
+
+  // ===== 防御系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_defence_stance'),
-    name: '防御スタンス',
+    name: 'ファイアウォール',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -90,7 +93,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_iron_wall'),
-    name: '鉄壁',
+    name: '暗号化プロトコル',
     baseCost: 2,
     effects: [
       CardEffectsDetails(
@@ -104,7 +107,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_reinforced_wall'),
-    name: '強化壁',
+    name: '多要素認証',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -121,9 +124,11 @@ const List<CardDefinition> basicPack = [
       ),
     ],
   ),
+
+  // ===== 回復系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_first_aid'),
-    name: '応急手当',
+    name: 'バックアップ復元',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -142,7 +147,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_deep_breath'),
-    name: '深呼吸',
+    name: 'システム再起動',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -156,7 +161,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_full_recovery'),
-    name: '完全回復',
+    name: 'フルリストア',
     baseCost: 3,
     effects: [
       CardEffectsDetails(
@@ -170,9 +175,11 @@ const List<CardDefinition> basicPack = [
       CardStates.exhaust(),
     ],
   ),
+
+  // ===== ドロー/コスト系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_focus'),
-    name: '集中',
+    name: 'デバッグモード',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -185,7 +192,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_insight'),
-    name: '洞察',
+    name: 'ログ解析',
     baseCost: 0,
     effects: [
       CardEffectsDetails(
@@ -200,7 +207,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_meditation'),
-    name: '瞑想',
+    name: 'キャッシュクリア',
     baseCost: 0,
     effects: [
       CardEffectsDetails(
@@ -217,9 +224,11 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
+
+  // ===== 毒(デバフ)系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_poisonous_snake_fangs'),
-    name: '毒蛇の牙',
+    name: 'マルウェア注入',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -240,7 +249,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_venomous_needle'),
-    name: '毒針',
+    name: 'トロイの木馬',
     baseCost: 0,
     effects: [
       CardEffectsDetails(
@@ -255,7 +264,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_final_below'),
-    name: '追い討ち',
+    name: '脆弱性スキャン',
     baseCost: 2,
     effects: [
       CardEffectsDetails(
@@ -277,9 +286,11 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
+
+  // ===== 奪取系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_shield_bash'),
-    name: 'シールドバッシュ',
+    name: 'ゼロデイ攻撃',
     baseCost: 2,
     effects: [
       CardEffectsDetails(
@@ -298,7 +309,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_energy_steal'),
-    name: 'エナジースティール',
+    name: 'リソースハイジャック',
     baseCost: 2,
     effects: [
       CardEffectsDetails(
@@ -316,8 +327,23 @@ const List<CardDefinition> basicPack = [
     states: [],
   ),
   CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_guard_break'),
+    name: 'ポートスキャン',
+    baseCost: 1,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.stealShield(
+          amount: 3,
+        ),
+      ),
+    ],
+    states: [],
+  ),
+
+  // ===== バフ系 =====
+  CardDefinition(
     cardDefId: CardDefinitionId(value: 'naguru'),
-    name: '背水の陣',
+    name: 'クリティカルモード',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -342,7 +368,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_battle_cry'),
-    name: '雄叫び',
+    name: 'ブースト',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -355,9 +381,11 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
+
+  // ===== 浄化系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_purifying_blow'),
-    name: '浄化の一撃',
+    name: 'システムクリーンアップ',
     baseCost: 2,
     effects: [
       CardEffectsDetails(
@@ -378,7 +406,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_cleansing_light'),
-    name: '浄化の光',
+    name: 'アンチウイルス',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -397,9 +425,11 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
+
+  // ===== 大技/デメリット系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_last_resort'),
-    name: 'ラストリゾート',
+    name: 'ルートキル',
     baseCost: 3,
     effects: [
       CardEffectsDetails(
@@ -415,7 +445,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_provoke'),
-    name: '挑発',
+    name: 'スロットリング',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -430,7 +460,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_weakening_strike'),
-    name: '弱体化の一撃',
+    name: 'サービス拒否攻撃',
     baseCost: 1,
     effects: [
       CardEffectsDetails(
@@ -451,7 +481,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_forbidden_seal'),
-    name: '封印の証',
+    name: 'レガシーコード',
     baseCost: 0,
     effects: [
       CardEffectsDetails(
@@ -468,7 +498,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_all_out_attack'),
-    name: '全力攻撃',
+    name: 'バッファオーバーフロー',
     baseCost: 2,
     effects: [
       CardEffectsDetails(
@@ -488,26 +518,258 @@ const List<CardDefinition> basicPack = [
     states: [],
   ),
   CardDefinition(
-    cardDefId: CardDefinitionId(value: 'basic_pack_guard_break'),
-    name: 'ガードブレイク',
-    baseCost: 1,
+    cardDefId: CardDefinitionId(value: 'basic_pack_overwork'),
+    name: '強制シャットダウン',
+    baseCost: 0,
     effects: [
       CardEffectsDetails(
-        cardEffect: CardEffects.stealShield(
-          amount: 3,
+        cardEffect: CardEffects.grantCost(
+          amount: 1,
+          target: CardTargetTypes.self,
+        ),
+      ),
+    ],
+    states: [
+      CardStates.exhaust(),
+    ],
+  ),
+
+  // ===================================================
+  // ここから新規追加カード
+  // ===================================================
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_spam_mail'),
+    name: 'スパムメール',
+    baseCost: 0,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.applyDebuff(
+          debuff: DebuffTypes.poison,
+          stacks: 1,
+          target: CardTargetTypes.enemy,
         ),
       ),
     ],
     states: [],
   ),
   CardDefinition(
-    cardDefId: CardDefinitionId(value: 'basic_pack_overwork'),
-    name: '酷使',
-    baseCost: 0,
+    cardDefId: CardDefinitionId(value: 'basic_pack_reboot'),
+    name: 'リブート',
+    baseCost: 1,
     effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.heal(
+          amount: 5,
+          target: CardTargetTypes.self,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.removeDebuff(
+          debuff: DebuffTypes.atkDebuff,
+          stacks: 99,
+          target: CardTargetTypes.self,
+        ),
+      ),
+    ],
+    states: [],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_sql_injection'),
+    name: 'SQLインジェクション',
+    baseCost: 2,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 5,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.applyDebuff(
+          debuff: DebuffTypes.poison,
+          stacks: 4,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+    ],
+    states: [],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_firmware_update'),
+    name: 'ファームウェア更新',
+    baseCost: 2,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.grantShield(
+          amount: 8,
+          target: CardTargetTypes.self,
+        ),
+      ),
+    ],
+    states: [
+      CardStates.retain(
+        turnThreshold: 1,
+        costReduction: 1,
+      ),
+    ],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_parallel_thread'),
+    name: '並列スレッド生成',
+    baseCost: 1,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.draw(
+          amount: 1,
+        ),
+      ),
       CardEffectsDetails(
         cardEffect: CardEffects.grantCost(
           amount: 1,
+          target: CardTargetTypes.self,
+        ),
+      ),
+    ],
+    states: [
+      CardStates.exhaust(),
+    ],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_server_crash'),
+    name: 'サーバークラッシュ',
+    baseCost: 3,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 20,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.applyDebuff(
+          debuff: DebuffTypes.atkDebuff,
+          stacks: 1,
+          target: CardTargetTypes.self,
+        ),
+      ),
+    ],
+    states: [
+      CardStates.exhaust(),
+    ],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_stack_overflow'),
+    name: 'スタックオーバーフロー',
+    baseCost: 2,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 4,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 4,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 4,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+    ],
+    states: [],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_exploit_chain'),
+    name: 'エクスプロイトチェーン',
+    baseCost: 1,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 4,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 8,
+          target: CardTargetTypes.enemy,
+        ),
+        effectCondition: EffectConditions.targetHasDebuffCondition(
+          debuff: DebuffTypes.atkDebuff,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+    ],
+    states: [],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_deadlock'),
+    name: 'デッドロック',
+    baseCost: 1,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.applyDebuff(
+          debuff: DebuffTypes.atkDebuff,
+          stacks: 2,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+    ],
+    states: [],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_overclock_boost'),
+    name: 'ブーストコンパイル',
+    baseCost: 1,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.applyBuff(
+          buff: BuffTypes.atkBuff,
+          stacks: 1,
+          target: CardTargetTypes.self,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.draw(
+          amount: 1,
+        ),
+      ),
+    ],
+    states: [
+      CardStates.exhaust(),
+    ],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_data_wipe'),
+    name: 'データワイプ',
+    baseCost: 2,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.stealShield(
+          amount: 4,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.stealCost(
+          amount: 1,
+        ),
+      ),
+    ],
+    states: [],
+  ),
+  CardDefinition(
+    cardDefId: CardDefinitionId(value: 'basic_pack_encryption_lock'),
+    name: 'エンクリプションロック',
+    baseCost: 0,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.grantShield(
+          amount: 3,
           target: CardTargetTypes.self,
         ),
       ),
