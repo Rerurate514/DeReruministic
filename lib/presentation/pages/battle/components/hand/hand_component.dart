@@ -58,6 +58,10 @@ class _HandComponentState extends ConsumerState<HandComponent>
     ref.listen(stepEventQueueProvider, (_, next) async {
       if (next.isEmpty) return;
       if (next.first is! GameStepEventCardsDrawn) return;
+      if ((next.first as GameStepEventCardsDrawn).playerId !=
+          widget.player.id) {
+        return;
+      }
 
       await Future.wait(
         hand.map((card) async {
@@ -67,6 +71,7 @@ class _HandComponentState extends ConsumerState<HandComponent>
           _controllerFor(card.instanceId).forward(from: 0);
         }),
       );
+      ref.read(stepEventQueueProvider.notifier).consumeCurrentStep();
       ref.read(stepEventQueueProvider.notifier).consumeCurrentStep();
     });
 
