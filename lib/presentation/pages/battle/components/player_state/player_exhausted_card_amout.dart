@@ -1,10 +1,10 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
+import 'package:dereruministic/presentation/pages/battle/components/player_state/player_card_amount_base.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class PlayerExhaustedCardAmount extends ConsumerWidget {
@@ -23,24 +23,12 @@ class PlayerExhaustedCardAmount extends ConsumerWidget {
         )
         ?.length;
 
-    return Row(
-      spacing: 2,
-      mainAxisSize: .min,
-      children: [
-        Icon(
-          Symbols.block,
-          size: 22,
-          color: theme.zoneExhausted,
-        ),
-        Text(
-          l10n.battle_page_player_exhausted_count_text,
-          style: GoogleFonts.shareTechMono(fontSize: 12),
-        ),
-        Text(
-          '${exhaustedCount ?? 0}',
-          style: GoogleFonts.shareTechMono(fontWeight: .bold),
-        ),
-      ],
+    return PlayerCardAmount(
+      icon: Symbols.block,
+      label: l10n.battle_page_player_exhausted_count_text,
+      count: exhaustedCount ?? 0,
+      iconColor: theme.zoneExhausted,
+      painterColor: theme.brandSecondary,
     );
   }
 }

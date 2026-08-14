@@ -31,7 +31,7 @@ class PlayerStateCard extends StatelessWidget {
                 ),
                 FittedBox(
                   child: Padding(
-                    padding: const EdgeInsets.only(right: 32),
+                    padding: const EdgeInsets.only(right: 45),
                     child: PlayerStateCost(
                       player: player,
                     ),
