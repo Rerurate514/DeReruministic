@@ -1,5 +1,4 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
-import 'package:dereruministic/presentation/pages/battle/components/card/_game_card_test_component.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_component.dart';
 import 'package:dereruministic/presentation/pages/battle/components/phase/phase_banner_animation_container.dart';
@@ -30,12 +29,6 @@ class BattlePageStack extends StatelessWidget {
         Align(
           alignment: Alignment.bottomCenter,
           child: PlayerState(
-            player: player,
-          ),
-        ),
-        Align(
-          alignment: Alignment.centerLeft,
-          child: GameCardTestComponent(
             player: player,
           ),
         ),
