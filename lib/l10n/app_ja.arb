@@ -95,5 +95,140 @@
                 "type": "int"
             }
         }
+    },
+
+    "card_effect_damage": "{target}に{amount}ダメージを与える",
+    "@card_effect_damage": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "card_effect_draw": "カードを{amount}枚引く",
+    "@card_effect_draw": {
+        "placeholders": {
+        "amount": { "type": "int" }
+        }
+    },
+    "card_effect_discard": "手札から{card_name}を1枚捨てる",
+    "@card_effect_discard": {
+        "placeholders": {
+        "card_name": { "type": "String" }
+        }
+    },
+    "card_effect_fetch_card": "山札から{card_name}を1枚獲得する",
+    "@card_effect_fetch_card": {
+        "placeholders": {
+        "card_name": { "type": "String" }
+        }
+    },
+    "card_effect_heal": "{target}のHPを{amount}回復する",
+    "@card_effect_heal": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "card_effect_grant_shield": "{target}にシールドを{amount}付与する",
+    "@card_effect_grant_shield": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "card_effect_grant_cost": "{target}のコストを{amount}増やします",
+    "@card_effect_grant_cost": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "card_effect_steal_cost": "相手からコストを{amount}奪う",
+    "@card_effect_steal_cost": {
+        "placeholders": {
+        "amount": { "type": "int" }
+        }
+    },
+    "card_effect_steal_shield": "相手からシールドを{amount}奪う",
+    "@card_effect_steal_shield": {
+        "placeholders": {
+        "amount": { "type": "int" }
+        }
+    },
+    "card_effect_apply_buff": "{target}に{buff}を{stacks}スタック付与する",
+    "@card_effect_apply_buff": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "buff": { "type": "String" },
+        "stacks": { "type": "int" }
+        }
+    },
+    "card_effect_apply_debuff": "{target}に{debuff}を{stacks}スタック付与する",
+    "@card_effect_apply_debuff": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "debuff": { "type": "String" },
+        "stacks": { "type": "int" }
+        }
+    },
+    "card_effect_remove_buffs": "{target}から{buff}を{stacks}スタック解除する",
+    "@card_effect_remove_buffs": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "buff": { "type": "String" },
+        "stacks": { "type": "int" }
+        }
+    },
+    "card_effect_remove_debuffs": "{target}から{debuff}を{stacks}スタック解除する",
+    "@card_effect_remove_debuffs": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "debuff": { "type": "String" },
+        "stacks": { "type": "int" }
+        }
+    },
+
+    "card_target_type_self": "自分",
+    "card_target_type_enemy": "敵",
+
+    "comparison_operator_equal": "と等しい",
+    "comparison_operator_greater_than": "より大きい",
+    "comparison_operator_less_than": "未満",
+    "comparison_operator_not_equal": "と等しくない",
+    "comparison_operator_greater_or_equal": "以上",
+    "comparison_operator_less_or_equal": "以下",
+
+    "effect_condition_target_has_buff": "{target}が{buff}状態の場合",
+    "@effect_condition_target_has_buff": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "buff": { "type": "String" }
+        }
+    },
+
+    "effect_condition_target_has_debuff": "{target}が{debuff}状態の場合",
+    "@effect_condition_target_has_debuff": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "debuff": { "type": "String" }
+        }
+    },
+
+    "effect_condition_target_hp_percentage": "{target}のHPが{percentage}%{operator}の場合",
+    "@effect_condition_target_hp_percentage": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "percentage": { "type": "int" },
+        "operator": { "type": "String" }
+        }
+    },
+
+    "effect_condition_target_hp_value": "{target}のHPが{value}{operator}の場合",
+    "@effect_condition_target_hp_value": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "value": { "type": "int" },
+        "operator": { "type": "String" }
+        }
     }
 }
