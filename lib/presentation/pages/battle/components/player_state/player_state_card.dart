@@ -1,7 +1,6 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/components/common/state_status.dart';
-import 'package:dereruministic/presentation/pages/battle/components/player_state/player_cards_amounts.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_cost.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_hp.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_name.dart';
@@ -45,12 +44,6 @@ class PlayerStateCard extends StatelessWidget {
               shieldStateWidget: PlayerStateShield(
                 player: player,
               ),
-            ),
-            const Divider(
-              height: 32,
-            ),
-            PlayerCardsAmounts(
-              player: player,
             ),
           ],
         ),

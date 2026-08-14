@@ -11,8 +11,9 @@ class PlayerCardsAmounts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: .spaceAround,
+    return Column(
+      crossAxisAlignment: .start,
+      spacing: 2,
       children: [
         PlayerDeckCardAmount(
           player: player,

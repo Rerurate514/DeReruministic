@@ -23,25 +23,22 @@ class PlayerExhaustedCardAmount extends ConsumerWidget {
         )
         ?.length;
 
-    return Column(
+    return Row(
       spacing: 2,
+      mainAxisSize: .min,
       children: [
         Icon(
           Symbols.block,
           size: 22,
           color: theme.zoneExhausted,
         ),
-        Row(
-          children: [
-            Text(
-              l10n.battle_page_player_exhausted_count_text,
-              style: GoogleFonts.shareTechMono(fontSize: 12),
-            ),
-            Text(
-              '${exhaustedCount ?? 0}',
-              style: GoogleFonts.shareTechMono(fontWeight: .bold),
-            ),
-          ],
+        Text(
+          l10n.battle_page_player_exhausted_count_text,
+          style: GoogleFonts.shareTechMono(fontSize: 12),
+        ),
+        Text(
+          '${exhaustedCount ?? 0}',
+          style: GoogleFonts.shareTechMono(fontWeight: .bold),
         ),
       ],
     );

@@ -23,25 +23,22 @@ class PlayerGraveyardCardAmount extends ConsumerWidget {
         )
         ?.length;
 
-    return Column(
+    return Row(
       spacing: 2,
+      mainAxisSize: .min,
       children: [
         Icon(
           Symbols.delete,
           size: 22,
           color: theme.zoneGraveyard,
         ),
-        Row(
-          children: [
-            Text(
-              l10n.battle_page_player_graveyard_count_text,
-              style: GoogleFonts.shareTechMono(fontSize: 12),
-            ),
-            Text(
-              '${graveyardCount ?? 0}',
-              style: GoogleFonts.shareTechMono(fontWeight: .bold),
-            ),
-          ],
+        Text(
+          l10n.battle_page_player_graveyard_count_text,
+          style: GoogleFonts.shareTechMono(fontSize: 12),
+        ),
+        Text(
+          '${graveyardCount ?? 0}',
+          style: GoogleFonts.shareTechMono(fontWeight: .bold),
         ),
       ],
     );

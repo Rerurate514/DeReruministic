@@ -23,25 +23,22 @@ class PlayerDeckCardAmount extends ConsumerWidget {
         )
         ?.length;
 
-    return Column(
+    return Row(
       spacing: 2,
+      mainAxisSize: .min,
       children: [
         Icon(
           Symbols.playing_cards,
           size: 22,
           color: theme.zoneDeck,
         ),
-        Row(
-          children: [
-            Text(
-              l10n.battle_page_player_deck_count_text,
-              style: GoogleFonts.shareTechMono(fontSize: 12),
-            ),
-            Text(
-              '${deckCount ?? 0}',
-              style: GoogleFonts.shareTechMono(fontWeight: .bold),
-            ),
-          ],
+        Text(
+          l10n.battle_page_player_deck_count_text,
+          style: GoogleFonts.shareTechMono(fontSize: 12),
+        ),
+        Text(
+          '${deckCount ?? 0}',
+          style: GoogleFonts.shareTechMono(fontWeight: .bold),
         ),
       ],
     );
