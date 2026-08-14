@@ -10,7 +10,6 @@ import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dar
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 
 const List<CardDefinition> basicPack = [
-  // ===== 攻撃系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_hit'),
     name: 'Ping',
@@ -37,7 +36,7 @@ const List<CardDefinition> basicPack = [
         ),
       ),
     ],
-    states: [],
+    states: [CardStates.recycle(count: 5)],
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_heavy_swing'),
@@ -75,8 +74,6 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
-
-  // ===== 防御系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_defence_stance'),
     name: 'ファイアウォール',
@@ -124,8 +121,6 @@ const List<CardDefinition> basicPack = [
       ),
     ],
   ),
-
-  // ===== 回復系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_first_aid'),
     name: 'バックアップ復元',
@@ -175,8 +170,6 @@ const List<CardDefinition> basicPack = [
       CardStates.exhaust(),
     ],
   ),
-
-  // ===== ドロー/コスト系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_focus'),
     name: 'デバッグモード',
@@ -224,8 +217,6 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
-
-  // ===== 毒(デバフ)系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_poisonous_snake_fangs'),
     name: 'マルウェア注入',
@@ -286,8 +277,6 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
-
-  // ===== 奪取系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_shield_bash'),
     name: 'ゼロデイ攻撃',
@@ -339,8 +328,6 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
-
-  // ===== バフ系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'naguru'),
     name: 'クリティカルモード',
@@ -381,8 +368,6 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
-
-  // ===== 浄化系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_purifying_blow'),
     name: 'システムクリーンアップ',
@@ -425,8 +410,6 @@ const List<CardDefinition> basicPack = [
     ],
     states: [],
   ),
-
-  // ===== 大技/デメリット系 =====
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_last_resort'),
     name: 'ルートキル',
@@ -533,10 +516,6 @@ const List<CardDefinition> basicPack = [
       CardStates.exhaust(),
     ],
   ),
-
-  // ===================================================
-  // ここから新規追加カード
-  // ===================================================
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_spam_mail'),
     name: 'スパムメール',
