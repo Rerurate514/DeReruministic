@@ -17,7 +17,7 @@ class AppHighlightTransparencyButton extends StatelessWidget {
     this.blurSigma = 4,
   });
 
-  final VoidCallback onPressed;
+  final void Function()? onPressed;
   final Widget child;
 
   final double width;
