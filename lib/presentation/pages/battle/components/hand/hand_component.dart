@@ -60,7 +60,12 @@ class _HandComponentState extends ConsumerState<HandComponent>
       if (next.first is! GameStepEventCardsDrawn) return;
 
       await Future.wait(
-        hand.map((card) => _controllerFor(card.instanceId).forward(from: 0)),
+        hand.map((card) async {
+          await Future<void>.delayed(
+            Duration(milliseconds: 100 * hand.indexOf(card)),
+          );
+          _controllerFor(card.instanceId).forward(from: 0);
+        }),
       );
       ref.read(stepEventQueueProvider.notifier).consumeCurrentStep();
     });
