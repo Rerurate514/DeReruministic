@@ -32,6 +32,7 @@ class CardDragArea extends ConsumerWidget {
               ),
             ),
             child: AppHollowGlowCard(
+              blurSigma: 2,
               borderRadius: 4,
               padding: const EdgeInsets.all(8),
               child: Stack(

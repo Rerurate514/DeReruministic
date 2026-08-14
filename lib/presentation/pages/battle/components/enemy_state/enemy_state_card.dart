@@ -18,6 +18,8 @@ class EnemyStateCard extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: AppCard(
         borderRadius: 4,
+        isBlur: true,
+        blurSigma: 2,
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: .stretch,

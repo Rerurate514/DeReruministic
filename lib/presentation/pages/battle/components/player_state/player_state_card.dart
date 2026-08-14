@@ -17,6 +17,8 @@ class PlayerStateCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: AppCard(
+        blurSigma: 2,
+        isBlur: true,
         borderRadius: 4,
         padding: const EdgeInsets.all(16),
         child: Column(
