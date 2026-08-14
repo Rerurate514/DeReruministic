@@ -366,7 +366,7 @@ const List<CardDefinition> basicPack = [
   ),
   CardDefinition(
     cardDefId: CardDefinitionId(value: 'basic_pack_doomsday_seal'),
-    name: '終焉の呪印',
+    name: '演算オーバーロード',
     baseCost: 2,
     effects: [
       CardEffectsDetails(
