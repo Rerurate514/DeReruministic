@@ -370,9 +370,20 @@ const List<CardDefinition> basicPack = [
     baseCost: 2,
     effects: [
       CardEffectsDetails(
-        cardEffect: CardEffects.damage(
-          amount: 15,
-          target: CardTargetTypes.enemy,
+        cardEffect: CardEffects.applyBuff(
+          buff: BuffTypes.atkBuff,
+          stacks: 2,
+          target: CardTargetTypes.self,
+        ),
+      ),
+      CardEffectsDetails(
+        cardEffect: CardEffects.draw(
+          amount: 2,
+        ),
+        effectCondition: EffectConditions.targetHpPercentageCondition(
+          target: CardTargetTypes.self,
+          percentage: 50,
+          operator: ComparisonOperator.lessThan,
         ),
       ),
     ],
