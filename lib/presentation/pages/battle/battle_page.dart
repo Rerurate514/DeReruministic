@@ -3,9 +3,7 @@ import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/battle_page_stack.dart';
 import 'package:dereruministic/presentation/pages/battle/components/end_turn/end_turn_button.dart';
 import 'package:dereruministic/presentation/pages/battle/components/header/battle_header.dart';
-import 'package:dereruministic/presentation/pages/battle/debug/use_debug_step_consumer.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -30,8 +28,6 @@ class BattlePage extends HookConsumerWidget {
       });
       return null;
     }, []);
-
-    useDebugStepConsumer(ref: ref, enabled: kDebugMode);
 
     return UiPageWrapper(
       padding: const EdgeInsets.all(4),
