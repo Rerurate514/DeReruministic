@@ -64,7 +64,7 @@ extension PlayerStateCardEx on PlayerState {
   }
 
   PlayerState consumeCost(int amount) {
-    return copyWith(currentCost: currentCost + amount);
+    return copyWith(currentCost: currentCost - amount);
   }
 
   PlayerState consumeCard(GameCard card) {
