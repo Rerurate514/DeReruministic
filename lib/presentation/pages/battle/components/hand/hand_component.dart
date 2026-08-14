@@ -1,5 +1,5 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
-import 'package:dereruministic/presentation/pages/battle/components/card/game_card_component.dart';
+import 'package:dereruministic/presentation/pages/battle/components/card/game_card_draggable.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +23,7 @@ class HandComponent extends ConsumerWidget {
         scrollDirection: Axis.horizontal,
         itemCount: hand.length,
         itemBuilder: (context, index) {
-          return GameCardComponent(
+          return GameCardDraggable(
             key: ValueKey(hand[index].instanceId),
             gameCard: hand[index],
           );

@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
+import 'package:dereruministic/presentation/pages/battle/components/drag_area/card_drag_area.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_component.dart';
 import 'package:dereruministic/presentation/pages/battle/components/phase/phase_banner_animation_container.dart';
@@ -21,7 +22,7 @@ class BattlePageStack extends StatelessWidget {
             EnemyState(
               enemy: enemy,
             ),
-            const Expanded(child: SizedBox.shrink()),
+            const Expanded(child: CardDragArea()),
             PlayerState(
               player: player,
             ),
