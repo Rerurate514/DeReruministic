@@ -16,27 +16,23 @@ class BattlePageStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Align(
-          alignment: .topCenter,
-          child: EnemyState(
-            enemy: enemy,
-          ),
+        Column(
+          children: [
+            EnemyState(
+              enemy: enemy,
+            ),
+            const Expanded(child: SizedBox.shrink()),
+            PlayerState(
+              player: player,
+            ),
+            HandComponent(
+              player: player,
+            ),
+          ],
         ),
         const Align(
           alignment: Alignment.centerRight,
           child: PhaseBannerAnimationContainer(),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: PlayerState(
-            player: player,
-          ),
-        ),
-        Align(
-          alignment: Alignment.bottomCenter,
-          child: HandComponent(
-            player: player,
-          ),
         ),
       ],
     );
