@@ -12,9 +12,9 @@ class GameCardDetailArea extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themePalette;
     return Padding(
-      padding: const EdgeInsets.all(4),
+      padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 6),
       child: Text(
-        gameCard.definition.cardDefId.value,
+        "ここに説明文",
         style: GoogleFonts.shareTechMono(
           color: theme.brandSecondary,
           shadows: [
