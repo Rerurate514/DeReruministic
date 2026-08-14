@@ -18,13 +18,14 @@ class GameCardNameText extends StatelessWidget {
         Text(
           gameCard.definition.name,
           style: GoogleFonts.shareTechMono(
-            color: theme.brandSecondary,
+            color: theme.brandColor,
             shadows: [
               Shadow(
-                color: theme.brandSecondary,
-                blurRadius: 0.7,
+                color: theme.brandColor,
+                blurRadius: 1,
               ),
             ],
+            letterSpacing: 1,
           ),
         ),
         CustomPaint(
