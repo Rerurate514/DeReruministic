@@ -3,6 +3,8 @@ import 'package:dereruministic/presentation/components/app_glow_container.dart';
 import 'package:dereruministic/presentation/pages/battle/components/card/game_card_base_component.dart';
 import 'package:dereruministic/presentation/pages/battle/components/card/game_card_meta.dart';
 import 'package:dereruministic/presentation/pages/battle/components/card/game_card_name_text.dart';
+import 'package:dereruministic/presentation/painter/under_card_painter.dart';
+import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:dereruministic/presentation/widgets/ui_interlacing_artifacts_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,6 +16,7 @@ class GameCardComponent extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final theme = context.themePalette;
     return SizedBox(
       width: 180,
       height: 240,
@@ -45,6 +48,12 @@ class GameCardComponent extends ConsumerWidget {
           Positioned(
             child: GameCardNameText(
               gameCard: gameCard,
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: CustomPaint(
+              painter: UnderCardPainter(color: theme.brandSecondary),
             ),
           ),
         ],
