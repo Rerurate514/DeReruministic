@@ -64,6 +64,11 @@
     "battle_page_combat_log_text": "COMBAT LOG",
     "battle_page_turn_end_button_text": "EXECUTED",
 
+    "battle_page_sp_banner_game_start_initializing_combat_protocol_text": "INITIALIZING COMBAT PROTOCOL",
+    "battle_page_sp_banner_game_start_game_sequence_start_text": "_> GAME SEQUENCE START",
+    "battle_page_sp_banner_game_start_terminal_access_granted_text": "TERMINAL ACCESS GRANTED",
+    "battle_page_sp_banner_game_start_data_link_established_text": "DATA LINK ESTABLISHED",
+
     "battle_page_card_runtime_states_recycle_text": "{remainingCount}/{maxCount}",
     "@battle_page_card_runtime_states_recycle_text": {
         "placeholders": {
