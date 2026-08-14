@@ -34,7 +34,7 @@ class PlayerGraveyardCardAmount extends ConsumerWidget {
         Row(
           children: [
             Text(
-              l10n.battle_page_player_deck_count_text,
+              l10n.battle_page_player_graveyard_count_text,
               style: GoogleFonts.shareTechMono(fontSize: 12),
             ),
             Text(
