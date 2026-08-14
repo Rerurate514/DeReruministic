@@ -8,6 +8,7 @@ import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanc
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/card_draw_start_turn_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/turn_end_phase_changed_event_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/update_card_counter_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/i_turn_pipeline_factory.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline.dart';
@@ -18,6 +19,9 @@ part 'turn_pipeline_factory.g.dart';
 @riverpod
 TurnPipelineFactory turnPipelineFactory(Ref ref) {
   return TurnPipelineFactory(
+    turnEndPhaseChangedEventService: ref.read(
+      turnEndPhaseChangedEventServiceProvider,
+    ),
     updateCardCounterService: ref.read(updateCardCounterServiceProvider),
     defeatCheckService: ref.read(defeatCheckServiceProvider),
     gameStartDrawCardsService: ref.read(gameStartDrawCardsServiceProvider),
@@ -32,6 +36,7 @@ TurnPipelineFactory turnPipelineFactory(Ref ref) {
 
 class TurnPipelineFactory implements ITurnPipelineFactory {
   const TurnPipelineFactory({
+    required this.turnEndPhaseChangedEventService,
     required this.updateCardCounterService,
     required this.defeatCheckService,
     required this.gameStartDrawCardsService,
@@ -43,6 +48,7 @@ class TurnPipelineFactory implements ITurnPipelineFactory {
     required this.cardDrawStartTurnService,
   });
 
+  final TurnEndPhaseChangedEventService turnEndPhaseChangedEventService;
   final UpdateCardCounterService updateCardCounterService;
   final DefeatCheckService defeatCheckService;
   final GameStartDrawCardsService gameStartDrawCardsService;
@@ -70,6 +76,7 @@ class TurnPipelineFactory implements ITurnPipelineFactory {
     return TurnPipeline(
       turnProcessSteps: [
         //　ターン終了フェーズ（現プレイヤー）カード状態更新
+        turnEndPhaseChangedEventService,
         updateCardCounterService,
         // resolveTimedCardEffectsService,
         // resolveTurnEndStatusService,
