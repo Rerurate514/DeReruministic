@@ -67,7 +67,7 @@ class PhaseBannerAnimationContainer extends HookConsumerWidget {
         phase: displayedPhase.value!,
       ),
       builder: (context, child) {
-        final dx = 1 - (controller.value) + 0.1;
+        final dx = 1 - (curvedAnimation.value) + 0.1;
         return FractionalTranslation(
           translation: Offset(dx, 0),
           child: child,
