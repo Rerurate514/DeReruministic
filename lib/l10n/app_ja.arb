@@ -60,6 +60,8 @@
     "battle_page_player_graveyard_count_text": "[GY]",
     "battle_page_player_exhausted_count_text": "[EX]",
 
+    "battle_page_combat_log_text": "COMBAT LOG",
+
     "battle_page_card_runtime_states_recycle_text": "{remainingCount}/{maxCount}",
     "@battle_page_card_runtime_states_recycle_text": {
         "placeholders": {
@@ -229,6 +231,216 @@
         "target": { "type": "String" },
         "value": { "type": "int" },
         "operator": { "type": "String" }
+        }
+    },
+
+    "game_step_event_combo_reset": "> COMBO RESET",
+    "game_step_event_deck_shuffled": "> DECK SHUFFLED",
+    "game_step_event_overflow_check_triggered": "> {player} OVERFLOW CHECK :: {count}",
+    "@game_step_event_overflow_check_triggered": {
+        "placeholders": {
+        "player": { "type": "String" },
+        "count": { "type": "int" }
+        }
+    },
+    "game_step_event_phase_changed": "> PHASE >> {phase}",
+    "@game_step_event_phase_changed": {
+        "placeholders": {
+        "phase": { "type": "String" }
+        }
+    },
+    "game_step_event_turn_end_effects_resolved": "> TURN END EFFECTS RESOLVED",
+    "game_step_event_regen_applied": "> {target} REGEN +{amount}",
+    "@game_step_event_regen_applied": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "game_step_event_cost_calculated": "> {target} COST CALCULATED :: {amount}",
+    "@game_step_event_cost_calculated": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "game_step_event_draw_calculated": "> {target} DRAW CALCULATED :: {amount}",
+    "@game_step_event_draw_calculated": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "game_step_event_combo_updated": "> {target} COMBO >> {amount}",
+    "@game_step_event_combo_updated": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "game_step_event_damage_dealt": "> Damage Taken {hp_damage} HP (SHIELD -{shield_damage})",
+    "@game_step_event_damage_dealt": {
+        "placeholders": {
+        "hp_damage": { "type": "int" },
+        "shield_damage": { "type": "int" }
+        }
+    },
+    "game_step_event_reflect_damage_applied": "> {target} REFLECT DAMAGE {amount}",
+    "@game_step_event_reflect_damage_applied": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "game_step_event_shield_gained": "> {target} SHIELD +{amount}",
+    "@game_step_event_shield_gained": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "game_step_event_shield_cleared": "> {target} SHIELD CLEARED",
+    "@game_step_event_shield_cleared": {
+        "placeholders": {
+        "target": { "type": "String" }
+        }
+    },
+    "game_step_event_healed": "> {target} HP +{amount}",
+    "@game_step_event_healed": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
+    "game_step_event_hand_card_counters_updated": "> {player} HAND COUNTER SYNCED",
+    "@game_step_event_hand_card_counters_updated": {
+        "placeholders": {
+        "player": { "type": "String" }
+        }
+    },
+    "game_step_event_buff_applied": "> {target} BUFF [{buff}] +{stack} (TOTAL {total_stack})",
+    "@game_step_event_buff_applied": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "buff": { "type": "String" },
+        "stack": { "type": "int" },
+        "total_stack": { "type": "int" }
+        }
+    },
+    "game_step_event_debuff_applied": "> {target} DEBUFF [{debuff}] +{stack} (TOTAL {total_stack})",
+    "@game_step_event_debuff_applied": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "debuff": { "type": "String" },
+        "stack": { "type": "int" },
+        "total_stack": { "type": "int" }
+        }
+    },
+    "game_step_event_buff_removed": "> {target} BUFF [{buff}] CLEARED",
+    "@game_step_event_buff_removed": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "buff": { "type": "String" }
+        }
+    },
+    "game_step_event_debuff_removed": "> {target} DEBUFF [{debuff}] CLEARED",
+    "@game_step_event_debuff_removed": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "debuff": { "type": "String" }
+        }
+    },
+    "game_step_event_poison_applied": "> {target} STATUS [{effect_type}] STACK {stack_count}",
+    "@game_step_event_poison_applied": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "effect_type": { "type": "String" },
+        "stack_count": { "type": "int" }
+        }
+    },
+    "game_step_event_guard_boost_applied": "> {target} GUARD [{effect_type}] STACK {stack_count}",
+    "@game_step_event_guard_boost_applied": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "effect_type": { "type": "String" },
+        "stack_count": { "type": "int" }
+        }
+    },
+    "game_step_event_status_effect_changed": "> {target} STATUS [{effect_type}] >> {stack_count}",
+    "@game_step_event_status_effect_changed": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "effect_type": { "type": "String" },
+        "stack_count": { "type": "int" }
+        }
+    },
+    "game_step_event_card_played": "> {player} played [{card}]",
+    "@game_step_event_card_played": {
+        "placeholders": {
+        "player": { "type": "String" },
+        "card": { "type": "String" }
+        }
+    },
+    "game_step_event_card_played_with_target": "> {player} played [{card}] >> {target}",
+    "@game_step_event_card_played_with_target": {
+        "placeholders": {
+        "player": { "type": "String" },
+        "card": { "type": "String" },
+        "target": { "type": "String" }
+        }
+    },
+    "game_step_event_card_exhausted": "> [{card}] EXHAUSTED",
+    "@game_step_event_card_exhausted": {
+        "placeholders": {
+        "card": { "type": "String" }
+        }
+    },
+    "game_step_event_deck_restored": "> {player} DECK RESTORED x{count}",
+    "@game_step_event_deck_restored": {
+        "placeholders": {
+        "player": { "type": "String" },
+        "count": { "type": "int" }
+        }
+    },
+    "game_step_event_cards_drawn": "> {player} drew {count} card",
+    "@game_step_event_cards_drawn": {
+        "placeholders": {
+        "player": { "type": "String" },
+        "count": { "type": "int" }
+        }
+    },
+    "game_step_event_card_moved_zone": "> {player} CARD MOVE :: {zone_from} >> {zone_to} x{count}",
+    "@game_step_event_card_moved_zone": {
+        "placeholders": {
+        "player": { "type": "String" },
+        "zone_from": { "type": "String" },
+        "zone_to": { "type": "String" },
+        "count": { "type": "int" }
+        }
+    },
+    "game_step_event_turn_owner_switched": "> TURN OWNER >> {player}",
+    "@game_step_event_turn_owner_switched": {
+        "placeholders": {
+        "player": { "type": "String" }
+        }
+    },
+    "game_step_event_game_started": "> SYSTEM ONLINE :: FIRST TURN {player}",
+    "@game_step_event_game_started": {
+        "placeholders": {
+        "player": { "type": "String" }
+        }
+    },
+    "game_step_event_game_ended": "> GAME OVER :: {result} ({reason})",
+    "@game_step_event_game_ended": {
+        "placeholders": {
+        "result": { "type": "String" },
+        "reason": { "type": "String" }
+        }
+    },
+    "game_step_event_turn_commenced": "> Turn {turn} Commenced",
+    "@game_step_event_turn_commenced": {
+        "placeholders": {
+        "turn": { "type": "int" }
         }
     }
 }

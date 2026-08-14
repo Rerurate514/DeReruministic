@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
+import 'package:dereruministic/presentation/pages/battle/components/background/background_logs.dart';
 import 'package:dereruministic/presentation/pages/battle/components/drag_area/card_drag_area.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_component.dart';
@@ -17,6 +18,10 @@ class BattlePageStack extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
+        const Align(
+          alignment: Alignment.centerLeft,
+          child: BackgroundLogs(),
+        ),
         Column(
           children: [
             EnemyState(
