@@ -60,6 +60,7 @@
     "battle_page_player_graveyard_count_text": "[GY]",
     "battle_page_player_exhausted_count_text": "[EX]",
 
+    "battle_page_card_drag_area_text": "<< FIELD_EFFECT_SYS >> - STATUS:=//WAIT::[USE_CARD]",
     "battle_page_combat_log_text": "COMBAT LOG",
 
     "battle_page_card_runtime_states_recycle_text": "{remainingCount}/{maxCount}",

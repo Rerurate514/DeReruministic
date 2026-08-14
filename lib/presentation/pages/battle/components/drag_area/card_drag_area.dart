@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/card/entities/game_card.dart';
+import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_hollow_glow_card.dart';
 import 'package:dereruministic/presentation/components/app_scan_line.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
@@ -12,7 +13,9 @@ class CardDragArea extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: DragTarget<GameCard>(
@@ -38,24 +41,26 @@ class CardDragArea extends ConsumerWidget {
               child: Stack(
                 alignment: .center,
                 children: [
-                  Column(
-                    mainAxisAlignment: .center,
-                    spacing: 8,
-                    children: [
-                      const Icon(Symbols.radar),
-                      Text(
-                        '<FIELD_EFFECT_SYS> - STATUS:=//WAIT::[USE_CARD]',
-                        style: GoogleFonts.shareTechMono(
-                          color: theme.brandSecondary,
-                          shadows: [
-                            Shadow(
-                              color: theme.brandSecondary,
-                              blurRadius: 0.2,
-                            ),
-                          ],
+                  FittedBox(
+                    child: Column(
+                      mainAxisAlignment: .center,
+                      spacing: 8,
+                      children: [
+                        const Icon(Symbols.radar),
+                        Text(
+                          l10n.battle_page_card_drag_area_text,
+                          style: GoogleFonts.shareTechMono(
+                            color: theme.brandSecondary,
+                            shadows: [
+                              Shadow(
+                                color: theme.brandSecondary,
+                                blurRadius: 0.2,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   const AppScanLine(
                     duration: Duration(seconds: 6),
