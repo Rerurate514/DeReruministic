@@ -1,6 +1,7 @@
 import 'package:dereruministic/application/game/state/game_notifier.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/battle_page_stack.dart';
+import 'package:dereruministic/presentation/pages/battle/components/end_turn/end_turn_button.dart';
 import 'package:dereruministic/presentation/pages/battle/components/header/battle_header.dart';
 import 'package:dereruministic/presentation/pages/battle/debug/use_debug_step_consumer.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
@@ -34,6 +35,9 @@ class BattlePage extends HookConsumerWidget {
 
     return UiPageWrapper(
       padding: const EdgeInsets.all(4),
+      floatingActionButton: EndTurnButton(
+        playerId: playerA.id,
+      ),
       child: Column(
         crossAxisAlignment: .stretch,
         children: [

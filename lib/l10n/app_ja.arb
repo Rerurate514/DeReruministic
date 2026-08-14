@@ -62,6 +62,7 @@
 
     "battle_page_card_drag_area_text": "<< FIELD_EFFECT_SYS >> - STATUS:=//WAIT::[USE_CARD]",
     "battle_page_combat_log_text": "COMBAT LOG",
+    "battle_page_turn_end_button_text": "EXECUTED",
 
     "battle_page_card_runtime_states_recycle_text": "{remainingCount}/{maxCount}",
     "@battle_page_card_runtime_states_recycle_text": {
