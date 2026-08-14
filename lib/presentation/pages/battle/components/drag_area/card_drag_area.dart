@@ -1,16 +1,19 @@
 import 'package:dereruministic/application/game/state/game_notifier.dart';
+import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_hollow_glow_card.dart';
 import 'package:dereruministic/presentation/components/app_scan_line.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class CardDragArea extends ConsumerWidget {
+class CardDragArea extends HookConsumerWidget {
   const CardDragArea({required this.player, super.key});
 
   final Player player;
@@ -20,6 +23,21 @@ class CardDragArea extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
 
+    final isMainPhase = useState(false);
+
+    ref.listen(stepEventQueueProvider, (_, next) {
+      if (next.isEmpty) return;
+
+      final currentEvent = next.first;
+      if (currentEvent is! GameStepEventPhaseChanged) return;
+      if (currentEvent.phase.battlePhase != .mainPhase ||
+          currentEvent.phase.turnOwner != player.id) {
+        isMainPhase.value = false;
+        return;
+      }
+      isMainPhase.value = true;
+    });
+
     return Padding(
       padding: const EdgeInsets.all(16),
       child: DragTarget<GameCard>(
@@ -27,7 +45,7 @@ class CardDragArea extends ConsumerWidget {
           final turnOwner = ref.read(
             gameProvider.select((s) => s?.phase.turnOwner),
           );
-          return turnOwner == player.id;
+          return turnOwner == player.id && isMainPhase.value;
         },
         onAcceptWithDetails: (detail) async {
           await ref
