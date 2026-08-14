@@ -136,7 +136,7 @@
         "amount": { "type": "int" }
         }
     },
-    "card_effect_grant_cost": "{target}のコストを{amount}増やします",
+    "card_effect_grant_cost": "{target}のコストを{amount}増やす",
     "@card_effect_grant_cost": {
         "placeholders": {
         "target": { "type": "String" },
