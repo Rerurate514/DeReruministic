@@ -29,8 +29,10 @@ class CardDragArea extends ConsumerWidget {
           );
           return turnOwner == player.id;
         },
-        onAcceptWithDetails: (detail) {
-          print(detail.data);
+        onAcceptWithDetails: (detail) async {
+          await ref
+              .read(gameProvider.notifier)
+              .playCard(detail.data, player.id);
         },
         builder: (context, candidateData, rejectedData) {
           final isHovering = candidateData.isNotEmpty;
