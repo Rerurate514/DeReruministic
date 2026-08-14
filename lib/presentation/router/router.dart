@@ -49,7 +49,7 @@ GoRouter router(Ref ref) {
               (_) => const CardDefinitionId(value: 'basic_pack_hit'),
             ),
           ),
-          seed: 514,
+          seed: 321421431432,
         ),
       ),
       GoRoute(
