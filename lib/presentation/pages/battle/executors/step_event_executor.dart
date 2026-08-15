@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class StepEventExecutor {
   const StepEventExecutor({required this.ref});
 
-  final WidgetRef ref;
+  final Ref ref;
 
   Future<void> execute(GameStepEvent step) async {
     switch (step) {
