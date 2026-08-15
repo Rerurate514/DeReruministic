@@ -14,9 +14,11 @@ class StepEventQueueNotifier extends _$StepEventQueueNotifier {
     state = [...state, ...steps];
   }
 
-  void consumeCurrentStep() {
+  void consumeCurrentStep({int count = 1}) {
     if (state.isEmpty) return;
-    state = state.sublist(1);
+    for (var i = 0; i < count; i++) {
+      state = state.sublist(1);
+    }
   }
 
   void clear() {
