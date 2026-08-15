@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/presentation/pages/battle/components/game_sp_banner/game_start/game_start_banner.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -16,16 +16,7 @@ class GameStartBannerAnimationContainer extends HookConsumerWidget {
       duration: const Duration(seconds: 3),
     );
 
-    final isShow = useState(false);
-
-    ref.listen(stepEventQueueProvider, (_, next) {
-      if (next.isEmpty) return;
-
-      final currentEvent = next.first;
-      if (currentEvent is GameStepEventGameStarted) {
-        isShow.value = true;
-      }
-    });
+    final isShow = ref.watch(displayedGameStartProvider);
 
     final animation = useMemoized(
       () => TweenSequence<double>([
@@ -51,22 +42,23 @@ class GameStartBannerAnimationContainer extends HookConsumerWidget {
       [controller],
     );
 
+    final isMounted = useIsMounted();
     useEffect(() {
-      if (!isShow.value) return;
-
+      if (!isShow) return;
       Future<void> runAnimationSequence() async {
         await Future<void>.delayed(const Duration(milliseconds: 500));
         await controller.forward(from: 0);
+        if (!isMounted()) return;
         ref.read(stepEventQueueProvider.notifier).consumeCurrentStep();
-        isShow.value = false;
+        ref.read(displayedGameStartProvider.notifier).setFalse();
       }
 
       unawaited(runAnimationSequence());
 
       return null;
-    }, [isShow.value]);
+    }, [isShow]);
 
-    if (!isShow.value) return const SizedBox.shrink();
+    if (!isShow) return const SizedBox.shrink();
 
     return AnimatedBuilder(
       animation: animation,
