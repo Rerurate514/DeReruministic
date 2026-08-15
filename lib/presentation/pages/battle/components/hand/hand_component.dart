@@ -1,11 +1,12 @@
 import 'dart:async';
 
-import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_animation_container.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
-import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_provider.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -55,9 +56,7 @@ class _HandComponentState extends ConsumerState<HandComponent>
       myPlayerUiStateProvider(widget.player).select((s) => s?.hand),
     );
 
-    final cardDrawnEvent = ref.watch(
-      displayedCardDrawnEventForPlayerProvider(widget.player.id),
-    );
+    final cardDrawnEvent = ref.watch(displayedCardDrawnProvider);
 
     if (hand == null) return const SizedBox.shrink();
 
@@ -65,6 +64,10 @@ class _HandComponentState extends ConsumerState<HandComponent>
 
     useEffect(() {
       if (cardDrawnEvent == null) return null;
+      if (cardDrawnEvent is! GameStepEventCardsDrawn) return null;
+
+      if (cardDrawnEvent.playerId != widget.player.id) return null;
+
       Future<void> run() async {
         await Future.wait(
           hand.map((card) async {
@@ -75,8 +78,7 @@ class _HandComponentState extends ConsumerState<HandComponent>
           }),
         );
 
-        ref.read(stepEventQueueProvider.notifier).consumeCurrentStep();
-        ref.read(stepEventQueueProvider.notifier).consumeCurrentStep();
+        ref.read(animationSignalProvider.notifier).done();
       }
 
       unawaited(run());

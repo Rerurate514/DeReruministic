@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/components/game_sp_banner/game_start/game_start_banner.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -47,9 +47,12 @@ class GameStartBannerAnimationContainer extends HookConsumerWidget {
       if (!isShow) return;
       Future<void> runAnimationSequence() async {
         await Future<void>.delayed(const Duration(milliseconds: 500));
-        await controller.forward(from: 0);
+        await controller
+            .forward(from: 0)
+            .whenComplete(
+              () => ref.read(animationSignalProvider.notifier).done(),
+            );
         if (!isMounted()) return;
-        ref.read(stepEventQueueProvider.notifier).consumeCurrentStep();
         ref.read(displayedGameStartProvider.notifier).setFalse();
       }
 

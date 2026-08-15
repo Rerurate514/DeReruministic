@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:dereruministic/presentation/pages/battle/components/phase/phase_banner.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -36,9 +37,13 @@ class PhaseBannerAnimationContainer extends HookConsumerWidget {
 
         await Future<void>.delayed(const Duration(milliseconds: 900));
 
-        await controller.reverse(
-          from: 1,
-        );
+        await controller
+            .reverse(
+              from: 1,
+            )
+            .whenComplete(
+              () => ref.read(animationSignalProvider.notifier).done(),
+            );
       }
 
       unawaited(runProcessedAnimation());
