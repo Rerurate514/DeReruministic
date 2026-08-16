@@ -1,4 +1,4 @@
-import 'package:dereruministic/domain/card/data/basic_pack.dart';
+import 'package:dereruministic/domain/card/data/card_packs.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/repositories/i_card_repository.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
@@ -6,18 +6,22 @@ import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart
 class LocalCardRepositoryImpl implements ICardRepository {
   @override
   Future<List<CardDefinition>> fetchAllCards() {
-    return Future(() => basicPack);
+    return Future(() => allCardDefinitions);
   }
 
   @override
   Future<CardDefinition?> fetchById(CardDefinitionId id) {
-    return Future(() => basicPack.firstWhere((card) => card.cardDefId == id));
+    return Future(
+      () => allCardDefinitions.firstWhere((card) => card.cardDefId == id),
+    );
   }
 
   @override
   Future<List<CardDefinition>> fetchByIds(List<CardDefinitionId> ids) {
     return Future(
-      () => basicPack.where((card) => ids.contains(card.cardDefId)).toList(),
+      () => allCardDefinitions
+          .where((card) => ids.contains(card.cardDefId))
+          .toList(),
     );
   }
 }

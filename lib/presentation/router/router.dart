@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:dereruministic/domain/card/data/basic_pack.dart';
+import 'package:dereruministic/domain/card/data/card_packs.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
@@ -38,7 +38,11 @@ GoRouter router(Ref ref) {
             name: 'Player_01',
             deckRecipe: List.generate(
               40,
-              (_) => basicPack[Random().nextInt(basicPack.length)].cardDefId,
+              (_) =>
+                  allCardDefinitions[Random().nextInt(
+                        allCardDefinitions.length,
+                      )]
+                      .cardDefId,
             ),
           ),
           playerB: Player(
