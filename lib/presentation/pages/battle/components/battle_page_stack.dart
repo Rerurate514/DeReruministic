@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/background/background_logs.dart';
 import 'package:dereruministic/presentation/pages/battle/components/drag_area/card_drag_area.dart';
+import 'package:dereruministic/presentation/pages/battle/components/end_turn/_test_end_enemy_turn_button.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state.dart';
 import 'package:dereruministic/presentation/pages/battle/components/game_sp_banner/game_start/game_start_banner_animation_container.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_component.dart';
@@ -47,6 +48,12 @@ class BattlePageStack extends StatelessWidget {
         ),
         const Align(
           child: GameStartBannerAnimationContainer(),
+        ),
+        Align(
+          alignment: .topRight,
+          child: TestEndEnemyTurnButton(
+            playerId: player.id,
+          ),
         ),
       ],
     );
