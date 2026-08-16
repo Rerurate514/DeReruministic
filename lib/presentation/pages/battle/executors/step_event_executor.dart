@@ -2,6 +2,7 @@ import 'package:dereruministic/domain/game_system/value_objects/game_step_event.
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_animation_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_cost_calculated_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -37,7 +38,9 @@ class StepEventExecutor {
       case GameStepEventRegenApplied():
         {}
       case GameStepEventCostCalculated():
-        {}
+        {
+          ref.read(displayedCostCalculatedProvider.notifier).apply();
+        }
       case GameStepEventDrawCalculated():
         {}
       case GameStepEventComboUpdated():
