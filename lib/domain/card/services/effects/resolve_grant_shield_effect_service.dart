@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'resolve_grant_shield_effect_service.g.dart';
@@ -38,9 +39,7 @@ class ResolveGrantShieldEffectService {
       );
     }
 
-    final newCardTargetPlayer = targetPlayer.copyWith(
-      shield: targetPlayer.shield + effect.amount,
-    );
+    final newCardTargetPlayer = targetPlayer.updateShield(effect.amount);
 
     final newState = state.copyWith(
       players: {...state.players, newCardTargetPlayer.id: newCardTargetPlayer},

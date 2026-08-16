@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
@@ -67,6 +69,14 @@ extension PlayerStateCardEx on PlayerState {
 
   PlayerState consumeCost(int amount) {
     return copyWith(currentCost: (currentCost - amount).clamp(0, maxCost));
+  }
+
+  PlayerState updateShield(int amount) {
+    return copyWith(shield: max(0, shield + amount));
+  }
+
+  PlayerState removeShield(int amount) {
+    return copyWith(shield: max(0, shield - amount));
   }
 
   PlayerState consumeCard(GameCard card) {
