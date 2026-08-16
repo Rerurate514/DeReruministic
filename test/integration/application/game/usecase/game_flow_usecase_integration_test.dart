@@ -1515,8 +1515,9 @@ void main() {
 
       expect(
         state.players[turnOwnerId]!.currentCost,
-        PlayerConstants.defaultInitialCost +
-            GameSystemConstants.baseTurnStartGainCost,
+        (PlayerConstants.defaultInitialCost +
+                GameSystemConstants.baseTurnStartGainCost)
+            .clamp(0, state.players[turnOwnerId]!.maxCost),
       );
       // 手番でない方は初期コストのまま
       expect(
