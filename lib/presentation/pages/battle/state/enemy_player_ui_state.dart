@@ -37,7 +37,7 @@ sealed class EnemyPlayerUiState with _$EnemyPlayerUiState {
       hp: playerState.hp,
       maxHp: playerState.maxHp,
       cost: playerState.currentCost,
-      maxCost: 99, //TODO(cost): cost
+      maxCost: playerState.maxCost,
       shield: playerState.shield,
       handCount: playerState.hand.length,
       deckCount: playerState.deck.length,
