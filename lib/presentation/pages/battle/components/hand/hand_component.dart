@@ -1,5 +1,8 @@
 import 'dart:async';
 
+import 'package:animated_list_plus/animated_list_plus.dart';
+import 'package:animated_list_plus/transitions.dart';
+import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_animation_container.dart';
@@ -86,15 +89,34 @@ class _HandComponentState extends ConsumerState<HandComponent>
 
     return SizedBox(
       height: 240,
-      child: ListView.builder(
+      child: ImplicitlyAnimatedList<GameCard>(
         scrollDirection: Axis.horizontal,
-        itemCount: hand.length,
-        itemBuilder: (context, index) {
-          final card = hand[index];
-          return HandAnimationContainer(
-            key: ValueKey(card.instanceId),
-            gameCard: card,
-            animation: _animationFor(card.instanceId),
+        items: hand,
+        areItemsTheSame: (oldItem, newItem) =>
+            oldItem.instanceId == newItem.instanceId,
+        itemBuilder: (context, animation, card, index) {
+          return SizeFadeTransition(
+            axis: Axis.horizontal,
+            sizeFraction: 0.7,
+            curve: Curves.easeInOut,
+            animation: animation,
+            child: HandAnimationContainer(
+              key: ValueKey(card.instanceId),
+              gameCard: card,
+              animation: _animationFor(card.instanceId),
+            ),
+          );
+        },
+        removeItemBuilder: (context, animation, card) {
+          return SizeFadeTransition(
+            axis: Axis.horizontal,
+            animation: animation,
+            curve: Curves.easeInOut,
+            child: HandAnimationContainer(
+              key: ValueKey(card.instanceId),
+              gameCard: card,
+              animation: const AlwaysStoppedAnimation(0),
+            ),
           );
         },
       ),
