@@ -1,4 +1,5 @@
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
+import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_scan_line.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
@@ -10,29 +11,36 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PhaseBanner extends HookWidget {
-  const PhaseBanner({required this.phase, super.key});
+  const PhaseBanner({required this.phase, required this.player, super.key});
 
   final GamePhase phase;
+  final Player player;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
+    final color = phase.turnOwner == player.id
+        ? theme.brandSecondary
+        : theme.brandColor;
+
     return SizedBox(
       height: 90,
       child: Row(
         mainAxisSize: .min,
         spacing: 8,
         children: [
-          _buildLine(theme),
+          _buildLine(color),
           ClipRRect(
             child: Stack(
               children: [
-                _buildContent(l10n, theme),
-                const Positioned.fill(
+                _buildContent(l10n, theme, color),
+                Positioned.fill(
                   child: ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    child: AppScanLine(),
+                    borderRadius: const BorderRadius.all(Radius.circular(8)),
+                    child: AppScanLine(
+                      color: color,
+                    ),
                   ),
                 ),
               ],
@@ -44,14 +52,14 @@ class PhaseBanner extends HookWidget {
     );
   }
 
-  Widget _buildLine(AppColorScheme theme) {
+  Widget _buildLine(Color color) {
     return Container(
       width: 4,
       decoration: BoxDecoration(
-        color: theme.brandSecondary,
+        color: color,
         boxShadow: [
           BoxShadow(
-            color: theme.brandSecondary,
+            color: color,
             spreadRadius: 1,
             blurRadius: 4,
           ),
@@ -60,7 +68,11 @@ class PhaseBanner extends HookWidget {
     );
   }
 
-  Widget _buildContent(AppLocalizations l10n, AppColorScheme theme) {
+  Widget _buildContent(
+    AppLocalizations l10n,
+    AppColorScheme theme,
+    Color color,
+  ) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       clipBehavior: Clip.antiAlias,
@@ -82,10 +94,12 @@ class PhaseBanner extends HookWidget {
           Row(
             spacing: 4,
             children: [
-              const UiActiveFilledCircle(),
+              UiActiveFilledCircle(
+                color: color,
+              ),
               Text(
                 l10n.battle_page_phase_current_text,
-                style: GoogleFonts.poppins(color: theme.brandSecondary),
+                style: GoogleFonts.poppins(color: color),
               ),
             ],
           ),
