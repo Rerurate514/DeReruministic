@@ -82,6 +82,7 @@ class TurnPipelineFactory implements ITurnPipelineFactory {
         // resolveTurnEndStatusService,
         // processRottenCardExhaustService,
 
+        //TODO(test): cost関連のバフ、デバフを削除
         //　ターン終了フェーズ（現プレイヤー）バフデバフ更新
         // resolveTurnEndStatusService,
         // triggerOnTurnEndEventService,

@@ -5,6 +5,8 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'calculate_turn_cost_service.g.dart';
@@ -31,10 +33,10 @@ class CalculateTurnCostService implements TurnProcessStep {
 
     final newState = state
         .reflectBaseCost(targetPlayerId)
-        .reflectCostBuff(targetPlayerId)
-        .reflectCostDebuff(targetPlayerId)
-        .reflectRecoilCost(targetPlayerId)
-        .reflectClamp(targetPlayerId);
+        .applyCostBuff(targetPlayerId)
+        .applyCostDebuff(targetPlayerId)
+        .applyRecoilCost(targetPlayerId)
+        .applyClamp(targetPlayerId);
 
     final newTargetPlayer = newState.players[targetPlayerId];
     if (newTargetPlayer == null) {
@@ -74,22 +76,64 @@ extension GameStateEx on GameState {
     );
   }
 
-  GameState reflectCostBuff(PlayerId targetPlayerId) {
-    //TODO
-    return this;
+  GameState applyCostBuff(PlayerId targetPlayerId) {
+    final targetPlayer = players[targetPlayerId];
+    if (targetPlayer == null) return this;
+
+    final gainCost = targetPlayer.buffs
+        .where((buffState) => buffState.buff == BuffTypes.costRecovery)
+        .fold(0, (cost, buffState) => cost + buffState.stack);
+
+    final updatedPlayer = targetPlayer.copyWith(
+      currentCost: targetPlayer.currentCost + gainCost,
+    );
+
+    return copyWith(
+      players: {
+        ...players,
+        targetPlayerId: updatedPlayer,
+      },
+    );
   }
 
-  GameState reflectCostDebuff(PlayerId targetPlayerId) {
-    //TODO
-    return this;
+  GameState applyCostDebuff(PlayerId targetPlayerId) {
+    final targetPlayer = players[targetPlayerId];
+    if (targetPlayer == null) return this;
+
+    final removeCost = targetPlayer.debuffs
+        .where((debuffState) => debuffState.debuff == DebuffTypes.costReduction)
+        .fold(0, (cost, debuffState) => cost + debuffState.stack);
+
+    final updatedPlayer = targetPlayer.copyWith(
+      currentCost: targetPlayer.currentCost - removeCost,
+    );
+
+    return copyWith(
+      players: {
+        ...players,
+        targetPlayerId: updatedPlayer,
+      },
+    );
   }
 
-  GameState reflectRecoilCost(PlayerId targetPlayerId) {
-    //TODO
-    return this;
+  GameState applyRecoilCost(PlayerId targetPlayerId) {
+    final targetPlayer = players[targetPlayerId];
+    if (targetPlayer == null) return this;
+
+    final updatedPlayer = targetPlayer.copyWith(
+      pendingRecoilCost: 0,
+      currentCost: targetPlayer.currentCost - targetPlayer.pendingRecoilCost,
+    );
+
+    return copyWith(
+      players: {
+        ...players,
+        targetPlayerId: updatedPlayer,
+      },
+    );
   }
 
-  GameState reflectClamp(PlayerId targetPlayerId) {
+  GameState applyClamp(PlayerId targetPlayerId) {
     final targetPlayer = players[targetPlayerId];
     if (targetPlayer == null) return this;
 
