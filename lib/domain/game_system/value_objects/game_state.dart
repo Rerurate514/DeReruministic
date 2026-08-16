@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
@@ -52,6 +53,10 @@ extension GameStateEx on GameState {
         turnOwner: nextOwner,
       ),
     );
+  }
+
+  PlayerState? getOtherPlayer(PlayerId playerId) {
+    return players.entries.firstWhereOrNull((e) => e.key != playerId)?.value;
   }
 
   GameState moveCardFromHand({

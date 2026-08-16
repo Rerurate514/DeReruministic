@@ -23,6 +23,7 @@ import 'package:dereruministic/domain/card/services/effects/resolve_grant_shield
 import 'package:dereruministic/domain/card/services/effects/resolve_heal_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_remove_buffs_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_remove_debuffs_effect_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_steal_cost_effect_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
@@ -123,6 +124,7 @@ ApplyPlayCardService buildRealApplyPlayCardService() {
     resolveHealEffectService: ResolveHealEffectService(),
     resolveGrantShieldEffectService: ResolveGrantShieldEffectService(),
     resolveGrantCostEffectService: ResolveGrantCostEffectService(),
+    resolveStealCostEffectService: ResolveStealCostEffectService(),
     resolveApplyBuffService: ResolveApplyBuffService(),
     resolveApplyDebuffService: ResolveApplyDebuffService(),
     resolveRemoveBuffsEffectService: ResolveRemoveBuffsEffectService(),

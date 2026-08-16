@@ -7,6 +7,7 @@ import 'package:dereruministic/domain/card/services/effects/resolve_grant_shield
 import 'package:dereruministic/domain/card/services/effects/resolve_heal_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_remove_buffs_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_remove_debuffs_effect_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_steal_cost_effect_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'effect_resolver.g.dart';
@@ -22,6 +23,9 @@ EffectResolver effectResolver(Ref ref) {
     ),
     resolveGrantCostEffectService: ref.read(
       resolveGrantCostEffectServiceProvider,
+    ),
+    resolveStealCostEffectService: ref.read(
+      resolveStealCostEffectServiceProvider,
     ),
     resolveApplyBuffService: ref.read(resolveApplyBuffServiceProvider),
     resolveApplyDebuffService: ref.read(resolveApplyDebuffServiceProvider),
@@ -41,6 +45,7 @@ class EffectResolver {
     required this.resolveHealEffectService,
     required this.resolveGrantShieldEffectService,
     required this.resolveGrantCostEffectService,
+    required this.resolveStealCostEffectService,
     required this.resolveApplyBuffService,
     required this.resolveApplyDebuffService,
     required this.resolveRemoveBuffsEffectService,
@@ -52,6 +57,7 @@ class EffectResolver {
   final ResolveHealEffectService resolveHealEffectService;
   final ResolveGrantShieldEffectService resolveGrantShieldEffectService;
   final ResolveGrantCostEffectService resolveGrantCostEffectService;
+  final ResolveStealCostEffectService resolveStealCostEffectService;
   final ResolveApplyBuffService resolveApplyBuffService;
   final ResolveApplyDebuffService resolveApplyDebuffService;
   final ResolveRemoveBuffsEffectService resolveRemoveBuffsEffectService;
