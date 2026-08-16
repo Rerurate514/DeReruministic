@@ -95,8 +95,18 @@ class ResolveCardEffectsService {
           effect: effect,
           sourcePlayerId: action.playerId,
         ),
-      CardEffectRemoveBuffs() => throw UnimplementedError(),
-      CardEffectRemoveDebuffs() => throw UnimplementedError(),
+      CardEffectRemoveBuffs() =>
+        effectResolver.resolveRemoveBuffsEffectService.execute(
+          state: state,
+          effect: effect,
+          sourcePlayerId: action.playerId,
+        ),
+      CardEffectRemoveDebuffs() =>
+        effectResolver.resolveRemoveDebuffsEffectService.execute(
+          state: state,
+          effect: effect,
+          sourcePlayerId: action.playerId,
+        ),
     };
   }
 }

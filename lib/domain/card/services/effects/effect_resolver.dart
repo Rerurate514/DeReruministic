@@ -5,6 +5,8 @@ import 'package:dereruministic/domain/card/services/effects/resolve_draw_effect_
 import 'package:dereruministic/domain/card/services/effects/resolve_grant_cost_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_grant_shield_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_heal_effect_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_remove_buffs_effect_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_remove_debuffs_effect_service.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'effect_resolver.g.dart';
@@ -23,6 +25,12 @@ EffectResolver effectResolver(Ref ref) {
     ),
     resolveApplyBuffService: ref.read(resolveApplyBuffServiceProvider),
     resolveApplyDebuffService: ref.read(resolveApplyDebuffServiceProvider),
+    resolveRemoveBuffsEffectService: ref.read(
+      resolveRemoveBuffsEffectServiceProvider,
+    ),
+    resolveRemoveDebuffsEffectService: ref.read(
+      resolveRemoveDebuffsEffectServiceProvider,
+    ),
   );
 }
 
@@ -35,6 +43,8 @@ class EffectResolver {
     required this.resolveGrantCostEffectService,
     required this.resolveApplyBuffService,
     required this.resolveApplyDebuffService,
+    required this.resolveRemoveBuffsEffectService,
+    required this.resolveRemoveDebuffsEffectService,
   });
 
   final ResolveDamageEffectService resolveDamageEffectService;
@@ -44,4 +54,6 @@ class EffectResolver {
   final ResolveGrantCostEffectService resolveGrantCostEffectService;
   final ResolveApplyBuffService resolveApplyBuffService;
   final ResolveApplyDebuffService resolveApplyDebuffService;
+  final ResolveRemoveBuffsEffectService resolveRemoveBuffsEffectService;
+  final ResolveRemoveDebuffsEffectService resolveRemoveDebuffsEffectService;
 }
