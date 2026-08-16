@@ -63,6 +63,7 @@ PlayerState buildPlayer({
     maxHp: 20,
     shield: 0,
     currentCost: currentCost,
+    maxCost: 4,
     deck: const [],
     hand: hand,
     graveyard: graveyard,

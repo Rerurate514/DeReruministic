@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:dereruministic/domain/game_system/constants/game_system_constants.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_process_step.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
@@ -98,7 +96,7 @@ extension GameStateEx on GameState {
     final currentCost = targetPlayer.currentCost;
 
     final updatedPlayer = targetPlayer.copyWith(
-      currentCost: max(0, currentCost),
+      currentCost: currentCost.clamp(0, targetPlayer.maxCost),
     );
 
     return copyWith(

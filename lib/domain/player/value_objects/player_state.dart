@@ -21,6 +21,7 @@ sealed class PlayerState with _$PlayerState {
     required int maxHp,
     required int shield,
     required int currentCost,
+    required int maxCost,
     required List<GameCard> deck,
     required List<GameCard> hand,
     required List<GameCard> graveyard,
@@ -42,6 +43,7 @@ sealed class PlayerState with _$PlayerState {
       maxHp: PlayerConstants.defaultMaxHp,
       shield: 0,
       currentCost: PlayerConstants.defaultInitialCost,
+      maxCost: PlayerConstants.defaultMaxCost,
       deck: deck,
       hand: [],
       graveyard: [],
@@ -60,11 +62,11 @@ sealed class PlayerState with _$PlayerState {
 
 extension PlayerStateCardEx on PlayerState {
   PlayerState updateCost(int amount) {
-    return copyWith(currentCost: currentCost + amount);
+    return copyWith(currentCost: (currentCost + amount).clamp(0, maxCost));
   }
 
   PlayerState consumeCost(int amount) {
-    return copyWith(currentCost: currentCost - amount);
+    return copyWith(currentCost: (currentCost - amount).clamp(0, maxCost));
   }
 
   PlayerState consumeCard(GameCard card) {

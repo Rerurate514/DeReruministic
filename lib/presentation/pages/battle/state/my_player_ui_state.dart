@@ -38,7 +38,7 @@ sealed class MyPlayerUiState with _$MyPlayerUiState {
       hp: playerState.hp,
       maxHp: playerState.maxHp,
       cost: playerState.currentCost,
-      maxCost: 99, //TODO(cost): cost
+      maxCost: playerState.maxCost,
       shield: playerState.shield,
       hand: playerState.hand,
       deck: playerState.deck,
