@@ -1,15 +1,11 @@
 import 'package:dereruministic/application/game/state/game_notifier.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
-import 'package:dereruministic/l10n/app_localizations.dart';
-import 'package:dereruministic/presentation/components/app_hollow_glow_card.dart';
-import 'package:dereruministic/presentation/components/app_scan_line.dart';
+import 'package:dereruministic/presentation/pages/battle/components/drag_area/drag_area_card.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
 class CardDragArea extends HookConsumerWidget {
   const CardDragArea({required this.player, super.key});
@@ -18,7 +14,6 @@ class CardDragArea extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
 
     final currentPhase = ref.watch(displayedPhaseProvider);
@@ -51,42 +46,7 @@ class CardDragArea extends HookConsumerWidget {
                 width: 2,
               ),
             ),
-            child: AppHollowGlowCard(
-              blurSigma: 2,
-              borderRadius: 4,
-              padding: const EdgeInsets.all(8),
-              child: Stack(
-                alignment: .center,
-                children: [
-                  Column(
-                    mainAxisAlignment: .center,
-                    spacing: 8,
-                    children: [
-                      const Icon(Symbols.radar),
-                      FittedBox(
-                        child: Text(
-                          l10n.battle_page_card_drag_area_text,
-                          style: GoogleFonts.shareTechMono(
-                            color: theme.brandSecondary,
-                            shadows: [
-                              Shadow(
-                                color: theme.brandSecondary,
-                                blurRadius: 0.2,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const AppScanLine(
-                    duration: Duration(seconds: 6),
-                    spreadRadius: 1,
-                    blurRadius: 10,
-                  ),
-                ],
-              ),
-            ),
+            child: const DragAreaCard(),
           );
         },
       ),
