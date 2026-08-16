@@ -92,6 +92,7 @@ GameState buildState({
       turnOwner: turnOwner ?? players.keys.first,
     ),
     turnCount: turnCount,
+    initialTurnOwner: players.keys.first,
   );
 }
 

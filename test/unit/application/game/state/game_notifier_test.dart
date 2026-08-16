@@ -150,12 +150,17 @@ void main() {
             ? dummyEnemy.id
             : dummyPlayer.id;
 
-        for (var expectedTurn = 1; expectedTurn <= 9; expectedTurn++) {
+        var expectedTurn = 1;
+
+        for (var i = 1; i <= 9; i++) {
           await notifier.endTurn();
 
           currentState = container.read(gameProvider)!;
 
-          final expectedOwnerId = expectedTurn.isOdd ? playerBId : playerAId;
+          final expectedOwnerId = i.isOdd ? playerBId : playerAId;
+          if (currentState.initialTurnOwner == currentState.phase.turnOwner) {
+            expectedTurn++;
+          }
 
           expect(currentState.turnCount, equals(expectedTurn));
           expect(currentState.phase.turnOwner, equals(expectedOwnerId));
@@ -168,7 +173,7 @@ void main() {
 
         expect(currentState.phase.battlePhase, equals(BattlePhase.battleEnd));
 
-        expect(currentState.turnCount, equals(9));
+        expect(currentState.turnCount, equals(5));
         expect(currentState.phase.turnOwner, equals(playerBId));
       },
     );

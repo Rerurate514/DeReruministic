@@ -56,6 +56,7 @@ void main() {
     players: {targetPlayerId: emptyDeckPlayer},
     phase: GamePhase.init(targetPlayerId),
     turnCount: 1,
+    initialTurnOwner: targetPlayerId,
   );
 
   setUp(() {

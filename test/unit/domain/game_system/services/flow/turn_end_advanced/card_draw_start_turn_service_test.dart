@@ -27,6 +27,7 @@ void main() {
         players: const {},
         phase: GamePhase.init(const PlayerId(value: '')),
         turnCount: 0,
+        initialTurnOwner: const PlayerId(value: ''),
       ),
       steps: const [],
     ),
@@ -81,6 +82,7 @@ void main() {
       },
       phase: GamePhase.init(playerAId),
       turnCount: 1,
+      initialTurnOwner: playerAId,
     );
 
     mockCardDrawService = MockCardDrawService();

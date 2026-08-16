@@ -87,6 +87,7 @@ void main() {
       },
       seed: seed,
       turnCount: 0,
+      initialTurnOwner: const PlayerId(value: 'player_a'),
     );
   }
 

@@ -60,6 +60,7 @@ void main() {
     players: {targetPlayerId: basePlayer},
     phase: GamePhase.init(targetPlayerId),
     turnCount: 1,
+    initialTurnOwner: targetPlayerId,
   );
 
   setUp(() {

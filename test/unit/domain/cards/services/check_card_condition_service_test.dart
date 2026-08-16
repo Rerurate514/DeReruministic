@@ -49,6 +49,7 @@ GameState buildState({
     players: {playerA.id: playerA, playerB.id: playerB},
     phase: GamePhase.init(playerA.id),
     turnCount: 0,
+    initialTurnOwner: playerA.id,
   );
 }
 

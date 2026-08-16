@@ -119,7 +119,7 @@ void main() {
 
       final state = result.state;
       expect(state.seed, equals(seed));
-      expect(state.turnCount, equals(0));
+      expect(state.turnCount, equals(1));
       expect(state.phase.battlePhase, equals(BattlePhase.battleStart));
       expect(
         [playerAId, playerBId],

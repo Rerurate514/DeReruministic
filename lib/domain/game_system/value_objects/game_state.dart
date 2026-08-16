@@ -18,6 +18,7 @@ sealed class GameState with _$GameState {
     required int seed,
     required GamePhase phase,
     required int turnCount,
+    required PlayerId initialTurnOwner,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>
@@ -45,7 +46,7 @@ extension GameStateEx on GameState {
     );
 
     return copyWith(
-      turnCount: turnCount + 1,
+      turnCount: initialTurnOwner != nextOwner ? turnCount : turnCount + 1,
       phase: phase.copyWith(
         battlePhase: BattlePhase.turnStart,
         turnOwner: nextOwner,

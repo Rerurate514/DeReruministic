@@ -39,6 +39,7 @@ GameState buildState({
     players: players,
     phase: GamePhase(battlePhase: BattlePhase.mainPhase, turnOwner: turnOwner),
     turnCount: 0,
+    initialTurnOwner: turnOwner,
   );
 }
 

@@ -70,7 +70,8 @@ class GameSetupService {
       },
       seed: seed,
       phase: GamePhase(battlePhase: .battleStart, turnOwner: initialTurnOwner),
-      turnCount: 0,
+      turnCount: 1,
+      initialTurnOwner: initialTurnOwner,
     );
 
     final turnStartStep = GameStepEvent.gameStarted(

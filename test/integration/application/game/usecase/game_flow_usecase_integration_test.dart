@@ -193,6 +193,7 @@ GameState buildState({
     players: players,
     phase: GamePhase(battlePhase: BattlePhase.mainPhase, turnOwner: turnOwner),
     turnCount: 0,
+    initialTurnOwner: turnOwner,
   );
 }
 
@@ -1480,7 +1481,7 @@ void main() {
 
       final state = (result as ApplyActionResultSuccess).state;
       expect(state.phase.battlePhase, BattlePhase.mainPhase);
-      expect(state.turnCount, 0);
+      expect(state.turnCount, 1);
     });
 
     test('GameStart後、turnOwnerは2人のうちどちらかに決まっている', () {
