@@ -47,8 +47,8 @@ void main() {
 
       final success = result as ApplyActionResultSuccess;
       expect(success.state.players[otherId]!.currentCost, 0); // 負にならない
-      // 奪った側は相手の残量に関わらずeffect.amount分加算される(クランプ内で)
-      expect(success.state.players[sourceId]!.currentCost, 5);
+      // 奪った側は相手の残量分加算される(クランプ内で)
+      expect(success.state.players[sourceId]!.currentCost, 2);
     });
 
     test('自分のコストがmaxCostを超える場合、maxCostでクランプされる', () {

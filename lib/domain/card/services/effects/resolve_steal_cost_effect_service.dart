@@ -34,7 +34,7 @@ class ResolveStealCostEffectService {
     final actualStealedCost =
         targetPlayer.currentCost - newTargetPlayer.currentCost;
 
-    final newSourcePlayer = sourcePlayer.updateCost(effect.amount);
+    final newSourcePlayer = sourcePlayer.updateCost(actualStealedCost);
     final actualGainedCost =
         newSourcePlayer.currentCost - sourcePlayer.currentCost;
 
