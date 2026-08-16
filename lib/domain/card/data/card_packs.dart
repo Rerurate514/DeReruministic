@@ -6,6 +6,7 @@ import 'firewall_pack.dart';
 import 'glitch_pack.dart';
 import 'kernel_pack.dart';
 import 'overload_pack.dart';
+import 'payload_pack.dart';
 import 'restore_pack.dart';
 import 'stealth_pack.dart';
 import 'virus_pack.dart';
@@ -16,6 +17,7 @@ export 'firewall_pack.dart';
 export 'glitch_pack.dart';
 export 'kernel_pack.dart';
 export 'overload_pack.dart';
+export 'payload_pack.dart';
 export 'restore_pack.dart';
 export 'stealth_pack.dart';
 export 'virus_pack.dart';
@@ -31,6 +33,7 @@ enum CardPackTypes {
   overload,
   glitch,
   stealth,
+  payload,
 }
 
 /// パック種別 -> 収録カード定義。
@@ -44,6 +47,7 @@ const Map<CardPackTypes, List<CardDefinition>> cardPacks = {
   CardPackTypes.overload: overloadPack,
   CardPackTypes.glitch: glitchPack,
   CardPackTypes.stealth: stealthPack,
+  CardPackTypes.payload: payloadPack,
 };
 
 /// 全カード定義のフラットなリスト。IDからの逆引きなどに。
@@ -57,4 +61,5 @@ const List<CardDefinition> allCardDefinitions = [
   ...overloadPack,
   ...glitchPack,
   ...stealthPack,
+  ...payloadPack,
 ];
