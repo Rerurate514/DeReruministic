@@ -24,31 +24,42 @@ class _HandComponentState extends ConsumerState<HandComponent>
   static const _cardDuration = Duration(milliseconds: 400);
   static const _stagger = Duration(milliseconds: 100);
 
+  final Set<GameCardInstanceId> _revealed = {};
   List<GameCardInstanceId> _targets = const [];
 
-  Future<void> _play(List<GameCardInstanceId> targets, int handLength) async {
+  Future<void> _play(List<GameCardInstanceId> handIds) async {
+    final targets = handIds.where((id) => !_revealed.contains(id)).toList();
+    if (targets.isEmpty) {
+      ref.read(animationSignalProvider.notifier).done();
+      return;
+    }
     try {
       if (targets.isEmpty) return;
       setState(() => _targets = targets);
       _controller.duration = _cardDuration + _stagger * (targets.length - 1);
       await _controller.forward(from: 0);
     } finally {
-      if (mounted) ref.read(animationSignalProvider.notifier).done();
+      if (mounted) {
+        setState(() {
+          _revealed.addAll(targets);
+          _targets = const [];
+        });
+        ref.read(animationSignalProvider.notifier).done();
+      }
     }
   }
 
   Animation<double> _animationFor(GameCardInstanceId id) {
+    if (_revealed.contains(id)) return const AlwaysStoppedAnimation(1);
+
     final i = _targets.indexOf(id);
     if (i < 0) return const AlwaysStoppedAnimation(0);
     final total = _controller.duration!.inMilliseconds;
-    final begin = (_stagger.inMilliseconds * i) / total;
+    final begin = _stagger.inMilliseconds * i / total;
+    final end = (begin + _cardDuration.inMilliseconds / total).clamp(0.0, 1.0);
     return CurvedAnimation(
       parent: _controller,
-      curve: Interval(
-        begin,
-        begin + _cardDuration.inMilliseconds / total,
-        curve: Curves.easeOut,
-      ),
+      curve: Interval(begin, end, curve: Curves.easeOut),
     );
   }
 
@@ -66,9 +77,11 @@ class _HandComponentState extends ConsumerState<HandComponent>
 
     if (hand == null) return const SizedBox.shrink();
 
+    _revealed.retainAll(hand.map((c) => c.instanceId).toSet());
+
     ref.listen(displayedCardDrawnAnimationProvider, (_, req) {
       if (req == null) return;
-      unawaited(_play(req.targets, hand.length));
+      unawaited(_play(req.targets));
     });
 
     return SizedBox(

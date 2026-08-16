@@ -18,7 +18,7 @@ class HandAnimationContainer extends StatelessWidget {
       animation: animation,
       child: GameCardDraggable(gameCard: gameCard),
       builder: (context, child) {
-        final dx = animation.value;
+        final dx = animation.value.clamp(0.0, 1.0);
         return FractionalTranslation(
           translation: Offset(0, 1 - dx),
           child: child,
