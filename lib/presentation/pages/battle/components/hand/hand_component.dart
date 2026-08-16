@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_animation_container.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
-import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_animation_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class HandComponent extends StatefulHookConsumerWidget {
@@ -21,32 +19,42 @@ class HandComponent extends StatefulHookConsumerWidget {
 
 class _HandComponentState extends ConsumerState<HandComponent>
     with TickerProviderStateMixin {
-  final Map<GameCardInstanceId, AnimationController> _controllers = {};
+  late final AnimationController _controller = AnimationController(vsync: this);
 
-  AnimationController _controllerFor(GameCardInstanceId instanceId) {
-    return _controllers.putIfAbsent(
-      instanceId,
-      () => AnimationController(
-        duration: const Duration(milliseconds: 400),
-        vsync: this,
+  static const _cardDuration = Duration(milliseconds: 400);
+  static const _stagger = Duration(milliseconds: 100);
+
+  List<GameCardInstanceId> _targets = const [];
+
+  Future<void> _play(List<GameCardInstanceId> targets, int handLength) async {
+    try {
+      if (targets.isEmpty) return;
+      setState(() => _targets = targets);
+      _controller.duration = _cardDuration + _stagger * (targets.length - 1);
+      await _controller.forward(from: 0);
+    } finally {
+      if (mounted) ref.read(animationSignalProvider.notifier).done();
+    }
+  }
+
+  Animation<double> _animationFor(GameCardInstanceId id) {
+    final i = _targets.indexOf(id);
+    if (i < 0) return const AlwaysStoppedAnimation(0);
+    final total = _controller.duration!.inMilliseconds;
+    final begin = (_stagger.inMilliseconds * i) / total;
+    return CurvedAnimation(
+      parent: _controller,
+      curve: Interval(
+        begin,
+        begin + _cardDuration.inMilliseconds / total,
+        curve: Curves.easeOut,
       ),
     );
   }
 
-  void _disposeUnused(Iterable<GameCardInstanceId> currentIds) {
-    final removed = _controllers.keys
-        .where((id) => !currentIds.contains(id))
-        .toList();
-    for (final id in removed) {
-      _controllers.remove(id)?.dispose();
-    }
-  }
-
   @override
   void dispose() {
-    for (final c in _controllers.values) {
-      c.dispose();
-    }
+    _controller.dispose();
     super.dispose();
   }
 
@@ -56,34 +64,12 @@ class _HandComponentState extends ConsumerState<HandComponent>
       myPlayerUiStateProvider(widget.player).select((s) => s?.hand),
     );
 
-    final cardDrawnEvent = ref.watch(displayedCardDrawnProvider);
-
     if (hand == null) return const SizedBox.shrink();
 
-    _disposeUnused(hand.map((c) => c.instanceId));
-
-    useEffect(() {
-      if (cardDrawnEvent == null) return null;
-      if (cardDrawnEvent is! GameStepEventCardsDrawn) return null;
-
-      if (cardDrawnEvent.playerId != widget.player.id) return null;
-
-      Future<void> run() async {
-        await Future.wait(
-          hand.map((card) async {
-            await Future<void>.delayed(
-              Duration(milliseconds: 100 * hand.indexOf(card)),
-            );
-            _controllerFor(card.instanceId).forward(from: 0);
-          }),
-        );
-
-        ref.read(animationSignalProvider.notifier).done();
-      }
-
-      unawaited(run());
-      return null;
-    }, [cardDrawnEvent]);
+    ref.listen(displayedCardDrawnAnimationProvider, (_, req) {
+      if (req == null) return;
+      unawaited(_play(req.targets, hand.length));
+    });
 
     return SizedBox(
       height: 240,
@@ -95,7 +81,7 @@ class _HandComponentState extends ConsumerState<HandComponent>
           return HandAnimationContainer(
             key: ValueKey(card.instanceId),
             gameCard: card,
-            controller: _controllerFor(card.instanceId),
+            animation: _animationFor(card.instanceId),
           );
         },
       ),

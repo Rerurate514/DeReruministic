@@ -5,28 +5,22 @@ import 'package:flutter/material.dart';
 class HandAnimationContainer extends StatelessWidget {
   const HandAnimationContainer({
     required this.gameCard,
-    required this.controller,
+    required this.animation,
     super.key,
   });
 
   final GameCard gameCard;
-  final AnimationController controller;
+  final Animation<double> animation;
 
   @override
   Widget build(BuildContext context) {
-    final animation = Tween<double>(begin: 1, end: 0).animate(
-      CurvedAnimation(
-        parent: controller,
-        curve: Curves.easeOutQuad,
-      ),
-    );
-
     return AnimatedBuilder(
       animation: animation,
       child: GameCardDraggable(gameCard: gameCard),
       builder: (context, child) {
+        final dx = animation.value;
         return FractionalTranslation(
-          translation: Offset(0, animation.value),
+          translation: Offset(0, 1 - dx),
           child: child,
         );
       },

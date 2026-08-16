@@ -36,7 +36,7 @@ class BattlePage extends HookConsumerWidget {
     useDebugEnemyStepConsumer(ref: ref, id: playerA.id, enabled: kDebugMode);
 
     ref
-      ..watch(eventStepDriverProvider)
+      ..watch(eventStepDriverProvider(playerA.id))
       ..watch(animationSignalProvider);
 
     return UiPageWrapper(

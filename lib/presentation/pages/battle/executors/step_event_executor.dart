@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
-import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_animation_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -8,14 +9,15 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'step_event_executor.g.dart';
 
 @riverpod
-StepEventExecutor stepEventExecutor(Ref ref) {
-  return StepEventExecutor(ref: ref);
+StepEventExecutor stepEventExecutor(Ref ref, PlayerId playerId) {
+  return StepEventExecutor(ref: ref, id: playerId);
 }
 
 class StepEventExecutor {
-  const StepEventExecutor({required this.ref});
+  const StepEventExecutor({required this.id, required this.ref});
 
   final Ref ref;
+  final PlayerId id;
 
   Future<void> execute(GameStepEvent step) async {
     switch (step) {
@@ -62,9 +64,12 @@ class StepEventExecutor {
         {}
       case GameStepEventDeckRestored():
         {}
-      case GameStepEventCardsDrawn():
+      case GameStepEventCardsDrawn(:final playerId, :final cardInstanceIds):
         {
-          ref.read(displayedCardDrawnProvider.notifier).apply();
+          if (id != playerId) return;
+          ref
+              .read(displayedCardDrawnAnimationProvider.notifier)
+              .apply(cardInstanceIds);
           await _awaitAnimation();
         }
       case GameStepEventCardMovedZone():
