@@ -77,6 +77,11 @@ sealed class GameStepEvent with _$GameStepEvent {
     required int amount,
   }) = GameStepEventShieldGained;
 
+  const factory GameStepEvent.shieldRemoved({
+    required PlayerId targetPlayerId,
+    required int amount,
+  }) = GameStepEventShieldRemoved;
+
   const factory GameStepEvent.shieldCleared({
     required PlayerId targetPlayerId,
   }) = GameStepEventShieldCleared;

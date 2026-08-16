@@ -88,7 +88,12 @@ class ResolveCardEffectsService {
           effect: effect,
           sourcePlayerId: action.playerId,
         ),
-      CardEffectStealShield() => throw UnimplementedError(),
+      CardEffectStealShield() =>
+        effectResolver.resolveStealShieldEffectService.execute(
+          state: state,
+          effect: effect,
+          sourcePlayerId: action.playerId,
+        ),
       CardEffectApplyBuff() => effectResolver.resolveApplyBuffService.execute(
         state: state,
         effect: effect,

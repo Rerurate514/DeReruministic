@@ -306,6 +306,13 @@
         "amount": { "type": "int" }
         }
     },
+    "game_step_event_shield_removed": "> {target} SHIELD -{amount}",
+    "@game_step_event_shield_removed": {
+        "placeholders": {
+        "target": { "type": "String" },
+        "amount": { "type": "int" }
+        }
+    },
     "game_step_event_shield_cleared": "> {target} SHIELD CLEARED",
     "@game_step_event_shield_cleared": {
         "placeholders": {

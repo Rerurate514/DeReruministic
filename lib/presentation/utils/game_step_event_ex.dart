@@ -54,6 +54,9 @@ extension GameStepEventEx on GameStepEvent {
       GameStepEventShieldGained(:final targetPlayerId, :final amount) =>
         l10n.game_step_event_shield_gained(targetPlayerId.value, amount),
 
+      GameStepEventShieldRemoved(:final targetPlayerId, :final amount) =>
+        l10n.game_step_event_shield_removed(targetPlayerId.value, amount),
+
       GameStepEventShieldCleared(:final targetPlayerId) =>
         l10n.game_step_event_shield_cleared(targetPlayerId.value),
 

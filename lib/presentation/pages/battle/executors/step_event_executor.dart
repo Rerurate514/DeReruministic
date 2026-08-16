@@ -51,6 +51,8 @@ class StepEventExecutor {
         {}
       case GameStepEventShieldGained():
         {}
+      case GameStepEventShieldRemoved():
+        {}
       case GameStepEventShieldCleared():
         {}
       case GameStepEventPoisonApplied():
