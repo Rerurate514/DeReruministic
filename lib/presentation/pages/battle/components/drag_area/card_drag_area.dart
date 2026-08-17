@@ -3,6 +3,7 @@ import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/card/game_card_component.dart';
 import 'package:dereruministic/presentation/pages/battle/components/drag_area/drag_area_card.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -58,10 +59,17 @@ class CardDragArea extends HookConsumerWidget {
       padding: const EdgeInsets.all(16),
       child: DragTarget<GameCard>(
         onWillAcceptWithDetails: (_) {
-          final turnOwner = ref.read(
-            gameProvider.select((s) => s?.phase.turnOwner),
-          );
-          return turnOwner == player.id && isMainPhase;
+          final gameState = ref.read(gameProvider);
+          final playerState = ref.read(myPlayerUiStateProvider(player));
+
+          if (gameState == null || playerState == null) return false;
+
+          final cost = playerState.cost;
+          final maxCost = playerState.maxCost;
+
+          return gameState.phase.turnOwner == player.id &&
+              isMainPhase &&
+              cost <= maxCost;
         },
         onAcceptWithDetails: (detail) async {
           final renderBox = context.findRenderObject() as RenderBox?;
@@ -101,7 +109,7 @@ class CardDragArea extends HookConsumerWidget {
                           )
                           .animate()
                           .shakeX(amount: 8, duration: 150.ms)
-                          .tint(color: theme.brandColor, duration: 100.ms)
+                          .tint(color: theme.brandSecondary, duration: 100.ms)
                           .fadeOut(duration: 150.ms),
                 ),
             ],
