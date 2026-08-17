@@ -10,12 +10,18 @@ class TacticalGuideSwitcher extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isShow = ref.watch(guideSwitcherProvider);
     return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
       transitionBuilder: (child, animation) {
-        final offsetAnimation = Tween<Offset>(
-          begin: const Offset(0, 1),
-          end: Offset.zero,
-        ).animate(animation);
+        final offsetAnimation =
+            Tween<Offset>(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOut,
+              ),
+            );
 
         return SlideTransition(
           position: offsetAnimation,
