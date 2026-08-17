@@ -1,4 +1,3 @@
-import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guide_header.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/hp_system_description.dart';
@@ -7,34 +6,28 @@ import 'package:dereruministic/presentation/pages/battle/components/guide/guides
 import 'package:flutter/material.dart';
 
 class TacticalGuide extends StatelessWidget {
-  const TacticalGuide({required this.player, super.key});
-
-  final Player player;
+  const TacticalGuide({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox.expand(
+    return const SizedBox.expand(
       child: AppCard(
-        padding: const EdgeInsets.all(8),
+        padding: EdgeInsets.all(8),
         isBlur: true,
         blurSigma: 10,
         child: SingleChildScrollView(
           child: Column(
             spacing: 16,
             children: [
-              const Column(
+              Column(
                 children: [
                   GuideHeader(),
                   Divider(),
                 ],
               ),
-              HpSystemDescription(
-                player: player,
-              ),
-              ShieldSystemDescription(player: player),
-              PlayerCostSystemDescription(
-                player: player,
-              ),
+              HpSystemDescription(),
+              ShieldSystemDescription(),
+              PlayerCostSystemDescription(),
             ],
           ),
         ),

@@ -1,14 +1,11 @@
-import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guide_text_template.dart';
-import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state_cost.dart';
+import 'package:dereruministic/presentation/pages/battle/components/state_base/state_cost.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class PlayerCostSystemDescription extends StatelessWidget {
-  const PlayerCostSystemDescription({required this.player, super.key});
-
-  final Player player;
+  const PlayerCostSystemDescription({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +14,11 @@ class PlayerCostSystemDescription extends StatelessWidget {
       title: 'PLAYER COST SYSTEM',
       titleColor: theme.costDp,
       leading: const Icon(Symbols.bolt),
-      details: Column(
+      details: const Column(
         crossAxisAlignment: .start,
         spacing: 8,
         children: [
-          const Text(
+          Text(
             '''
 コストはカードを使用するために必要なパラメータです。
 ゲーム開始時の上限は4になります(これはバフやデバフなどで変動することがあります)。
@@ -30,11 +27,12 @@ class PlayerCostSystemDescription extends StatelessWidget {
           ),
 
           Padding(
-            padding: const EdgeInsets.only(left: 2, bottom: 8, right: 4),
+            padding: EdgeInsets.only(left: 2, bottom: 8, right: 4),
             child: SizedBox(
               width: 150,
-              child: PlayerStateCost(
-                player: player,
+              child: StateCost(
+                cost: 3,
+                maxCost: 4,
               ),
             ),
           ),

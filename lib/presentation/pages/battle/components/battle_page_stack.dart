@@ -58,10 +58,8 @@ class BattlePageStack extends StatelessWidget {
             playerId: player.id,
           ),
         ),
-        Positioned.fill(
-          child: TacticalGuideSwitcher(
-            player: player,
-          ),
+        const Positioned.fill(
+          child: TacticalGuideSwitcher(),
         ),
       ],
     );
