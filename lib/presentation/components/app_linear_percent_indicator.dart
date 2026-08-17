@@ -32,6 +32,7 @@ class AppLinearPercentIndicator extends StatelessWidget {
       backgroundColor: backgroundColor ?? activeColor.withValues(alpha: 0.2),
       animation: true,
       animationDuration: 200,
+      animateFromLastPercent: true,
     );
 
     if (width != null) {
