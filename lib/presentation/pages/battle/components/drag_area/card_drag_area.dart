@@ -58,18 +58,18 @@ class CardDragArea extends HookConsumerWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: DragTarget<GameCard>(
-        onWillAcceptWithDetails: (_) {
+        onWillAcceptWithDetails: (details) {
           final gameState = ref.read(gameProvider);
           final playerState = ref.read(myPlayerUiStateProvider(player));
 
           if (gameState == null || playerState == null) return false;
 
           final cost = playerState.cost;
-          final maxCost = playerState.maxCost;
 
           return gameState.phase.turnOwner == player.id &&
               isMainPhase &&
-              cost <= maxCost;
+              cost > 0 &&
+              cost >= details.data.currentCost;
         },
         onAcceptWithDetails: (detail) async {
           final renderBox = context.findRenderObject() as RenderBox?;
