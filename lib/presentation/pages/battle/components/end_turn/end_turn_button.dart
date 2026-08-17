@@ -3,6 +3,7 @@ import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_highlight_transparency_button.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/switcher/guide_switcher.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -19,6 +20,8 @@ class EndTurnButton extends HookConsumerWidget {
     final isLoading = useState(false);
     final isMounted = useIsMounted();
 
+    final isShow = !ref.watch(guideSwitcherProvider);
+
     final currentPhase = ref.watch(displayedPhaseProvider);
     final canEndTurn =
         currentPhase?.battlePhase == .mainPhase &&
@@ -26,36 +29,58 @@ class EndTurnButton extends HookConsumerWidget {
 
     final isEnabled = canEndTurn && !isLoading.value;
 
-    return SizedBox(
-      width: 140,
-      height: 40,
-      child: AppHighlightTransparencyButton(
-        isBlur: true,
-        onPressed: isEnabled
-            ? () async {
-                isLoading.value = true;
-                try {
-                  await ref.read(gameProvider.notifier).endTurn();
-                } finally {
-                  if (isMounted()) {
-                    isLoading.value = false;
-                  }
-                }
-              }
-            : null,
-        child: Row(
-          spacing: 4,
-          mainAxisSize: .min,
-          mainAxisAlignment: .center,
-          children: [
-            Text(
-              l10n.battle_page_turn_end_button_text,
-              style: GoogleFonts.shareTechMono(fontWeight: .bold),
-            ),
-            const Icon(Symbols.keyboard_double_arrow_right),
-          ],
-        ),
-      ),
+    return AnimatedSwitcher(
+      duration: const Duration(milliseconds: 200),
+      transitionBuilder: (child, animation) {
+        final offsetAnimation =
+            Tween<Offset>(
+              begin: const Offset(1, 0),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Curves.easeInOut,
+              ),
+            );
+
+        return SlideTransition(
+          position: offsetAnimation,
+          child: child,
+        );
+      },
+      child: isShow
+          ? SizedBox(
+              width: 140,
+              height: 40,
+              child: AppHighlightTransparencyButton(
+                isBlur: true,
+                onPressed: isEnabled
+                    ? () async {
+                        isLoading.value = true;
+                        try {
+                          await ref.read(gameProvider.notifier).endTurn();
+                        } finally {
+                          if (isMounted()) {
+                            isLoading.value = false;
+                          }
+                        }
+                      }
+                    : null,
+                child: Row(
+                  spacing: 4,
+                  mainAxisSize: .min,
+                  mainAxisAlignment: .center,
+                  children: [
+                    Text(
+                      l10n.battle_page_turn_end_button_text,
+                      style: GoogleFonts.shareTechMono(fontWeight: .bold),
+                    ),
+                    const Icon(Symbols.keyboard_double_arrow_right),
+                  ],
+                ),
+              ),
+            )
+          : const SizedBox.shrink(key: ValueKey('hide')),
     );
   }
 }
