@@ -1,5 +1,6 @@
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guide_header.dart';
+import 'package:dereruministic/presentation/pages/battle/components/guide/guides/card_cost_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/hp_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/player_cost_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/shield_system_description%20copy.dart';
@@ -28,6 +29,7 @@ class TacticalGuide extends StatelessWidget {
               HpSystemDescription(),
               ShieldSystemDescription(),
               PlayerCostSystemDescription(),
+              CardCostSystemDescription(),
             ],
           ),
         ),
