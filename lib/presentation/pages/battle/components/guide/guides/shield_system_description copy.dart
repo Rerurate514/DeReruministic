@@ -42,7 +42,7 @@ class ShieldSystemDescription extends StatelessWidget {
               Icon(Symbols.arrow_right_alt),
 
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 child: SizedBox(
                   width: 120,
                   child: StateHpBase(
