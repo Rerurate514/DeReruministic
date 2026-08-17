@@ -27,6 +27,7 @@ class CardCostSystemDescription extends StatelessWidget {
           ),
 
           Wrap(
+            crossAxisAlignment: .center,
             children: [
               Padding(
                 padding: EdgeInsets.only(left: 2, right: 4),
@@ -40,9 +41,12 @@ class CardCostSystemDescription extends StatelessWidget {
               Text('のコスト消費量のカードを'),
               Padding(
                 padding: EdgeInsets.only(left: 2, right: 4),
-                child: StateCost(
-                  cost: 1,
-                  maxCost: 4,
+                child: SizedBox(
+                  width: 116,
+                  child: StateCost(
+                    cost: 1,
+                    maxCost: 4,
+                  ),
                 ),
               ),
               Text('の時に使用することはできません。'),
