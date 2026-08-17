@@ -69,6 +69,9 @@
     "battle_page_sp_banner_game_start_terminal_access_granted_text": "TERMINAL ACCESS GRANTED",
     "battle_page_sp_banner_game_start_data_link_established_text": "DATA LINK ESTABLISHED",
 
+    "battle_page_guide_header_command": "_>",
+    "battle_page_guide_header_text": "TACTICAL_GUIDE",
+
     "battle_page_card_runtime_states_recycle_text": "{remainingCount}/{maxCount}",
     "@battle_page_card_runtime_states_recycle_text": {
         "placeholders": {
