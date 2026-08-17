@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:animated_list_plus/animated_list_plus.dart';
-import 'package:animated_list_plus/transitions.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
@@ -9,6 +8,7 @@ import 'package:dereruministic/presentation/pages/battle/components/hand/hand_an
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_animation_notifier.dart';
+import 'package:dereruministic/presentation/widgets/ui_size_fade_no_clip.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -90,15 +90,13 @@ class _HandComponentState extends ConsumerState<HandComponent>
     return SizedBox(
       height: 240,
       child: ImplicitlyAnimatedList<GameCard>(
+        clipBehavior: Clip.none,
         scrollDirection: Axis.horizontal,
         items: hand,
         areItemsTheSame: (oldItem, newItem) =>
             oldItem.instanceId == newItem.instanceId,
         itemBuilder: (context, animation, card, index) {
-          return SizeFadeTransition(
-            axis: Axis.horizontal,
-            sizeFraction: 0.7,
-            curve: Curves.easeInOut,
+          return UiSizeFadeNoClip(
             animation: animation,
             child: HandAnimationContainer(
               key: ValueKey(card.instanceId),
@@ -108,10 +106,8 @@ class _HandComponentState extends ConsumerState<HandComponent>
           );
         },
         removeItemBuilder: (context, animation, card) {
-          return SizeFadeTransition(
-            axis: Axis.horizontal,
+          return UiSizeFadeNoClip(
             animation: animation,
-            curve: Curves.easeInOut,
             child: HandAnimationContainer(
               key: ValueKey(card.instanceId),
               gameCard: card,
