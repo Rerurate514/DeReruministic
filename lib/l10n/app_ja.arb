@@ -410,22 +410,6 @@
         "debuff": { "type": "String" }
         }
     },
-    "game_step_event_poison_applied": "> {target} STATUS [{effect_type}] STACK {stack_count}",
-    "@game_step_event_poison_applied": {
-        "placeholders": {
-        "target": { "type": "String" },
-        "effect_type": { "type": "String" },
-        "stack_count": { "type": "int" }
-        }
-    },
-    "game_step_event_guard_boost_applied": "> {target} GUARD [{effect_type}] STACK {stack_count}",
-    "@game_step_event_guard_boost_applied": {
-        "placeholders": {
-        "target": { "type": "String" },
-        "effect_type": { "type": "String" },
-        "stack_count": { "type": "int" }
-        }
-    },
     "game_step_event_status_effect_changed": "> {target} STATUS [{effect_type}] >> {stack_count}",
     "@game_step_event_status_effect_changed": {
         "placeholders": {

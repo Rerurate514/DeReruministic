@@ -56,11 +56,7 @@ class StepEventExecutor {
         {}
       case GameStepEventShieldCleared():
         {}
-      case GameStepEventPoisonApplied():
-        {}
       case GameStepEventHealed():
-        {}
-      case GameStepEventGuardBoostApplied():
         {}
       case GameStepEventStatusEffectChanged():
         {}

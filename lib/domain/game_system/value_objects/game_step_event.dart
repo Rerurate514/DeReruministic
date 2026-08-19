@@ -121,18 +121,6 @@ sealed class GameStepEvent with _$GameStepEvent {
   }) = GameStepEventDebuffRemoved;
 
   // --- ステータス効果（スタック）系 ---
-  const factory GameStepEvent.poisonApplied({
-    required PlayerId targetPlayerId,
-    required StatusEffectType effectType,
-    required int stackCount,
-  }) = GameStepEventPoisonApplied;
-
-  const factory GameStepEvent.guardBoostApplied({
-    required PlayerId targetPlayerId,
-    required StatusEffectType effectType,
-    required int stackCount,
-  }) = GameStepEventGuardBoostApplied;
-
   const factory GameStepEvent.statusEffectChanged({
     required PlayerId targetPlayerId,
     required StatusEffectType effectType,

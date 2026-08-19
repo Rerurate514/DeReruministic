@@ -101,28 +101,6 @@ extension GameStepEventEx on GameStepEvent {
           debuff.name,
         ),
 
-      GameStepEventPoisonApplied(
-        :final targetPlayerId,
-        :final effectType,
-        :final stackCount,
-      ) =>
-        l10n.game_step_event_poison_applied(
-          targetPlayerId.value,
-          effectType.type.name,
-          stackCount,
-        ),
-
-      GameStepEventGuardBoostApplied(
-        :final targetPlayerId,
-        :final effectType,
-        :final stackCount,
-      ) =>
-        l10n.game_step_event_guard_boost_applied(
-          targetPlayerId.value,
-          effectType.type.name,
-          stackCount,
-        ),
-
       GameStepEventStatusEffectChanged(
         :final targetPlayerId,
         :final effectType,
