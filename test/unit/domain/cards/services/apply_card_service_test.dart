@@ -288,6 +288,19 @@ void main() {
         );
 
         when(
+          mockResolveStates.execute(
+            state: stateAfterResolve,
+            sourcePlayerId: playerId,
+            card: card,
+          ),
+        ).thenReturn(
+          ApplyActionResult.success(
+            state: stateAfterResolve,
+            steps: [],
+          ),
+        );
+
+        when(
           mockConsumeCost.execute(
             state: stateAfterResolve,
             sourcePlayerId: playerId,
