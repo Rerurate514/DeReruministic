@@ -95,18 +95,18 @@ class ApplyPlayCardService {
       return resolveCardEffectsResult;
     }
 
-    final resolveCardstatesResult = resolveCardStatesService.execute(
-      state: state,
+    final resolveCardStatesResult = resolveCardStatesService.execute(
+      state: resolveCardEffectsResult.state,
       sourcePlayerId: cardUsedPlayer.id,
       card: usedCard,
     );
 
-    if (resolveCardstatesResult case ApplyActionResultFailure()) {
-      return resolveCardstatesResult;
+    if (resolveCardStatesResult case ApplyActionResultFailure()) {
+      return resolveCardStatesResult;
     }
 
     final consumeCostResult = consumeCostService.execute(
-      state: resolveCardstatesResult.state,
+      state: resolveCardStatesResult.state,
       sourcePlayerId: cardUsedPlayer.id,
       card: usedCard,
     );
