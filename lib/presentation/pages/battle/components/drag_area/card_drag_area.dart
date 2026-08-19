@@ -64,12 +64,12 @@ class CardDragArea extends HookConsumerWidget {
 
           if (gameState == null || playerState == null) return false;
 
-          final cost = playerState.cost;
+          final playerCost = playerState.cost;
+          final cardCost = details.data.currentCost;
 
           return gameState.phase.turnOwner == player.id &&
               isMainPhase &&
-              cost > 0 &&
-              cost >= details.data.currentCost;
+              playerCost >= cardCost;
         },
         onAcceptWithDetails: (detail) async {
           final renderBox = context.findRenderObject() as RenderBox?;
