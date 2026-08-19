@@ -76,6 +76,7 @@ PlayerState buildPlayer({
     cardsPlayedThisTurn: cardsPlayedThisTurn,
     maxHandSize: maxHandSize,
     pendingRecoilCost: pendingRecoilCost,
+    pendingOverloadCost: 0,
   );
 }
 

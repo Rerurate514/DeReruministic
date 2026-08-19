@@ -191,6 +191,7 @@ PlayerState buildPlayer({
     cardsPlayedThisTurn: 0,
     maxHandSize: 5,
     pendingRecoilCost: 0,
+    pendingOverloadCost: 0,
   );
 }
 

@@ -28,6 +28,7 @@ PlayerState buildPlayer({required PlayerId id, int shield = 0}) {
     cardsPlayedThisTurn: 0,
     maxHandSize: 5,
     pendingRecoilCost: 0,
+    pendingOverloadCost: 0,
   );
 }
 

@@ -58,6 +58,7 @@ void main() {
       debuffs: [],
       cardsPlayedThisTurn: 1,
       pendingRecoilCost: 0,
+      pendingOverloadCost: 0,
     );
 
     final playerB = PlayerState(
@@ -76,6 +77,7 @@ void main() {
       debuffs: [],
       cardsPlayedThisTurn: 1,
       pendingRecoilCost: 0,
+      pendingOverloadCost: 0,
     );
 
     return GameState(

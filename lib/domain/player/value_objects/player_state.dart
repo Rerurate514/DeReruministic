@@ -33,6 +33,7 @@ sealed class PlayerState with _$PlayerState {
     required int cardsPlayedThisTurn,
     required int maxHandSize,
     required int pendingRecoilCost,
+    required int pendingOverloadCost,
   }) = _PlayerState;
 
   factory PlayerState.create({
@@ -55,6 +56,7 @@ sealed class PlayerState with _$PlayerState {
       cardsPlayedThisTurn: 0,
       maxHandSize: PlayerConstants.defaultMaxHandSize,
       pendingRecoilCost: 0,
+      pendingOverloadCost: 0,
     );
   }
 
