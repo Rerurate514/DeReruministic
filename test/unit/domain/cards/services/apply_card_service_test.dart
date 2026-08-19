@@ -4,6 +4,7 @@ import 'package:dereruministic/domain/card/services/check_card_condition_service
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
 import 'package:dereruministic/domain/card/services/consume_cost_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
+import 'package:dereruministic/domain/card/services/resolve_card_states_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects_details.dart';
@@ -26,6 +27,7 @@ import 'apply_card_service_test.mocks.dart';
 @GenerateNiceMocks([
   MockSpec<CheckCardConditionService>(),
   MockSpec<ResolveCardEffectsService>(),
+  MockSpec<ResolveCardStatesService>(),
   MockSpec<ConsumeCardService>(),
   MockSpec<ConsumeCostService>(),
 ])
@@ -35,6 +37,7 @@ void main() {
 
   late MockCheckCardConditionService mockCheckCondition;
   late MockResolveCardEffectsService mockResolveEffects;
+  late MockResolveCardStatesService mockResolveStates;
   late MockConsumeCardService mockConsumeCard;
   late MockConsumeCostService mockConsumeCost;
   late ApplyPlayCardService service;
@@ -51,11 +54,13 @@ void main() {
 
     mockCheckCondition = MockCheckCardConditionService();
     mockResolveEffects = MockResolveCardEffectsService();
+    mockResolveStates = MockResolveCardStatesService();
     mockConsumeCard = MockConsumeCardService();
     mockConsumeCost = MockConsumeCostService();
     service = ApplyPlayCardService(
       checkCardConditionService: mockCheckCondition,
       resolveCardEffectsService: mockResolveEffects,
+      resolveCardStatesService: mockResolveStates,
       consumeCardService: mockConsumeCard,
       consumeCostService: mockConsumeCost,
     );

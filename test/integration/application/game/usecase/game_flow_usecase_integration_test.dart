@@ -26,6 +26,7 @@ import 'package:dereruministic/domain/card/services/effects/resolve_remove_debuf
 import 'package:dereruministic/domain/card/services/effects/resolve_steal_cost_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_steal_shield_effect_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
+import 'package:dereruministic/domain/card/services/resolve_card_states_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects_details.dart';
@@ -139,6 +140,7 @@ ApplyPlayCardService buildRealApplyPlayCardService() {
     resolveCardEffectsService: ResolveCardEffectsService(
       effectResolver: effectResolver,
     ),
+    resolveCardStatesService: ResolveCardStatesService(),
     consumeCardService: ConsumeCardService(
       playCardValidator: PlayCardValidator(),
     ),

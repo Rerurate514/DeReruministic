@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects_details.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
@@ -23,5 +24,9 @@ sealed class CardDefinition with _$CardDefinition {
 extension CardDefinitionEx on CardDefinition {
   bool hasState<T extends CardStates>() {
     return states.any((state) => state is T);
+  }
+
+  int getOverloadCostAmount() {
+    return states.whereType<CardStateOverload>().firstOrNull?.amount ?? 0;
   }
 }
