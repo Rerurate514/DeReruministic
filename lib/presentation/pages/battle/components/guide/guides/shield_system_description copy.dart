@@ -1,3 +1,4 @@
+import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guide_text_template.dart';
 import 'package:dereruministic/presentation/pages/battle/components/state_base/state_hp_base.dart';
 import 'package:dereruministic/presentation/pages/battle/components/state_base/state_shield_base.dart';
@@ -10,24 +11,22 @@ class ShieldSystemDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
     return GuideTextTemplate(
-      title: 'SHIELD SYSTEM',
+      title: l10n.battle_page_shield_system_title,
       titleColor: theme.shield,
       leading: const Icon(Symbols.shield),
-      details: const Column(
+      details: Column(
         crossAxisAlignment: .start,
         spacing: 8,
         children: [
-          Text(
-            '''
-シールドはHPの右に表記されています。シールド数値の上限はありません。これは自分のターンが開始する際に0に毎回リセットされます。シールドの数値を超えてダメージを受けた場合は、超過分がHPのダメージとして計算されます。''',
-          ),
+          Text(l10n.battle_page_shield_system_detail_1),
 
           Wrap(
             crossAxisAlignment: .center,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 2, right: 4),
                 child: SizedBox(
                   height: 32,
@@ -37,11 +36,11 @@ class ShieldSystemDescription extends StatelessWidget {
                 ),
               ),
 
-              Text('シールドの時に20ダメージを受けると、10ダメージはシールドが肩代わりして、HPは10ダメージを受ける。'),
+              Text(l10n.battle_page_shield_system_detail_2),
 
-              Icon(Symbols.arrow_right_alt),
+              const Icon(Symbols.arrow_right_alt),
 
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 child: SizedBox(
                   width: 120,

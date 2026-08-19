@@ -72,6 +72,21 @@
     "battle_page_guide_header_command": "_>",
     "battle_page_guide_header_text": "TACTICAL_GUIDE",
 
+    "battle_page_card_cost_system_title": "CARD COST SYSTEM",
+    "battle_page_card_cost_system_details_1": "カードの右上にカードを使用するときに消費するコスト量を示しています。\n自身の所持コストを超えるカードを使用することはできません。\nまたこの表記されているコストは変動することがあります。",
+    "battle_page_card_cost_system_details_2": "のコスト消費量のカードを",
+    "battle_page_card_cost_system_details_3": "の時に使用することはできません。",
+
+    "battle_page_hp_system_title": "HP SYSTEM",
+    "battle_page_hp_system_details_1": "HPシステムはとても単純なHPとして表されています。画面下のこのHPバーが数値を視覚的に表しています。線の数は現在のHPと一致しています。このHPが0になると敗北となります。",
+
+    "battle_page_player_cost_system_title": "PLAYER COST SYSTEM",
+    "battle_page_player_cost_system_detail_1": "コストはカードを使用するために必要なパラメータです。\nゲーム開始時の上限は4になります(これはバフやデバフなどで変動することがあります)。\nターン開始時には4、コストが回復します(これはバフやデバフなどで変動することがあります)。\nコストが0になっても、使うことができるカードは存在しています。",
+
+    "battle_page_shield_system_title": "SHIELD SYSTEM",
+    "battle_page_shield_system_detail_1": "シールドはHPの右に表記されています。シールド数値の上限はありません。これは自分のターンが開始する際に0に毎回リセットされます。シールドの数値を超えてダメージを受けた場合は、超過分がHPのダメージとして計算されます。",
+    "battle_page_shield_system_detail_2": "シールドの時に20ダメージを受けると、10ダメージはシールドが肩代わりして、HPは10ダメージを受ける。",
+
     "battle_page_card_runtime_states_recycle_text": "{remainingCount}/{maxCount}",
     "@battle_page_card_runtime_states_recycle_text": {
         "placeholders": {

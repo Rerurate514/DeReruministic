@@ -1,3 +1,4 @@
+import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guide_text_template.dart';
 import 'package:dereruministic/presentation/pages/battle/components/state_base/state_hp_base.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
@@ -9,21 +10,19 @@ class HpSystemDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
     return GuideTextTemplate(
-      title: 'HP SYSTEM',
+      title: l10n.battle_page_hp_system_title,
       titleColor: theme.playerHp,
       leading: const Icon(Symbols.heart_plus),
-      details: const Column(
+      details: Column(
         crossAxisAlignment: .start,
         spacing: 8,
         children: [
-          Text(
-            '''
-HPシステムはとても単純なHPとして表されています。画面下のこのHPバーが数値を視覚的に表しています。線の数は現在のHPと一致しています。このHPが0になると敗北となります。''',
-          ),
+          Text(l10n.battle_page_hp_system_details_1),
 
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 2, bottom: 8, right: 4),
             child: SizedBox(
               width: double.infinity,

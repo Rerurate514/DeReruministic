@@ -1,3 +1,4 @@
+import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guide_text_template.dart';
 import 'package:dereruministic/presentation/pages/battle/components/state_base/state_card_cost.dart';
 import 'package:dereruministic/presentation/pages/battle/components/state_base/state_cost.dart';
@@ -10,26 +11,22 @@ class CardCostSystemDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
     return GuideTextTemplate(
-      title: 'CARD COST SYSTEM',
+      title: l10n.battle_page_card_cost_system_title,
       titleColor: theme.costDp,
       leading: const Icon(Symbols.bolt_boost),
-      details: const Column(
+      details: Column(
         crossAxisAlignment: .start,
         spacing: 8,
         children: [
-          Text(
-            '''
-カードの右上にカードを使用するときに消費するコスト量を示しています。
-自身の所持コストを超えるカードを使用することはできません。
-またこの表記されているコストは変動することがあります。''',
-          ),
+          Text(l10n.battle_page_card_cost_system_details_1),
 
           Wrap(
             crossAxisAlignment: .center,
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 2, right: 4),
                 child: SizedBox(
                   width: 50,
@@ -38,8 +35,8 @@ class CardCostSystemDescription extends StatelessWidget {
                   ),
                 ),
               ),
-              Text('のコスト消費量のカードを'),
-              Padding(
+              Text(l10n.battle_page_card_cost_system_details_2),
+              const Padding(
                 padding: EdgeInsets.only(left: 2, right: 4),
                 child: SizedBox(
                   width: 116,
@@ -49,7 +46,7 @@ class CardCostSystemDescription extends StatelessWidget {
                   ),
                 ),
               ),
-              Text('の時に使用することはできません。'),
+              Text(l10n.battle_page_card_cost_system_details_3),
             ],
           ),
         ],

@@ -1,3 +1,4 @@
+import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guide_text_template.dart';
 import 'package:dereruministic/presentation/pages/battle/components/state_base/state_cost.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
@@ -9,24 +10,19 @@ class PlayerCostSystemDescription extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
     return GuideTextTemplate(
-      title: 'PLAYER COST SYSTEM',
+      title: l10n.battle_page_player_cost_system_title,
       titleColor: theme.costDp,
       leading: const Icon(Symbols.bolt),
-      details: const Column(
+      details: Column(
         crossAxisAlignment: .start,
         spacing: 8,
         children: [
-          Text(
-            '''
-コストはカードを使用するために必要なパラメータです。
-ゲーム開始時の上限は4になります(これはバフやデバフなどで変動することがあります)。
-ターン開始時には4、コストが回復します(これはバフやデバフなどで変動することがあります)。
-コストが0になっても、使うことができるカードは存在しています。''',
-          ),
+          Text(l10n.battle_page_player_cost_system_detail_1),
 
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 2, bottom: 8, right: 4),
             child: SizedBox(
               width: 150,
