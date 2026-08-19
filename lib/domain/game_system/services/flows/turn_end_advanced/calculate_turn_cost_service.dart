@@ -4,7 +4,7 @@ import 'package:dereruministic/domain/game_system/value_objects/action_failure_r
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -31,20 +31,30 @@ class CalculateTurnCostService implements TurnProcessStep {
 
     final initialCost = targetPlayer.currentCost;
 
-    final newState = state
-        .reflectBaseCost(targetPlayerId)
-        .applyCostBuff(targetPlayerId)
-        .applyCostDebuff(targetPlayerId)
-        .applyRecoilCost(targetPlayerId)
-        .applyClamp(targetPlayerId);
+    final resultCost =
+        ((GameSystemConstants.baseTurnStartGainCost +
+                    _calcCostBuff(targetPlayer)) -
+                (_calcCostDebuff(targetPlayer) +
+                    _calcRecoilCost(targetPlayer) +
+                    _calcOverloadCost(targetPlayer)))
+            .clamp(0, targetPlayer.maxCost);
 
-    final newTargetPlayer = newState.players[targetPlayerId];
+    final newTargetPlayer = state.players[targetPlayerId]?.copyWith(
+      currentCost: resultCost,
+      pendingRecoilCost: 0,
+      pendingOverloadCost: 0,
+    );
+
     if (newTargetPlayer == null) {
       return ApplyActionResult.failure(
         state: state,
         reason: ActionFailureReason.playerNotFound,
       );
     }
+
+    final newState = state.copyWith(
+      players: {...state.players, newTargetPlayer.id: newTargetPlayer},
+    );
 
     final finalCost = newTargetPlayer.currentCost;
     final diff = finalCost - initialCost;
@@ -56,98 +66,24 @@ class CalculateTurnCostService implements TurnProcessStep {
 
     return ApplyActionResult.success(state: newState, steps: [event]);
   }
-}
 
-extension GameStateEx on GameState {
-  GameState reflectBaseCost(PlayerId targetPlayerId) {
-    final targetPlayer = players[targetPlayerId];
-    if (targetPlayer == null) return this;
-
-    final updatedPlayer = targetPlayer.copyWith(
-      currentCost:
-          targetPlayer.currentCost + GameSystemConstants.baseTurnStartGainCost,
-    );
-
-    return copyWith(
-      players: {
-        ...players,
-        targetPlayerId: updatedPlayer,
-      },
-    );
-  }
-
-  GameState applyCostBuff(PlayerId targetPlayerId) {
-    final targetPlayer = players[targetPlayerId];
-    if (targetPlayer == null) return this;
-
-    final gainCost = targetPlayer.buffs
+  int _calcCostBuff(PlayerState targetPlayer) {
+    return targetPlayer.buffs
         .where((buffState) => buffState.buff == BuffTypes.costRecovery)
         .fold(0, (cost, buffState) => cost + buffState.stack);
-
-    final updatedPlayer = targetPlayer.copyWith(
-      currentCost: targetPlayer.currentCost + gainCost,
-    );
-
-    return copyWith(
-      players: {
-        ...players,
-        targetPlayerId: updatedPlayer,
-      },
-    );
   }
 
-  GameState applyCostDebuff(PlayerId targetPlayerId) {
-    final targetPlayer = players[targetPlayerId];
-    if (targetPlayer == null) return this;
-
-    final removeCost = targetPlayer.debuffs
+  int _calcCostDebuff(PlayerState targetPlayer) {
+    return targetPlayer.debuffs
         .where((debuffState) => debuffState.debuff == DebuffTypes.costReduction)
         .fold(0, (cost, debuffState) => cost + debuffState.stack);
-
-    final updatedPlayer = targetPlayer.copyWith(
-      currentCost: targetPlayer.currentCost - removeCost,
-    );
-
-    return copyWith(
-      players: {
-        ...players,
-        targetPlayerId: updatedPlayer,
-      },
-    );
   }
 
-  GameState applyRecoilCost(PlayerId targetPlayerId) {
-    final targetPlayer = players[targetPlayerId];
-    if (targetPlayer == null) return this;
-
-    final updatedPlayer = targetPlayer.copyWith(
-      pendingRecoilCost: 0,
-      currentCost: targetPlayer.currentCost - targetPlayer.pendingRecoilCost,
-    );
-
-    return copyWith(
-      players: {
-        ...players,
-        targetPlayerId: updatedPlayer,
-      },
-    );
+  int _calcOverloadCost(PlayerState targetPlayer) {
+    return targetPlayer.pendingOverloadCost;
   }
 
-  GameState applyClamp(PlayerId targetPlayerId) {
-    final targetPlayer = players[targetPlayerId];
-    if (targetPlayer == null) return this;
-
-    final currentCost = targetPlayer.currentCost;
-
-    final updatedPlayer = targetPlayer.copyWith(
-      currentCost: currentCost.clamp(0, targetPlayer.maxCost),
-    );
-
-    return copyWith(
-      players: {
-        ...players,
-        targetPlayerId: updatedPlayer,
-      },
-    );
+  int _calcRecoilCost(PlayerState targetPlayer) {
+    return targetPlayer.pendingRecoilCost;
   }
 }
