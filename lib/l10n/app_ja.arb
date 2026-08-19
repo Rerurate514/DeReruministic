@@ -62,6 +62,8 @@
 
     "battle_page_card_drag_area_text": "<< FIELD_EFFECT_SYS >> - STATUS:=//WAIT::[USE_CARD]",
     "battle_page_combat_log_text": "COMBAT LOG",
+    "battle_page_background_text_lines_left": "0x4F 0x50 0x50 0x5F 0x43 0x4F 0x53 0x54 :: INITIALIZING... LOAD OK.",
+    "battle_page_background_text_lines_right": "SYS_TICK: 4598201 :: TARGET_LOCK: ACTIVE",
     "battle_page_turn_end_button_text": "EXECUTED",
 
     "battle_page_sp_banner_game_start_initializing_combat_protocol_text": "INITIALIZING COMBAT PROTOCOL",
