@@ -3,6 +3,7 @@ import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_animation_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_cost_calculated_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_end_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -89,7 +90,10 @@ class StepEventExecutor {
           await _awaitAnimation();
         }
       case GameStepEventGameEnded():
-        {}
+        {
+          ref.read(displayedGameEndProvider.notifier).apply();
+          await _awaitAnimation();
+        }
       case GameStepEventHandCardCountersUpdated():
         {}
       case GameStepEventBuffApplied():
