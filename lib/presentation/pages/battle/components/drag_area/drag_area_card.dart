@@ -1,3 +1,4 @@
+import 'package:animated_text_effects/animated_text_effects.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_hollow_glow_card.dart';
 import 'package:dereruministic/presentation/components/app_scan_line.dart';
@@ -27,8 +28,9 @@ class DragAreaCard extends StatelessWidget {
             children: [
               const Icon(Symbols.radar),
               FittedBox(
-                child: Text(
+                child: AnimatedText(
                   l10n.battle_page_card_drag_area_text,
+                  effects: const [TypewriterErrorEffect()],
                   style: GoogleFonts.shareTechMono(
                     color: theme.brandSecondary,
                     shadows: [
