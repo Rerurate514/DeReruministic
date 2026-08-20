@@ -49,6 +49,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.5.2"
+  animated_text_effects:
+    dependency: "direct main"
+    description:
+      name: animated_text_effects
+      sha256: "7ab4b18230541127a364d71dd1e55660d8bacc59b31d8b982d6419ce21bacea8"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.7"
   args:
     dependency: transitive
     description:
@@ -1163,5 +1171,5 @@ packages:
     source: hosted
     version: "2.2.4"
 sdks:
-  dart: ">=3.11.3 <4.0.0"
+  dart: ">=3.11.5 <4.0.0"
   flutter: ">=3.38.4"

@@ -32,6 +32,7 @@ dependencies:
   percent_indicator: ^4.2.5
   animated_list_plus: ^0.5.2
   flutter_animate: ^4.5.2
+  animated_text_effects: ^0.0.7
 
 dev_dependencies:
   flutter_test:
