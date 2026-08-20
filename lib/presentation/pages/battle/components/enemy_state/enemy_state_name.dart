@@ -1,3 +1,4 @@
+import 'package:animated_text_effects/animated_text_effects.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/enemy_ui_state_provider.dart';
@@ -28,9 +29,15 @@ class EnemyStateName extends ConsumerWidget {
           size: 16,
           color: theme.textSecondary,
         ),
-        Text(
+        AnimatedText(
           name ?? l10n.game_state_is_null,
-          style: GoogleFonts.poppins(color: theme.textSecondary, fontSize: 20),
+          effects: const [TypewriterErrorEffect()],
+          style: GoogleFonts.shareTechMono(
+            fontWeight: .bold,
+            fontSize: 20,
+            color: theme.textSecondary,
+            letterSpacing: 2,
+          ),
         ),
       ],
     );
