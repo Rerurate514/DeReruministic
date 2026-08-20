@@ -3,48 +3,11 @@ import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
-import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-PlayerState buildPlayer({required PlayerId id, int currentCost = 3}) {
-  return PlayerState(
-    id: id,
-    hp: 20,
-    maxHp: 20,
-    shield: 0,
-    currentCost: currentCost,
-    maxCost: 4,
-    deck: const [],
-    hand: const [],
-    graveyard: const [],
-    exhausted: const [],
-    buffs: const [],
-    debuffs: const [],
-    cardsPlayedThisTurn: 0,
-    maxHandSize: 5,
-    pendingRecoilCost: 0,
-    pendingOverloadCost: 0,
-  );
-}
-
-GameState buildState({
-  required Map<PlayerId, PlayerState> players,
-  required PlayerId turnOwner,
-}) {
-  return GameState(
-    players: players,
-    phase: GamePhase(battlePhase: BattlePhase.mainPhase, turnOwner: turnOwner),
-    turnCount: 0,
-    initialTurnOwner: turnOwner,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
-  );
-}
+import '../../../../../helpers/game_test_helpers.dart';
 
 void main() {
   const sourceId = PlayerId(value: 'source');
@@ -76,7 +39,7 @@ void main() {
     });
 
     test('target=selfの場合、自分自身のcurrentCostが増加する', () {
-      final source = buildPlayer(id: sourceId, currentCost: 3);
+      final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId, currentCost: 5);
       final state = buildState(
         players: {sourceId: source, otherId: other},
@@ -100,7 +63,7 @@ void main() {
     });
 
     test('target=enemyの場合、相手のcurrentCostが増加する', () {
-      final source = buildPlayer(id: sourceId, currentCost: 3);
+      final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId, currentCost: 1);
       final state = buildState(
         players: {sourceId: source, otherId: other},
@@ -146,7 +109,7 @@ void main() {
     });
 
     test('成功時、GameStepEvent.costCalculatedが正しい内容で1件返る', () {
-      final source = buildPlayer(id: sourceId, currentCost: 3);
+      final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId, currentCost: 1);
       final state = buildState(
         players: {sourceId: source, otherId: other},
@@ -171,7 +134,7 @@ void main() {
     });
 
     test('元のGameStateは変更されない(イミュータブル)', () {
-      final source = buildPlayer(id: sourceId, currentCost: 3);
+      final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId);
       final state = buildState(
         players: {sourceId: source, otherId: other},
@@ -196,7 +159,7 @@ void main() {
       '現行のgetTargetPlayerId(firstWhereでの例外送出)実装では通常到達できず、'
       'プレイヤーが1人しかいない状態でenemyを指定すると代わりに例外が送出される',
       () {
-        final source = buildPlayer(id: sourceId, currentCost: 3);
+        final source = buildPlayer(id: sourceId);
         final state = buildState(
           players: {sourceId: source},
           turnOwner: sourceId,

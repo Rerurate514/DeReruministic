@@ -2,55 +2,11 @@ import 'package:dereruministic/domain/card/services/effects/resolve_heal_effect_
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-PlayerState buildPlayer({
-  required PlayerId id,
-  int hp = 20,
-  int maxHp = 20,
-}) {
-  return PlayerState(
-    id: id,
-    hp: hp,
-    maxHp: maxHp,
-    shield: 0,
-    currentCost: 0,
-    maxCost: 4,
-    deck: const [],
-    hand: const [],
-    graveyard: const [],
-    exhausted: const [],
-    buffs: const [],
-    debuffs: const [],
-    cardsPlayedThisTurn: 0,
-    maxHandSize: 5,
-    pendingRecoilCost: 0,
-    pendingOverloadCost: 0,
-  );
-}
-
-GameState buildState({
-  required PlayerState playerA,
-  required PlayerState playerB,
-  PlayerId? turnOwner,
-}) {
-  return GameState(
-    players: {
-      playerA.id: playerA,
-      playerB.id: playerB,
-    },
-    phase: GamePhase.init(turnOwner ?? playerA.id),
-    turnCount: 0,
-    initialTurnOwner: turnOwner ?? playerA.id,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
-  );
-}
+import '../../../../../helpers/game_test_helpers.dart';
 
 void main() {
   const sourceId = PlayerId(value: 'source');
@@ -66,7 +22,7 @@ void main() {
     test('maxHpに達しない場合、amount分HPが回復する', () {
       final source = buildPlayer(id: sourceId, hp: 10);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
       final result = service.execute(
@@ -82,7 +38,7 @@ void main() {
     test('maxHpを超える回復量の場合、maxHpでクランプされる', () {
       final source = buildPlayer(id: sourceId, hp: 18);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.heal(amount: 10, target: CardTargetTypes.self);
 
       final result = service.execute(
@@ -98,7 +54,7 @@ void main() {
     test('target=selfの場合、自分自身が回復対象になる', () {
       final source = buildPlayer(id: sourceId, hp: 10);
       final other = buildPlayer(id: otherId, hp: 10);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
       final result = service.execute(
@@ -116,7 +72,7 @@ void main() {
     test('target=enemyの場合、自分以外のプレイヤーが回復対象になる', () {
       final source = buildPlayer(id: sourceId, hp: 10);
       final other = buildPlayer(id: otherId, hp: 10);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.enemy);
 
       final result = service.execute(
@@ -134,7 +90,7 @@ void main() {
     test('既にmaxHpの場合、実際の回復量は0になる', () {
       final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
       final result = service.execute(
@@ -154,7 +110,7 @@ void main() {
     test('GameStepEvent.healedが実際の回復量(クランプ後)で正しく1件返る', () {
       final source = buildPlayer(id: sourceId, hp: 18);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.heal(amount: 10, target: CardTargetTypes.self);
 
       final result = service.execute(
@@ -172,7 +128,7 @@ void main() {
     test('回復対象外のプレイヤーの状態はplayersマップ内で保持される', () {
       final source = buildPlayer(id: sourceId, hp: 10);
       final other = buildPlayer(id: otherId, hp: 15);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
       final result = service.execute(
@@ -188,7 +144,7 @@ void main() {
     test('元のGameStateは変更されない(イミュータブル)', () {
       final source = buildPlayer(id: sourceId, hp: 10);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.heal(amount: 5, target: CardTargetTypes.self);
 
       service.execute(

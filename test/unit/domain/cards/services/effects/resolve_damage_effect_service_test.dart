@@ -2,62 +2,15 @@ import 'package:dereruministic/domain/card/services/effects/resolve_damage_effec
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-PlayerState buildPlayer({
-  required PlayerId id,
-  int hp = 20,
-  int maxHp = 20,
-  int shield = 0,
-  List<BuffState> buffs = const [],
-  List<DebuffState> debuffs = const [],
-}) {
-  return PlayerState(
-    id: id,
-    hp: hp,
-    maxHp: maxHp,
-    shield: shield,
-    currentCost: 0,
-    maxCost: 4,
-    deck: const [],
-    hand: const [],
-    graveyard: const [],
-    exhausted: const [],
-    buffs: buffs,
-    debuffs: debuffs,
-    cardsPlayedThisTurn: 0,
-    maxHandSize: 5,
-    pendingRecoilCost: 0,
-    pendingOverloadCost: 0,
-  );
-}
-
-GameState buildState({
-  required PlayerState playerA,
-  required PlayerState playerB,
-  PlayerId? turnOwner,
-}) {
-  return GameState(
-    players: {
-      playerA.id: playerA,
-      playerB.id: playerB,
-    },
-    phase: GamePhase.init(turnOwner ?? playerA.id),
-    turnCount: 0,
-    initialTurnOwner: turnOwner ?? playerA.id,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
-  );
-}
+import '../../../../../helpers/game_test_helpers.dart';
 
 void main() {
   const attackerId = PlayerId(value: 'attacker');
@@ -73,7 +26,9 @@ void main() {
     test('シールドがない場合、ダメージは全てHPに入る', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 10,
         target: CardTargetTypes.enemy,
@@ -93,7 +48,9 @@ void main() {
     test('シールドが十分にある場合、ダメージは全てシールドに吸収される', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(id: defenderId, shield: 15);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 10,
         target: CardTargetTypes.enemy,
@@ -113,7 +70,9 @@ void main() {
     test('シールドが一部しかない場合、シールドを使い切った上でHPが減る', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(id: defenderId, shield: 4);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 10,
         target: CardTargetTypes.enemy,
@@ -133,7 +92,9 @@ void main() {
     test('targetPlayerIdがnullかつtarget=enemyの場合、自分以外のプレイヤーが対象になる', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 7,
         target: CardTargetTypes.enemy,
@@ -154,7 +115,9 @@ void main() {
     test('targetPlayerIdがnullかつtarget=selfの場合、自分自身が対象になる', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 5,
         target: CardTargetTypes.self,
@@ -178,7 +141,9 @@ void main() {
         buffs: const [BuffState(buff: BuffTypes.atkBuff, stack: 5)],
       );
       final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 10,
         target: CardTargetTypes.enemy,
@@ -200,7 +165,9 @@ void main() {
         debuffs: const [DebuffState(debuff: DebuffTypes.atkDebuff, stack: 100)],
       );
       final defender = buildPlayer(id: defenderId, shield: 3);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 10,
         target: CardTargetTypes.enemy,
@@ -220,7 +187,9 @@ void main() {
     test('GameStepEvent.damageDealtが正しい内容で1件返る', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(id: defenderId, shield: 4);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 10,
         target: CardTargetTypes.enemy,
@@ -242,7 +211,9 @@ void main() {
     test('攻撃側プレイヤーの状態はplayersマップ内で保持される', () {
       final attacker = buildPlayer(id: attackerId, hp: 18);
       final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 5,
         target: CardTargetTypes.enemy,
@@ -261,7 +232,9 @@ void main() {
     test('HPを超えた攻撃をしたとき、相手のHPは0でクランプされる。(シールド無し)', () {
       final attacker = buildPlayer(id: attackerId, hp: 1);
       final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 99,
         target: CardTargetTypes.enemy,
@@ -279,7 +252,9 @@ void main() {
     test('HPを超えた攻撃をしたとき、相手のHPは0でクランプされる。(シールド有り)', () {
       final attacker = buildPlayer(id: attackerId, hp: 50, shield: 50);
       final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 999,
         target: CardTargetTypes.enemy,
@@ -297,7 +272,9 @@ void main() {
     test('元のGameStateは変更されない(イミュータブル)', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(id: defenderId);
-      final state = buildState(playerA: attacker, playerB: defender);
+      final state = buildState(
+        players: {attackerId: attacker, defenderId: defender},
+      );
       const effect = CardEffects.damage(
         amount: 10,
         target: CardTargetTypes.enemy,

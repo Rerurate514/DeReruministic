@@ -1,19 +1,13 @@
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
-import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
-import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
-import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/play_card_validator.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
-import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/game_system/value_objects/validation_result.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
+
+import '../../../../helpers/game_test_helpers.dart';
 
 const cardDef = CardDefinition(
   cardDefId: CardDefinitionId(value: 'def_1'),
@@ -22,70 +16,6 @@ const cardDef = CardDefinition(
   effects: [],
   states: [],
 );
-
-GameCard buildCard({
-  required String instanceId,
-  int currentCost = 1,
-  int enteredHandAtTurn = 0,
-}) {
-  return GameCard(
-    instanceId: GameCardInstanceId(value: instanceId),
-    definition: cardDef,
-    currentCost: currentCost,
-    enteredHandAtTurn: enteredHandAtTurn,
-  );
-}
-
-PlayerState buildPlayer({
-  required PlayerId id,
-  int currentCost = 3,
-  List<GameCard> hand = const [],
-}) {
-  return PlayerState(
-    id: id,
-    hp: 20,
-    maxHp: 20,
-    shield: 0,
-    currentCost: currentCost,
-    maxCost: 4,
-    deck: const [],
-    hand: hand,
-    graveyard: const [],
-    exhausted: const [],
-    buffs: const [],
-    debuffs: const [],
-    cardsPlayedThisTurn: 0,
-    maxHandSize: 5,
-    pendingRecoilCost: 0,
-    pendingOverloadCost: 0,
-  );
-}
-
-GameState buildState({
-  required Map<PlayerId, PlayerState> players,
-  required BattlePhase battlePhase,
-  required PlayerId turnOwner,
-}) {
-  return GameState(
-    players: players,
-    phase: GamePhase(battlePhase: battlePhase, turnOwner: turnOwner),
-    turnCount: 0,
-    initialTurnOwner: turnOwner,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
-  );
-}
-
-GameActionPlayCard buildAction({
-  required PlayerId playerId,
-  required String cardInstanceId,
-}) {
-  return GameActionPlayCard(
-    id: const GameActionsId(value: 'action_1'),
-    actionSequenceNumber: 1,
-    playerId: playerId,
-    cardInstanceId: GameCardInstanceId(value: cardInstanceId),
-  );
-}
 
 void main() {
   const playerId = PlayerId(value: 'player1');
@@ -100,10 +30,13 @@ void main() {
       final other = buildPlayer(id: otherPlayerId);
       final state = buildState(
         players: {playerId: player, otherPlayerId: other},
-        battlePhase: BattlePhase.mainPhase,
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
+      );
 
       final result = validator.validate(
         state: state,
@@ -119,10 +52,13 @@ void main() {
       final player = buildPlayer(id: playerId, hand: [card]);
       final state = buildState(
         players: {playerId: player},
-        battlePhase: BattlePhase.mainPhase,
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
+      );
 
       final result = validator.validate(
         state: state,
@@ -141,7 +77,11 @@ void main() {
         battlePhase: BattlePhase.turnStart,
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
+      );
 
       final result = validator.validate(
         state: state,
@@ -163,10 +103,13 @@ void main() {
       final other = buildPlayer(id: otherPlayerId);
       final state = buildState(
         players: {playerId: player, otherPlayerId: other},
-        battlePhase: BattlePhase.mainPhase,
         turnOwner: otherPlayerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
+      );
 
       final result = validator.validate(
         state: state,
@@ -191,7 +134,11 @@ void main() {
         battlePhase: BattlePhase.turnStart,
         turnOwner: otherPlayerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
+      );
 
       final result = validator.validate(
         state: state,
@@ -210,12 +157,12 @@ void main() {
     test('action.playerIdがstate.playersに存在しない場合、playerNotFoundで失敗する', () {
       final state = buildState(
         players: {playerId: buildPlayer(id: playerId)},
-        battlePhase: BattlePhase.mainPhase,
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: otherPlayerId, // playersマップに存在しない
         cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
@@ -236,12 +183,12 @@ void main() {
       final player = buildPlayer(id: playerId);
       final state = buildState(
         players: {playerId: player},
-        battlePhase: BattlePhase.mainPhase,
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'not_in_hand',
+        actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
@@ -263,10 +210,13 @@ void main() {
       final player = buildPlayer(id: playerId, hand: [card]);
       final state = buildState(
         players: {playerId: player},
-        battlePhase: BattlePhase.mainPhase,
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'card1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
+      );
 
       final result = validator.validate(
         state: state,
@@ -291,10 +241,13 @@ void main() {
       );
       final state = buildState(
         players: {playerId: player},
-        battlePhase: BattlePhase.mainPhase,
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'cheap');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'cheap',
+        actionSequenceNumber: 2,
+      );
 
       final result = validator.validate(
         state: state,

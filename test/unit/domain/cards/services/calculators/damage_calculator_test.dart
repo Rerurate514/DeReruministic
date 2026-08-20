@@ -1,36 +1,12 @@
 import 'package:dereruministic/domain/card/services/calculators/damage_calculator.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-PlayerState buildPlayer({
-  required PlayerId id,
-  List<BuffState> buffs = const [],
-  List<DebuffState> debuffs = const [],
-}) {
-  return PlayerState(
-    id: id,
-    hp: 20,
-    maxHp: 20,
-    shield: 0,
-    currentCost: 0,
-    maxCost: 4,
-    deck: const [],
-    hand: const [],
-    graveyard: const [],
-    exhausted: const [],
-    buffs: buffs,
-    debuffs: debuffs,
-    cardsPlayedThisTurn: 0,
-    maxHandSize: 5,
-    pendingRecoilCost: 0,
-    pendingOverloadCost: 0,
-  );
-}
+import '../../../../../helpers/game_test_helpers.dart';
 
 void main() {
   const attackerId = PlayerId(value: 'attacker');

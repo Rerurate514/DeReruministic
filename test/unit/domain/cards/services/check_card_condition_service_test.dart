@@ -5,56 +5,14 @@ import 'package:dereruministic/domain/card/services/conditions/check_target_hp_v
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
 import 'package:dereruministic/domain/card/value_objects/comparison_operator.dart';
 import 'package:dereruministic/domain/card/value_objects/effect_conditions.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
-import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-PlayerState buildPlayer({
-  required PlayerId id,
-  int hp = 20,
-  int maxHp = 20,
-  List<BuffState> buffs = const [],
-  List<DebuffState> debuffs = const [],
-}) {
-  return PlayerState(
-    id: id,
-    hp: hp,
-    maxHp: maxHp,
-    shield: 0,
-    currentCost: 0,
-    maxCost: 4,
-    deck: const [],
-    hand: const [],
-    graveyard: const [],
-    exhausted: const [],
-    buffs: buffs,
-    debuffs: debuffs,
-    cardsPlayedThisTurn: 0,
-    maxHandSize: 5,
-    pendingRecoilCost: 0,
-    pendingOverloadCost: 0,
-  );
-}
-
-GameState buildState({
-  required PlayerState playerA,
-  required PlayerState playerB,
-}) {
-  return GameState(
-    players: {playerA.id: playerA, playerB.id: playerB},
-    phase: GamePhase.init(playerA.id),
-    turnCount: 0,
-    initialTurnOwner: playerA.id,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
-  );
-}
+import '../../../../helpers/game_test_helpers.dart';
 
 void main() {
   const sourceId = PlayerId(value: 'source');
@@ -69,7 +27,7 @@ void main() {
         buffs: const [BuffState(buff: BuffTypes.atkBuff, stack: 1)],
       );
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHasBuffCondition(
                 target: CardTargetTypes.self,
@@ -85,7 +43,7 @@ void main() {
     test('対象(self)が指定buffを持っていない場合、falseを返す', () {
       final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHasBuffCondition(
                 target: CardTargetTypes.self,
@@ -104,7 +62,7 @@ void main() {
         id: otherId,
         buffs: const [BuffState(buff: BuffTypes.combo, stack: 1)],
       );
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHasBuffCondition(
                 target: CardTargetTypes.enemy,
@@ -127,7 +85,7 @@ void main() {
         debuffs: const [DebuffState(debuff: DebuffTypes.poison, stack: 1)],
       );
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHasDebuffCondition(
                 target: CardTargetTypes.self,
@@ -143,7 +101,7 @@ void main() {
     test('対象(self)が指定debuffを持っていない場合、falseを返す', () {
       final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHasDebuffCondition(
                 target: CardTargetTypes.self,
@@ -162,7 +120,7 @@ void main() {
         id: otherId,
         debuffs: const [DebuffState(debuff: DebuffTypes.vulnerable, stack: 1)],
       );
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHasDebuffCondition(
                 target: CardTargetTypes.enemy,
@@ -183,7 +141,7 @@ void main() {
       // hp=10, maxHp=20 -> 50%
       final source = buildPlayer(id: sourceId, hp: 10);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHpPercentageCondition(
                 target: CardTargetTypes.self,
@@ -201,7 +159,7 @@ void main() {
       // hp=10, maxHp=20 -> 50% < 70%
       final source = buildPlayer(id: sourceId, hp: 10);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHpPercentageCondition(
                 target: CardTargetTypes.self,
@@ -219,7 +177,7 @@ void main() {
       // hp=10, maxHp=20 -> 50% >= 80% は false
       final source = buildPlayer(id: sourceId, hp: 10);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHpPercentageCondition(
                 target: CardTargetTypes.self,
@@ -237,7 +195,7 @@ void main() {
       // other: hp=15, maxHp=20 -> 75% > 50%
       final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId, hp: 15);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHpPercentageCondition(
                 target: CardTargetTypes.enemy,
@@ -258,7 +216,7 @@ void main() {
     test('HP値がvalueより大きい場合、greaterThanでtrueを返す', () {
       final source = buildPlayer(id: sourceId, hp: 15);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHpValueCondition(
                 target: CardTargetTypes.self,
@@ -275,7 +233,7 @@ void main() {
     test('HP値がvalueを満たさない場合、falseを返す', () {
       final source = buildPlayer(id: sourceId, hp: 15);
       final other = buildPlayer(id: otherId);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHpValueCondition(
                 target: CardTargetTypes.self,
@@ -292,7 +250,7 @@ void main() {
     test('target=enemyの場合、相手プレイヤーのHP値が判定される', () {
       final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId, hp: 5);
-      final state = buildState(playerA: source, playerB: other);
+      final state = buildState(players: {sourceId: source, otherId: other});
       const condition =
           EffectConditions.targetHpValueCondition(
                 target: CardTargetTypes.enemy,
