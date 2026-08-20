@@ -25,7 +25,20 @@ class CardStateComponent extends StatelessWidget {
 
     final color = state.color(theme);
 
-    if (runtimeStates == null) return _buildIconCard(color);
+    if (state is CardStateOverload) {
+      final overload = state as CardStateOverload;
+      return Stack(
+        clipBehavior: Clip.none,
+        children: [
+          _buildIconCard(color),
+          _buildChip(l10n, theme, color, -7, overload.amount.toString()),
+        ],
+      );
+    }
+
+    if (runtimeStates == null) {
+      return _buildIconCard(color);
+    }
 
     final right = switch (runtimeStates!) {
       CardRuntimeStateRecycleState() => -20,
@@ -36,23 +49,7 @@ class CardStateComponent extends StatelessWidget {
       clipBehavior: Clip.none,
       children: [
         _buildIconCard(color),
-        Positioned(
-          right: right.toDouble(),
-          bottom: -7,
-          child: AppCard(
-            isBlur: true,
-            padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1),
-            borderColor: color.withOpacity(0.5),
-            child: Text(
-              runtimeStates!.text(l10n),
-              style: GoogleFonts.shareTechMono(
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-                color: theme.textPrimary,
-              ),
-            ),
-          ),
-        ),
+        _buildChip(l10n, theme, color, right, runtimeStates!.text(l10n)),
       ],
     );
   }
@@ -67,6 +64,32 @@ class CardStateComponent extends StatelessWidget {
         state.icon,
         color: color,
         size: 20,
+      ),
+    );
+  }
+
+  Widget _buildChip(
+    AppLocalizations l10n,
+    AppColorScheme theme,
+    Color color,
+    int right,
+    String text,
+  ) {
+    return Positioned(
+      right: right.toDouble(),
+      bottom: -7,
+      child: AppCard(
+        isBlur: true,
+        padding: const EdgeInsets.symmetric(horizontal: 3, vertical: 1),
+        borderColor: color.withOpacity(0.5),
+        child: Text(
+          text,
+          style: GoogleFonts.shareTechMono(
+            fontWeight: FontWeight.bold,
+            fontSize: 12,
+            color: theme.textPrimary,
+          ),
+        ),
       ),
     );
   }
