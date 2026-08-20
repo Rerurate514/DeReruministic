@@ -43,7 +43,7 @@ class GameFlowUsecase {
     if (!_isValidActionSequenceNumber(action, current) &&
         action is! GameActionGameStart) {
       return ApplyActionResult.failure(
-        state: current!,
+        state: _requireState(current, action),
         reason: ActionFailureReason.invalidActionSequence,
       );
     }
@@ -114,11 +114,13 @@ class GameFlowUsecase {
 
     final pipeline = pipelineFactory.createGameStartPipeline();
 
-    if (initial case ApplyActionResultFailure()) {
-      return initial;
-    }
-
-    return pipeline.process(initial.state, []);
+    return switch (initial) {
+      ApplyActionResultSuccess(:final state, :final steps) => pipeline.process(
+        state,
+        steps,
+      ),
+      ApplyActionResultFailure() => initial,
+    };
   }
 
   ApplyActionResult _applyPlayCard(

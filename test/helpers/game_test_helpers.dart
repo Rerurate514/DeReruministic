@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
+import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
@@ -35,12 +36,14 @@ GameCard buildCard({
   CardDefinition definition = normalCardDef,
   int currentCost = 1,
   int enteredHandAtTurn = 0,
+  List<CardRuntimeStates> runtimeStates = const [],
 }) {
   return GameCard(
     instanceId: GameCardInstanceId(value: instanceId),
     definition: definition,
     currentCost: currentCost,
     enteredHandAtTurn: enteredHandAtTurn,
+    runtimeStates: runtimeStates,
   );
 }
 
@@ -87,6 +90,7 @@ GameState buildState({
   PlayerId? turnOwner,
   int seed = 0,
   int turnCount = 0,
+  int actionSequenceNumber = 1,
 }) {
   return GameState(
     players: players,
@@ -96,18 +100,22 @@ GameState buildState({
     ),
     turnCount: turnCount,
     initialTurnOwner: players.keys.first,
-    metadata: SystemMetadata(seed: seed, actionSequenceNumber: 0),
+    metadata: SystemMetadata(
+      seed: seed,
+      actionSequenceNumber: actionSequenceNumber,
+    ),
   );
 }
 
 GameActionPlayCard buildPlayCardAction({
   required PlayerId playerId,
   required String cardInstanceId,
+  required int actionSequenceNumber,
   String actionId = 'action_1',
 }) {
   return GameActionPlayCard(
     id: GameActionsId(value: actionId),
-    actionSequenceNumber: 0,
+    actionSequenceNumber: actionSequenceNumber,
     playerId: playerId,
     cardInstanceId: GameCardInstanceId(value: cardInstanceId),
   );

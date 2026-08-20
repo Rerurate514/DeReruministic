@@ -52,7 +52,7 @@ GameState buildState({
     phase: GamePhase.init(playerA.id),
     turnCount: 0,
     initialTurnOwner: playerA.id,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
+    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
   );
 }
 

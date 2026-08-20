@@ -61,7 +61,7 @@ void main() {
     phase: GamePhase.init(targetPlayerId),
     turnCount: 1,
     initialTurnOwner: targetPlayerId,
-    metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 0),
+    metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 1),
   );
 
   setUp(() {
@@ -139,7 +139,7 @@ void main() {
       );
 
       final restoredState = baseState.copyWith(
-        metadata: const SystemMetadata(seed: 99999, actionSequenceNumber: 0),
+        metadata: const SystemMetadata(seed: 99999, actionSequenceNumber: 1),
       );
 
       when(mockDeckRestorationService.execute(any, any, any)).thenReturn(

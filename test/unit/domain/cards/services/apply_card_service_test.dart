@@ -77,6 +77,7 @@ void main() {
         final action = buildPlayCardAction(
           cardInstanceId: 'card1',
           playerId: unknownPlayerId,
+          actionSequenceNumber: 2,
         );
 
         final result = service.execute(state: state, action: action);
@@ -98,6 +99,7 @@ void main() {
       final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'not_in_hand',
+        actionSequenceNumber: 2,
       );
 
       final result = service.execute(state: state, action: action);
@@ -126,6 +128,7 @@ void main() {
       final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
       );
 
       when(
@@ -209,6 +212,7 @@ void main() {
         final action = buildPlayCardAction(
           playerId: playerId,
           cardInstanceId: 'card1',
+          actionSequenceNumber: 2,
         );
 
         final playerAfterConsume = buildPlayer(id: playerId);
@@ -350,6 +354,7 @@ void main() {
       final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'card1',
+        actionSequenceNumber: 2,
       );
       final consumeStep = GameStepEvent.cardMovedZone(
         playerId: playerId,

@@ -90,7 +90,7 @@ void main() {
         playerAId: playerA,
         playerBId: playerB,
       },
-      metadata: const SystemMetadata(seed: seed, actionSequenceNumber: 0),
+      metadata: const SystemMetadata(seed: seed, actionSequenceNumber: 1),
       turnCount: 0,
       initialTurnOwner: const PlayerId(value: 'player_a'),
     );

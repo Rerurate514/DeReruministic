@@ -33,7 +33,7 @@ void main() {
       final actionLogs = <GameActions>[
         const GameActions.gameStart(
           id: GameActionsId(value: 'act_1'),
-          actionSequenceNumber: 0,
+          actionSequenceNumber: 1,
           playerAId: PlayerId(value: 'player_a'),
           playerBId: PlayerId(value: 'player_b'),
           playerADeckRecipe: [],
@@ -42,7 +42,7 @@ void main() {
         ),
         const GameActions.turnEnd(
           id: GameActionsId(value: 'act_2'),
-          actionSequenceNumber: 1,
+          actionSequenceNumber: 2,
           playerId: PlayerId(value: 'player_a'),
         ),
       ];
@@ -85,7 +85,7 @@ void main() {
       final actionLogsA = <GameActions>[
         const GameActions.gameStart(
           id: GameActionsId(value: 'act_1'),
-          actionSequenceNumber: 0,
+          actionSequenceNumber: 1,
           playerAId: PlayerId(value: 'player_a'),
           playerBId: PlayerId(value: 'player_b'),
           playerADeckRecipe: [],
@@ -94,14 +94,14 @@ void main() {
         ),
         const GameActions.turnEnd(
           id: GameActionsId(value: 'act_2'),
-          actionSequenceNumber: 1,
+          actionSequenceNumber: 2,
           playerId: PlayerId(value: 'player_a'),
         ),
       ];
       final actionLogsB = <GameActions>[
         const GameActions.gameStart(
           id: GameActionsId(value: 'act_1'),
-          actionSequenceNumber: 2,
+          actionSequenceNumber: 1,
           playerAId: PlayerId(value: 'player_a'),
           playerBId: PlayerId(value: 'player_b'),
           playerADeckRecipe: [],
@@ -110,7 +110,7 @@ void main() {
         ),
         const GameActions.turnEnd(
           id: GameActionsId(value: 'act_2'),
-          actionSequenceNumber: 3,
+          actionSequenceNumber: 2,
           playerId: PlayerId(value: 'player_a'),
         ),
       ];
@@ -161,7 +161,7 @@ void main() {
       final actionLogs = <GameActions>[
         const GameActions.gameStart(
           id: GameActionsId(value: 'act_1'),
-          actionSequenceNumber: 0,
+          actionSequenceNumber: 1,
           playerAId: PlayerId(value: 'player_a'),
           playerBId: PlayerId(value: 'player_b'),
           playerADeckRecipe: [],
@@ -170,7 +170,7 @@ void main() {
         ),
         const GameActions.turnEnd(
           id: GameActionsId(value: 'act_2'),
-          actionSequenceNumber: 1,
+          actionSequenceNumber: 2,
           playerId: PlayerId(value: 'player_a'),
         ),
       ];

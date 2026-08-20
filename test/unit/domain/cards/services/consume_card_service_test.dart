@@ -88,7 +88,7 @@ GameState buildState({
     phase: GamePhase(battlePhase: battlePhase, turnOwner: turnOwner),
     turnCount: 0,
     initialTurnOwner: turnOwner,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
+    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
   );
 }
 

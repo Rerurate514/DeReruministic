@@ -11,7 +11,6 @@ import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -19,6 +18,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../helpers/game_test_helpers.dart';
 import 'game_flow_usecase_test.mocks.dart';
 
 @GenerateNiceMocks([
@@ -46,15 +46,16 @@ void main() {
   final playerAState = PlayerState.create(id: playerAId, deck: const []);
   final playerBState = PlayerState.create(id: playerBId, deck: const []);
 
-  final baseState = GameState(
+  final phase = GamePhase.init(playerAId);
+  final baseState = buildState(
     players: {
       playerAId: playerAState,
       playerBId: playerBState,
     },
-    phase: GamePhase.init(playerAId),
+    battlePhase: phase.battlePhase,
     turnCount: 1,
-    initialTurnOwner: playerAId,
-    metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 0),
+    turnOwner: playerAId,
+    seed: 12345,
   );
 
   setUp(() {
@@ -98,7 +99,7 @@ void main() {
             current: null,
             action: const GameActions.turnEnd(
               id: actionId,
-              actionSequenceNumber: 0,
+              actionSequenceNumber: 2,
               playerId: playerAId,
             ),
           ),
@@ -112,7 +113,7 @@ void main() {
     test('GameStartアクションが実行された時、GameSetupServiceおよび初期化パイプラインが正しく呼ばれること', () {
       final action = GameActions.gameStart(
         id: actionId,
-        actionSequenceNumber: 0,
+        actionSequenceNumber: 1,
         playerAId: playerAId,
         playerBId: playerBId,
         playerADeckRecipe: mockPlayer.deckRecipe,
@@ -181,7 +182,16 @@ void main() {
         ),
       ).called(1);
 
-      expect(result, equals(expectedPipelineResult));
+      final expectedState = expectedPipelineResult.state
+          .incrementalActionSequence();
+
+      expect(
+        result,
+        ApplyActionResult.success(
+          state: expectedState,
+          steps: const [setupStep],
+        ),
+      );
     });
   });
 
@@ -189,7 +199,7 @@ void main() {
     test('TurnEndアクションが実行された時、ターン終了用パイプラインが正しく取得されて実行されること', () {
       const action = GameActions.turnEnd(
         id: actionId,
-        actionSequenceNumber: 0,
+        actionSequenceNumber: 2,
         playerId: playerAId,
       );
 
@@ -223,7 +233,16 @@ void main() {
         ),
       ).called(1);
 
-      expect(result, equals(expectedPipelineResult));
+      final expectedState = expectedPipelineResult.state
+          .incrementalActionSequence();
+
+      expect(
+        result,
+        ApplyActionResult.success(
+          state: expectedState,
+          steps: const [],
+        ),
+      );
     });
   });
 
@@ -231,7 +250,7 @@ void main() {
     test('GameActionDiscardCard は Stateの変更がなく empty steps (noSteps) を返すこと', () {
       const action = GameActions.discardCard(
         id: actionId,
-        actionSequenceNumber: 0,
+        actionSequenceNumber: 2,
         playerId: playerAId,
         cardInstanceId: cardInstanceId,
       );
@@ -241,7 +260,16 @@ void main() {
         action: action,
       );
 
-      expect(result.state, equals(baseState));
+      final expectedState = baseState.incrementalActionSequence();
+      expect(
+        result,
+        equals(
+          ApplyActionResult.success(
+            state: expectedState,
+            steps: const [],
+          ),
+        ),
+      );
       expect((result as ApplyActionResultSuccess).steps, isEmpty);
     });
 
@@ -250,7 +278,7 @@ void main() {
       () {
         const action = GameActions.selectOverflowDiscards(
           id: actionId,
-          actionSequenceNumber: 0,
+          actionSequenceNumber: 2,
           playerId: playerAId,
           selectedCardInstanceIds: [cardInstanceId],
         );
@@ -260,7 +288,16 @@ void main() {
           action: action,
         );
 
-        expect(result.state, equals(baseState));
+        final expectedState = baseState.incrementalActionSequence();
+        expect(
+          result,
+          equals(
+            ApplyActionResult.success(
+              state: expectedState,
+              steps: const [],
+            ),
+          ),
+        );
         expect((result as ApplyActionResultSuccess).steps, isEmpty);
       },
     );
@@ -268,7 +305,7 @@ void main() {
     test('GameActionSurrender は Stateの変更がなく empty steps (noSteps) を返すこと', () {
       const action = GameActions.surrender(
         id: actionId,
-        actionSequenceNumber: 0,
+        actionSequenceNumber: 2,
         playerId: playerAId,
       );
 
@@ -277,7 +314,16 @@ void main() {
         action: action,
       );
 
-      expect(result.state, equals(baseState));
+      final expectedState = baseState.incrementalActionSequence();
+      expect(
+        result,
+        equals(
+          ApplyActionResult.success(
+            state: expectedState,
+            steps: const [],
+          ),
+        ),
+      );
       expect((result as ApplyActionResultSuccess).steps, isEmpty);
     });
   });

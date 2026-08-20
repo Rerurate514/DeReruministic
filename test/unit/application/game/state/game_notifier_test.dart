@@ -198,7 +198,7 @@ void main() {
         () => notifier.applyRemoteAction(
           GameActions.turnEnd(
             id: GameActionsId.generate(),
-            actionSequenceNumber: 0,
+            actionSequenceNumber: 1,
             playerId: dummyPlayer.id,
           ),
         ),

@@ -28,7 +28,7 @@ void main() {
         phase: GamePhase.init(const PlayerId(value: '')),
         turnCount: 0,
         initialTurnOwner: const PlayerId(value: ''),
-        metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
+        metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
       ),
       steps: const [],
     ),
@@ -83,7 +83,7 @@ void main() {
       phase: GamePhase.init(playerAId),
       turnCount: 1,
       initialTurnOwner: playerAId,
-      metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 0),
+      metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 1),
     );
 
     mockCardDrawService = MockCardDrawService();

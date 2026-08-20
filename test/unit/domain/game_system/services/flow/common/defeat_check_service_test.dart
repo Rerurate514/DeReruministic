@@ -37,7 +37,7 @@ void main() {
       phase: GamePhase.init(playerAId),
       turnCount: 0,
       initialTurnOwner: playerAId,
-      metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
+      metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
     );
   });
 

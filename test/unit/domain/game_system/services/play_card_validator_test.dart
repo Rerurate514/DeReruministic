@@ -71,7 +71,7 @@ GameState buildState({
     phase: GamePhase(battlePhase: battlePhase, turnOwner: turnOwner),
     turnCount: 0,
     initialTurnOwner: turnOwner,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
+    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
   );
 }
 
@@ -81,7 +81,7 @@ GameActionPlayCard buildAction({
 }) {
   return GameActionPlayCard(
     id: const GameActionsId(value: 'action_1'),
-    actionSequenceNumber: 0,
+    actionSequenceNumber: 1,
     playerId: playerId,
     cardInstanceId: GameCardInstanceId(value: cardInstanceId),
   );

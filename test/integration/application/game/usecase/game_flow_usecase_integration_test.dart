@@ -1,6 +1,5 @@
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
-import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
 import 'package:dereruministic/domain/card/services/card_draw_service.dart';
 import 'package:dereruministic/domain/card/services/check_card_condition_service.dart';
@@ -35,7 +34,6 @@ import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
 import 'package:dereruministic/domain/card/value_objects/comparison_operator.dart';
 import 'package:dereruministic/domain/card/value_objects/effect_conditions.dart';
-import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/constants/game_system_constants.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
@@ -51,13 +49,10 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
-import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/constants/player_constants.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
@@ -66,6 +61,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../helpers/game_test_helpers.dart';
 import 'game_flow_usecase_integration_test.mocks.dart';
 
 class _GameStartOnlyPipelineFactory implements ITurnPipelineFactory {
@@ -149,80 +145,6 @@ ApplyPlayCardService buildRealApplyPlayCardService() {
   );
 }
 
-GameCard buildCard({
-  required String instanceId,
-  required CardDefinition definition,
-  required int currentCost,
-  List<CardRuntimeStates> runtimeStates = const [],
-}) {
-  return GameCard(
-    instanceId: GameCardInstanceId(value: instanceId),
-    definition: definition,
-    currentCost: currentCost,
-    enteredHandAtTurn: 0,
-    runtimeStates: runtimeStates,
-  );
-}
-
-PlayerState buildPlayer({
-  required PlayerId id,
-  int hp = 20,
-  int maxHp = 20,
-  int shield = 0,
-  int currentCost = 3,
-  int maxCost = 4,
-  List<GameCard> deck = const [],
-  List<GameCard> hand = const [],
-  List<GameCard> graveyard = const [],
-  List<GameCard> exhausted = const [],
-  List<BuffState> buffs = const [],
-  List<DebuffState> debuffs = const [],
-}) {
-  return PlayerState(
-    id: id,
-    hp: hp,
-    maxHp: maxHp,
-    shield: shield,
-    currentCost: currentCost,
-    maxCost: maxCost,
-    deck: deck,
-    hand: hand,
-    graveyard: graveyard,
-    exhausted: exhausted,
-    buffs: buffs,
-    debuffs: debuffs,
-    cardsPlayedThisTurn: 0,
-    maxHandSize: 5,
-    pendingRecoilCost: 0,
-    pendingOverloadCost: 0,
-  );
-}
-
-GameState buildState({
-  required Map<PlayerId, PlayerState> players,
-  required PlayerId turnOwner,
-}) {
-  return GameState(
-    players: players,
-    phase: GamePhase(battlePhase: BattlePhase.mainPhase, turnOwner: turnOwner),
-    turnCount: 0,
-    initialTurnOwner: turnOwner,
-    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
-  );
-}
-
-GameActionPlayCard buildAction({
-  required PlayerId playerId,
-  required String cardInstanceId,
-}) {
-  return GameActionPlayCard(
-    id: const GameActionsId(value: 'action_1'),
-    actionSequenceNumber: 0,
-    playerId: playerId,
-    cardInstanceId: GameCardInstanceId(value: cardInstanceId),
-  );
-}
-
 @GenerateNiceMocks([
   MockSpec<ITurnPipelineFactory>(),
   MockSpec<GameSetupService>(),
@@ -287,7 +209,11 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'strike1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'strike1',
+        actionSequenceNumber: 2,
+      );
 
       final result = usecase.applyAction(current: state, action: action);
 
@@ -324,7 +250,6 @@ void main() {
       final card = buildCard(
         instanceId: 'potion1',
         definition: potionDef,
-        currentCost: 1,
       );
       final player = buildPlayer(
         id: playerId,
@@ -336,9 +261,10 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'potion1',
+        actionSequenceNumber: 2,
       );
 
       final result = usecase.applyAction(current: state, action: action);
@@ -375,7 +301,6 @@ void main() {
       final card = buildCard(
         instanceId: 'cond1',
         definition: conditionalDef,
-        currentCost: 1,
       );
       final player = buildPlayer(id: playerId, hand: [card]);
       // 相手はatkBuffを持っていない
@@ -384,7 +309,11 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'cond1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'cond1',
+        actionSequenceNumber: 2,
+      );
 
       final result = usecase.applyAction(current: state, action: action);
 
@@ -419,7 +348,6 @@ void main() {
       final card = buildCard(
         instanceId: 'cond1',
         definition: conditionalDef,
-        currentCost: 1,
       );
       final player = buildPlayer(id: playerId, hand: [card]);
       // 相手にatkBuffを付与しておく
@@ -431,7 +359,11 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'cond1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'cond1',
+        actionSequenceNumber: 2,
+      );
 
       final result = usecase.applyAction(current: state, action: action);
 
@@ -468,7 +400,11 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'nuke1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'nuke1',
+        actionSequenceNumber: 2,
+      );
 
       final result = usecase.applyAction(current: state, action: action);
 
@@ -500,7 +436,6 @@ void main() {
       final card = buildCard(
         instanceId: 'recycle1',
         definition: recycleStrikeDef,
-        currentCost: 1,
         runtimeStates: const [
           CardRuntimeStates.recycle(maxCount: null, remainingCount: 2),
         ],
@@ -511,9 +446,10 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'recycle1',
+        actionSequenceNumber: 2,
       );
 
       final result = usecase.applyAction(current: state, action: action);
@@ -563,7 +499,6 @@ void main() {
       final card = buildCard(
         instanceId: 'recycle1',
         definition: recycleStrikeDef,
-        currentCost: 1,
         runtimeStates: const [
           CardRuntimeStates.recycle(maxCount: null, remainingCount: 1),
         ],
@@ -574,9 +509,10 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'recycle1',
+        actionSequenceNumber: 2,
       );
 
       final result = usecase.applyAction(current: state, action: action);
@@ -628,7 +564,11 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'combo1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'combo1',
+        actionSequenceNumber: 2,
+      );
 
       final result = usecase.applyAction(current: state, action: action);
 
@@ -666,7 +606,6 @@ void main() {
       final card = buildCard(
         instanceId: 'finisher1',
         definition: finisherDef,
-        currentCost: 1,
       );
       final player = buildPlayer(id: playerId, hand: [card]);
       // 相手はHP満タン(30%以下ではない)なので条件を満たさない
@@ -675,9 +614,10 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'finisher1',
+        actionSequenceNumber: 2,
       );
 
       final result = usecase.applyAction(current: state, action: action);
@@ -710,7 +650,6 @@ void main() {
       final card = buildCard(
         instanceId: 'finisher1',
         definition: finisherDef,
-        currentCost: 1,
       );
       final player = buildPlayer(id: playerId, hand: [card]);
       // 相手のHPが30%(6/20)以下なので条件を満たす
@@ -719,9 +658,10 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'finisher1',
+        actionSequenceNumber: 2,
       );
 
       final result = usecase.applyAction(current: state, action: action);
@@ -753,7 +693,6 @@ void main() {
       final card = buildCard(
         instanceId: 'punish1',
         definition: punishDef,
-        currentCost: 1,
       );
       final player = buildPlayer(id: playerId, hand: [card]);
       final enemyWithoutDebuff = buildPlayer(id: enemyId);
@@ -761,7 +700,11 @@ void main() {
         players: {playerId: player, enemyId: enemyWithoutDebuff},
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'punish1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'punish1',
+        actionSequenceNumber: 2,
+      );
 
       final resultWithout = usecase.applyAction(
         current: stateWithout,
@@ -774,7 +717,6 @@ void main() {
       final cardAgain = buildCard(
         instanceId: 'punish2',
         definition: punishDef,
-        currentCost: 1,
       );
       final playerAgain = buildPlayer(
         id: playerId,
@@ -790,9 +732,10 @@ void main() {
         players: {playerId: playerAgain, enemyId: enemyWithDebuff},
         turnOwner: playerId,
       );
-      final actionAgain = buildAction(
+      final actionAgain = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'punish2',
+        actionSequenceNumber: 2,
       );
 
       final resultWith = usecase.applyAction(
@@ -821,7 +764,6 @@ void main() {
       final card = buildCard(
         instanceId: 'heal1',
         definition: bigHealDef,
-        currentCost: 1,
       );
       final player = buildPlayer(id: playerId, hp: 18, hand: [card]);
       final enemy = buildPlayer(id: enemyId);
@@ -829,7 +771,11 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'heal1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'heal1',
+        actionSequenceNumber: 2,
+      );
 
       final result = usecase.applyAction(current: state, action: action);
 
@@ -858,7 +804,6 @@ void main() {
       final card = buildCard(
         instanceId: 'weak1',
         definition: weakStrikeDef,
-        currentCost: 1,
       );
       final player = buildPlayer(
         id: playerId,
@@ -872,7 +817,11 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(playerId: playerId, cardInstanceId: 'weak1');
+      final action = buildPlayCardAction(
+        playerId: playerId,
+        cardInstanceId: 'weak1',
+        actionSequenceNumber: 2,
+      );
 
       final result = usecase.applyAction(current: state, action: action);
 
@@ -916,7 +865,6 @@ void main() {
         final card = buildCard(
           instanceId: 'flags1',
           definition: flagsDef,
-          currentCost: 1,
         );
         final player = buildPlayer(id: playerId, hand: [card]);
         final enemy = buildPlayer(id: enemyId);
@@ -924,9 +872,10 @@ void main() {
           players: {playerId: player, enemyId: enemy},
           turnOwner: playerId,
         );
-        final action = buildAction(
+        final action = buildPlayCardAction(
           playerId: playerId,
           cardInstanceId: 'flags1',
+          actionSequenceNumber: 2,
         );
 
         final result = usecase.applyAction(current: state, action: action);
@@ -965,7 +914,6 @@ void main() {
         final card = buildCard(
           instanceId: 'timed1',
           definition: timedDef,
-          currentCost: 1,
         );
         final player = buildPlayer(id: playerId, hand: [card]);
         final enemy = buildPlayer(id: enemyId);
@@ -973,9 +921,10 @@ void main() {
           players: {playerId: player, enemyId: enemy},
           turnOwner: playerId,
         );
-        final action = buildAction(
+        final action = buildPlayCardAction(
           playerId: playerId,
           cardInstanceId: 'timed1',
+          actionSequenceNumber: 2,
         );
 
         final result = usecase.applyAction(current: state, action: action);
@@ -1008,7 +957,6 @@ void main() {
       final card = buildCard(
         instanceId: 'exhaustPriority1',
         definition: exhaustPriorityDef,
-        currentCost: 1,
       );
       final player = buildPlayer(id: playerId, hand: [card]);
       final enemy = buildPlayer(id: enemyId);
@@ -1016,9 +964,10 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'exhaustPriority1',
+        actionSequenceNumber: 2,
       );
 
       final result = usecase.applyAction(current: state, action: action);
@@ -1050,7 +999,6 @@ void main() {
       final card = buildCard(
         instanceId: 'infiniteRecycle1',
         definition: infiniteRecycleDef,
-        currentCost: 1,
       );
       final player = buildPlayer(id: playerId, hand: [card]);
       final enemy = buildPlayer(id: enemyId);
@@ -1058,9 +1006,10 @@ void main() {
         players: {playerId: player, enemyId: enemy},
         turnOwner: playerId,
       );
-      final action = buildAction(
+      final action = buildPlayCardAction(
         playerId: playerId,
         cardInstanceId: 'infiniteRecycle1',
+        actionSequenceNumber: 2,
       );
 
       final result = usecase.applyAction(current: state, action: action);
@@ -1100,7 +1049,6 @@ void main() {
         final card = buildCard(
           instanceId: 'zeroRecycle1',
           definition: zeroRecycleDef,
-          currentCost: 1,
           runtimeStates: const [
             CardRuntimeStates.recycle(maxCount: 0, remainingCount: 0),
           ],
@@ -1111,9 +1059,10 @@ void main() {
           players: {playerId: player, enemyId: enemy},
           turnOwner: playerId,
         );
-        final action = buildAction(
+        final action = buildPlayCardAction(
           playerId: playerId,
           cardInstanceId: 'zeroRecycle1',
+          actionSequenceNumber: 2,
         );
 
         final result = usecase.applyAction(current: state, action: action);
@@ -1138,7 +1087,7 @@ void main() {
     GameActionGameStart buildGameStartAction({int seed = 42}) {
       return const GameActions.gameStart(
             id: GameActionsId(value: 'action_start'),
-            actionSequenceNumber: 0,
+            actionSequenceNumber: 1,
             playerAId: playerId,
             playerBId: enemyId,
             playerADeckRecipe: deckRecipeA,
@@ -1297,7 +1246,7 @@ void main() {
       ).called(1);
     });
 
-    test('pipeline.processの結果がそのまま返る', () {
+    test('pipeline.processの結果がそのまま返る（シーケンス番号が+1された状態）', () {
       final action = buildGameStartAction();
       final setupState = buildState(
         players: {
@@ -1339,7 +1288,15 @@ void main() {
 
       final result = usecase.applyAction(current: null, action: action);
 
-      expect(result, pipelineResult);
+      final expectedState = pipelineState.incrementalActionSequence();
+
+      expect(
+        result,
+        ApplyActionResult.success(
+          state: expectedState,
+          steps: const [setupStep],
+        ),
+      );
       expect(
         (result as ApplyActionResultSuccess)
             .state
@@ -1456,7 +1413,7 @@ void main() {
     GameActionGameStart buildGameStartAction({int seed = 42}) {
       return GameActionGameStart(
         id: const GameActionsId(value: 'action_start'),
-        actionSequenceNumber: 0,
+        actionSequenceNumber: 1,
         playerAId: playerId,
         playerBId: enemyId,
         playerADeckRecipe: deckRecipe,
@@ -1632,7 +1589,7 @@ void main() {
         current: state,
         action: GameActionPlayCard(
           id: const GameActionsId(value: 'action_play'),
-          actionSequenceNumber: 0,
+          actionSequenceNumber: 2,
           playerId: turnOwnerId,
           cardInstanceId: cardToPlay.instanceId,
         ),
