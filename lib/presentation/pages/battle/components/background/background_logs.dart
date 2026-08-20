@@ -59,10 +59,16 @@ class BackgroundLogs extends HookConsumerWidget {
             ),
             Expanded(
               child: ListView.builder(
+                findChildIndexCallback: (key) {
+                  final valuekey = key as ValueKey<GameStepEvent>;
+                  final index = events.value.indexOf(valuekey.value);
+                  return index == -1 ? null : index;
+                },
                 itemCount: events.value.length,
                 itemBuilder: (context, index) {
                   final event = events.value[index];
                   return AnimatedText(
+                    key: ValueKey(event),
                     event.text(l10n),
                     effects: const [
                       TypewriterEffect(
