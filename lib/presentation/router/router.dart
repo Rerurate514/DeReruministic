@@ -7,6 +7,7 @@ import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
 import 'package:dereruministic/presentation/pages/home/home_page.dart';
 import 'package:dereruministic/presentation/pages/lobby/lobby_page.dart';
+import 'package:dereruministic/presentation/pages/room/room_page.dart';
 import 'package:dereruministic/presentation/router/router_paths.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -28,6 +29,11 @@ GoRouter router(Ref ref) {
         path: RouterPaths.lobby.path,
         name: RouterPaths.lobby.name,
         builder: (context, state) => const LobbyPage(),
+      ),
+      GoRoute(
+        path: RouterPaths.room.path,
+        name: RouterPaths.room.name,
+        builder: (context, state) => const RoomPage(),
       ),
       GoRoute(
         path: RouterPaths.battle.path,
