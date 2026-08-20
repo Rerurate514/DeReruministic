@@ -3,10 +3,10 @@ import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/enemy_ui_state_provider.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
+import 'package:dereruministic/presentation/widgets/ui_active_filled_square.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:material_symbols_icons/symbols.dart';
 
 class EnemyStateName extends ConsumerWidget {
   const EnemyStateName({required this.enemy, super.key});
@@ -21,13 +21,24 @@ class EnemyStateName extends ConsumerWidget {
       enemyPlayerUiStateProvider(enemy).select((s) => s?.name),
     );
 
-    return Row(
-      spacing: 4,
+    return Column(
+      crossAxisAlignment: .start,
       children: [
-        Icon(
-          Symbols.warning,
-          size: 16,
-          color: theme.textSecondary,
+        Row(
+          mainAxisSize: .min,
+          spacing: 16,
+          children: [
+            UiActiveFilledSquare(
+              color: theme.brandColor,
+              isOnlyBorder: true,
+            ),
+            Text(
+              l10n.battle_page_opponent_id_text,
+              style: GoogleFonts.poppins(
+                color: theme.textSecondary.withAlpha(100),
+              ),
+            ),
+          ],
         ),
         AnimatedText(
           name ?? l10n.game_state_is_null,
@@ -35,7 +46,7 @@ class EnemyStateName extends ConsumerWidget {
           style: GoogleFonts.shareTechMono(
             fontWeight: .bold,
             fontSize: 20,
-            color: theme.textSecondary,
+            color: theme.brandTertiary,
             letterSpacing: 2,
           ),
         ),

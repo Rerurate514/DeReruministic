@@ -55,6 +55,7 @@
     "battle_page_phase_select_discard": "SD",
 
     "battle_page_user_id_text": "USER ID",
+    "battle_page_opponent_id_text": "OPPONENT ID",
 
     "battle_page_player_deck_count_text": "[DK]",
     "battle_page_player_graveyard_count_text": "[GY]",
