@@ -1,3 +1,4 @@
+import 'package:animated_text_effects/animated_text_effects.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -59,8 +60,12 @@ class UiInterlacingArtifactsText extends HookWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        Text(
+        AnimatedText(
           text,
+          effects: const [
+            VHSGlitchEffect(),
+          ],
+          repeat: true,
           style: GoogleFonts.shareTechMono(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
