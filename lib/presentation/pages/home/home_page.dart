@@ -22,6 +22,7 @@ class HomePage extends ConsumerWidget {
           FittedBox(
             child: AppTitle(),
           ),
+          UiGap.m(),
           AppSubtitle(),
           AppSubtitleTrailing(),
           UiGap.m(),
