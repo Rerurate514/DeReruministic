@@ -15,7 +15,7 @@ class UiBorderSquare extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        border: Border.all(color: theme.brandSecondary, width: 1),
+        border: Border.all(color: color ?? theme.brandSecondary, width: 1),
         color: Colors.transparent,
       ),
     );
