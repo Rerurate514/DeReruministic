@@ -118,7 +118,7 @@ void main() {
       ).called(1);
 
       final state = result.state;
-      expect(state.seed, equals(seed));
+      expect(state.metadata.seed, equals(seed));
       expect(state.turnCount, equals(1));
       expect(state.phase.battlePhase, equals(BattlePhase.battleStart));
       expect(

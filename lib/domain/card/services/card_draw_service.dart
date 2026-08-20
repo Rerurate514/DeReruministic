@@ -81,7 +81,7 @@ class CardDrawService {
     final result = deckRestorationService.execute(
       newState,
       targetPlayerId,
-      Random(state.seed),
+      Random(state.metadata.seed),
     );
 
     return result.map(

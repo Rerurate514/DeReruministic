@@ -3,6 +3,7 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -24,7 +25,6 @@ void main() {
   ).copyWith(shield: 5);
 
   final baseState = GameState(
-    seed: 12345,
     players: {
       playerAId: playerAState,
       playerBId: playerBState,
@@ -32,6 +32,7 @@ void main() {
     phase: GamePhase.init(playerAId),
     turnCount: 1,
     initialTurnOwner: playerAId,
+    metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 0),
   );
 
   setUp(() {

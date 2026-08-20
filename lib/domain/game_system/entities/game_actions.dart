@@ -10,8 +10,14 @@ part 'game_actions.g.dart';
 
 @freezed
 sealed class GameActions with _$GameActions {
+  factory GameActions.fromJson(Map<String, dynamic> json) =>
+      _$GameActionsFromJson(json);
+
+  const GameActions._();
+
   const factory GameActions.gameStart({
     required GameActionsId id,
+    required int actionSequenceNumber,
     required PlayerId playerAId,
     required PlayerId playerBId,
     required List<CardDefinitionId> playerADeckRecipe,
@@ -21,6 +27,7 @@ sealed class GameActions with _$GameActions {
 
   const factory GameActions.playCard({
     required GameActionsId id,
+    required int actionSequenceNumber,
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
     ActionTargets? target,
@@ -28,26 +35,30 @@ sealed class GameActions with _$GameActions {
 
   const factory GameActions.discardCard({
     required GameActionsId id,
+    required int actionSequenceNumber,
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
   }) = GameActionDiscardCard;
 
   const factory GameActions.selectOverflowDiscards({
     required GameActionsId id,
+    required int actionSequenceNumber,
     required PlayerId playerId,
     required List<GameCardInstanceId> selectedCardInstanceIds,
   }) = GameActionSelectOverflowDiscards;
 
   const factory GameActions.turnEnd({
     required GameActionsId id,
+    required int actionSequenceNumber,
     required PlayerId playerId,
   }) = GameActionTurnEnd;
 
   const factory GameActions.surrender({
     required GameActionsId id,
+    required int actionSequenceNumber,
     required PlayerId playerId,
   }) = GameActionSurrender;
 
-  factory GameActions.fromJson(Map<String, dynamic> json) =>
-      _$GameActionsFromJson(json);
+  @override
+  int get actionSequenceNumber;
 }

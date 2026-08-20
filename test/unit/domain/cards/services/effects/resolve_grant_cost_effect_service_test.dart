@@ -7,6 +7,7 @@ import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dar
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -37,11 +38,11 @@ GameState buildState({
   required PlayerId turnOwner,
 }) {
   return GameState(
-    seed: 0,
     players: players,
     phase: GamePhase(battlePhase: BattlePhase.mainPhase, turnOwner: turnOwner),
     turnCount: 0,
     initialTurnOwner: turnOwner,
+    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
   );
 }
 

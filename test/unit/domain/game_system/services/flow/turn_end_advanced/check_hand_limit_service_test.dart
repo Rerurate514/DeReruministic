@@ -8,6 +8,7 @@ import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dar
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -89,7 +90,7 @@ void main() {
         playerAId: playerA,
         playerBId: playerB,
       },
-      seed: seed,
+      metadata: const SystemMetadata(seed: seed, actionSequenceNumber: 0),
       turnCount: 0,
       initialTurnOwner: const PlayerId(value: 'player_a'),
     );

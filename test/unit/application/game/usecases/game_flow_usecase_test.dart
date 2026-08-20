@@ -11,6 +11,7 @@ import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -46,7 +47,6 @@ void main() {
   final playerBState = PlayerState.create(id: playerBId, deck: const []);
 
   final baseState = GameState(
-    seed: 12345,
     players: {
       playerAId: playerAState,
       playerBId: playerBState,
@@ -54,6 +54,7 @@ void main() {
     phase: GamePhase.init(playerAId),
     turnCount: 1,
     initialTurnOwner: playerAId,
+    metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 0),
   );
 
   setUp(() {
@@ -97,6 +98,7 @@ void main() {
             current: null,
             action: const GameActions.turnEnd(
               id: actionId,
+              actionSequenceNumber: 0,
               playerId: playerAId,
             ),
           ),
@@ -110,6 +112,7 @@ void main() {
     test('GameStartアクションが実行された時、GameSetupServiceおよび初期化パイプラインが正しく呼ばれること', () {
       final action = GameActions.gameStart(
         id: actionId,
+        actionSequenceNumber: 0,
         playerAId: playerAId,
         playerBId: playerBId,
         playerADeckRecipe: mockPlayer.deckRecipe,
@@ -186,6 +189,7 @@ void main() {
     test('TurnEndアクションが実行された時、ターン終了用パイプラインが正しく取得されて実行されること', () {
       const action = GameActions.turnEnd(
         id: actionId,
+        actionSequenceNumber: 0,
         playerId: playerAId,
       );
 
@@ -227,6 +231,7 @@ void main() {
     test('GameActionDiscardCard は Stateの変更がなく empty steps (noSteps) を返すこと', () {
       const action = GameActions.discardCard(
         id: actionId,
+        actionSequenceNumber: 0,
         playerId: playerAId,
         cardInstanceId: cardInstanceId,
       );
@@ -245,6 +250,7 @@ void main() {
       () {
         const action = GameActions.selectOverflowDiscards(
           id: actionId,
+          actionSequenceNumber: 0,
           playerId: playerAId,
           selectedCardInstanceIds: [cardInstanceId],
         );
@@ -262,6 +268,7 @@ void main() {
     test('GameActionSurrender は Stateの変更がなく empty steps (noSteps) を返すこと', () {
       const action = GameActions.surrender(
         id: actionId,
+        actionSequenceNumber: 0,
         playerId: playerAId,
       );
 

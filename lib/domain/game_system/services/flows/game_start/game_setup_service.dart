@@ -7,6 +7,7 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -68,10 +69,10 @@ class GameSetupService {
         playerAId: playerAState,
         playerBId: playerBState,
       },
-      seed: seed,
       phase: GamePhase(battlePhase: .battleStart, turnOwner: initialTurnOwner),
       turnCount: 1,
       initialTurnOwner: initialTurnOwner,
+      metadata: SystemMetadata(seed: seed, actionSequenceNumber: 0),
     );
 
     final turnStartStep = GameStepEvent.gameStarted(

@@ -8,6 +8,7 @@ import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dar
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
+import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
@@ -88,7 +89,6 @@ GameState buildState({
   int turnCount = 0,
 }) {
   return GameState(
-    seed: seed,
     players: players,
     phase: GamePhase(
       battlePhase: battlePhase,
@@ -96,6 +96,7 @@ GameState buildState({
     ),
     turnCount: turnCount,
     initialTurnOwner: players.keys.first,
+    metadata: SystemMetadata(seed: seed, actionSequenceNumber: 0),
   );
 }
 
@@ -106,6 +107,7 @@ GameActionPlayCard buildPlayCardAction({
 }) {
   return GameActionPlayCard(
     id: GameActionsId(value: actionId),
+    actionSequenceNumber: 0,
     playerId: playerId,
     cardInstanceId: GameCardInstanceId(value: cardInstanceId),
   );

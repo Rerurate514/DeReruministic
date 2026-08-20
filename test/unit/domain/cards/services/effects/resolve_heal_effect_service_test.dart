@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -40,7 +41,6 @@ GameState buildState({
   PlayerId? turnOwner,
 }) {
   return GameState(
-    seed: 0,
     players: {
       playerA.id: playerA,
       playerB.id: playerB,
@@ -48,6 +48,7 @@ GameState buildState({
     phase: GamePhase.init(turnOwner ?? playerA.id),
     turnCount: 0,
     initialTurnOwner: turnOwner ?? playerA.id,
+    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
   );
 }
 

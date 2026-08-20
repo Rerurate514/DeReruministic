@@ -54,6 +54,7 @@ import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/constants/player_constants.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -202,11 +203,11 @@ GameState buildState({
   required PlayerId turnOwner,
 }) {
   return GameState(
-    seed: 0,
     players: players,
     phase: GamePhase(battlePhase: BattlePhase.mainPhase, turnOwner: turnOwner),
     turnCount: 0,
     initialTurnOwner: turnOwner,
+    metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 0),
   );
 }
 
@@ -216,6 +217,7 @@ GameActionPlayCard buildAction({
 }) {
   return GameActionPlayCard(
     id: const GameActionsId(value: 'action_1'),
+    actionSequenceNumber: 0,
     playerId: playerId,
     cardInstanceId: GameCardInstanceId(value: cardInstanceId),
   );
@@ -1136,6 +1138,7 @@ void main() {
     GameActionGameStart buildGameStartAction({int seed = 42}) {
       return const GameActions.gameStart(
             id: GameActionsId(value: 'action_start'),
+            actionSequenceNumber: 0,
             playerAId: playerId,
             playerBId: enemyId,
             playerADeckRecipe: deckRecipeA,
@@ -1453,6 +1456,7 @@ void main() {
     GameActionGameStart buildGameStartAction({int seed = 42}) {
       return GameActionGameStart(
         id: const GameActionsId(value: 'action_start'),
+        actionSequenceNumber: 0,
         playerAId: playerId,
         playerBId: enemyId,
         playerADeckRecipe: deckRecipe,
@@ -1555,7 +1559,7 @@ void main() {
       );
 
       final state = (result as ApplyActionResultSuccess).state;
-      expect(state.seed, 12345);
+      expect(state.metadata.seed, 12345);
     });
 
     test('同じseedでGameStartすると、同じ結果になる(決定的)', () {
@@ -1628,6 +1632,7 @@ void main() {
         current: state,
         action: GameActionPlayCard(
           id: const GameActionsId(value: 'action_play'),
+          actionSequenceNumber: 0,
           playerId: turnOwnerId,
           cardInstanceId: cardToPlay.instanceId,
         ),
