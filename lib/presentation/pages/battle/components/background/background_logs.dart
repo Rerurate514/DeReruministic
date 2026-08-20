@@ -1,3 +1,4 @@
+import 'package:animated_text_effects/animated_text_effects.dart';
 import 'package:collection/collection.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -61,8 +62,13 @@ class BackgroundLogs extends HookConsumerWidget {
                 itemCount: events.value.length,
                 itemBuilder: (context, index) {
                   final event = events.value[index];
-                  return Text(
+                  return AnimatedText(
                     event.text(l10n),
+                    effects: const [
+                      TypewriterEffect(
+                        delayBetweenChars: Duration(milliseconds: 20),
+                      ),
+                    ],
                     style: GoogleFonts.shareTechMono(
                       color: theme.textPrimary.withAlpha(100),
                     ),
