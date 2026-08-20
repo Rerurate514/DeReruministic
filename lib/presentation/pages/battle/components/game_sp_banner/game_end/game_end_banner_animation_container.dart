@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dereruministic/presentation/pages/battle/components/game_sp_banner/game_start/game_start_banner.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_end_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -16,7 +17,7 @@ class GameEndBannerAnimationContainer extends HookConsumerWidget {
       duration: const Duration(seconds: 3),
     );
 
-    final isShow = ref.watch(displayedGameStartProvider);
+    final isShow = ref.watch(displayedGameEndProvider);
 
     final animation = useMemoized(
       () => TweenSequence<double>([
