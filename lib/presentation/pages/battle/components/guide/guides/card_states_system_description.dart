@@ -24,7 +24,7 @@ class CardStateSystemDescription extends StatelessWidget {
     final theme = context.themePalette;
     return GuideTextTemplate(
       title: l10n.battle_page_card_state_system_title,
-      titleColor: theme.brandSecondary,
+      titleColor: theme.brandTertiary,
       leading: const Icon(Symbols.flex_no_wrap),
       details: Column(
         crossAxisAlignment: .start,
