@@ -28,6 +28,14 @@ sealed class GameState with _$GameState {
 }
 
 extension GameStateEx on GameState {
+  GameState incrementalActionSequence() {
+    return copyWith(
+      metadata: metadata.copyWith(
+        actionSequenceNumber: metadata.actionSequenceNumber + 1,
+      ),
+    );
+  }
+
   PlayerState? get currentTurnOwner => players[phase.turnOwner];
 
   GameState clearShield(PlayerId targetId) {

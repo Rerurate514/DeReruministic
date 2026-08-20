@@ -31,15 +31,16 @@ class GameNotifier extends _$GameNotifier {
       action: action,
     );
 
-    if (applyActionResult case ApplyActionResultFailure()) {
-      return;
+    if (applyActionResult case ApplyActionResultSuccess(
+      :final state,
+      :final steps,
+    )) {
+      this.state = state;
+      ref.read(stepEventQueueProvider.notifier).enqueueAll(steps);
+      // await eventSourcingRepository.sendAction(action);
+    } else if (applyActionResult case ApplyActionResultFailure()) {
+      //TODO(error): ERRORハンドリング
     }
-
-    state = applyActionResult.state;
-    ref
-        .read(stepEventQueueProvider.notifier)
-        .enqueueAll((applyActionResult as ApplyActionResultSuccess).steps);
-    //await eventSourcingRepository.sendAction(action);
   }
 
   Future<void> startGame(Player playerA, Player playerB, int seed) async {
@@ -47,6 +48,7 @@ class GameNotifier extends _$GameNotifier {
 
     final action = GameActions.gameStart(
       id: GameActionsId.generate(),
+      actionSequenceNumber: 1,
       playerAId: playerA.id,
       playerBId: playerB.id,
       playerADeckRecipe: playerA.deckRecipe,
@@ -65,6 +67,7 @@ class GameNotifier extends _$GameNotifier {
 
     final action = GameActions.playCard(
       id: GameActionsId.generate(),
+      actionSequenceNumber: currentState.metadata.actionSequenceNumber + 1,
       playerId: cardUsedPlayerId,
       cardInstanceId: card.instanceId,
     );
@@ -73,12 +76,13 @@ class GameNotifier extends _$GameNotifier {
   }
 
   Future<void> endTurn() async {
-    final current = state;
-    if (current == null) return;
-    if (current.phase.battlePhase == BattlePhase.battleEnd) return;
+    final currentState = state;
+    if (currentState == null) return;
+    if (currentState.phase.battlePhase == BattlePhase.battleEnd) return;
     final action = GameActions.turnEnd(
       id: GameActionsId.generate(),
-      playerId: current.phase.turnOwner,
+      actionSequenceNumber: currentState.metadata.actionSequenceNumber + 1,
+      playerId: currentState.phase.turnOwner,
     );
 
     await _dispatch(action: action);

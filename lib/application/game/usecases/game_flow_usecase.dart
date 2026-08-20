@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/i_turn_pipeline_factory.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline_factory.dart';
+import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -39,6 +40,27 @@ class GameFlowUsecase {
     required GameState? current,
     required GameActions action,
   }) {
+    if (!_isValidActionSequenceNumber(action, current) &&
+        action is! GameActionGameStart) {
+      return ApplyActionResult.failure(
+        state: current!,
+        reason: ActionFailureReason.invalidActionSequence,
+      );
+    }
+
+    final result = _dispatchAction(current, action);
+
+    return switch (result) {
+      ApplyActionResultSuccess(:final state, :final steps) =>
+        ApplyActionResult.success(
+          state: state.incrementalActionSequence(),
+          steps: steps,
+        ),
+      ApplyActionResultFailure() => result,
+    };
+  }
+
+  ApplyActionResult _dispatchAction(GameState? current, GameActions action) {
     return switch (action) {
       GameActionGameStart() => _applyGameStart(action),
       GameActionPlayCard() => _applyPlayCard(
@@ -83,16 +105,20 @@ class GameFlowUsecase {
       seed: action.seed,
     );
 
+    if (!_isValidActionSequenceNumber(action, initial.state)) {
+      return ApplyActionResult.failure(
+        state: initial.state,
+        reason: ActionFailureReason.invalidActionSequence,
+      );
+    }
+
     final pipeline = pipelineFactory.createGameStartPipeline();
 
     if (initial case ApplyActionResultFailure()) {
       return initial;
     }
 
-    return pipeline.process(
-      initial.state,
-      (initial as ApplyActionResultSuccess).steps,
-    );
+    return pipeline.process(initial.state, []);
   }
 
   ApplyActionResult _applyPlayCard(
@@ -111,6 +137,7 @@ class GameFlowUsecase {
     GameState state,
     GameActionDiscardCard action,
   ) {
+    //TODO(action): add
     return ApplyActionResult.noSteps(state: state);
   }
 
@@ -118,6 +145,7 @@ class GameFlowUsecase {
     GameState state,
     GameActionSelectOverflowDiscards action,
   ) {
+    //TODO(action): add
     return ApplyActionResult.noSteps(state: state);
   }
 
@@ -137,6 +165,21 @@ class GameFlowUsecase {
     GameState state,
     GameActionSurrender action,
   ) {
+    //TODO(action): add
     return ApplyActionResult.noSteps(state: state);
+  }
+
+  bool _isValidActionSequenceNumber(
+    GameActions action,
+    GameState? state,
+  ) {
+    if (action is GameActionGameStart) {
+      return action.actionSequenceNumber == 1;
+    }
+
+    if (state == null) return false;
+
+    return state.metadata.actionSequenceNumber + 1 ==
+        action.actionSequenceNumber;
   }
 }
