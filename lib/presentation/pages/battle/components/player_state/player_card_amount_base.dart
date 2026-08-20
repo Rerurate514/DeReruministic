@@ -1,3 +1,4 @@
+import 'package:dereruministic/presentation/components/app_drum_roll_switcher.dart';
 import 'package:dereruministic/presentation/painter/cards_amount_painter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -39,9 +40,13 @@ class PlayerCardAmount extends StatelessWidget {
                   label,
                   style: GoogleFonts.shareTechMono(fontSize: 12),
                 ),
-                Text(
-                  '$count',
-                  style: GoogleFonts.shareTechMono(fontWeight: .bold),
+                AppDrumRollSwitcher(
+                  duration: const Duration(milliseconds: 300),
+                  child: Text(
+                    key: ValueKey(count),
+                    '$count',
+                    style: GoogleFonts.shareTechMono(fontWeight: .bold),
+                  ),
                 ),
               ],
             ),

@@ -1,5 +1,6 @@
 import 'package:dereruministic/application/game/state/game_notifier.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
+import 'package:dereruministic/presentation/components/app_drum_roll_switcher.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,11 +27,14 @@ class TurnText extends ConsumerWidget {
             color: theme.brandColor,
           ),
         ),
-        Text(
-          '${turnCount ?? l10n.game_state_is_null}',
-          style: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: .bold,
+        AppDrumRollSwitcher(
+          child: Text(
+            key: ValueKey(turnCount),
+            '${turnCount ?? 0}',
+            style: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: .bold,
+            ),
           ),
         ),
       ],
