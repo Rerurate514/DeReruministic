@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/deck_editor_page.dart';
 import 'package:dereruministic/presentation/pages/home/home_page.dart';
 import 'package:dereruministic/presentation/pages/lobby/lobby_page.dart';
 import 'package:dereruministic/presentation/pages/room/room_page.dart';
@@ -24,6 +25,11 @@ GoRouter router(Ref ref) {
         path: RouterPaths.home.path,
         name: RouterPaths.home.name,
         builder: (context, state) => const HomePage(),
+      ),
+      GoRoute(
+        path: RouterPaths.deckEditor.path,
+        name: RouterPaths.deckEditor.name,
+        builder: (context, state) => const DeckEditorPage(),
       ),
       GoRoute(
         path: RouterPaths.lobby.path,

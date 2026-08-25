@@ -1,7 +1,9 @@
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_highlight_transparency_button.dart';
+import 'package:dereruministic/presentation/router/router_paths.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class DeckEditorButton extends StatelessWidget {
@@ -13,7 +15,9 @@ class DeckEditorButton extends StatelessWidget {
     final theme = context.themePalette;
 
     return AppHighlightTransparencyButton(
-      onPressed: () {},
+      onPressed: () async {
+        await context.push(RouterPaths.deckEditor.path);
+      },
       child: Row(
         mainAxisAlignment: .center,
         spacing: 8,
