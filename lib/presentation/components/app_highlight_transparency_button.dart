@@ -15,6 +15,7 @@ class AppHighlightTransparencyButton extends StatelessWidget {
     this.borderRadius = 0,
     this.isBlur = false,
     this.blurSigma = 4,
+    this.padding,
   });
 
   final void Function()? onPressed;
@@ -29,6 +30,8 @@ class AppHighlightTransparencyButton extends StatelessWidget {
   final double borderRadius;
   final bool isBlur;
   final double blurSigma;
+
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +61,7 @@ class AppHighlightTransparencyButton extends StatelessWidget {
             borderRadius: BorderRadius.circular(borderRadius),
             side: BorderSide(color: foregroundColor ?? theme.brandColor),
           ),
+          padding: padding,
         ),
         child: child,
       ),
