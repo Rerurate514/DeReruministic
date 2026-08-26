@@ -6,6 +6,9 @@
 
     "game_state_is_null": "NULL",
 
+    "dialogs_simple_ok_dialog_cancel_button_text": "cancel",
+    "dialogs_simple_ok_dialog_ok_button_text": "ok",
+
     "home_page_title": "ホームページ",
     "home_page_start_battle_button_text": "START BATTLE",
     "home_page_deck_editor_button_text": "DECK EDITOR",
