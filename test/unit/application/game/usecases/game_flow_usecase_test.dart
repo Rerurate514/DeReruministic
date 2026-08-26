@@ -2,6 +2,7 @@ import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart'
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/i_turn_pipeline_factory.dart';
@@ -71,15 +72,15 @@ void main() {
     mockGameSetupService = MockGameSetupService();
     mockApplyPlayCardService = MockApplyPlayCardService();
 
-    mockPlayer = const Player(
+    mockPlayer = Player(
       id: playerAId,
       name: 'Player A',
-      deckRecipe: [],
+      deckRecipe: DeckRecipe.empty(),
     );
-    mockEnemy = const Player(
+    mockEnemy = Player(
       id: playerBId,
       name: 'Player B',
-      deckRecipe: [],
+      deckRecipe: DeckRecipe.empty(),
     );
 
     gameFlowUsecase = GameFlowUsecase(

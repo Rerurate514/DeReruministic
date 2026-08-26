@@ -8,6 +8,7 @@ import 'package:dereruministic/application/game/state/step_event_queue_notifier.
 import 'package:dereruministic/domain/card/data/basic_pack.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
@@ -18,10 +19,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 void main() {
-  final basicPackCardDefIds = basicPack
-      .map((defs) => defs.cardDefId)
-      .take(19)
-      .toList();
+  final basicPackCardDefIds = DeckRecipe.create(
+    basicPack.map((defs) => defs.cardDefId).take(19).toList(),
+  );
 
   late ProviderContainer container;
 
