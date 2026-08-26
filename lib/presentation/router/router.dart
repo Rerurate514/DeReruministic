@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:dereruministic/domain/card/data/card_packs.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
@@ -48,21 +49,25 @@ GoRouter router(Ref ref) {
           playerA: Player(
             id: PlayerId.generate(),
             name: 'Player_01',
-            deckRecipe: List.generate(
-              40,
-              (_) =>
-                  allCardDefinitions[Random().nextInt(
-                        allCardDefinitions.length,
-                      )]
-                      .cardDefId,
+            deckRecipe: DeckRecipe.create(
+              List.generate(
+                40,
+                (_) =>
+                    allCardDefinitions[Random().nextInt(
+                          allCardDefinitions.length,
+                        )]
+                        .cardDefId,
+              ),
             ),
           ),
           playerB: Player(
             id: PlayerId.generate(),
             name: 'Player_02',
-            deckRecipe: List.generate(
-              40,
-              (_) => const CardDefinitionId(value: 'basic_pack_hit'),
+            deckRecipe: DeckRecipe.create(
+              List.generate(
+                40,
+                (_) => const CardDefinitionId(value: 'basic_pack_hit'),
+              ),
             ),
           ),
           seed: 321421431432,

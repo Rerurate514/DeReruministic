@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
-import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -28,8 +28,8 @@ class GameSetupService {
   ApplyActionResult execute({
     required PlayerId playerAId,
     required PlayerId playerBId,
-    required List<CardDefinitionId> playerADeckRecipe,
-    required List<CardDefinitionId> playerBDeckRecipe,
+    required DeckRecipe playerADeckRecipe,
+    required DeckRecipe playerBDeckRecipe,
     required List<CardDefinition> cardDefs,
     required int seed,
     PlayerId? firstTurn,
