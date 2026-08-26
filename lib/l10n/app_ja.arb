@@ -489,5 +489,14 @@
         }
     },
 
-    "deck_editor_page_deck_save_button_text": "Save"
+    "deck_editor_page_deck_save_button_text": "Save",
+    "deck_editor_page_cards_count_text_title": "CARDS:",
+    "deck_editor_page_cards_count_text_count": "{current}/{max}",
+    "@deck_editor_page_cards_count_text_count": {
+        "placeholders": {
+            "current": { "type": "int" },
+            "max": { "type": "int" }
+        }
+    },
+    "deck_editor_page_deck_clear_all_button_text": "CLEAR ALL"
 }
