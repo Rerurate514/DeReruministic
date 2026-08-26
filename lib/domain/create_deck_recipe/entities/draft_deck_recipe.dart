@@ -7,10 +7,10 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'draft_deck_recipe.freezed.dart';
 part 'draft_deck_recipe.g.dart';
 
-typedef AddCardResult = (
+typedef AddCardResult = ({
   DraftDeckRecipe draftDeckRecipe,
   TryAddCardResult result,
-);
+});
 
 @freezed
 abstract class DraftDeckRecipe with _$DraftDeckRecipe {
@@ -51,16 +51,16 @@ abstract class DraftDeckRecipe with _$DraftDeckRecipe {
   AddCardResult tryAddCard(
     CardDefinitionId newCardDefId,
   ) {
-    final canAddCardReason = validateAddCard(newCardDefId);
-    if (canAddCardReason != TryAddCardResult.success) {
-      return (this, canAddCardReason);
+    final canAddCardResult = validateAddCard(newCardDefId);
+    if (canAddCardResult != TryAddCardResult.success) {
+      return (draftDeckRecipe: this, result: canAddCardResult);
     }
 
     final newDraftDeckRecipe = copyWith(
       cardDefIds: [...cardDefIds, newCardDefId],
     );
 
-    return (newDraftDeckRecipe, canAddCardReason);
+    return (draftDeckRecipe: newDraftDeckRecipe, result: canAddCardResult);
   }
 
   DraftDeckRecipe removeCardAt(int index) {

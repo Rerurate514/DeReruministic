@@ -1,16 +1,10 @@
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/draft_deck_recipe.dart';
 import 'package:dereruministic/domain/create_deck_recipe/value_objects/deck_recipe_id.dart';
-import 'package:dereruministic/domain/create_deck_recipe/value_objects/try_add_card_result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'deck_recipe.freezed.dart';
 part 'deck_recipe.g.dart';
-
-typedef AddCardResult = (
-  DeckRecipe deckRecipe,
-  TryAddCardResult result,
-);
 
 @freezed
 abstract class DeckRecipe with _$DeckRecipe {
