@@ -487,5 +487,7 @@
         "placeholders": {
         "turn": { "type": "int" }
         }
-    }
+    },
+
+    "deck_editor_page_deck_save_button_text": "Save"
 }
