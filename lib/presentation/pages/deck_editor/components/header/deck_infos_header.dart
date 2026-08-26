@@ -10,9 +10,7 @@ class DeckInfosHeader extends StatelessWidget {
     return const Row(
       mainAxisAlignment: .spaceBetween,
       children: [
-        CardsCount(
-          count: 10,
-        ),
+        CardsCount(),
         DeckClearButton(),
       ],
     );
