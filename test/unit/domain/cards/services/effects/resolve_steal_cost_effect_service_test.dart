@@ -69,7 +69,7 @@ void main() {
     });
 
     test('amountが0の場合、双方のコストは変化せずstepのamountも0になる', () {
-      final source = buildPlayer(id: sourceId, currentCost: 3, maxCost: 10);
+      final source = buildPlayer(id: sourceId, maxCost: 10);
       final other = buildPlayer(id: otherId, currentCost: 5, maxCost: 10);
       final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.stealCost(amount: 0);
@@ -105,7 +105,7 @@ void main() {
     });
 
     test('相手プレイヤーが存在しない場合、playerNotFoundで失敗し状態は変化しない', () {
-      final source = buildPlayer(id: sourceId, currentCost: 3, maxCost: 10);
+      final source = buildPlayer(id: sourceId, maxCost: 10);
       final state = buildState(players: {sourceId: source});
       const effect = CardEffects.stealCost(amount: 3);
 

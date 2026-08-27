@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class GlowLine extends StatelessWidget {
-  const GlowLine({super.key, required this.color});
+  const GlowLine({required this.color, super.key});
 
   final Color color;
 

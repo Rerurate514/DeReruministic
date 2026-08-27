@@ -1,14 +1,14 @@
-import 'package:dereruministic/domain/card/data/basic_pack.dart';
-import 'package:dereruministic/domain/card/data/command_pack.dart';
-import 'package:dereruministic/domain/card/data/firewall_pack.dart';
-import 'package:dereruministic/domain/card/data/glitch_pack.dart';
-import 'package:dereruministic/domain/card/data/kernel_pack.dart';
-import 'package:dereruministic/domain/card/data/overload_pack.dart';
-import 'package:dereruministic/domain/card/data/payload_pack.dart';
-import 'package:dereruministic/domain/card/data/restore_pack.dart';
-import 'package:dereruministic/domain/card/data/stealth_pack.dart';
-import 'package:dereruministic/domain/card/data/virus_pack.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
+import 'package:dereruministic/domain/card_packs/data/basic_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/command_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/firewall_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/glitch_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/kernel_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/overload_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/payload_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/restore_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/stealth_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/virus_pack.dart';
 
 export 'basic_pack.dart';
 export 'command_pack.dart';

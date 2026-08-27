@@ -1,6 +1,6 @@
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
-import 'package:dereruministic/domain/card/data/basic_pack.dart';
+import 'package:dereruministic/domain/card_packs/data/basic_pack.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
