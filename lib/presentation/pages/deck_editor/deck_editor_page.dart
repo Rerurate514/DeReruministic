@@ -1,5 +1,6 @@
 import 'package:dereruministic/presentation/components/app_back_button.dart';
 import 'package:dereruministic/presentation/components/app_title.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/components/card_pack_area/card_pack_area.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/components/deck_save_button.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/components/header/deck_infos_header.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/components/my_deck_area/my_deck_area.dart';
@@ -41,9 +42,7 @@ class DeckEditorPage extends StatelessWidget {
 
           Divider(),
 
-          Expanded(
-            child: Text('Test'),
-          ),
+          Expanded(child: CardPackArea()),
         ],
       ),
     );
