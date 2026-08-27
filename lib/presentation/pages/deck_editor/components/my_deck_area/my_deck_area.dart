@@ -1,3 +1,4 @@
+import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +9,7 @@ class MyDeckArea extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -16,7 +18,7 @@ class MyDeckArea extends StatelessWidget {
           children: [
             const Icon(Symbols.view_carousel),
             Text(
-              'ACTIVE MY DECK CARDS',
+              l10n.deck_editor_page_my_deck_header_title_text,
               style: GoogleFonts.shareTechMono(),
             ),
           ],

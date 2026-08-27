@@ -502,5 +502,6 @@
         }
     },
     "deck_editor_page_deck_clear_all_button_text": "CLEAR ALL",
-    "deck_editor_page_clear_all_dialog_title_text": "本当に削除しますか？"
+    "deck_editor_page_clear_all_dialog_title_text": "本当に削除しますか？",
+    "deck_editor_page_my_deck_header_title_text": "ACTIVE MY DECK CARDS"
 }
