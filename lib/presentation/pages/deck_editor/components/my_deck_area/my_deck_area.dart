@@ -1,8 +1,8 @@
-import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/components/my_deck_area/in_deck_cards.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/providers/draft_deck_recipe_notifier.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/state/in_card_place.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -31,17 +31,17 @@ class MyDeckArea extends ConsumerWidget {
           ],
         ),
         Expanded(
-          child: DragTarget<CardDefinition>(
+          child: DragTarget<InCardPack>(
             onWillAcceptWithDetails: (details) {
               return !ref.read(draftDeckRecipeProvider).isDeckFull &&
                   !ref
                       .read(draftDeckRecipeProvider)
-                      .isSameCardMax(details.data.cardDefId);
+                      .isSameCardMax(details.data.defCard.cardDefId);
             },
             onAcceptWithDetails: (details) {
               final result = ref
                   .read(draftDeckRecipeProvider.notifier)
-                  .addCard(details.data.cardDefId);
+                  .addCard(details.data.defCard.cardDefId);
 
               print(result);
             },

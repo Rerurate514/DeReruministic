@@ -1,16 +1,22 @@
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/components/card/def_card_component.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/state/in_card_place.dart';
 import 'package:flutter/material.dart';
 
-class DefCardDraggable extends StatelessWidget {
-  const DefCardDraggable({required this.defCard, super.key});
+class DefCardDraggable<T extends InCardPlace> extends StatelessWidget {
+  const DefCardDraggable({
+    required this.defCard,
+    required this.createPlace,
+    super.key,
+  });
 
   final CardDefinition defCard;
+  final T Function(CardDefinition defCard) createPlace;
 
   @override
   Widget build(BuildContext context) {
-    return Draggable<CardDefinition>(
-      data: defCard,
+    return Draggable<T>(
+      data: createPlace(defCard),
       feedback: Material(
         color: Colors.transparent,
         child: Transform.scale(
