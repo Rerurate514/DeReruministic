@@ -19,11 +19,7 @@ class InDeckCardRemoveArea extends ConsumerWidget {
     final isDragging = ref.watch(isDraggingInDeckProvider);
     return DragTarget<InCardDeck>(
       onAcceptWithDetails: (details) {
-        // final result = ref
-        //     .read(draftDeckRecipeProvider.notifier)
-        //     .addCard(details.data.defCard.cardDefId);
-
-        print(details.data);
+        //TODO(add): ここに削除用のコード追加
       },
       builder:
           (
