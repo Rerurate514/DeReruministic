@@ -7,16 +7,22 @@ class DefCardDraggable<T extends InCardPlace> extends StatelessWidget {
   const DefCardDraggable({
     required this.defCard,
     required this.createPlace,
+    this.onDragStarted,
+    this.onDragEnd,
     super.key,
   });
 
   final CardDefinition defCard;
   final T Function(CardDefinition defCard) createPlace;
+  final void Function()? onDragStarted;
+  final void Function(DraggableDetails)? onDragEnd;
 
   @override
   Widget build(BuildContext context) {
     return Draggable<T>(
       data: createPlace(defCard),
+      onDragStarted: onDragStarted,
+      onDragEnd: onDragEnd,
       feedback: Material(
         color: Colors.transparent,
         child: Transform.scale(

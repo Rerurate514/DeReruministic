@@ -1,6 +1,7 @@
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/components/card/def_card_draggable.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/providers/draft_deck_recipe_notifier.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/providers/is_dragging_in_deck_notifier.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/state/in_card_place.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -21,6 +22,12 @@ class InDeckCards extends ConsumerWidget {
         return DefCardDraggable<InCardDeck>(
           defCard: catalogMap[draftDeckDefIds[index]]!,
           createPlace: (defCard) => InCardDeck(defCard: defCard),
+          onDragStarted: () {
+            ref.read(isDraggingInDeckProvider.notifier).startDragging();
+          },
+          onDragEnd: (details) {
+            ref.read(isDraggingInDeckProvider.notifier).endDragging();
+          },
         );
       },
     );
