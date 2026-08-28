@@ -1,15 +1,22 @@
+import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/components/my_deck_area/in_deck_cards.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/providers/draft_deck_recipe_notifier.dart';
+import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
-class MyDeckArea extends StatelessWidget {
+class MyDeckArea extends ConsumerWidget {
   const MyDeckArea({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
+    final theme = context.themePalette;
+
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -24,15 +31,34 @@ class MyDeckArea extends StatelessWidget {
           ],
         ),
         Expanded(
-          child: DragTarget(
+          child: DragTarget<CardDefinition>(
+            onWillAcceptWithDetails: (details) {
+              return !ref.read(draftDeckRecipeProvider).isDeckFull &&
+                  !ref
+                      .read(draftDeckRecipeProvider)
+                      .isSameCardMax(details.data.cardDefId);
+            },
+            onAcceptWithDetails: (details) {
+              final result = ref
+                  .read(draftDeckRecipeProvider.notifier)
+                  .addCard(details.data.cardDefId);
+
+              print(result);
+            },
             builder:
                 (
                   context,
                   candidateData,
                   rejectedData,
                 ) {
-                  return const AppCard(
-                    child: Text('TARGET AREA'),
+                  final isHovering = candidateData.isNotEmpty;
+
+                  return AppCard(
+                    borderColor: isHovering ? theme.brandSecondary : null,
+                    child: const CustomScrollView(
+                      scrollDirection: Axis.horizontal,
+                      slivers: [InDeckCards()],
+                    ),
                   );
                 },
           ),
