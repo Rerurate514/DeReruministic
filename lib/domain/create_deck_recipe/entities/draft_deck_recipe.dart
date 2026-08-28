@@ -34,14 +34,17 @@ abstract class DraftDeckRecipe with _$DraftDeckRecipe {
 
   int get cardsCount => cardDefIds.length;
   bool get isDeckFull => cardsCount >= CreateDeckRecipeRules.maxDeckCards;
+  bool isSameCardMax(CardDefinitionId newCardDefId) {
+    final sameCardsCount = countOf(newCardDefId);
+    return sameCardsCount >= CreateDeckRecipeRules.maxSameCards;
+  }
 
   TryAddCardResult validateAddCard(CardDefinitionId newCardDefId) {
-    if (cardDefIds.length >= CreateDeckRecipeRules.maxDeckCards) {
+    if (isDeckFull) {
       return TryAddCardResult.failedToMaxDeckCards;
     }
 
-    final sameCardsCount = countOf(newCardDefId);
-    if (sameCardsCount >= CreateDeckRecipeRules.maxSameCards) {
+    if (isSameCardMax(newCardDefId)) {
       return TryAddCardResult.failedToMaxSameCards;
     }
 
