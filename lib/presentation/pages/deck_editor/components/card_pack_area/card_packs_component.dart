@@ -7,6 +7,9 @@ class CardPacksComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final list = CardPackTypes.values
+        .map((cardPackType) => cardPacksTypes[cardPackType]!)
+        .toList();
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
