@@ -74,7 +74,7 @@ abstract class DraftDeckRecipe with _$DraftDeckRecipe {
     return copyWith(cardDefIds: []);
   }
 
-  int countOf(CardDefinitionId cardDefId) {
-    return cardDefIds.where((cardDefId) => cardDefId == cardDefId).length;
+  int countOf(CardDefinitionId newCardDefId) {
+    return cardDefIds.where((id) => id == newCardDefId).length;
   }
 }
