@@ -31,7 +31,8 @@ class CardPacksComponent extends ConsumerWidget {
               itemBuilder: (context, index) {
                 return DefCardDraggable<InCardPack>(
                   defCard: catalogMap[pack.cardDefIds[index]]!,
-                  createPlace: (defCard) => InCardPack(defCard: defCard),
+                  createPlace: (defCard) =>
+                      InCardPack(index: index, defCard: defCard),
                 );
               },
             ),

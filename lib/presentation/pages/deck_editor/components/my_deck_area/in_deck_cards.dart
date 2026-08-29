@@ -21,7 +21,7 @@ class InDeckCards extends ConsumerWidget {
       itemBuilder: (context, index) {
         return DefCardDraggable<InCardDeck>(
           defCard: catalogMap[draftDeckDefIds[index]]!,
-          createPlace: (defCard) => InCardDeck(defCard: defCard),
+          createPlace: (defCard) => InCardDeck(index: index, defCard: defCard),
           onDragStarted: () {
             ref.read(isDraggingInDeckProvider.notifier).startDragging();
           },
