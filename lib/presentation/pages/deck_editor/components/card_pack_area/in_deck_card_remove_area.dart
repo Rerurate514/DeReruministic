@@ -1,5 +1,6 @@
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/providers/draft_deck_recipe_notifier.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/providers/is_dragging_in_deck_notifier.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/state/in_card_place.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
@@ -19,7 +20,7 @@ class InDeckCardRemoveArea extends ConsumerWidget {
     final isDragging = ref.watch(isDraggingInDeckProvider);
     return DragTarget<InCardDeck>(
       onAcceptWithDetails: (details) {
-        //TODO(add): ここに削除用のコード追加
+        ref.read(draftDeckRecipeProvider.notifier).removeAt(details.data.index);
       },
       builder:
           (
