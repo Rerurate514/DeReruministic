@@ -34,6 +34,7 @@ import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_target_types.dart';
 import 'package:dereruministic/domain/card/value_objects/comparison_operator.dart';
 import 'package:dereruministic/domain/card/value_objects/effect_conditions.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/game_system/constants/game_system_constants.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
@@ -1076,17 +1077,17 @@ void main() {
   });
 
   group('GameFlowUsecase.applyAction - GameActionGameStart', () {
-    const deckRecipeA = [
-      CardDefinitionId(value: 'def_a1'),
-      CardDefinitionId(value: 'def_a2'),
-    ];
-    const deckRecipeB = [
-      CardDefinitionId(value: 'def_b1'),
-    ];
+    final deckRecipeA = DeckRecipe.create([
+      const CardDefinitionId(value: 'def_a1'),
+      const CardDefinitionId(value: 'def_a2'),
+    ]);
+    final deckRecipeB = DeckRecipe.create([
+      const CardDefinitionId(value: 'def_b1'),
+    ]);
 
     GameActionGameStart buildGameStartAction({int seed = 42}) {
-      return const GameActions.gameStart(
-            id: GameActionsId(value: 'action_start'),
+      return GameActions.gameStart(
+            id: const GameActionsId(value: 'action_start'),
             actionSequenceNumber: 1,
             playerAId: playerId,
             playerBId: enemyId,
@@ -1388,9 +1389,11 @@ void main() {
       10,
       (i) => buildSimpleCardDef('def_$i'),
     );
-    final deckRecipe = List.generate(
-      10,
-      (i) => CardDefinitionId(value: 'def_$i'),
+    final deckRecipe = DeckRecipe.create(
+      List.generate(
+        10,
+        (i) => CardDefinitionId(value: 'def_$i'),
+      ),
     );
 
     late GameFlowUsecase gameStartUsecase;
@@ -1440,7 +1443,7 @@ void main() {
         expect(
           player.deck,
           hasLength(
-            deckRecipe.length -
+            deckRecipe.cardsCount -
                 GameSystemConstants.initialGameStartDrawCardsCount,
           ),
         );

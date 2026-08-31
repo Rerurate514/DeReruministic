@@ -6,6 +6,9 @@
 
     "game_state_is_null": "NULL",
 
+    "dialogs_simple_ok_dialog_cancel_button_text": "cancel",
+    "dialogs_simple_ok_dialog_ok_button_text": "ok",
+
     "home_page_title": "ホームページ",
     "home_page_start_battle_button_text": "START BATTLE",
     "home_page_deck_editor_button_text": "DECK EDITOR",
@@ -487,5 +490,20 @@
         "placeholders": {
         "turn": { "type": "int" }
         }
-    }
+    },
+
+    "deck_editor_page_deck_save_button_text": "Save",
+    "deck_editor_page_cards_count_text_title": "CARDS:",
+    "deck_editor_page_cards_count_text_count": "{current}/{max}",
+    "@deck_editor_page_cards_count_text_count": {
+        "placeholders": {
+            "current": { "type": "int" },
+            "max": { "type": "int" }
+        }
+    },
+    "deck_editor_page_deck_clear_all_button_text": "CLEAR ALL",
+    "deck_editor_page_clear_all_dialog_title_text": "本当に削除しますか？",
+    "deck_editor_page_my_deck_header_title_text": "ACTIVE MY DECK CARDS",
+    "deck_editor_page_cards_header_title_text": "CARDS BASEBASE",
+    "deck_editor_page_in_deck_card_remove_card_area_text": "このカードをデッキから除外する"
 }

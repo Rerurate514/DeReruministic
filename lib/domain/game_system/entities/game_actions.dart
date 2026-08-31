@@ -1,6 +1,6 @@
 import 'package:dereruministic/domain/card/value_objects/action_targets.dart';
-import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -20,8 +20,8 @@ sealed class GameActions with _$GameActions {
     required int actionSequenceNumber,
     required PlayerId playerAId,
     required PlayerId playerBId,
-    required List<CardDefinitionId> playerADeckRecipe,
-    required List<CardDefinitionId> playerBDeckRecipe,
+    required DeckRecipe playerADeckRecipe,
+    required DeckRecipe playerBDeckRecipe,
     required int seed,
   }) = GameActionGameStart;
 

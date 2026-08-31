@@ -4,6 +4,7 @@ import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -37,7 +38,7 @@ void main() {
 
   group('CreateDeckService', () {
     test('deckRecipeに従ってGameCardのリストが生成される', () {
-      final deckRecipe = [defId1, defId2, defId1];
+      final deckRecipe = DeckRecipe.create([defId1, defId2, defId1]);
       final random = Random(12345);
 
       final result = createDeckService.execute(
@@ -66,7 +67,7 @@ void main() {
     });
 
     test('生成される各GameCardのinstanceIdがユニークである', () {
-      final deckRecipe = [defId1, defId1, defId1, defId1];
+      final deckRecipe = DeckRecipe.create([defId1, defId1, defId1, defId1]);
       final random = Random(12345);
 
       final result = createDeckService.execute(
@@ -80,7 +81,7 @@ void main() {
     });
 
     test('deckRecipeに定義が存在しないCardDefinitionIdが含まれる場合ArgumentErrorをスローする', () {
-      final deckRecipe = [defId1, unknownDefId];
+      final deckRecipe = DeckRecipe.create([defId1, unknownDefId]);
       final random = Random(12345);
 
       expect(
@@ -100,7 +101,7 @@ void main() {
     });
 
     test('deckRecipeが空の場合、空のリストを返す', () {
-      final deckRecipe = <CardDefinitionId>[];
+      final deckRecipe = DeckRecipe.empty();
       final random = Random(12345);
 
       final result = createDeckService.execute(
@@ -113,7 +114,7 @@ void main() {
     });
 
     test('同じシード値のRandomを渡した場合は決定論的に並び順とIDが一致する', () {
-      final deckRecipe = [defId1, defId2, defId1, defId2];
+      final deckRecipe = DeckRecipe.create([defId1, defId2, defId1, defId2]);
 
       final result1 = createDeckService.execute(
         cardAllDefs,

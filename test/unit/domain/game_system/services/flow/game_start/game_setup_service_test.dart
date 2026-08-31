@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
@@ -58,16 +59,16 @@ void main() {
     enteredHandAtTurn: 0,
   );
 
-  const playerA = Player(
+  final playerA = Player(
     id: playerAId,
     name: 'player A',
-    deckRecipe: [cardDefIdA],
+    deckRecipe: DeckRecipe.create([cardDefIdA]),
   );
 
-  const playerB = Player(
+  final playerB = Player(
     id: playerBId,
     name: 'player B',
-    deckRecipe: [cardDefIdB],
+    deckRecipe: DeckRecipe.create([cardDefIdB]),
   );
 
   const allCardDefs = [cardDefA, cardDefB];

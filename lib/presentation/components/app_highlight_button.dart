@@ -12,6 +12,7 @@ class AppHighlightButton extends StatelessWidget {
     this.backgroundColor,
     this.isGlow = false,
     this.borderRadius = 0,
+    this.padding,
   });
 
   final VoidCallback onPressed;
@@ -25,6 +26,8 @@ class AppHighlightButton extends StatelessWidget {
 
   final bool isGlow;
   final double borderRadius;
+
+  final EdgeInsetsGeometry? padding;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +59,7 @@ class AppHighlightButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(borderRadius),
             ),
+            padding: padding,
           ),
           child: child,
         ),

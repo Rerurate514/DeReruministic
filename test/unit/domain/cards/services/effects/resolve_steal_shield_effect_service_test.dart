@@ -34,7 +34,7 @@ void main() {
     });
 
     test('相手のシールドが奪う量を下回る場合、相手は0でクランプされ自分は実際に奪えた分だけ増える', () {
-      final source = buildPlayer(id: sourceId, shield: 0);
+      final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId, shield: 2);
       final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.stealShield(amount: 5);
@@ -54,7 +54,7 @@ void main() {
 
     test('相手のシールドが0の場合、双方のシールドは変化せずstepのamountも0になる', () {
       final source = buildPlayer(id: sourceId, shield: 3);
-      final other = buildPlayer(id: otherId, shield: 0);
+      final other = buildPlayer(id: otherId);
       final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.stealShield(amount: 5);
 
@@ -186,7 +186,7 @@ void main() {
     });
 
     test('相手のシールドが不足する場合、stepのamountも実際に奪えた量になる', () {
-      final source = buildPlayer(id: sourceId, shield: 0);
+      final source = buildPlayer(id: sourceId);
       final other = buildPlayer(id: otherId, shield: 2);
       final state = buildState(players: {sourceId: source, otherId: other});
       const effect = CardEffects.stealShield(amount: 5);
@@ -209,7 +209,6 @@ void main() {
         id: sourceId,
         hp: 15,
         shield: 1,
-        currentCost: 3,
       );
       final other = buildPlayer(
         id: otherId,
