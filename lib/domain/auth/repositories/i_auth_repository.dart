@@ -1,6 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 
 abstract interface class IAuthRepository {
-  Future<UserCredential?> signInWithGoogle();
+  Future<PlayerId?> signInWithGoogle();
   Future<void> signOut();
 }

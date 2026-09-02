@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dereruministic/domain/auth/repositories/i_auth_repository.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
@@ -15,7 +16,7 @@ class FirebaseAuthRepositoryImpl implements IAuthRepository {
   final FirebaseFirestore firestore;
 
   @override
-  Future<UserCredential?> signInWithGoogle() async {
+  Future<PlayerId?> signInWithGoogle() async {
     try {
       final googleUser = await googleSignIn.authenticate();
       final googleAuth = googleUser.authentication;
@@ -31,7 +32,8 @@ class FirebaseAuthRepositoryImpl implements IAuthRepository {
       );
 
       final userCredential = await auth.signInWithCredential(credential);
-      return userCredential;
+      if (userCredential.user == null) return null;
+      return PlayerId(value: userCredential.user!.uid);
     } on GoogleSignInException catch (e) {
       if (e.code == GoogleSignInExceptionCode.canceled) {
         return null;
