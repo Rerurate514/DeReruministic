@@ -10,7 +10,6 @@ import 'package:dereruministic/presentation/utils/app_scroll_behavior.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 
 void main() async {
   await runZonedGuarded(
@@ -24,7 +23,7 @@ void main() async {
       final cardRepository = LocalCardRepositoryImpl();
       final cards = await cardRepository.fetchAllCards();
 
-      await GoogleSignIn.instance.initialize();
+      //await GoogleSignIn.instance.initialize();
 
       runApp(
         ProviderScope(
