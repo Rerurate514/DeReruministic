@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/application/auth/state/current_user_profile.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_highlight_button.dart';
 import 'package:dereruministic/presentation/pages/lobby/providers/create_room_notifier.dart';
@@ -19,6 +19,7 @@ class CreateRoomButton extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     final room = ref.watch(createRoomProvider);
+    final playerId = ref.watch(currentUserProfileProvider.select((s) => s.id));
 
     ref.listen(createRoomProvider, (p, n) {
       n.whenData((room) {
@@ -38,9 +39,9 @@ class CreateRoomButton extends ConsumerWidget {
           ref
               .read(createRoomProvider.notifier)
               .execute(
-                hostPlayerId: PlayerId.generate(),
+                hostPlayerId: playerId,
               ),
-        ); //TODO(critical): ここをcurrent_user_profileから取得する
+        );
       },
       child: room.when(
         data: (data) {
