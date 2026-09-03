@@ -17,6 +17,7 @@ class RoomIdCard extends StatelessWidget {
     return AppHollowGlowCard(
       borderRadius: 0,
       color: theme.brandColor,
+      backgroundColor: theme.surfaceContainer,
       padding: const EdgeInsets.all(16),
       child: Stack(
         children: [
