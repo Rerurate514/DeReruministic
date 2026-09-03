@@ -1,1 +1,0 @@
-class RoomGuestPlayerNotFoundException implements Exception {}

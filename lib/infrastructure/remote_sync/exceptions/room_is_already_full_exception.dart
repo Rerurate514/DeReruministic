@@ -1,1 +1,0 @@
-class RoomIsAlreadyFullException implements Exception {}
