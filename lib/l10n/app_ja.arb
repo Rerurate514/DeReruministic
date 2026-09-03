@@ -25,6 +25,10 @@
     "lobby_page_match_parameters_panel_format": "FORMAT",
     "lobby_page_match_parameters_panel_time_limit": "TIME LIMIT",
 
+    "room_page_room_id_card_title": "SECURE MATCH PROTOCOL",
+    "room_page_room_id_card_id_text": "Room Id Code",
+    "room_page_room_id_card_id_prefix": "# ",
+
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
     "battle_page_header_data_link_text": "DATA_LINK",
