@@ -1,6 +1,6 @@
 import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
-import 'package:dereruministic/presentation/components/app_back_button.dart';
 import 'package:dereruministic/presentation/components/app_title.dart';
+import 'package:dereruministic/presentation/pages/room/components/leave_room_button.dart';
 import 'package:dereruministic/presentation/widgets/ui_gap.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -17,11 +17,11 @@ class RoomPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: .stretch,
           children: [
-            const Row(
+            Row(
               spacing: 16,
               children: [
-                AppBackButton(),
-                Expanded(
+                LeaveRoomButton(roomId: roomId),
+                const Expanded(
                   child: FittedBox(
                     fit: .scaleDown,
                     child: AppTitle(),
