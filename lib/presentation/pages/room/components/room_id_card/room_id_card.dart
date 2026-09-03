@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
 import 'package:dereruministic/presentation/components/app_hollow_glow_card.dart';
 import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_id_card_title.dart';
+import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_id_card_title_trailing.dart';
 import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_id_copy_button.dart';
 import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_id_text.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
@@ -25,7 +26,10 @@ class RoomIdCard extends StatelessWidget {
             crossAxisAlignment: .start,
             mainAxisSize: .min,
             children: [
-              const RoomIdCardTitle(),
+              const Row(
+                mainAxisAlignment: .spaceBetween,
+                children: [RoomIdCardTitle(), RoomIdCardTitleTrailing()],
+              ),
               const Divider(),
               RoomIdText(
                 roomId: roomId,

@@ -29,6 +29,7 @@
     "room_page_room_id_card_id_text": "Room Id Code",
     "room_page_room_id_card_id_prefix": "# ",
     "room_page_room_id_card_copy_button": "COPY",
+    "room_page_room_id_card_title_trailing": "SHA-E2E",
 
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
