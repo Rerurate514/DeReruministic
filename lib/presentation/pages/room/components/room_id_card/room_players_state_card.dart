@@ -6,6 +6,7 @@ import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/widgets/ui_loading_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class RoomPlayersStateCard extends ConsumerWidget {
   const RoomPlayersStateCard({required this.roomId, super.key});
@@ -26,15 +27,27 @@ class RoomPlayersStateCard extends ConsumerWidget {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(l10n.room_page_players_state_ready),
-                        Text(l10n.room_page_players_state_ready_count),
+                        Text(
+                          l10n.room_page_players_state_ready,
+                          style: GoogleFonts.shareTechMono(),
+                        ),
+                        Text(
+                          l10n.room_page_players_state_ready_count,
+                          style: GoogleFonts.shareTechMono(),
+                        ),
                       ],
                     )
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(l10n.room_page_players_state_waiting),
-                        Text(l10n.room_page_players_state_waiting_count),
+                        Text(
+                          l10n.room_page_players_state_waiting,
+                          style: GoogleFonts.shareTechMono(),
+                        ),
+                        Text(
+                          l10n.room_page_players_state_waiting_count,
+                          style: GoogleFonts.shareTechMono(),
+                        ),
                       ],
                     ),
             RoomWatchResultUnavailable() => Text(
