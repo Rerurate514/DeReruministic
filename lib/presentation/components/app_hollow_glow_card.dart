@@ -8,6 +8,7 @@ class AppHollowGlowCard extends StatelessWidget {
   const AppHollowGlowCard({
     required this.child,
     this.color,
+    this.backgroundColor,
     this.blurRadius = 2.0,
     this.spreadWidth = 5.0,
     this.borderRadius = 1000.0,
@@ -19,6 +20,7 @@ class AppHollowGlowCard extends StatelessWidget {
 
   final Widget child;
   final Color? color;
+  final Color? backgroundColor;
   final double blurRadius;
   final double spreadWidth;
   final double borderRadius;
@@ -52,6 +54,7 @@ class AppHollowGlowCard extends StatelessWidget {
             child: Container(
               padding: padding,
               decoration: BoxDecoration(
+                color: backgroundColor,
                 borderRadius: effectiveBorderRadius,
                 border: Border.all(
                   color: effectiveColor,
