@@ -1,4 +1,4 @@
-import 'package:dereruministic/domain/remote_sync/entities/room.dart';
+import 'package:dereruministic/domain/remote_sync/room/entities/room.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'join_room_result.freezed.dart';

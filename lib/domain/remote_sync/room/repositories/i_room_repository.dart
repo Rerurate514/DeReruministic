@@ -1,9 +1,9 @@
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/remote_sync/entities/room.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/join_room_result.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/room_id.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/room_start_game_result.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/room_watch_result.dart';
+import 'package:dereruministic/domain/remote_sync/room/entities/room.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/join_room_result.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_start_game_result.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_watch_result.dart';
 
 abstract interface class IRoomRepository {
   Future<Room> createRoom({required PlayerId hostPlayerId});

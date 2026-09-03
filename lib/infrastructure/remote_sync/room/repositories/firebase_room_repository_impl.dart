@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
-import 'package:dereruministic/domain/remote_sync/entities/room.dart';
-import 'package:dereruministic/domain/remote_sync/repositories/i_room_repository.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/join_room_result.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/room_id.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/room_start_game_result.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/room_status.dart';
-import 'package:dereruministic/domain/remote_sync/value_objects/room_watch_result.dart';
+import 'package:dereruministic/domain/remote_sync/room/entities/room.dart';
+import 'package:dereruministic/domain/remote_sync/room/repositories/i_room_repository.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/join_room_result.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_start_game_result.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_status.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_watch_result.dart';
 import 'package:dereruministic/infrastructure/auth/constants/collections.dart';
 
 class FirebaseRoomRepositoryImpl implements IRoomRepository {
