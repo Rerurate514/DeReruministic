@@ -4,6 +4,7 @@ import 'package:dereruministic/presentation/pages/room/components/room_id_card/r
 import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_id_card_title_trailing.dart';
 import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_id_copy_button.dart';
 import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_id_text.dart';
+import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_players_state_card.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 
@@ -20,28 +21,36 @@ class RoomIdCard extends StatelessWidget {
       color: theme.brandColor,
       backgroundColor: theme.surfaceContainer,
       padding: const EdgeInsets.all(16),
-      child: Stack(
+      child: Column(
         children: [
-          Column(
-            crossAxisAlignment: .start,
-            mainAxisSize: .min,
+          Stack(
             children: [
-              const Row(
-                mainAxisAlignment: .spaceBetween,
-                children: [RoomIdCardTitle(), RoomIdCardTitleTrailing()],
+              Column(
+                crossAxisAlignment: .start,
+                mainAxisSize: .min,
+                children: [
+                  const Row(
+                    mainAxisAlignment: .spaceBetween,
+                    children: [RoomIdCardTitle(), RoomIdCardTitleTrailing()],
+                  ),
+                  const Divider(),
+                  RoomIdText(
+                    roomId: roomId,
+                  ),
+                ],
               ),
-              const Divider(),
-              RoomIdText(
-                roomId: roomId,
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: RoomIdCopyButton(
+                  copiedText: roomId.value,
+                ),
               ),
             ],
           ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: RoomIdCopyButton(
-              copiedText: roomId.value,
-            ),
+          const Divider(),
+          RoomPlayersStateCard(
+            roomId: roomId,
           ),
         ],
       ),
