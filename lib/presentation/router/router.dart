@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/card_packs/data/card_packs.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
 import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/deck_editor_page.dart';
 import 'package:dereruministic/presentation/pages/home/home_page.dart';
@@ -38,9 +39,12 @@ GoRouter router(Ref ref) {
         builder: (context, state) => const LobbyPage(),
       ),
       GoRoute(
-        path: RouterPaths.room.path,
+        path: '${RouterPaths.room.path}/:roomId',
         name: RouterPaths.room.name,
-        builder: (context, state) => const RoomPage(),
+        builder: (context, state) {
+          final roomId = RoomId(value: state.pathParameters['roomId']!);
+          return RoomPage(roomId: roomId);
+        },
       ),
       GoRoute(
         path: RouterPaths.battle.path,
