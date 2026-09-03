@@ -1,6 +1,7 @@
 import 'package:dereruministic/application/remote_sync/room/state/room_watch_provider.dart';
 import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
 import 'package:dereruministic/domain/remote_sync/room/value_objects/room_watch_result.dart';
+import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/widgets/ui_loading_indicator.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class RoomPlayersStateCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     final room = ref.watch(roomWatchProvider(roomId: roomId));
 
     return AppCard(
@@ -21,21 +23,23 @@ class RoomPlayersStateCard extends ConsumerWidget {
           return switch (data) {
             RoomWatchResultAvailable(:final room) =>
               room.guestPlayerId != null
-                  ? const Row(
-                      mainAxisAlignment: .spaceBetween,
+                  ? Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Players Ready...'),
-                        Text('[ 2 / 2 Player ]'),
+                        Text(l10n.room_page_players_state_ready),
+                        Text(l10n.room_page_players_state_ready_count),
                       ],
                     )
-                  : const Row(
-                      mainAxisAlignment: .spaceBetween,
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Waiting Player...'),
-                        Text('[ 1 / 2 Player ]'),
+                        Text(l10n.room_page_players_state_waiting),
+                        Text(l10n.room_page_players_state_waiting_count),
                       ],
                     ),
-            RoomWatchResultUnavailable() => const Text('Error'),
+            RoomWatchResultUnavailable() => Text(
+              l10n.room_page_players_state_error,
+            ),
           };
         },
         error: (error, stackTrace) => Text('$error, $stackTrace'),

@@ -30,6 +30,11 @@
     "room_page_room_id_card_id_prefix": "# ",
     "room_page_room_id_card_copy_button": "COPY",
     "room_page_room_id_card_title_trailing": "SHA-E2E",
+    "room_page_players_state_ready": "Players Ready...",
+    "room_page_players_state_ready_count": "[ 2 / 2 Connected ]",
+    "room_page_players_state_waiting": "Waiting Player...",
+    "room_page_players_state_waiting_count": "[ 1 / 2 Connecting ]",
+    "room_page_players_state_error": "Error",
 
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
