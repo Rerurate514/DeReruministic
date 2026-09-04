@@ -35,6 +35,8 @@
     "room_page_players_state_waiting": "Waiting Player...",
     "room_page_players_state_waiting_count": "[ 1 / 2 Connecting ]",
     "room_page_players_state_error": "Error",
+    "room_page_players_card_header_title": "CONNECTED PLAYERS",
+    "room_page_players_card_header_status": "NETWORK CONNECTED OPTIMAL",
 
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
