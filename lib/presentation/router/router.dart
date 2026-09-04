@@ -1,7 +1,4 @@
-import 'dart:math';
-
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
-import 'package:dereruministic/domain/card_packs/data/card_packs.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
@@ -50,21 +47,7 @@ GoRouter router(Ref ref) {
         path: RouterPaths.battle.path,
         name: RouterPaths.battle.name,
         builder: (context, state) => BattlePage(
-          playerA: Player(
-            id: PlayerId.generate(),
-            name: 'Player_01',
-            deckRecipe: DeckRecipe.create(
-              List.generate(
-                40,
-                (_) =>
-                    allCardDefinitions[Random().nextInt(
-                          allCardDefinitions.length,
-                        )]
-                        .cardDefId,
-              ),
-            ),
-          ),
-          playerB: Player(
+          enemy: Player(
             id: PlayerId.generate(),
             name: 'Player_02',
             deckRecipe: DeckRecipe.create(

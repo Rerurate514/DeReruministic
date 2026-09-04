@@ -1,3 +1,4 @@
+import 'package:dereruministic/application/auth/state/current_user_profile.dart';
 import 'package:dereruministic/application/game/state/game_notifier.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/battle_page_stack.dart';
@@ -14,35 +15,35 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class BattlePage extends HookConsumerWidget {
   const BattlePage({
-    required this.playerA,
-    required this.playerB,
+    required this.enemy,
     required this.seed,
     super.key,
   });
 
-  final Player playerA;
-  final Player playerB;
+  final Player enemy;
   final int seed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final player = ref.watch(currentUserProfileProvider);
+
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
-        await ref.read(gameProvider.notifier).startGame(playerA, playerB, seed);
+        await ref.read(gameProvider.notifier).startGame(player, enemy, seed);
       });
       return null;
     }, []);
 
-    useDebugEnemyStepConsumer(ref: ref, id: playerA.id, enabled: kDebugMode);
+    useDebugEnemyStepConsumer(ref: ref, id: player.id, enabled: kDebugMode);
 
     ref
-      ..watch(eventStepDriverProvider(playerA.id))
+      ..watch(eventStepDriverProvider(player.id))
       ..watch(animationSignalProvider);
 
     return UiPageWrapper(
       padding: const EdgeInsets.all(4),
       floatingActionButton: EndTurnButton(
-        playerId: playerA.id,
+        playerId: player.id,
       ),
       child: Column(
         crossAxisAlignment: .stretch,
@@ -50,8 +51,8 @@ class BattlePage extends HookConsumerWidget {
           const BattleHeader(),
           Expanded(
             child: BattlePageStack(
-              player: playerA,
-              enemy: playerB,
+              player: player,
+              enemy: enemy,
             ),
           ),
         ],
