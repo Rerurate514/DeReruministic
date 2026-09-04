@@ -39,11 +39,9 @@ class MyDeckArea extends ConsumerWidget {
                       .isSameCardMax(details.data.defCard.cardDefId);
             },
             onAcceptWithDetails: (details) {
-              final result = ref
+              ref
                   .read(draftDeckRecipeProvider.notifier)
                   .addCard(details.data.defCard.cardDefId);
-
-              print(result);
             },
             builder:
                 (
