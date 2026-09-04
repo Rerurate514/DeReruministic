@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:dereruministic/domain/card_packs/data/card_packs.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
@@ -20,6 +23,15 @@ Player currentUserProfile(Ref ref) {
   return Player(
     id: PlayerId.generate(),
     name: 'Rerurate',
-    deckRecipe: DeckRecipe.empty(),
+    deckRecipe: DeckRecipe.create(
+      List.generate(
+        40,
+        (_) =>
+            allCardDefinitions[Random().nextInt(
+                  allCardDefinitions.length,
+                )]
+                .cardDefId,
+      ),
+    ),
   );
 }
