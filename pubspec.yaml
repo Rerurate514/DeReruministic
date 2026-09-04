@@ -33,7 +33,7 @@ dependencies:
   animated_list_plus: ^0.5.2
   flutter_animate: ^4.5.2
   animated_text_effects: ^0.0.7
-  firebase_core: 4.14.0
+  firebase_core: ^4.14.0
   cloud_firestore: 6.9.0
   google_sign_in: ^7.2.0
   firebase_auth: ^6.1.4
@@ -51,6 +51,10 @@ dev_dependencies:
   go_router_linter: ^0.4.0
 
   mockito: any
+
+dependency_overrides:
+  firebase_core_web: 3.10.0
+
 flutter:
   uses-material-design: true
   generate: true
