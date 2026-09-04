@@ -11,14 +11,15 @@ class PlayerProfileCardUnderNameLine extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.themePalette;
     final path = Path()
-      ..moveTo(0, 0)
-      ..lineTo(100, 100);
+      ..moveTo(-20, 35)
+      ..lineTo(-10, 26)
+      ..lineTo(100, 26);
 
     return Stack(
       children: [
         child,
         CustomPaint(
-          painter: GlowLinePainter(path: path, color: theme.textSecondary),
+          painter: GlowLinePainter(path: path, color: theme.brandSecondary),
         ),
       ],
     );
