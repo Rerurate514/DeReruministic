@@ -74,6 +74,9 @@
     "room_page_player_profile_unknown_name": "unknown...",
     "room_page_player_profile_unknown_level": "// LVL ?",
     "room_page_player_profile_unknown_ping": "PING: None",
+    "room_page_join_error_room_not_found": "指定されたルームが見つかりません。",
+    "room_page_join_error_room_already_full": "ルームが満員のため参加できません。",
+    "room_page_join_error_room_already_closed": "このルームはすでに閉鎖されています。",
 
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
