@@ -22,7 +22,6 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
     final room = Room(
       roomId: RoomId.generate(),
       hostPlayerId: hostPlayerId,
-      guestPlayerId: null,
       status: RoomStatus.waiting,
       createdAt: Timestamp.now(), //TODO(low): クライアント時間ではなく、サーバー時間を使用する
       updatedAt: Timestamp.now(), //TODO(low): クライアント時間ではなく、サーバー時間を使用する
@@ -53,13 +52,13 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
         return const JoinRoomResult.roomAlreadyFull();
       }
 
-      if (data['status'] == RoomStatus.closed) {
+      if (data['status'] == RoomStatus.closed.name) {
         return const JoinRoomResult.roomAlreadyClosed();
       }
 
       transaction.update(roomRef, {
         'guestPlayerId': guestPlayerId.value,
-        'status': RoomStatus.ready,
+        'status': RoomStatus.ready.name,
         'updatedAt': FieldValue.serverTimestamp(),
       });
 
@@ -92,7 +91,7 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
       }
 
       transaction.update(roomRef, {
-        'status': RoomStatus.playing,
+        'status': RoomStatus.playing.name,
         'updatedAt': FieldValue.serverTimestamp(),
       });
 
@@ -138,15 +137,15 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
 
       final data = snapshot.data()!;
 
-      if (data['hostPlayerId'] == playerId) {
+      if (data['hostPlayerId'] == playerId.value) {
         transaction.update(roomRef, {
-          'status': RoomStatus.closed,
+          'status': RoomStatus.closed.name,
           'updatedAt': FieldValue.serverTimestamp(),
         });
       } else {
         transaction.update(roomRef, {
           'guestPlayerId': null,
-          'status': RoomStatus.waiting,
+          'status': RoomStatus.waiting.name,
           'updatedAt': FieldValue.serverTimestamp(),
         });
       }
