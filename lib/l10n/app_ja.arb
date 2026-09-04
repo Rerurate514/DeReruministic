@@ -37,6 +37,38 @@
     "room_page_players_state_error": "Error",
     "room_page_players_card_header_title": "CONNECTED PLAYERS",
     "room_page_players_card_header_status": "NETWORK CONNECTED OPTIMAL",
+    "room_page_player_profile_you": "YOU",
+    "room_page_player_profile_host": "HOST",
+    "room_page_player_profile_deck_ready": "DECK READY...",
+    "room_page_player_profile_level": "// LVL {level}",
+    "@room_page_player_profile_level": {
+        "placeholders": {
+            "level": {
+                "type": "int"
+            }
+        }
+    },
+    "room_page_player_profile_ready": "READY",
+    "room_page_player_profile_ping": "PING: {ping}ms",
+    "@room_page_player_profile_ping": {
+        "placeholders": {
+        "ping": {
+            "type": "int"
+        }
+        }
+    },
+    "room_page_player_profile_link_encrypted": "LINK ENCRYPTED",
+    "room_page_player_profile_deck_verified": "PRIMARY DECK VERIFIED [ {current} / {max} ]",
+    "@room_page_player_profile_deck_verified": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
 
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
