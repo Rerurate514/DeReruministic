@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/firebase_options.dart';
 import 'package:dereruministic/infrastructure/card/repositories/local_card_reposory_impl.dart';
@@ -18,6 +19,10 @@ void main() async {
 
       await Firebase.initializeApp(
         options: DefaultFirebaseOptions.currentPlatform,
+      );
+
+      FirebaseFirestore.instance.settings = const Settings(
+        persistenceEnabled: false,
       );
 
       final cardRepository = LocalCardRepositoryImpl();

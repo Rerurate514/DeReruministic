@@ -1,15 +1,17 @@
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_text_field.dart';
+import 'package:dereruministic/presentation/pages/lobby/providers/room_id_text_notifier.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:dereruministic/presentation/widgets/ui_active_filled_circle.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EnterRoomIdInput extends StatelessWidget {
+class EnterRoomIdInput extends ConsumerWidget {
   const EnterRoomIdInput({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
 
@@ -33,6 +35,9 @@ class EnterRoomIdInput extends StatelessWidget {
         AppTextField(
           hintText: l10n.lobby_page_controls_panel_enter_room_id_hint_text,
           hintColor: theme.textSecondary.withAlpha(100),
+          onChanged: (text) {
+            ref.read(roomIdTextProvider.notifier).set(text);
+          },
         ),
       ],
     );

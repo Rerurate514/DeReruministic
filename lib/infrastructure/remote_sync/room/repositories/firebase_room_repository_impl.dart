@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dereruministic/domain/player/converter/player_id_converter.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/remote_sync/room/entities/room.dart';
 import 'package:dereruministic/domain/remote_sync/room/repositories/i_room_repository.dart';
@@ -38,38 +39,39 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
     required PlayerId guestPlayerId,
   }) async {
     final roomRef = _getRoomRef(roomId);
-
     return firestore.runTransaction((transaction) async {
       final snapshot = await transaction.get(roomRef);
-
       if (!snapshot.exists) {
         return const JoinRoomResult.roomNotFound();
       }
 
       final data = snapshot.data()!;
-
       if (data['guestPlayerId'] != null) {
         return const JoinRoomResult.roomAlreadyFull();
       }
-
       if (data['status'] == RoomStatus.closed.name) {
         return const JoinRoomResult.roomAlreadyClosed();
       }
 
+      final guestPlayerIdString = const PlayerIdConverter().toJson(
+        guestPlayerId,
+      );
+      const updatedStatus = RoomStatus.ready;
+      final updatedAt = Timestamp.now();
+
+      final updatedRoom = Room.fromJson(data).copyWith(
+        guestPlayerId: guestPlayerId,
+        status: updatedStatus,
+        updatedAt: updatedAt,
+      );
+
       transaction.update(roomRef, {
-        'guestPlayerId': guestPlayerId.value,
-        'status': RoomStatus.ready.name,
+        'guestPlayerId': guestPlayerIdString,
+        'status': updatedStatus.name,
         'updatedAt': FieldValue.serverTimestamp(),
       });
 
-      return JoinRoomResult.success(
-        room: Room.fromJson({
-          ...data,
-          'guestPlayerId': guestPlayerId.value,
-          'status': RoomStatus.ready.name,
-          'updatedAt': Timestamp.now(),
-        }),
-      );
+      return JoinRoomResult.success(room: updatedRoom);
     });
   }
 
