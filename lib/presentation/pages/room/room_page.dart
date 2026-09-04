@@ -36,7 +36,9 @@ class RoomPage extends StatelessWidget {
               roomId: roomId,
             ),
             const UiGap.m(),
-            const PlayersCardsSection(),
+            PlayersCardsSection(
+              roomId: roomId,
+            ),
             const UiGap.m(),
             const Text('ROOM IDはここ'),
           ],

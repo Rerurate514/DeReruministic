@@ -8,11 +8,13 @@ class PlayerProfileCardName extends StatelessWidget {
   const PlayerProfileCardName({
     required this.name,
     required this.isHost,
+    this.isUnknown = false,
     super.key,
   });
 
   final String name;
   final bool isHost;
+  final bool isUnknown;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class PlayerProfileCardName extends StatelessWidget {
     final theme = context.themePalette;
 
     return PlayerProfileCardUnderNameLine(
+      color: isUnknown ? theme.brandTertiary : null,
       child: Row(
         spacing: 8,
         children: [
@@ -57,7 +60,7 @@ class PlayerProfileCardName extends StatelessWidget {
             ),
           ],
         ],
-      )
+      ),
     );
   }
 }

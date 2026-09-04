@@ -3,8 +3,13 @@ import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 
 class PlayerProfileCardUnderNameLine extends StatelessWidget {
-  const PlayerProfileCardUnderNameLine({required this.child, super.key});
+  const PlayerProfileCardUnderNameLine({
+    required this.child,
+    this.color,
+    super.key,
+  });
 
+  final Color? color;
   final Widget child;
 
   @override
@@ -19,7 +24,10 @@ class PlayerProfileCardUnderNameLine extends StatelessWidget {
       children: [
         child,
         CustomPaint(
-          painter: GlowLinePainter(path: path, color: theme.brandSecondary),
+          painter: GlowLinePainter(
+            path: path,
+            color: color ?? theme.brandSecondary,
+          ),
         ),
       ],
     );

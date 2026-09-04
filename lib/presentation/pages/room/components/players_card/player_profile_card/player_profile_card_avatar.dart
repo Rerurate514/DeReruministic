@@ -2,16 +2,23 @@ import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
 
 class PlayerProfileCardAvatar extends StatelessWidget {
-  const PlayerProfileCardAvatar({required this.isYou, super.key});
+  const PlayerProfileCardAvatar({
+    required this.isYou,
+    super.key,
+    this.isUnknown = false,
+  });
 
   final bool isYou;
+  final bool isUnknown;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = context.themePalette;
+    final color = isUnknown ? theme.brandTertiary : theme.brandColor;
 
     return Stack(
       children: [
@@ -20,17 +27,19 @@ class PlayerProfileCardAvatar extends StatelessWidget {
           height: 70,
           decoration: BoxDecoration(
             border: Border.all(
-              color: theme.brandColor,
+              color: color,
               width: 1.5,
             ),
             borderRadius: BorderRadius.circular(8),
-            color: theme.brandColor.withOpacity(
+            color: color.withOpacity(
               0.05,
             ),
           ),
           child: Icon(
-            Icons.military_tech,
-            color: theme.brandColor,
+            isUnknown
+                ? Symbols.android_wifi_3_bar_question
+                : Icons.military_tech,
+            color: color,
             size: 40,
           ),
         ),
