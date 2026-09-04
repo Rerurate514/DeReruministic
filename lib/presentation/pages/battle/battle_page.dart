@@ -29,12 +29,15 @@ class BattlePage extends HookConsumerWidget {
 
     useEffect(() {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
+        //if(isHost) {
         await ref.read(gameProvider.notifier).startGame(player, enemy, seed);
       });
       return null;
     }, []);
 
     useDebugEnemyStepConsumer(ref: ref, id: player.id, enabled: kDebugMode);
+
+    //ref.watch(remoteActionsStreamProvider(roomId));
 
     ref
       ..watch(eventStepDriverProvider(player.id))
