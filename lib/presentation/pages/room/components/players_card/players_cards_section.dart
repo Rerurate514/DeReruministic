@@ -45,10 +45,10 @@ class PlayersCardsSection extends ConsumerWidget {
                           name: room.guestPlayerId!.value,
                           level: 64,
                           isHost: false,
-                          isYou: isHost,
+                          isYou: !isHost,
                         )
                       else
-                        NotExistPlayerCard(),
+                        const NotExistPlayerCard(),
                     ],
                   );
                 }
