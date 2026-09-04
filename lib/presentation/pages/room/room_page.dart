@@ -7,6 +7,7 @@ import 'package:dereruministic/presentation/pages/room/components/game_start_but
 import 'package:dereruministic/presentation/pages/room/components/leave_room_button.dart';
 import 'package:dereruministic/presentation/pages/room/components/players_card/players_cards_section.dart';
 import 'package:dereruministic/presentation/pages/room/components/room_id_card/room_id_card.dart';
+import 'package:dereruministic/presentation/router/router_paths.dart';
 import 'package:dereruministic/presentation/widgets/ui_gap.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
 import 'package:flutter/material.dart';
@@ -27,6 +28,10 @@ class RoomPage extends ConsumerWidget {
             {
               if (room.status == RoomStatus.closed) {
                 if (context.canPop()) context.pop();
+              }
+
+              if (room.status == RoomStatus.playing) {
+                context.go(RouterPaths.battle.path);
               }
             }
           case RoomWatchResultUnavailable():

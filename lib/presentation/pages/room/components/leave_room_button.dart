@@ -6,7 +6,6 @@ import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dar
 import 'package:dereruministic/presentation/components/app_back_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class LeaveRoomButton extends ConsumerWidget {
   const LeaveRoomButton({
@@ -26,10 +25,6 @@ class LeaveRoomButton extends ConsumerWidget {
               .read(leaveRoomUseCaseProvider)
               .execute(roomId: roomId, playerId: playerId),
         );
-
-        if (context.canPop()) {
-          context.pop();
-        }
       },
     );
   }
