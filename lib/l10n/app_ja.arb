@@ -77,6 +77,7 @@
     "room_page_join_error_room_not_found": "指定されたルームが見つかりません。",
     "room_page_join_error_room_already_full": "ルームが満員のため参加できません。",
     "room_page_join_error_room_already_closed": "このルームはすでに閉鎖されています。",
+    "room_page_game_start_button_text": "GAME START",
 
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
