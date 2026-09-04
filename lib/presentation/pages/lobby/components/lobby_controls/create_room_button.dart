@@ -24,9 +24,11 @@ class CreateRoomButton extends ConsumerWidget {
     ref.listen(createRoomProvider, (p, n) {
       n.whenData((room) {
         if (room == null) return;
-        context.goNamed(
-          RouterPaths.room.name,
-          pathParameters: {'roomId': room.roomId.value},
+        unawaited(
+          context.pushNamed(
+            RouterPaths.room.name,
+            pathParameters: {'roomId': room.roomId.value},
+          ),
         );
       });
     });
@@ -45,11 +47,7 @@ class CreateRoomButton extends ConsumerWidget {
       },
       child: room.when(
         data: (data) {
-          if (data == null) {
-            return _buildButtonContent(l10n);
-          }
-
-          return const UiLoadingIndicator();
+          return _buildButtonContent(l10n);
         },
         error: (error, stackTrace) {
           debugPrint('$error, $stackTrace');
