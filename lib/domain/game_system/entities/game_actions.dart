@@ -21,7 +21,7 @@ sealed class GameActions with _$GameActions {
   const factory GameActions.gameStart({
     @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
-    @PlayerIdConverter() required PlayerId playerAId,
+    @PlayerIdConverter() required PlayerId playerId,
     @PlayerIdConverter() required PlayerId playerBId,
     required DeckRecipe playerADeckRecipe,
     required DeckRecipe playerBDeckRecipe,
@@ -62,6 +62,9 @@ sealed class GameActions with _$GameActions {
     required int actionSequenceNumber,
     @PlayerIdConverter() required PlayerId playerId,
   }) = GameActionSurrender;
+
+  @override
+  PlayerId get playerId;
 
   @override
   int get actionSequenceNumber;

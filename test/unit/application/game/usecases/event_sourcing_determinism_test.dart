@@ -35,7 +35,7 @@ void main() {
         GameActions.gameStart(
           id: const GameActionsId(value: 'act_1'),
           actionSequenceNumber: 1,
-          playerAId: const PlayerId(value: 'player_a'),
+          playerId: const PlayerId(value: 'player_a'),
           playerBId: const PlayerId(value: 'player_b'),
           playerADeckRecipe: DeckRecipe.empty(),
           playerBDeckRecipe: DeckRecipe.empty(),
@@ -87,7 +87,7 @@ void main() {
         GameActions.gameStart(
           id: const GameActionsId(value: 'act_1'),
           actionSequenceNumber: 1,
-          playerAId: const PlayerId(value: 'player_a'),
+          playerId: const PlayerId(value: 'player_a'),
           playerBId: const PlayerId(value: 'player_b'),
           playerADeckRecipe: DeckRecipe.empty(),
           playerBDeckRecipe: DeckRecipe.empty(),
@@ -103,7 +103,7 @@ void main() {
         GameActions.gameStart(
           id: const GameActionsId(value: 'act_1'),
           actionSequenceNumber: 1,
-          playerAId: const PlayerId(value: 'player_a'),
+          playerId: const PlayerId(value: 'player_a'),
           playerBId: const PlayerId(value: 'player_b'),
           playerADeckRecipe: DeckRecipe.empty(),
           playerBDeckRecipe: DeckRecipe.empty(),
@@ -163,7 +163,7 @@ void main() {
         GameActions.gameStart(
           id: const GameActionsId(value: 'act_1'),
           actionSequenceNumber: 1,
-          playerAId: const PlayerId(value: 'player_a'),
+          playerId: const PlayerId(value: 'player_a'),
           playerBId: const PlayerId(value: 'player_b'),
           playerADeckRecipe: DeckRecipe.empty(),
           playerBDeckRecipe: DeckRecipe.empty(),

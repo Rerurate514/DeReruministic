@@ -115,7 +115,7 @@ void main() {
       final action = GameActions.gameStart(
         id: actionId,
         actionSequenceNumber: 1,
-        playerAId: playerAId,
+        playerId: playerAId,
         playerBId: playerBId,
         playerADeckRecipe: mockPlayer.deckRecipe,
         playerBDeckRecipe: mockEnemy.deckRecipe,

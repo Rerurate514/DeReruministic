@@ -1089,7 +1089,7 @@ void main() {
       return GameActions.gameStart(
             id: const GameActionsId(value: 'action_start'),
             actionSequenceNumber: 1,
-            playerAId: playerId,
+            playerId: playerId,
             playerBId: enemyId,
             playerADeckRecipe: deckRecipeA,
             playerBDeckRecipe: deckRecipeB,
@@ -1417,7 +1417,7 @@ void main() {
       return GameActionGameStart(
         id: const GameActionsId(value: 'action_start'),
         actionSequenceNumber: 1,
-        playerAId: playerId,
+        playerId: playerId,
         playerBId: enemyId,
         playerADeckRecipe: deckRecipe,
         playerBDeckRecipe: deckRecipe,

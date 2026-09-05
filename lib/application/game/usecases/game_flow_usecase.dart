@@ -97,7 +97,7 @@ class GameFlowUsecase {
     GameActionGameStart action,
   ) {
     final initial = gameSetupService.execute(
-      playerAId: action.playerAId,
+      playerAId: action.playerId,
       playerBId: action.playerBId,
       playerADeckRecipe: action.playerADeckRecipe,
       playerBDeckRecipe: action.playerBDeckRecipe,
