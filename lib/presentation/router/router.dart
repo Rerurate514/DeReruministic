@@ -1,10 +1,4 @@
-import 'dart:math';
-
-import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
-import 'package:dereruministic/domain/card_packs/data/card_packs.dart';
-import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
-import 'package:dereruministic/domain/player/entities/player.dart';
-import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
 import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/deck_editor_page.dart';
 import 'package:dereruministic/presentation/pages/home/home_page.dart';
@@ -38,40 +32,22 @@ GoRouter router(Ref ref) {
         builder: (context, state) => const LobbyPage(),
       ),
       GoRoute(
-        path: RouterPaths.room.path,
+        path: '${RouterPaths.room.path}/:roomId',
         name: RouterPaths.room.name,
-        builder: (context, state) => const RoomPage(),
+        builder: (context, state) {
+          final roomId = RoomId(value: state.pathParameters['roomId']!);
+          return RoomPage(roomId: roomId);
+        },
       ),
       GoRoute(
-        path: RouterPaths.battle.path,
+        path: '${RouterPaths.battle.path}/:roomId',
         name: RouterPaths.battle.name,
-        builder: (context, state) => BattlePage(
-          playerA: Player(
-            id: PlayerId.generate(),
-            name: 'Player_01',
-            deckRecipe: DeckRecipe.create(
-              List.generate(
-                40,
-                (_) =>
-                    allCardDefinitions[Random().nextInt(
-                          allCardDefinitions.length,
-                        )]
-                        .cardDefId,
-              ),
-            ),
-          ),
-          playerB: Player(
-            id: PlayerId.generate(),
-            name: 'Player_02',
-            deckRecipe: DeckRecipe.create(
-              List.generate(
-                40,
-                (_) => const CardDefinitionId(value: 'basic_pack_hit'),
-              ),
-            ),
-          ),
-          seed: 321421431432,
-        ),
+        builder: (context, state) {
+          final roomId = RoomId(value: state.pathParameters['roomId']!);
+          return BattlePage(
+            roomId: roomId,
+          );
+        },
       ),
       GoRoute(
         path: RouterPaths.result.path,

@@ -9,6 +9,8 @@
     "dialogs_simple_ok_dialog_cancel_button_text": "cancel",
     "dialogs_simple_ok_dialog_ok_button_text": "ok",
 
+    "snack_bar_clipboard_copy_success": "クリップボードにコピーしました。",
+
     "home_page_title": "ホームページ",
     "home_page_start_battle_button_text": "START BATTLE",
     "home_page_deck_editor_button_text": "DECK EDITOR",
@@ -22,6 +24,60 @@
     "lobby_page_match_parameters_panel_title": "MATCH PARAMETERS",
     "lobby_page_match_parameters_panel_format": "FORMAT",
     "lobby_page_match_parameters_panel_time_limit": "TIME LIMIT",
+
+    "room_page_room_id_card_title": "SECURE MATCH PROTOCOL",
+    "room_page_room_id_card_id_text": "Room Id Code",
+    "room_page_room_id_card_id_prefix": "# ",
+    "room_page_room_id_card_copy_button": "COPY",
+    "room_page_room_id_card_title_trailing": "SHA-E2E",
+    "room_page_players_state_ready": "Players Ready...",
+    "room_page_players_state_ready_count": "[ 2 / 2 Connected ]",
+    "room_page_players_state_waiting": "Waiting Player...",
+    "room_page_players_state_waiting_count": "[ 1 / 2 Connecting ]",
+    "room_page_players_state_error": "Error",
+    "room_page_players_card_header_title": "CONNECTED PLAYERS",
+    "room_page_players_card_header_status": "NETWORK CONNECTED OPTIMAL",
+    "room_page_player_profile_you": "YOU",
+    "room_page_player_profile_host": "HOST",
+    "room_page_player_profile_deck_ready": "DECK READY...",
+    "room_page_player_profile_deck_not_ready": "DECK NOT FOUND",
+    "room_page_player_profile_level": "// LVL {level}",
+    "@room_page_player_profile_level": {
+        "placeholders": {
+            "level": {
+                "type": "int"
+            }
+        }
+    },
+    "room_page_player_profile_ready": "READY",
+    "room_page_player_profile_unknown": "UNKNOWN",
+    "room_page_player_profile_ping": "PING: {ping}ms",
+    "@room_page_player_profile_ping": {
+        "placeholders": {
+        "ping": {
+            "type": "int"
+        }
+        }
+    },
+    "room_page_player_profile_link_encrypted": "LINK ENCRYPTED",
+    "room_page_player_profile_deck_verified": "PRIMARY DECK VERIFIED [ {current} / {max} ]",
+    "@room_page_player_profile_deck_verified": {
+        "placeholders": {
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
+        }
+    },
+    "room_page_player_profile_unknown_name": "unknown...",
+    "room_page_player_profile_unknown_level": "// LVL ?",
+    "room_page_player_profile_unknown_ping": "PING: None",
+    "room_page_join_error_room_not_found": "指定されたルームが見つかりません。",
+    "room_page_join_error_room_already_full": "ルームが満員のため参加できません。",
+    "room_page_join_error_room_already_closed": "このルームはすでに閉鎖されています。",
+    "room_page_game_start_button_text": "GAME START",
 
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",

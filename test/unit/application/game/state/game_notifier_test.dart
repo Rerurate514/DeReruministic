@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/application/game/state/game_notifier.dart';
+import 'package:dereruministic/application/game/state/seed_generator.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
@@ -18,6 +19,8 @@ import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../helpers/game_test_helpers.dart';
+
 void main() {
   final basicPackCardDefIds = DeckRecipe.create(
     basicPack.map((defs) => defs.cardDefId).take(19).toList(),
@@ -29,6 +32,7 @@ void main() {
     container = ProviderContainer(
       overrides: [
         cardCatalogProvider.overrideWithValue(basicPack),
+        seedGeneratorProvider.overrideWithValue(() => 12345),
       ],
     );
   });
@@ -58,9 +62,9 @@ void main() {
       await container
           .read(gameProvider.notifier)
           .startGame(
+            buildRoomId(),
             dummyPlayer,
             dummyEnemy,
-            514,
           );
 
       final state = container.read(gameProvider);
@@ -83,16 +87,16 @@ void main() {
       final notifier = container.read(gameProvider.notifier);
 
       await notifier.startGame(
+        buildRoomId(),
         dummyPlayer,
         dummyEnemy,
-        514,
       );
       final firstState = container.read(gameProvider);
 
       await notifier.startGame(
+        buildRoomId(),
         dummyPlayer,
         dummyEnemy,
-        999,
       );
       final secondState = container.read(gameProvider);
 
@@ -112,9 +116,9 @@ void main() {
       final notifier = container.read(gameProvider.notifier);
 
       await notifier.startGame(
+        buildRoomId(),
         dummyPlayer,
         dummyEnemy,
-        514,
       );
 
       final initialState = container.read(gameProvider)!;

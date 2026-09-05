@@ -1,11 +1,14 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
+import 'package:dereruministic/firebase_options.dart';
 import 'package:dereruministic/infrastructure/card/repositories/local_card_reposory_impl.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/router/router.dart';
 import 'package:dereruministic/presentation/theme/app_theme.dart';
 import 'package:dereruministic/presentation/utils/app_scroll_behavior.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,8 +17,18 @@ void main() async {
     () async {
       WidgetsFlutterBinding.ensureInitialized();
 
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+
+      FirebaseFirestore.instance.settings = const Settings(
+        persistenceEnabled: false,
+      );
+
       final cardRepository = LocalCardRepositoryImpl();
       final cards = await cardRepository.fetchAllCards();
+
+      //await GoogleSignIn.instance.initialize();
 
       runApp(
         ProviderScope(

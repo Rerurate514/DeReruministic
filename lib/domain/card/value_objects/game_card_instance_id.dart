@@ -12,7 +12,7 @@ sealed class GameCardInstanceId with _$GameCardInstanceId {
   }) = _GameCardInstanceId;
 
   factory GameCardInstanceId.generate(Random random) {
-    final idValue = random.nextInt(1 << 32).toString();
+    final idValue = random.nextInt(0x7FFFFFFF).toString();
     return GameCardInstanceId(value: idValue);
   }
 

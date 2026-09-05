@@ -11,6 +11,7 @@ sealed class AppColorScheme extends ThemeExtension<AppColorScheme>
     required Color brandColor,
     required Color brandSecondary,
     required Color brandTertiary,
+    required Color brandQuaternary,
     required Color surfaceBackground,
     required Color surfaceContainer,
     required Color textPrimary,
