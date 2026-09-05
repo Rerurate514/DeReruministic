@@ -22,7 +22,7 @@ class RoomPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     ref.listen(roomWatchProvider(roomId: roomId), (p, n) {
-      n.whenData((data) {
+      n.whenData((data) async {
         switch (data) {
           case RoomWatchResultAvailable(:final room):
             {
@@ -31,7 +31,10 @@ class RoomPage extends ConsumerWidget {
               }
 
               if (room.status == RoomStatus.playing) {
-                context.go(RouterPaths.battle.path);
+                await context.pushNamed(
+                  RouterPaths.battle.name,
+                  pathParameters: {'roomId': roomId.value},
+                );
               }
             }
           case RoomWatchResultUnavailable():
