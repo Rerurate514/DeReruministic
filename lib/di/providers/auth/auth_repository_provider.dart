@@ -10,7 +10,7 @@ part 'auth_repository_provider.g.dart';
 @riverpod
 IAuthRepository authRepository(Ref ref) {
   return FirebaseAuthRepositoryImpl(
-    firestore: ref.watch(firestoreProviderProvider),
+    firestore: ref.watch(firestoreProvider),
     googleSignIn: ref.watch(googleSignInProvider),
     auth: ref.watch(firebaseAuthProvider),
   );

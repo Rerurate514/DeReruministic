@@ -7,5 +7,5 @@ part 'user_repository_provider.g.dart';
 
 @riverpod
 IUserRepository userRepository(Ref ref) {
-  return UserRepositoryImpl(firestore: ref.watch(firestoreProviderProvider));
+  return UserRepositoryImpl(firestore: ref.watch(firestoreProvider));
 }

@@ -8,6 +8,6 @@ part 'game_actions_repository_provider.g.dart';
 @riverpod
 IGameActionsRepository gameActionsRepository(Ref ref) {
   return FirebaseGameActionsRepositoryImpl(
-    firestore: ref.watch(firestoreProviderProvider),
+    firestore: ref.watch(firestoreProvider),
   );
 }

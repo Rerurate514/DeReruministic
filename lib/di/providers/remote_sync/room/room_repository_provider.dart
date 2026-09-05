@@ -8,6 +8,6 @@ part 'room_repository_provider.g.dart';
 @riverpod
 IRoomRepository roomRepository(Ref ref) {
   return FirebaseRoomRepositoryImpl(
-    firestore: ref.watch(firestoreProviderProvider),
+    firestore: ref.watch(firestoreProvider),
   );
 }
