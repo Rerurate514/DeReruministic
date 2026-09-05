@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/card/value_objects/action_targets.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
+import 'package:dereruministic/domain/game_system/converter/game_actions_id_converter.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,7 +17,7 @@ sealed class GameActions with _$GameActions {
   const GameActions._();
 
   const factory GameActions.gameStart({
-    required GameActionsId id,
+    @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
     required PlayerId playerAId,
     required PlayerId playerBId,
@@ -26,7 +27,7 @@ sealed class GameActions with _$GameActions {
   }) = GameActionGameStart;
 
   const factory GameActions.playCard({
-    required GameActionsId id,
+    @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
@@ -34,27 +35,27 @@ sealed class GameActions with _$GameActions {
   }) = GameActionPlayCard;
 
   const factory GameActions.discardCard({
-    required GameActionsId id,
+    @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
   }) = GameActionDiscardCard;
 
   const factory GameActions.selectOverflowDiscards({
-    required GameActionsId id,
+    @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
     required PlayerId playerId,
     required List<GameCardInstanceId> selectedCardInstanceIds,
   }) = GameActionSelectOverflowDiscards;
 
   const factory GameActions.turnEnd({
-    required GameActionsId id,
+    @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
     required PlayerId playerId,
   }) = GameActionTurnEnd;
 
   const factory GameActions.surrender({
-    required GameActionsId id,
+    @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
     required PlayerId playerId,
   }) = GameActionSurrender;
