@@ -1,3 +1,4 @@
+import 'package:dereruministic/application/game/state/seed_generator.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
@@ -43,8 +44,11 @@ class GameNotifier extends _$GameNotifier {
     }
   }
 
-  Future<void> startGame(Player playerA, Player playerB, int seed) async {
+  Future<void> startGame(Player playerA, Player playerB) async {
     if (state != null) return;
+
+    final generateSeed = ref.read(seedGeneratorProvider);
+    final seed = generateSeed();
 
     final action = GameActions.gameStart(
       id: GameActionsId.generate(),

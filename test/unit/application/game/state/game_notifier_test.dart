@@ -4,6 +4,7 @@ import 'dart:math';
 
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/application/game/state/game_notifier.dart';
+import 'package:dereruministic/application/game/state/seed_generator.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
@@ -29,6 +30,7 @@ void main() {
     container = ProviderContainer(
       overrides: [
         cardCatalogProvider.overrideWithValue(basicPack),
+        seedGeneratorProvider.overrideWithValue(() => 12345),
       ],
     );
   });
@@ -60,7 +62,6 @@ void main() {
           .startGame(
             dummyPlayer,
             dummyEnemy,
-            514,
           );
 
       final state = container.read(gameProvider);
@@ -85,14 +86,12 @@ void main() {
       await notifier.startGame(
         dummyPlayer,
         dummyEnemy,
-        514,
       );
       final firstState = container.read(gameProvider);
 
       await notifier.startGame(
         dummyPlayer,
         dummyEnemy,
-        999,
       );
       final secondState = container.read(gameProvider);
 
@@ -114,7 +113,6 @@ void main() {
       await notifier.startGame(
         dummyPlayer,
         dummyEnemy,
-        514,
       );
 
       final initialState = container.read(gameProvider)!;
