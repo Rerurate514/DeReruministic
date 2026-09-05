@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/card/converter/card_definition_id_converter.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/create_deck_recipe/constants/create_deck_recipe_rules.dart';
+import 'package:dereruministic/domain/create_deck_recipe/converter/deck_recipe_id_converter.dart';
 import 'package:dereruministic/domain/create_deck_recipe/value_objects/deck_recipe_id.dart';
 import 'package:dereruministic/domain/create_deck_recipe/value_objects/try_add_card_result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -16,7 +17,7 @@ typedef AddCardResult = ({
 @freezed
 abstract class DraftDeckRecipe with _$DraftDeckRecipe {
   const factory DraftDeckRecipe({
-    required DeckRecipeId id,
+    @DeckRecipeIdConverter() required DeckRecipeId id,
     @CardDefinitionIdListConverter() required List<CardDefinitionId> cardDefIds,
   }) = _DraftDeckRecipe;
 
