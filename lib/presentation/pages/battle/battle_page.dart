@@ -80,14 +80,11 @@ class BattlePage extends HookConsumerWidget {
               );
             }
           case RoomWatchResultUnavailable():
-            // TODO: Handle this case.
             throw UnimplementedError();
         }
       },
       error: (error, stackTrace) => Text('$error, $stackTrace'),
       loading: UiLoadingIndicator.new,
     );
-
-    //ref.watch(remoteActionsStreamProvider(roomId));
   }
 }
