@@ -1,7 +1,3 @@
-import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
-import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
-import 'package:dereruministic/domain/player/entities/player.dart';
-import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
 import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/deck_editor_page.dart';
@@ -44,21 +40,14 @@ GoRouter router(Ref ref) {
         },
       ),
       GoRoute(
-        path: RouterPaths.battle.path,
+        path: '${RouterPaths.battle.path}/:roomId',
         name: RouterPaths.battle.name,
-        builder: (context, state) => BattlePage(
-          enemy: Player(
-            id: PlayerId.generate(),
-            name: 'Player_02',
-            deckRecipe: DeckRecipe.create(
-              List.generate(
-                40,
-                (_) => const CardDefinitionId(value: 'basic_pack_hit'),
-              ),
-            ),
-          ),
-          seed: 321421431432,
-        ),
+        builder: (context, state) {
+          final roomId = RoomId(value: state.pathParameters['roomId']!);
+          return BattlePage(
+            roomId: roomId,
+          );
+        },
       ),
       GoRoute(
         path: RouterPaths.result.path,
