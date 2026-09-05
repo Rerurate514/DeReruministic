@@ -50,7 +50,6 @@ class BattlePage extends HookConsumerWidget {
               }, []);
 
               ref
-                //..watch(remoteActionsStreamProvider(roomId))
                 ..watch(eventStepDriverProvider(player.id))
                 ..watch(animationSignalProvider);
 

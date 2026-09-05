@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/converter/card_definition_id_converter.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/create_deck_recipe/constants/create_deck_recipe_rules.dart';
 import 'package:dereruministic/domain/create_deck_recipe/value_objects/deck_recipe_id.dart';
@@ -16,7 +17,7 @@ typedef AddCardResult = ({
 abstract class DraftDeckRecipe with _$DraftDeckRecipe {
   const factory DraftDeckRecipe({
     required DeckRecipeId id,
-    required List<CardDefinitionId> cardDefIds,
+    @CardDefinitionIdListConverter() required List<CardDefinitionId> cardDefIds,
   }) = _DraftDeckRecipe;
 
   factory DraftDeckRecipe.empty() {

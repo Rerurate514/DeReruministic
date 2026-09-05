@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:dereruministic/domain/card/converter/card_definition_id_converter.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects_details.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
@@ -10,7 +11,7 @@ part 'card_definition.g.dart';
 @freezed
 sealed class CardDefinition with _$CardDefinition {
   const factory CardDefinition({
-    required CardDefinitionId cardDefId,
+    @CardDefinitionIdConverter() required CardDefinitionId cardDefId,
     required String name,
     required int baseCost,
     required List<CardEffectsDetails> effects,
