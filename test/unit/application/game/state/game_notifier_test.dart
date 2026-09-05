@@ -19,6 +19,8 @@ import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import '../../../../helpers/game_test_helpers.dart';
+
 void main() {
   final basicPackCardDefIds = DeckRecipe.create(
     basicPack.map((defs) => defs.cardDefId).take(19).toList(),
@@ -60,6 +62,7 @@ void main() {
       await container
           .read(gameProvider.notifier)
           .startGame(
+            buildRoomId(),
             dummyPlayer,
             dummyEnemy,
           );
@@ -84,12 +87,14 @@ void main() {
       final notifier = container.read(gameProvider.notifier);
 
       await notifier.startGame(
+        buildRoomId(),
         dummyPlayer,
         dummyEnemy,
       );
       final firstState = container.read(gameProvider);
 
       await notifier.startGame(
+        buildRoomId(),
         dummyPlayer,
         dummyEnemy,
       );
@@ -111,6 +116,7 @@ void main() {
       final notifier = container.read(gameProvider.notifier);
 
       await notifier.startGame(
+        buildRoomId(),
         dummyPlayer,
         dummyEnemy,
       );

@@ -12,6 +12,7 @@ import 'package:dereruministic/domain/game_system/value_objects/game_state.dart'
 import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
 import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
 
@@ -119,4 +120,8 @@ GameActionPlayCard buildPlayCardAction({
     playerId: playerId,
     cardInstanceId: GameCardInstanceId(value: cardInstanceId),
   );
+}
+
+RoomId buildRoomId() {
+  return const RoomId(value: '');
 }

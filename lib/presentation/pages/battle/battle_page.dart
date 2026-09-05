@@ -43,7 +43,7 @@ class BattlePage extends HookConsumerWidget {
                   if (isHost) {
                     await ref
                         .read(gameProvider.notifier)
-                        .startGame(player, enemy);
+                        .startGame(room.roomId, player, enemy);
                   }
                 });
                 return null;

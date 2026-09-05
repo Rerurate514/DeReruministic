@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:dereruministic/application/game/state/seed_generator.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
+import 'package:dereruministic/application/remote_sync/in_game/usecases/append_game_actions_usecase.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
@@ -9,12 +12,15 @@ import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_notifier.g.dart';
 
 @riverpod
 class GameNotifier extends _$GameNotifier {
+  late final RoomId? _roomId;
+
   @override
   GameState? build() {
     return null;
@@ -26,6 +32,8 @@ class GameNotifier extends _$GameNotifier {
     required GameActions action,
     GameState? base,
   }) async {
+    if (_roomId == null) return;
+
     final current = base ?? state;
     final applyActionResult = _flow.applyAction(
       current: current,
@@ -38,14 +46,20 @@ class GameNotifier extends _$GameNotifier {
     )) {
       this.state = state;
       ref.read(stepEventQueueProvider.notifier).enqueueAll(steps);
-      // await eventSourcingRepository.sendAction(action);
+      unawaited(
+        ref
+            .read(appendGameActionsUsecaseProvider)
+            .execute(roomId: _roomId, action: action),
+      );
     } else if (applyActionResult case ApplyActionResultFailure()) {
       //TODO(error): ERRORハンドリング
     }
   }
 
-  Future<void> startGame(Player playerA, Player playerB) async {
+  Future<void> startGame(RoomId roomId, Player playerA, Player playerB) async {
     if (state != null) return;
+
+    _roomId = roomId;
 
     final generateSeed = ref.read(seedGeneratorProvider);
     final seed = generateSeed();
