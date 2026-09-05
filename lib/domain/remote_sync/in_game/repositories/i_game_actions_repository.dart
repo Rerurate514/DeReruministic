@@ -7,4 +7,5 @@ abstract interface class IGameActionsRepository {
     required GameActions action,
   });
   Stream<List<GameActions>> watchActions({required RoomId roomId});
+  Stream<GameActions> watchAddedActions({required RoomId roomId});
 }
