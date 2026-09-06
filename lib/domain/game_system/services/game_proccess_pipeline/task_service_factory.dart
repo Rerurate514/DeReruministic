@@ -131,7 +131,6 @@ class TaskServiceFactory {
     }(),
 
     GameTaskMainPhase(:final activePlayerId) => () {
-      // ターンプレイヤー以外の操作は無効（※投降を除く）
       if (action is! GameActionSurrender && action.playerId != activePlayerId) {
         return ApplyActionResult.failure(
           state: state,
