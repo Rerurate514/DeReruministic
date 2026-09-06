@@ -21,13 +21,17 @@ class BackgroundLogs extends HookConsumerWidget {
 
     const maxCount = 10;
 
-    final events = useState<QueueList<GameStepEvent>>(QueueList.from([]));
+    final nextId = useRef(0);
+    final events = useState<QueueList<(int, GameStepEvent)>>(
+      QueueList.from([]),
+    );
 
     ref.listen(stepEventQueueProvider, (previous, next) {
       if (previous == null || next.length >= previous.length) return;
 
       final removedEvents = previous.where((event) => !next.contains(event));
-      final nextQueue = QueueList.from(events.value)..addAll(removedEvents);
+      final nextQueue = QueueList.from(events.value)
+        ..addAll(removedEvents.map((e) => (nextId.value++, e)));
       while (nextQueue.length > maxCount) {
         nextQueue.removeFirst();
       }
@@ -60,13 +64,15 @@ class BackgroundLogs extends HookConsumerWidget {
             Expanded(
               child: ListView.builder(
                 findChildIndexCallback: (key) {
-                  final valuekey = key as ValueKey<GameStepEvent>;
-                  final index = events.value.indexOf(valuekey.value);
+                  final valuekey = key as ValueKey<int>;
+                  final index = events.value.indexWhere(
+                    (e) => e.$1 == valuekey.value,
+                  );
                   return index == -1 ? null : index;
                 },
                 itemCount: events.value.length,
                 itemBuilder: (context, index) {
-                  final event = events.value[index];
+                  final (id, event) = events.value[index];
                   return AnimatedText(
                     key: ValueKey(event),
                     event.text(l10n),
