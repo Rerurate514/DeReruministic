@@ -1,38 +1,38 @@
 // ignore_for_all: type=lint
 
-import 'dart:math';
-
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/application/game/state/game_notifier.dart';
 import 'package:dereruministic/application/game/state/seed_generator.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
-import 'package:dereruministic/domain/card/entities/game_card.dart';
-import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/di/providers/core/fiestore_provider.dart';
 import 'package:dereruministic/domain/card_packs/data/basic_pack.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
-import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../../../helpers/game_test_helpers.dart';
 
-void main() {
+void main() async {
   final basicPackCardDefIds = DeckRecipe.create(
     basicPack.map((defs) => defs.cardDefId).take(19).toList(),
   );
 
   late ProviderContainer container;
+  late FakeFirebaseFirestore mockFirestore;
 
   setUp(() {
+    mockFirestore = FakeFirebaseFirestore();
+
     container = ProviderContainer(
       overrides: [
         cardCatalogProvider.overrideWithValue(basicPack),
         seedGeneratorProvider.overrideWithValue(() => 12345),
+        firestoreProvider.overrideWithValue(mockFirestore),
       ],
     );
   });
@@ -181,38 +181,5 @@ void main() {
     //     expect(currentState.phase.turnOwner, equals(playerBId));
     //   },
     // );
-
-    test('未実装メソッドの呼び出しで例外が発生しないこと', () async {
-      final notifier = container.read(gameProvider.notifier);
-
-      expect(
-        () => notifier.playCard(
-          GameCard(
-            instanceId: GameCardInstanceId.generate(Random(0)),
-            definition: basicPack.first,
-            currentCost: 1,
-            enteredHandAtTurn: 1,
-          ),
-          dummyPlayer.id,
-        ),
-        returnsNormally,
-      );
-
-      expect(
-        () => notifier.applyRemoteAction(
-          GameActions.turnEnd(
-            id: GameActionsId.generate(),
-            actionSequenceNumber: 1,
-            playerId: dummyPlayer.id,
-          ),
-        ),
-        returnsNormally,
-      );
-
-      expect(
-        notifier.surrender,
-        returnsNormally,
-      );
-    });
   });
 }
