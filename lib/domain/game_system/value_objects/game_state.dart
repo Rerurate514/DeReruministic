@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/game_system/converter/game_task_queue_converter.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
@@ -22,7 +23,7 @@ sealed class GameState with _$GameState {
     required int turnCount,
     required PlayerId initialTurnOwner,
     required SystemMetadata metadata,
-    @Default([]) List<GameTask> taskQueue,
+    @GameTaskQueueConverter() @Default([]) QueueList<GameTask> taskQueue,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>
@@ -150,5 +151,39 @@ extension GameStateEx on GameState {
     return copyWith(
       players: {...players, playerId: updatedPlayer},
     );
+  }
+}
+
+enum GameStateTaskPushPos { head, tail }
+
+extension GameStateTaskQueueX on GameState {
+  GameTask? get currentTask => taskQueue.firstOrNull;
+
+  GameState pushTask(GameStateTaskPushPos pos, GameTask task) {
+    final nextQueue = QueueList<GameTask>.from(taskQueue);
+    switch (pos) {
+      case GameStateTaskPushPos.head:
+        nextQueue.addFirst(task);
+      case GameStateTaskPushPos.tail:
+        nextQueue.add(task);
+    }
+    return copyWith(taskQueue: nextQueue);
+  }
+
+  GameState pushTasks(GameStateTaskPushPos pos, List<GameTask> tasks) {
+    final nextQueue = QueueList<GameTask>.from(taskQueue);
+    switch (pos) {
+      case GameStateTaskPushPos.head:
+        tasks.reversed.forEach(nextQueue.addFirst);
+      case GameStateTaskPushPos.tail:
+        nextQueue.addAll(tasks);
+    }
+    return copyWith(taskQueue: nextQueue);
+  }
+
+  GameState popTask() {
+    if (taskQueue.isEmpty) return this;
+    final nextQueue = QueueList<GameTask>.from(taskQueue)..removeFirst();
+    return copyWith(taskQueue: nextQueue);
   }
 }
