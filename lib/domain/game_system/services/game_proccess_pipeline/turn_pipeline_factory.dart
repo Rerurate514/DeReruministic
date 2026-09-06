@@ -6,6 +6,7 @@ import 'package:dereruministic/domain/game_system/services/flows/game_start/adva
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/calculate_turn_cost_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/card_draw_start_turn_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/check_hand_limit_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/turn_end_phase_changed_event_service.dart';
@@ -31,6 +32,7 @@ TurnPipelineFactory turnPipelineFactory(Ref ref) {
     switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
     removeShieldService: ref.read(removeShieldServiceProvider),
     cardDrawStartTurnService: ref.read(cardDrawStartTurnServiceProvider),
+    checkHandLimitService: ref.read(checkHandLimitServiceProvider),
   );
 }
 
@@ -46,6 +48,7 @@ class TurnPipelineFactory implements ITurnPipelineFactory {
     required this.switchTurnOwnerService,
     required this.removeShieldService,
     required this.cardDrawStartTurnService,
+    required this.checkHandLimitService,
   });
 
   final TurnEndPhaseChangedEventService turnEndPhaseChangedEventService;
@@ -58,6 +61,7 @@ class TurnPipelineFactory implements ITurnPipelineFactory {
   final SwitchTurnOwnerService switchTurnOwnerService;
   final RemoveShieldService removeShieldService;
   final CardDrawStartTurnService cardDrawStartTurnService;
+  final CheckHandLimitService checkHandLimitService;
 
   @override
   TurnPipeline createGameStartPipeline() {
@@ -105,7 +109,7 @@ class TurnPipelineFactory implements ITurnPipelineFactory {
         // ドローフェーズ
         defeatCheckService,
         cardDrawStartTurnService,
-        // checkHandLimitService,
+        checkHandLimitService,
 
         // メインフェーズ
         advanceToMainPhaseService,
