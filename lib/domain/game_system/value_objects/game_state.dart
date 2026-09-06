@@ -4,6 +4,7 @@ import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.d
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
 import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/converter/player_map_converter.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
@@ -21,6 +22,7 @@ sealed class GameState with _$GameState {
     required int turnCount,
     required PlayerId initialTurnOwner,
     required SystemMetadata metadata,
+    @Default([]) List<GameTask> taskQueue,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>
