@@ -10,6 +10,7 @@ import 'package:dereruministic/presentation/pages/battle/components/header/battl
 import 'package:dereruministic/presentation/pages/battle/debug/ues_debug_enemy_step_consumer.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/event_step_driver_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/event_step_log_notifier.dart';
 import 'package:dereruministic/presentation/widgets/ui_loading_indicator.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
 import 'package:flutter/foundation.dart';
@@ -51,9 +52,22 @@ class BattlePage extends HookConsumerWidget {
                 return null;
               }, []);
 
-              ref
-                ..watch(eventStepDriverProvider(player.id))
-                ..watch(animationSignalProvider);
+              useEffect(() {
+                final subs = [
+                  ref.listenManual(
+                    eventStepDriverProvider(player.id),
+                    (_, __) {},
+                  ),
+                  ref.listenManual(animationSignalProvider, (_, __) {}),
+                  ref.listenManual(eventStepLogProvider, (_, __) {}),
+                ];
+
+                return () {
+                  for (final s in subs) {
+                    s.close();
+                  }
+                };
+              }, []);
 
               useDebugEnemyStepConsumer(
                 ref: ref,
