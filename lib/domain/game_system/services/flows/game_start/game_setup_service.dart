@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/services/create_deck_service.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
+import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/tasks_factory.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -73,6 +74,7 @@ class GameSetupService {
       turnCount: 1,
       initialTurnOwner: initialTurnOwner,
       metadata: SystemMetadata(seed: seed, actionSequenceNumber: 0),
+      taskQueue: TasksFactory.gameStart,
     );
 
     final turnStartStep = GameStepEvent.gameStarted(
