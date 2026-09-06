@@ -11,11 +11,13 @@ import 'package:dereruministic/presentation/pages/battle/debug/ues_debug_enemy_s
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/event_step_driver_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/event_step_log_notifier.dart';
+import 'package:dereruministic/presentation/router/router_paths.dart';
 import 'package:dereruministic/presentation/widgets/ui_loading_indicator.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class BattlePage extends HookConsumerWidget {
@@ -95,7 +97,14 @@ class BattlePage extends HookConsumerWidget {
               );
             }
           case RoomWatchResultUnavailable():
-            throw UnimplementedError();
+            {
+              context.goNamed(
+                RouterPaths.room.name,
+                pathParameters: {'roomId': roomId.value},
+              );
+
+              return const SizedBox.shrink();
+            }
         }
       },
       error: (error, stackTrace) => Text('$error, $stackTrace'),
