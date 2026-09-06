@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/game_system/services/flows/common/defeat_check_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/defeat_reason.dart';
@@ -37,6 +38,7 @@ void main() {
       phase: GamePhase.init(playerAId),
       turnCount: 0,
       initialTurnOwner: playerAId,
+      taskQueue: QueueList.from([]),
       metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
     );
   });

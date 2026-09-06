@@ -22,8 +22,8 @@ sealed class GameState with _$GameState {
     required GamePhase phase,
     required int turnCount,
     required PlayerId initialTurnOwner,
+    @GameTaskQueueConverter() required QueueList<GameTask> taskQueue,
     required SystemMetadata metadata,
-    @GameTaskQueueConverter() @Default([]) QueueList<GameTask> taskQueue,
   }) = _GameState;
 
   factory GameState.fromJson(Map<String, dynamic> json) =>

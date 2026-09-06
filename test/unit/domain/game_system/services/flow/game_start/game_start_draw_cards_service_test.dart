@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/card_draw_service.dart';
@@ -68,6 +69,7 @@ void main() {
     phase: GamePhase.init(playerAId),
     turnCount: 0,
     initialTurnOwner: playerAId,
+    taskQueue: QueueList.from([]),
     metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 1),
   );
 

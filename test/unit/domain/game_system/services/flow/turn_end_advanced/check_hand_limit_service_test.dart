@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
@@ -93,6 +94,7 @@ void main() {
       metadata: const SystemMetadata(seed: seed, actionSequenceNumber: 1),
       turnCount: 0,
       initialTurnOwner: const PlayerId(value: 'player_a'),
+      taskQueue: QueueList.from([]),
     );
   }
 

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/deck_restoration_service.dart';
@@ -57,6 +58,7 @@ void main() {
     phase: GamePhase.init(targetPlayerId),
     turnCount: 1,
     initialTurnOwner: targetPlayerId,
+    taskQueue: QueueList.from([]),
     metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 1),
   );
 
