@@ -51,6 +51,7 @@ dev_dependencies:
   go_router_linter: ^0.4.0
 
   mockito: any
+  fake_cloud_firestore: ^4.2.0
 
 dependency_overrides:
   firebase_core_web: 3.10.0
