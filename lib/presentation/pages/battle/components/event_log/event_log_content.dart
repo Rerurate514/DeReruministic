@@ -1,3 +1,5 @@
+import 'package:animated_text_effects/animated_text_effects.dart';
+import 'package:animated_text_effects/core/animated_text.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/event_step_log_notifier.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
@@ -22,9 +24,14 @@ class EventLogContent extends HookConsumerWidget {
         itemCount: events.length,
         itemBuilder: (context, index) {
           final event = events[index];
-          return Text(
+          return AnimatedText(
             key: ValueKey(event),
             event.text(l10n),
+            effects: const [
+              TypewriterEffect(
+                delayBetweenChars: Duration(milliseconds: 20),
+              ),
+            ],
             style: GoogleFonts.shareTechMono(
               color: theme.textPrimary.withAlpha(100),
             ),
