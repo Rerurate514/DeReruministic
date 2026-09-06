@@ -74,7 +74,7 @@ class BackgroundLogs extends HookConsumerWidget {
                 itemBuilder: (context, index) {
                   final (id, event) = events.value[index];
                   return AnimatedText(
-                    key: ValueKey(event),
+                    key: ValueKey(id),
                     event.text(l10n),
                     effects: const [
                       TypewriterEffect(
