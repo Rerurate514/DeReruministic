@@ -10,7 +10,6 @@ sealed class GameTask with _$GameTask {
 
   // 自動実行タスク
   // ゲーム開始パイプライン
-  const factory GameTask.gameStart() = GameTaskGameStart;
   const factory GameTask.gameStartDrawCards() = GameTaskGameStartDrawCards;
   const factory GameTask.advanceToTurnStart() = GameTaskAdvanceToTurnStart;
   const factory GameTask.calculateCost() = GameTaskCalculateCost;
@@ -48,6 +47,10 @@ sealed class GameTask with _$GameTask {
   const factory GameTask.checkHandLimit() = GameTaskCheckHandLimit;
 
   // ユーザー入力待ちタスク
+  const factory GameTask.mainPhase({
+    @PlayerIdConverter() required PlayerId activePlayerId,
+  }) = GameTaskMainPhase;
+
   const factory GameTask.selectOverflowDiscard({
     @PlayerIdConverter() required PlayerId targetPlayerId,
     required int overflowCount,
@@ -57,6 +60,7 @@ sealed class GameTask with _$GameTask {
       _$GameTaskFromJson(json);
 
   bool get isInteractive => switch (this) {
+    GameTaskMainPhase() => true,
     GameTaskSelectOverflowDiscard() => true,
     _ => false,
   };
