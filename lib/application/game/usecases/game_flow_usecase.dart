@@ -1,14 +1,12 @@
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
-import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_setup_service.dart';
-import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/i_turn_pipeline_factory.dart';
-import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/turn_pipeline_factory.dart';
+import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/task_service_factory.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
-import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_flow_usecase.g.dart';
@@ -17,24 +15,57 @@ part 'game_flow_usecase.g.dart';
 GameFlowUsecase gameFlowUsecase(Ref ref) {
   return GameFlowUsecase(
     cardCatalog: ref.read(cardCatalogProvider),
-    pipelineFactory: ref.read(turnPipelineFactoryProvider),
     gameSetupService: ref.read(gameSetupServiceProvider),
-    applyPlayCardService: ref.read(applyPlayCardServiceProvider),
+    taskServiceFactory: ref.read(taskServiceFactoryProvider),
   );
 }
 
 class GameFlowUsecase {
   const GameFlowUsecase({
     required this.cardCatalog,
-    required this.pipelineFactory,
     required this.gameSetupService,
-    required this.applyPlayCardService,
+    required this.taskServiceFactory,
   });
 
   final List<CardDefinition> cardCatalog;
-  final ITurnPipelineFactory pipelineFactory;
   final GameSetupService gameSetupService;
-  final ApplyPlayCardService applyPlayCardService;
+
+  final TaskServiceFactory taskServiceFactory;
+
+  ApplyActionResult processQueue(
+    GameState state, {
+    List<GameStepEvent> steps = const [],
+  }) {
+    var currentState = state;
+    final accumulatedSteps = List<GameStepEvent>.from(steps);
+
+    while (currentState.taskQueue.isNotEmpty) {
+      final currentTask = currentState.taskQueue.first;
+
+      if (currentTask.isInteractive) {
+        return ApplyActionResult.success(
+          state: currentState,
+          steps: accumulatedSteps,
+        );
+      }
+
+      currentState = currentState.popTask();
+      final result = taskServiceFactory.execute(
+        state: currentState,
+        gameTask: currentTask,
+      );
+
+      if (result is! ApplyActionResultSuccess) return result;
+
+      currentState = result.state;
+      accumulatedSteps.addAll(result.steps);
+    }
+
+    return ApplyActionResult.success(
+      state: currentState,
+      steps: accumulatedSteps,
+    );
+  }
 
   ApplyActionResult applyAction({
     required GameState? current,
@@ -48,42 +79,49 @@ class GameFlowUsecase {
       );
     }
 
-    final result = _dispatchAction(current, action);
+    if (action is GameActionGameStart) {
+      final initial = gameSetupService.execute(
+        playerAId: action.playerId,
+        playerBId: action.playerBId,
+        playerADeckRecipe: action.playerADeckRecipe,
+        playerBDeckRecipe: action.playerBDeckRecipe,
+        cardDefs: cardCatalog,
+        seed: action.seed,
+      );
 
-    return switch (result) {
-      ApplyActionResultSuccess(:final state, :final steps) =>
-        ApplyActionResult.success(
-          state: state.incrementalActionSequence(),
+      if (!_isValidActionSequenceNumber(action, initial.state)) {
+        return ApplyActionResult.failure(
+          state: initial.state,
+          reason: ActionFailureReason.invalidActionSequence,
+        );
+      }
+
+      return switch (initial) {
+        ApplyActionResultSuccess(:final state, :final steps) => processQueue(
+          state,
           steps: steps,
         ),
-      ApplyActionResultFailure() => result,
-    };
-  }
+        ApplyActionResultFailure() => throw UnimplementedError(),
+      };
+    }
 
-  ApplyActionResult _dispatchAction(GameState? current, GameActions action) {
-    return switch (action) {
-      GameActionGameStart() => _applyGameStart(action),
-      GameActionPlayCard() => _applyPlayCard(
-        _requireState(current, action),
-        action,
-      ),
-      GameActionDiscardCard() => _applyDiscardCard(
-        _requireState(current, action),
-        action,
-      ),
-      GameActionSelectOverflowDiscards() => _applyOverflowDiscards(
-        _requireState(current, action),
-        action,
-      ),
-      GameActionTurnEnd() => _applyTurnEndAndAutoAdvance(
-        _requireState(current, action),
-        action,
-      ),
-      GameActionSurrender() => _applySurrender(
-        _requireState(current, action),
-        action,
-      ),
-    };
+    final currentTask = current!.taskQueue.firstOrNull;
+    if (currentTask == null || !currentTask.isInteractive) {
+      return ApplyActionResult.failure(
+        state: current,
+        reason: ActionFailureReason.invalidActionSequence,
+      );
+    }
+
+    final result = taskServiceFactory.handleAction(
+      state: current,
+      gameTask: currentTask,
+      action: action,
+    );
+
+    if (result is! ApplyActionResultSuccess) return result;
+
+    return processQueue(result.state.popTask());
   }
 
   GameState _requireState(GameState? current, GameActions action) {
@@ -91,84 +129,6 @@ class GameFlowUsecase {
       throw StateError('State cannot be null for action: $action');
     }
     return current;
-  }
-
-  ApplyActionResult _applyGameStart(
-    GameActionGameStart action,
-  ) {
-    final initial = gameSetupService.execute(
-      playerAId: action.playerId,
-      playerBId: action.playerBId,
-      playerADeckRecipe: action.playerADeckRecipe,
-      playerBDeckRecipe: action.playerBDeckRecipe,
-      cardDefs: cardCatalog,
-      seed: action.seed,
-    );
-
-    if (!_isValidActionSequenceNumber(action, initial.state)) {
-      return ApplyActionResult.failure(
-        state: initial.state,
-        reason: ActionFailureReason.invalidActionSequence,
-      );
-    }
-
-    final pipeline = pipelineFactory.createGameStartPipeline();
-
-    return switch (initial) {
-      ApplyActionResultSuccess(:final state, :final steps) => pipeline.process(
-        state,
-        steps,
-      ),
-      ApplyActionResultFailure() => initial,
-    };
-  }
-
-  ApplyActionResult _applyPlayCard(
-    GameState state,
-    GameActionPlayCard action,
-  ) {
-    final applyResult = applyPlayCardService.execute(
-      state: state,
-      action: action,
-    );
-
-    return applyResult;
-  }
-
-  ApplyActionResult _applyDiscardCard(
-    GameState state,
-    GameActionDiscardCard action,
-  ) {
-    //TODO(action): add
-    return ApplyActionResult.noSteps(state: state);
-  }
-
-  ApplyActionResult _applyOverflowDiscards(
-    GameState state,
-    GameActionSelectOverflowDiscards action,
-  ) {
-    //TODO(action): add
-    return ApplyActionResult.noSteps(state: state);
-  }
-
-  ApplyActionResult _applyTurnEndAndAutoAdvance(
-    GameState state,
-    GameActionTurnEnd action,
-  ) {
-    if (state.phase.battlePhase == BattlePhase.battleEnd) {
-      return ApplyActionResult.noSteps(state: state);
-    }
-
-    final pipeline = pipelineFactory.createTurnEndPipeline();
-    return pipeline.process(state, []);
-  }
-
-  ApplyActionResult _applySurrender(
-    GameState state,
-    GameActionSurrender action,
-  ) {
-    //TODO(action): add
-    return ApplyActionResult.noSteps(state: state);
   }
 
   bool _isValidActionSequenceNumber(
