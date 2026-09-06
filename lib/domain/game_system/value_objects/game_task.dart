@@ -8,23 +8,46 @@ part 'game_task.g.dart';
 sealed class GameTask with _$GameTask {
   const GameTask._();
 
-  // --- 1. 自動実行タスク ---
-  // ゲーム開始パイプライン (createGameStartPipeline)
+  // 自動実行タスク
+  // ゲーム開始パイプライン
+  const factory GameTask.gameStart() = GameTaskGameStart;
   const factory GameTask.gameStartDrawCards() = GameTaskGameStartDrawCards;
   const factory GameTask.advanceToTurnStart() = GameTaskAdvanceToTurnStart;
   const factory GameTask.calculateCost() = GameTaskCalculateCost;
   const factory GameTask.advanceToMainPhase() = GameTaskAdvanceToMainPhase;
 
-  // ターン終了パイプライン (createTurnEndPipeline)
+  // ターン終了パイプライン
   const factory GameTask.turnEndPhaseChanged() = GameTaskTurnEndPhaseChanged;
   const factory GameTask.updateCardCounter() = GameTaskUpdateCardCounter;
+  // const factory GameTask.resolveTimedCardEffects() =
+  //     GameTaskResolveTimedCardEffects;
+  // const factory GameTask.resolveTurnEndStatus() =
+  //     GameTaskResolveTurnEndStatus;
+  // const factory GameTask.processRottenCardExhaust() =
+  //     GameTaskProcessRottenCardExhaust;
+  // const factory GameTask.triggerOnTurnEndEvent() =
+  //     GameTaskTriggerOnTurnEndEvent;
   const factory GameTask.defeatCheck() = GameTaskDefeatCheck;
+
+  // 手番交代
   const factory GameTask.switchTurnOwner() = GameTaskSwitchTurnOwner;
+
+  // ターン開始フェーズ
   const factory GameTask.removeShield() = GameTaskRemoveShield;
+  // const factory GameTask.resolveRegen() = GameTaskResolveRegen;
+  // const factory GameTask.resolvePoison() = GameTaskResolvePoison;
+  // (defeatCheck を再利用)
+  // (calculateCost を再利用)
+  // const factory GameTask.applyGuardBoost() = GameTaskApplyGuardBoost;
+  // const factory GameTask.resetCombo() = GameTaskResetCombo;
+  // const factory GameTask.triggerOnTurnStartEvent() =
+  //     GameTaskTriggerOnTurnStartEvent;
+
+  // ドローフェーズ
   const factory GameTask.cardDraw() = GameTaskCardDraw;
   const factory GameTask.checkHandLimit() = GameTaskCheckHandLimit;
 
-  // --- 2. ユーザー入力待ちタスク ---
+  // ユーザー入力待ちタスク
   const factory GameTask.selectOverflowDiscard({
     @PlayerIdConverter() required PlayerId targetPlayerId,
     required int overflowCount,
