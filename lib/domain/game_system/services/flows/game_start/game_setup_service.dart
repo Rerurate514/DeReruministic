@@ -74,7 +74,7 @@ class GameSetupService {
       turnCount: 1,
       initialTurnOwner: initialTurnOwner,
       metadata: SystemMetadata(seed: seed, actionSequenceNumber: 0),
-      taskQueue: TasksFactory.gameStart,
+      taskQueue: TasksFactory.gameStart(activePlayerId: initialTurnOwner),
     );
 
     final turnStartStep = GameStepEvent.gameStarted(

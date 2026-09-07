@@ -164,7 +164,7 @@ class TaskServiceFactory {
   ApplyActionResult _handleTurnEndAction(GameState state) {
     final stateWithTasks = state.popTask().pushTasks(
       GameStateTaskPushPos.head,
-      TasksFactory.turnEndTasks,
+      TasksFactory.turnEndTasks(activePlayerId: state.phase.turnOwner),
     );
 
     return ApplyActionResult.noSteps(state: stateWithTasks);
