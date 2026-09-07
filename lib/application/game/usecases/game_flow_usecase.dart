@@ -89,13 +89,6 @@ class GameFlowUsecase {
         seed: action.seed,
       );
 
-      if (!_isValidActionSequenceNumber(action, initial.state)) {
-        return ApplyActionResult.failure(
-          state: initial.state,
-          reason: ActionFailureReason.invalidActionSequence,
-        );
-      }
-
       return switch (initial) {
         ApplyActionResultSuccess(:final state, :final steps) => processQueue(
           state,
