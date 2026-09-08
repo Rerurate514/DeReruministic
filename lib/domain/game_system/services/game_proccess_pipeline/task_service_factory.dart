@@ -16,6 +16,7 @@ import 'package:dereruministic/domain/game_system/value_objects/action_failure_r
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'task_service_factory.g.dart';
@@ -130,36 +131,48 @@ class TaskServiceFactory {
       return ApplyActionResult.noSteps(state: state);
     }(),
 
-    GameTaskMainPhase(:final activePlayerId) => () {
-      if (action is! GameActionSurrender && action.playerId != activePlayerId) {
-        return ApplyActionResult.failure(
-          state: state,
-          reason: ActionFailureReason.invalidAction,
-        );
-      }
-
-      return switch (action) {
-        GameActionPlayCard() => applyPlayCardService.execute(
-          state: state,
-          action: action,
-        ),
-        // GameActionDiscardCard() => discardCardService.execute(state, action),
-        // GameActionSurrender() => surrenderService.execute(state, action),
-        GameActionDiscardCard() => throw UnimplementedError(),
-        GameActionSurrender() => throw UnimplementedError(),
-        GameActionTurnEnd() => _handleTurnEndAction(state),
-        _ => ApplyActionResult.failure(
-          state: state,
-          reason: ActionFailureReason.invalidActionSequence,
-        ),
-      };
-    }(),
+    GameTaskMainPhase(:final activePlayerId) => _handleMainPhase(
+      state,
+      action,
+      activePlayerId,
+    ),
 
     _ => ApplyActionResult.failure(
       state: state,
       reason: ActionFailureReason.invalidActionSequence,
     ),
   };
+
+  ApplyActionResult _handleSelectOverflowDiscards(Game)
+
+  ApplyActionResult _handleMainPhase(
+    GameState state,
+    GameActions action,
+    PlayerId activePlayerId,
+  ) {
+    if (action is! GameActionSurrender && action.playerId != activePlayerId) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.invalidAction,
+      );
+    }
+
+    return switch (action) {
+      GameActionPlayCard() => applyPlayCardService.execute(
+        state: state,
+        action: action,
+      ),
+      // GameActionDiscardCard() => discardCardService.execute(state, action),
+      // GameActionSurrender() => surrenderService.execute(state, action),
+      GameActionDiscardCard() => throw UnimplementedError(),
+      GameActionSurrender() => throw UnimplementedError(),
+      GameActionTurnEnd() => _handleTurnEndAction(state),
+      _ => ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.invalidActionSequence,
+      ),
+    };
+  }
 
   ApplyActionResult _handleTurnEndAction(GameState state) {
     final stateWithTasks = state.popTask().pushTasks(
