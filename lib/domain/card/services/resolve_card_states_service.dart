@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
@@ -40,8 +39,8 @@ class ResolveCardStatesService {
       CardStateExhaust() => _applyExhaust(state, playerId, cardInstanceId),
       CardStateRecycle() => _applyRecycle(state, playerId, cardInstanceId),
       CardStateInfect() => throw UnimplementedError(),
-      CardStateCountdown(:final turns) => throw UnimplementedError(),
-      CardStateDecay(:final turns) => throw UnimplementedError(),
+      CardStateCountdown() => throw UnimplementedError(),
+      CardStateDecay() => throw UnimplementedError(),
       CardStateUndiscardable() => throw UnimplementedError(),
       CardStateConceal() => throw UnimplementedError(),
       CardStateRetain() => throw UnimplementedError(),
