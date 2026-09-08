@@ -1,4 +1,6 @@
 import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
+import 'package:dereruministic/domain/card/services/consume_card_service.dart';
+import 'package:dereruministic/domain/card/services/consume_cost_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/common/defeat_check_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
@@ -39,6 +41,8 @@ TaskServiceFactory taskServiceFactory(Ref ref) {
     cardDrawStartTurnService: ref.read(cardDrawStartTurnServiceProvider),
     checkHandLimitService: ref.read(checkHandLimitServiceProvider),
     applyPlayCardService: ref.read(applyPlayCardServiceProvider),
+    consumeCardService: ref.read(consumeCardServiceProvider),
+    consumeCostService: ref.read(consumeCostServiceProvider),
   );
 }
 
@@ -56,6 +60,8 @@ class TaskServiceFactory {
     required this.cardDrawStartTurnService,
     required this.checkHandLimitService,
     required this.applyPlayCardService,
+    required this.consumeCardService,
+    required this.consumeCostService,
   });
 
   final TurnEndPhaseChangedEventService turnEndPhaseChangedEventService;
@@ -70,6 +76,8 @@ class TaskServiceFactory {
   final CardDrawStartTurnService cardDrawStartTurnService;
   final CheckHandLimitService checkHandLimitService;
   final ApplyPlayCardService applyPlayCardService;
+  final ConsumeCardService consumeCardService;
+  final ConsumeCostService consumeCostService;
 
   ApplyActionResult executeAutoTask({
     required GameState state,
@@ -114,7 +122,25 @@ class TaskServiceFactory {
     // TODO: Handle this case.
     AutoGameTaskApplyCardState() => throw UnimplementedError(),
     // TODO: Handle this case.
-    AutoGameTaskTriggerCardStateEffect() => throw UnimplementedError(),
+    AutoGameTaskProgressCardRuntimeState() => throw UnimplementedError(),
+    // TODO: Handle this case.
+    AutoGameTaskResolveCardRuntimeStateTrigger() => throw UnimplementedError(),
+    // TODO: Handle this case.
+    AutoGameTaskConsumePlayCost(
+      :final playerId,
+      :final instanceId,
+    ) =>
+      consumeCostService.execute(
+        state: state,
+        sourcePlayerId: playerId,
+        instanceId: instanceId,
+      ),
+    AutoGameTaskConsumeCard(:final playerId, :final instanceId) =>
+      consumeCardService.execute(
+        state: state,
+        sourcePlayerId: playerId,
+        instanceId: instanceId,
+      ),
   };
 
   ApplyActionResult handleAction({
