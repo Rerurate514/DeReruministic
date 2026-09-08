@@ -83,7 +83,7 @@ class ApplyPlayCardService {
           .applyCardState(
             playerId: cardUsedPlayer.id,
             cardInstanceId: usedCard.instanceId,
-            state: cardState,
+            cardState: cardState,
           ),
         ),
       ),

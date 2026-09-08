@@ -66,7 +66,7 @@ sealed class AutoGameTask with _$AutoGameTask {
   const factory AutoGameTask.applyCardState({
     @PlayerIdConverter() required PlayerId playerId,
     @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
-    required CardStates state,
+    required CardStates cardState,
   }) = AutoGameTaskApplyCardState;
 
   const factory AutoGameTask.progressCardRuntimeState({
