@@ -9,11 +9,13 @@ import 'package:dereruministic/domain/game_system/services/flows/game_start/game
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/task_service_factory.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
+import 'package:dereruministic/domain/game_system/value_objects/auto_game_task.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
+import 'package:dereruministic/domain/game_system/value_objects/interactive_game_task.dart';
 import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -137,7 +139,9 @@ void main() {
         players: {playerId: buildPlayer(id: playerId)},
         actionSequenceNumber: 5,
         taskQueue: QueueList<GameTask>.from([
-          const GameTask.mainPhase(activePlayerId: playerId),
+          const GameTask.interactive(
+            InteractiveGameTask.mainPhase(activePlayerId: playerId),
+          ),
         ]),
       );
       final action = buildTurnEndAction(actionSequenceNumber: 6);
@@ -146,7 +150,7 @@ void main() {
       when(
         mockTaskServiceFactory.handleAction(
           state: anyNamed('state'),
-          gameTask: anyNamed('gameTask'),
+          task: anyNamed('task'),
           action: anyNamed('action'),
         ),
       ).thenReturn(expected);
@@ -265,8 +269,8 @@ void main() {
           enemyId: buildPlayer(id: enemyId),
         },
         taskQueue: QueueList<GameTask>.from([
-          const GameTask.gameStartDrawCards(),
-          const GameTask.advanceToTurnStart(),
+          const GameTask.auto(.gameStartDrawCards()),
+          const GameTask.auto(.advanceToTurnStart()),
         ]),
       );
       const setupStep = GameStepEvent.gameStarted(
@@ -289,7 +293,7 @@ void main() {
       // 1つ目のタスク実行後の状態(タスクが1つ消化されている)
       final afterDraw = setupState.popTask().copyWith(
         taskQueue: QueueList<GameTask>.from([
-          const GameTask.advanceToTurnStart(),
+          const GameTask.auto(.advanceToTurnStart()),
         ]),
       );
       const drawStep = GameStepEvent.cardsDrawn(
@@ -301,7 +305,7 @@ void main() {
       when(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: const GameTask.gameStartDrawCards(),
+          task: const AutoGameTask.gameStartDrawCards(),
         ),
       ).thenReturn(
         ApplyActionResult.success(state: afterDraw, steps: [drawStep]),
@@ -313,7 +317,7 @@ void main() {
       when(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: const GameTask.advanceToTurnStart(),
+          task: const .advanceToTurnStart(),
         ),
       ).thenReturn(
         ApplyActionResult.success(state: afterAdvance, steps: [phaseStep]),
@@ -333,13 +337,13 @@ void main() {
       verify(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: const GameTask.gameStartDrawCards(),
+          task: const .gameStartDrawCards(),
         ),
       ).called(1);
       verify(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: const GameTask.advanceToTurnStart(),
+          task: const .advanceToTurnStart(),
         ),
       ).called(1);
     });
@@ -351,8 +355,8 @@ void main() {
           enemyId: buildPlayer(id: enemyId),
         },
         taskQueue: QueueList<GameTask>.from([
-          const GameTask.advanceToMainPhase(),
-          const GameTask.mainPhase(activePlayerId: playerId),
+          const GameTask.auto(.advanceToMainPhase()),
+          const GameTask.interactive(.mainPhase(activePlayerId: playerId)),
         ]),
       );
       const setupStep = GameStepEvent.gameStarted(
@@ -374,14 +378,14 @@ void main() {
 
       final afterAdvance = setupState.popTask().copyWith(
         taskQueue: QueueList<GameTask>.from([
-          const GameTask.mainPhase(activePlayerId: playerId),
+          const GameTask.interactive(.mainPhase(activePlayerId: playerId)),
         ]),
       );
       final phaseStep = GameStepEvent.phaseChanged(phase: afterAdvance.phase);
       when(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: const GameTask.advanceToMainPhase(),
+          task: const AutoGameTask.advanceToMainPhase(),
         ),
       ).thenReturn(
         ApplyActionResult.success(state: afterAdvance, steps: [phaseStep]),
@@ -395,13 +399,9 @@ void main() {
       final success = result as ApplyActionResultSuccess;
       // mainPhaseタスクが残ったまま止まっている
       expect(success.state.taskQueue, hasLength(1));
-      expect(success.state.taskQueue.first, isA<GameTaskMainPhase>());
-      // interactiveなタスクにはexecuteが呼ばれない
-      verifyNever(
-        mockTaskServiceFactory.executeAutoTask(
-          state: anyNamed('state'),
-          gameTask: const GameTask.mainPhase(activePlayerId: playerId),
-        ),
+      expect(
+        success.state.taskQueue.first,
+        isA<InteractiveGameTaskMainPhase>(),
       );
     });
 
@@ -412,8 +412,8 @@ void main() {
           enemyId: buildPlayer(id: enemyId),
         },
         taskQueue: QueueList<GameTask>.from([
-          const GameTask.gameStartDrawCards(),
-          const GameTask.advanceToTurnStart(), // ここまで到達しないはず
+          const GameTask.auto(.gameStartDrawCards()),
+          const GameTask.auto(.advanceToTurnStart()),
         ]),
       );
       const setupStep = GameStepEvent.gameStarted(
@@ -440,7 +440,7 @@ void main() {
       when(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: const GameTask.gameStartDrawCards(),
+          task: const AutoGameTask.gameStartDrawCards(),
         ),
       ).thenReturn(taskFailure);
 
@@ -453,7 +453,7 @@ void main() {
       verifyNever(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: const GameTask.advanceToTurnStart(),
+          task: const AutoGameTask.advanceToTurnStart(),
         ),
       );
     });
@@ -481,7 +481,7 @@ void main() {
       final state = buildStateWithMeta(
         players: {playerId: buildPlayer(id: playerId)},
         taskQueue: QueueList<GameTask>.from([
-          const GameTask.defeatCheck(), // 非interactive
+          const GameTask.auto(.defeatCheck()), // 非interactive
         ]),
       );
       final action = buildTurnEndAction();
@@ -499,10 +499,12 @@ void main() {
     test(
       'taskQueueの先頭がmainPhase(interactive)の場合、taskServiceFactory.handleActionに委譲される',
       () {
-        const task = GameTask.mainPhase(activePlayerId: playerId);
+        const task = InteractiveGameTask.mainPhase(activePlayerId: playerId);
         final state = buildStateWithMeta(
           players: {playerId: buildPlayer(id: playerId)},
-          taskQueue: QueueList<GameTask>.from([task]),
+          taskQueue: QueueList<GameTask>.from([
+            const GameTask.interactive(task),
+          ]),
         );
         final action = buildPlayCardActionLocal();
         final expected = ApplyActionResult.noSteps(state: state.popTask());
@@ -510,7 +512,7 @@ void main() {
         when(
           mockTaskServiceFactory.handleAction(
             state: state,
-            gameTask: task,
+            task: task,
             action: action,
           ),
         ).thenReturn(expected);
@@ -520,7 +522,7 @@ void main() {
         verify(
           mockTaskServiceFactory.handleAction(
             state: state,
-            gameTask: task,
+            task: task,
             action: action,
           ),
         ).called(1);
@@ -528,10 +530,10 @@ void main() {
     );
 
     test('handleActionが失敗を返す場合、その失敗がそのまま返りpopTask/processQueueは実行されない', () {
-      const task = GameTask.mainPhase(activePlayerId: playerId);
+      const task = InteractiveGameTask.mainPhase(activePlayerId: playerId);
       final state = buildStateWithMeta(
         players: {playerId: buildPlayer(id: playerId)},
-        taskQueue: QueueList<GameTask>.from([task]),
+        taskQueue: QueueList<GameTask>.from([const GameTask.interactive(task)]),
       );
       final action = buildPlayCardActionLocal();
       final failure = ApplyActionResult.failure(
@@ -542,7 +544,7 @@ void main() {
       when(
         mockTaskServiceFactory.handleAction(
           state: state,
-          gameTask: task,
+          task: task,
           action: action,
         ),
       ).thenReturn(failure);
@@ -553,17 +555,20 @@ void main() {
       verifyNever(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: anyNamed('gameTask'),
+          task: anyNamed('task'),
         ),
       );
     });
 
     test('handleActionが成功を返す場合、popTaskされた状態でprocessQueueが実行される', () {
-      const task = GameTask.mainPhase(activePlayerId: playerId);
-      const nextTask = GameTask.defeatCheck();
+      const task = InteractiveGameTask.mainPhase(activePlayerId: playerId);
+      const nextTask = AutoGameTask.defeatCheck();
       final state = buildStateWithMeta(
         players: {playerId: buildPlayer(id: playerId)},
-        taskQueue: QueueList<GameTask>.from([task, nextTask]),
+        taskQueue: QueueList<GameTask>.from([
+          const GameTask.interactive(task),
+          const GameTask.auto(nextTask),
+        ]),
       );
       final action = buildPlayCardActionLocal();
 
@@ -572,7 +577,7 @@ void main() {
       when(
         mockTaskServiceFactory.handleAction(
           state: state,
-          gameTask: task,
+          task: task,
           action: action,
         ),
       ).thenReturn(ApplyActionResult.noSteps(state: afterHandle));
@@ -586,7 +591,7 @@ void main() {
       when(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: nextTask,
+          task: nextTask,
         ),
       ).thenReturn(
         ApplyActionResult.success(state: afterDefeatCheck, steps: [defeatStep]),
@@ -602,7 +607,7 @@ void main() {
       verify(
         mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
-          gameTask: nextTask,
+          task: nextTask,
         ),
       ).called(1);
     });
