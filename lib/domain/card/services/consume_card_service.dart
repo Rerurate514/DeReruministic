@@ -1,7 +1,4 @@
 import 'package:collection/collection.dart';
-import 'package:dereruministic/domain/card/entities/card_definition.dart';
-import 'package:dereruministic/domain/card/entities/game_card.dart';
-import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/services/play_card_validator.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
@@ -64,22 +61,9 @@ class ConsumeCardService {
       );
     }
 
-    final decrementedState = state.decrementRecycleCount(
-      playerId: sourcePlayerId,
-      cardInstanceId: instanceId,
-    );
+    const destinationZone = CardZone.playArea;
 
-    final updatedCard = decrementedState.players[sourcePlayerId]?.hand
-        .firstWhere((c) => c.instanceId == instanceId, orElse: () => usedCard);
-
-    final destinationZone =
-        updatedCard?.definition.hasState<CardStateExhaust>() ?? false
-        ? CardZone.exhausted
-        : updatedCard?.isRecycleActive ?? false
-        ? CardZone.deck
-        : CardZone.graveyard;
-
-    final newState = decrementedState.moveCardFromHand(
+    final newState = state.moveCardFromHand(
       playerId: sourcePlayerId,
       cardInstanceId: instanceId,
       to: destinationZone,
