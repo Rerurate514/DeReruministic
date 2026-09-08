@@ -1,9 +1,9 @@
 import 'package:dereruministic/domain/card/services/effects/effect_resolver.dart';
+import 'package:dereruministic/domain/card/value_objects/action_targets.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
-import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'resolve_card_effects_service.g.dart';
@@ -24,98 +24,74 @@ class ResolveCardEffectsService {
 
   ApplyActionResult execute({
     required GameState state,
-    required GameActionPlayCard action,
-    required List<CardEffects> effects,
+    required PlayerId playerId,
+    required CardEffects effect,
+    ActionTargets? target,
   }) {
-    var currentState = state;
-    final allSteps = <GameStepEvent>[];
-
-    for (final effect in effects) {
-      final result = _applySingleEffect(currentState, action, effect);
-
-      if (result case ApplyActionResultFailure()) {
-        return result;
-      }
-
-      currentState = result.state;
-      allSteps.addAll((result as ApplyActionResultSuccess).steps);
-    }
-
-    return ApplyActionResult.success(
-      state: currentState,
-      steps: allSteps,
-    );
-  }
-
-  ApplyActionResult _applySingleEffect(
-    GameState state,
-    GameActionPlayCard action,
-    CardEffects effect,
-  ) {
     return switch (effect) {
       CardEffectDamage() => effectResolver.resolveDamageEffectService.execute(
         state: state,
         effect: effect,
-        sourcePlayerId: action.playerId,
+        sourcePlayerId: playerId,
       ),
       CardEffectDraw() => effectResolver.resolveDrawEffectsService.execute(
         state: state,
         effect: effect,
-        sourcePlayerId: action.playerId,
+        sourcePlayerId: playerId,
       ),
       CardEffectDiscard() => throw UnimplementedError(),
       CardEffectFetchCard() => throw UnimplementedError(),
       CardEffectHeal() => effectResolver.resolveHealEffectService.execute(
         state: state,
         effect: effect,
-        sourcePlayerId: action.playerId,
+        sourcePlayerId: playerId,
       ),
       CardEffectGrantShield() =>
         effectResolver.resolveGrantShieldEffectService.execute(
           state: state,
           effect: effect,
-          sourcePlayerId: action.playerId,
+          sourcePlayerId: playerId,
         ),
       CardEffectGrantCost() =>
         effectResolver.resolveGrantCostEffectService.execute(
           state: state,
           effect: effect,
-          sourcePlayerId: action.playerId,
+          sourcePlayerId: playerId,
         ),
       CardEffectStealCost() =>
         effectResolver.resolveStealCostEffectService.execute(
           state: state,
           effect: effect,
-          sourcePlayerId: action.playerId,
+          sourcePlayerId: playerId,
         ),
       CardEffectStealShield() =>
         effectResolver.resolveStealShieldEffectService.execute(
           state: state,
           effect: effect,
-          sourcePlayerId: action.playerId,
+          sourcePlayerId: playerId,
         ),
       CardEffectApplyBuff() => effectResolver.resolveApplyBuffService.execute(
         state: state,
         effect: effect,
-        sourcePlayerId: action.playerId,
+        sourcePlayerId: playerId,
       ),
       CardEffectApplyDebuff() =>
         effectResolver.resolveApplyDebuffService.execute(
           state: state,
           effect: effect,
-          sourcePlayerId: action.playerId,
+          sourcePlayerId: playerId,
         ),
       CardEffectRemoveBuffs() =>
         effectResolver.resolveRemoveBuffsEffectService.execute(
           state: state,
           effect: effect,
-          sourcePlayerId: action.playerId,
+          sourcePlayerId: playerId,
         ),
       CardEffectRemoveDebuffs() =>
         effectResolver.resolveRemoveDebuffsEffectService.execute(
           state: state,
           effect: effect,
-          sourcePlayerId: action.playerId,
+          sourcePlayerId: playerId,
         ),
     };
   }
