@@ -3,6 +3,7 @@ import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_states_trigger_type.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
@@ -10,17 +11,17 @@ import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'resolve_card_states_service.g.dart';
+part 'resolve_play_card_states_service.g.dart';
 
 @riverpod
-ResolveCardStatesService resolveCardStatesService(Ref ref) {
-  return const ResolveCardStatesService();
+ResolvePlayCardStatesService resolvePlayCardStatesService(Ref ref) {
+  return const ResolvePlayCardStatesService();
 }
 
-class ResolveCardStatesService {
-  const ResolveCardStatesService();
+class ResolvePlayCardStatesService {
+  const ResolvePlayCardStatesService();
 
-  ApplyActionResult process({
+  ApplyActionResult execute({
     required GameState state,
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
@@ -35,17 +36,19 @@ class ResolveCardStatesService {
     }
 
     return switch (cardState) {
-      CardStateOverload(:final amount) => _applyOverload(state, player, amount),
       CardStateExhaust() => _applyExhaust(state, playerId, cardInstanceId),
+      CardStateOverload(:final amount) => _applyOverload(
+        state,
+        player,
+        amount,
+      ),
       CardStateRecycle() => _applyRecycle(state, playerId, cardInstanceId),
-      CardStateInfect() => throw UnimplementedError(),
-      CardStateCountdown() => throw UnimplementedError(),
-      CardStateDecay() => throw UnimplementedError(),
-      CardStateUndiscardable() => throw UnimplementedError(),
       CardStateConceal() => throw UnimplementedError(),
       CardStateRetain() => throw UnimplementedError(),
       CardStateEngrave() => throw UnimplementedError(),
       CardStateChain() => throw UnimplementedError(),
+      CardStateInfect() => throw UnimplementedError(),
+      _ => ApplyActionResult.noSteps(state: state),
     };
   }
 
@@ -98,22 +101,44 @@ class ResolveCardStatesService {
       cardInstanceId: instanceId,
     );
 
-    final destinationZone = updatedCard?.isRecycleActive ?? false
-        ? CardZone.deck
-        : CardZone.graveyard;
+    final isRecycleActive = updatedCard?.isRecycleActive ?? false;
 
-    final newState = decrementedState.moveCardFromPlayArea(
-      playerId: playerId,
-      cardInstanceId: instanceId,
-      to: destinationZone,
-    );
+    if (isRecycleActive) {
+      final newState = decrementedState.moveCardFromPlayArea(
+        playerId: playerId,
+        cardInstanceId: instanceId,
+        to: CardZone.deck,
+      );
 
-    final step = GameStepEvent.cardMovedZone(
-      playerId: playerId,
-      cardInstanceIds: [instanceId],
-      zoneFrom: CardZone.playArea,
-      zoneTo: destinationZone,
-    );
-    return ApplyActionResult.success(state: newState, steps: [step]);
+      final step = GameStepEvent.cardMovedZone(
+        playerId: playerId,
+        cardInstanceIds: [instanceId],
+        zoneFrom: CardZone.playArea,
+        zoneTo: CardZone.deck,
+      );
+
+      return ApplyActionResult.success(state: newState, steps: [step]);
+    } else {
+      final recycleRuntime = updatedCard?.recycleRuntime;
+      if (recycleRuntime == null) {
+        return ApplyActionResult.failure(
+          state: state,
+          reason: ActionFailureReason.cardNotFound,
+        );
+      }
+
+      final newState = decrementedState.pushTask(
+        GameStateTaskPushPos.head,
+        .auto(
+          .resolveCardStatesTrigger(
+            playerId: playerId,
+            cardInstanceId: instanceId,
+            triggerType: CardStatesTriggerType.recycleExpired,
+          ),
+        ),
+      );
+
+      return ApplyActionResult.success(state: newState, steps: []);
+    }
   }
 }

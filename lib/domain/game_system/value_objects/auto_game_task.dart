@@ -1,9 +1,9 @@
 import 'package:dereruministic/domain/card/converter/game_card_instance_id_converter.dart';
 import 'package:dereruministic/domain/card/value_objects/action_targets.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
-import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_states_trigger_type.dart';
 import 'package:dereruministic/domain/player/converter/player_id_converter.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -69,17 +69,15 @@ sealed class AutoGameTask with _$AutoGameTask {
     required CardStates cardState,
   }) = AutoGameTaskApplyCardState;
 
-  const factory AutoGameTask.progressCardRuntimeState({
+  const factory AutoGameTask.resolveEndPhaseCardStates({
     @PlayerIdConverter() required PlayerId playerId,
-    @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
-    required CardRuntimeStates runtimeState,
-  }) = AutoGameTaskProgressCardRuntimeState;
+  }) = AutoGameTaskResolveEndPhaseCardStates;
 
-  const factory AutoGameTask.resolveCardRuntimeStateTrigger({
+  const factory AutoGameTask.resolveCardStatesTrigger({
     @PlayerIdConverter() required PlayerId playerId,
     @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
-    required CardRuntimeStates runtimeState,
-  }) = AutoGameTaskResolveCardRuntimeStateTrigger;
+    required CardStatesTriggerType triggerType,
+  }) = AutoGameTaskResolveCardStatesTrigger;
 
   const factory AutoGameTask.consumePlayCost({
     @PlayerIdConverter() required PlayerId playerId,

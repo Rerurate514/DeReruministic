@@ -2,6 +2,9 @@ import 'package:dereruministic/domain/card/services/apply_play_card_service.dart
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
 import 'package:dereruministic/domain/card/services/consume_cost_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
+import 'package:dereruministic/domain/card/services/resolve_end_phase_card_states_service.dart';
+import 'package:dereruministic/domain/card/services/resolve_play_card_states_service.dart';
+import 'package:dereruministic/domain/card/services/resolve_triggered_card_states_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/common/defeat_check_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
@@ -45,6 +48,15 @@ TaskServiceFactory taskServiceFactory(Ref ref) {
     consumeCardService: ref.read(consumeCardServiceProvider),
     consumeCostService: ref.read(consumeCostServiceProvider),
     resolveCardEffectsService: ref.read(resolveCardEffectsServiceProvider),
+    resolvePlayCardStatesService: ref.read(
+      resolvePlayCardStatesServiceProvider,
+    ),
+    resolveEndPhaseCardStatesService: ref.read(
+      resolveEndPhaseCardStatesServiceProvider,
+    ),
+    resolveTriggeredCardStatesService: ref.read(
+      resolveTriggeredCardStatesServiceProvider,
+    ),
   );
 }
 
@@ -65,6 +77,9 @@ class TaskServiceFactory {
     required this.consumeCardService,
     required this.consumeCostService,
     required this.resolveCardEffectsService,
+    required this.resolvePlayCardStatesService,
+    required this.resolveEndPhaseCardStatesService,
+    required this.resolveTriggeredCardStatesService,
   });
 
   final TurnEndPhaseChangedEventService turnEndPhaseChangedEventService;
@@ -82,6 +97,9 @@ class TaskServiceFactory {
   final ConsumeCardService consumeCardService;
   final ConsumeCostService consumeCostService;
   final ResolveCardEffectsService resolveCardEffectsService;
+  final ResolvePlayCardStatesService resolvePlayCardStatesService;
+  final ResolveEndPhaseCardStatesService resolveEndPhaseCardStatesService;
+  final ResolveTriggeredCardStatesService resolveTriggeredCardStatesService;
 
   ApplyActionResult executeAutoTask({
     required GameState state,
@@ -132,12 +150,33 @@ class TaskServiceFactory {
         effect: effect,
         target: target,
       ),
-    // TODO: Handle this case.
-    AutoGameTaskApplyCardState() => throw UnimplementedError(),
-    // TODO: Handle this case.
-    AutoGameTaskProgressCardRuntimeState() => throw UnimplementedError(),
-    // TODO: Handle this case.
-    AutoGameTaskResolveCardRuntimeStateTrigger() => throw UnimplementedError(),
+    AutoGameTaskApplyCardState(
+      :final playerId,
+      :final cardInstanceId,
+      :final cardState,
+    ) =>
+      resolvePlayCardStatesService.execute(
+        state: state,
+        playerId: playerId,
+        cardInstanceId: cardInstanceId,
+        cardState: cardState,
+      ),
+    AutoGameTaskResolveEndPhaseCardStates(:final playerId) =>
+      resolveEndPhaseCardStatesService.execute(
+        state: state,
+        playerId: playerId,
+      ),
+    AutoGameTaskResolveCardStatesTrigger(
+      :final playerId,
+      :final cardInstanceId,
+      :final triggerType,
+    ) =>
+      resolveTriggeredCardStatesService.execute(
+        state: state,
+        playerId: playerId,
+        cardInstanceId: cardInstanceId,
+        triggerType: triggerType,
+      ),
     AutoGameTaskConsumePlayCost(
       :final playerId,
       :final instanceId,
