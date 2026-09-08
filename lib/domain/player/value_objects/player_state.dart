@@ -109,7 +109,14 @@ extension PlayerStateCardEx on PlayerState {
     CardZone from,
     CardZone to,
   ) {
-    final card = hand.firstWhereOrNull((c) => c.instanceId == instanceId);
+    final sourceList = switch (from) {
+      CardZone.deck => deck,
+      CardZone.hand => hand,
+      CardZone.graveyard => graveyard,
+      CardZone.exhausted => exhausted,
+      CardZone.playArea => playArea,
+    };
+    final card = sourceList.firstWhereOrNull((c) => c.instanceId == instanceId);
     if (card == null) {
       return this;
     }
@@ -134,19 +141,19 @@ extension PlayerStateCardEx on PlayerState {
 
     return switch (to) {
       CardZone.graveyard => nextCards.copyWith(
-        graveyard: [...graveyard, card],
+        graveyard: [...nextCards.graveyard, card],
       ),
       CardZone.exhausted => nextCards.copyWith(
-        exhausted: [...exhausted, card],
+        exhausted: [...nextCards.exhausted, card],
       ),
       CardZone.deck => nextCards.copyWith(
-        deck: [...deck, card],
+        deck: [...nextCards.deck, card],
       ),
       CardZone.hand => nextCards.copyWith(
-        hand: [...hand, card],
+        hand: [...nextCards.hand, card],
       ),
       CardZone.playArea => nextCards.copyWith(
-        playArea: [...playArea, card],
+        playArea: [...nextCards.playArea, card],
       ),
     };
   }
