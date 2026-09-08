@@ -32,52 +32,25 @@ class ResolvePlayCardStatesService {
     }
 
     return switch (cardState) {
-      CardStateExhaust() => _applyCleanup(state, playerId, cardInstanceId),
-      CardStateOverload(:final amount) => _applyCleanup(
-        _applyOverload(
-          state,
-          player,
-          amount,
-        ),
-        playerId,
-        cardInstanceId,
+      CardStateOverload(:final amount) => _applyOverload(
+        state,
+        player,
+        amount,
       ),
-      CardStateRecycle() => _applyCleanup(
-        _applyRecycle(state, playerId, cardInstanceId),
-        playerId,
-        cardInstanceId,
-      ),
+      CardStateRecycle() => _applyRecycle(state, playerId, cardInstanceId),
       CardStateConceal() => throw UnimplementedError(),
       CardStateRetain() => throw UnimplementedError(),
       CardStateEngrave() => throw UnimplementedError(),
       CardStateChain() => throw UnimplementedError(),
       CardStateInfect() => throw UnimplementedError(),
-      _ => _applyCleanup(
-        state,
-        playerId,
-        cardInstanceId,
-      ),
+      _ => _buildNoStep(state),
     };
   }
 
-  ApplyActionResult _applyCleanup(
-    GameState state,
-    PlayerId playerId,
-    GameCardInstanceId instanceId,
-  ) {
-    final newState = state.pushTask(
-      GameStateTaskPushPos.head,
-      .auto(
-        .cleanupPlayCard(
-          playerId: playerId,
-          cardInstanceId: instanceId,
-        ),
-      ),
-    );
-    return ApplyActionResult.success(state: newState, steps: []);
-  }
+  ApplyActionResult _buildNoStep(GameState state) =>
+      ApplyActionResult.noSteps(state: state);
 
-  GameState _applyOverload(
+  ApplyActionResult _applyOverload(
     GameState state,
     PlayerState player,
     int amount,
@@ -88,15 +61,20 @@ class ResolvePlayCardStatesService {
     final newState = state.copyWith(
       players: {...state.players, player.id: updatedPlayer},
     );
-    return newState;
+
+    return ApplyActionResult.success(state: newState, steps: []);
   }
 
-  GameState _applyRecycle(
+  ApplyActionResult _applyRecycle(
     GameState state,
     PlayerId playerId,
     GameCardInstanceId instanceId,
-  ) => state.decrementRecycleCount(
-    playerId: playerId,
-    cardInstanceId: instanceId,
-  );
+  ) {
+    final newState = state.decrementRecycleCount(
+      playerId: playerId,
+      cardInstanceId: instanceId,
+    );
+
+    return ApplyActionResult.success(state: newState, steps: []);
+  }
 }
