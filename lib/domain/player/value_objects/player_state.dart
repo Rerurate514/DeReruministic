@@ -132,6 +132,35 @@ extension PlayerStateCardEx on PlayerState {
       ),
     };
   }
+
+  PlayerState moveCardFromPlayArea(GameCardInstanceId instanceId, CardZone to) {
+    final card = hand.firstWhereOrNull((c) => c.instanceId == instanceId);
+    if (card == null) {
+      return this;
+    }
+
+    final nextHand = hand.where((c) => c.instanceId != instanceId).toList();
+
+    return switch (to) {
+      CardZone.graveyard => copyWith(
+        playArea: nextHand,
+        graveyard: [...graveyard, card],
+      ),
+      CardZone.exhausted => copyWith(
+        playArea: nextHand,
+        exhausted: [...exhausted, card],
+      ),
+      CardZone.deck => copyWith(
+        playArea: nextHand,
+        deck: [...deck, card],
+      ),
+      CardZone.hand => copyWith(
+        playArea: nextHand,
+        hand: [...hand, card],
+      ),
+      CardZone.playArea => this,
+    };
+  }
 }
 
 extension PlayerStateBuffDebuffEx on PlayerState {

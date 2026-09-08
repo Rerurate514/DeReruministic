@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/converter/game_task_queue_converter.dart';
@@ -71,6 +72,13 @@ extension GameStateEx on GameState {
     return players.entries.firstWhereOrNull((e) => e.key != playerId)?.value;
   }
 
+  GameCard? findGameCard({
+    required PlayerId playerId,
+    required GameCardInstanceId cardInstanceId,
+  }) => players[playerId]?.hand.firstWhereOrNull(
+    (gameCard) => gameCard.instanceId == cardInstanceId,
+  );
+
   GameState moveCardFromHand({
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
@@ -82,6 +90,29 @@ extension GameStateEx on GameState {
     }
 
     final updatedPlayer = player.moveCardFromHand(
+      cardInstanceId,
+      to,
+    );
+
+    return copyWith(
+      players: {
+        ...players,
+        playerId: updatedPlayer,
+      },
+    );
+  }
+
+  GameState moveCardFromPlayArea({
+    required PlayerId playerId,
+    required GameCardInstanceId cardInstanceId,
+    required CardZone to,
+  }) {
+    final player = players[playerId];
+    if (player == null) {
+      return this;
+    }
+
+    final updatedPlayer = player.moveCardFromPlayArea(
       cardInstanceId,
       to,
     );
