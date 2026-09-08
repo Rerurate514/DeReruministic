@@ -76,25 +76,6 @@ class GameFlowUsecase {
     }
   }
 
-  ApplyActionResult _handleGameStart(GameActionGameStart action) {
-    final initial = gameSetupService.execute(
-      playerAId: action.playerId,
-      playerBId: action.playerBId,
-      playerADeckRecipe: action.playerADeckRecipe,
-      playerBDeckRecipe: action.playerBDeckRecipe,
-      cardDefs: cardCatalog,
-      seed: action.seed,
-    );
-
-    return switch (initial) {
-      ApplyActionResultSuccess(:final state, :final steps) => _processQueue(
-        state,
-        steps: steps,
-      ),
-      ApplyActionResultFailure() => throw UnimplementedError(),
-    };
-  }
-
   ApplyActionResult _processQueue(
     GameState state, {
     List<GameStepEvent> steps = const [],
@@ -152,5 +133,24 @@ class GameFlowUsecase {
 
     return state.metadata.actionSequenceNumber + 1 ==
         action.actionSequenceNumber;
+  }
+
+  ApplyActionResult _handleGameStart(GameActionGameStart action) {
+    final initial = gameSetupService.execute(
+      playerAId: action.playerId,
+      playerBId: action.playerBId,
+      playerADeckRecipe: action.playerADeckRecipe,
+      playerBDeckRecipe: action.playerBDeckRecipe,
+      cardDefs: cardCatalog,
+      seed: action.seed,
+    );
+
+    return switch (initial) {
+      ApplyActionResultSuccess(:final state, :final steps) => _processQueue(
+        state,
+        steps: steps,
+      ),
+      ApplyActionResultFailure() => throw UnimplementedError(),
+    };
   }
 }
