@@ -38,11 +38,11 @@ class ResolvePlayCardStatesService {
         amount,
       ),
       CardStateRecycle() => _applyRecycle(state, playerId, cardInstanceId),
-      CardStateConceal() => throw UnimplementedError(),
-      CardStateRetain() => throw UnimplementedError(),
-      CardStateEngrave() => throw UnimplementedError(),
-      CardStateChain() => throw UnimplementedError(),
-      CardStateInfect() => throw UnimplementedError(),
+      CardStateConceal() => _buildNoStep(state), //TODO(medium): このあたり実装する
+      CardStateRetain() => _buildNoStep(state),
+      CardStateEngrave() => _buildNoStep(state),
+      CardStateChain() => _buildNoStep(state),
+      CardStateInfect() => _buildNoStep(state),
       _ => _buildNoStep(state),
     };
   }
