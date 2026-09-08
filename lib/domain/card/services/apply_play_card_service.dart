@@ -57,20 +57,20 @@ class ApplyPlayCardService {
         .map((details) => details.cardEffect);
 
     final tasks = <GameTask>[
-      GameTask.auto(
+      .auto(
         .consumePlayCost(
           playerId: cardUsedPlayer.id,
           instanceId: usedCard.instanceId,
         ),
       ),
-      GameTask.auto(
+      .auto(
         .consumeCard(
           playerId: cardUsedPlayer.id,
           instanceId: usedCard.instanceId,
         ),
       ),
       ...validEffects.map(
-        (effect) => GameTask.auto(
+        (effect) => .auto(
           .applyCardEffect(
             playerId: cardUsedPlayer.id,
             effect: effect,
@@ -79,12 +79,18 @@ class ApplyPlayCardService {
         ),
       ),
       ...usedCard.definition.states.map(
-        (cardState) => GameTask.auto(
+        (cardState) => .auto(
           .applyCardState(
             playerId: cardUsedPlayer.id,
             cardInstanceId: usedCard.instanceId,
             cardState: cardState,
           ),
+        ),
+      ),
+      .auto(
+        .cleanupPlayCard(
+          playerId: cardUsedPlayer.id,
+          cardInstanceId: usedCard.instanceId,
         ),
       ),
     ];
