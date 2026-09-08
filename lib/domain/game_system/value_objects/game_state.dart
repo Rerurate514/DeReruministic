@@ -79,9 +79,10 @@ extension GameStateEx on GameState {
     (gameCard) => gameCard.instanceId == cardInstanceId,
   );
 
-  GameState moveCardFromHand({
+  GameState moveCardZone({
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
+    required CardZone from,
     required CardZone to,
   }) {
     final player = players[playerId];
@@ -89,31 +90,9 @@ extension GameStateEx on GameState {
       return this;
     }
 
-    final updatedPlayer = player.moveCardFromHand(
+    final updatedPlayer = player.moveCardZone(
       cardInstanceId,
-      to,
-    );
-
-    return copyWith(
-      players: {
-        ...players,
-        playerId: updatedPlayer,
-      },
-    );
-  }
-
-  GameState moveCardFromPlayArea({
-    required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
-    required CardZone to,
-  }) {
-    final player = players[playerId];
-    if (player == null) {
-      return this;
-    }
-
-    final updatedPlayer = player.moveCardFromPlayArea(
-      cardInstanceId,
+      from,
       to,
     );
 

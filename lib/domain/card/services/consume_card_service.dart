@@ -63,9 +63,10 @@ class ConsumeCardService {
 
     const destinationZone = CardZone.playArea;
 
-    final newState = state.moveCardFromHand(
+    final newState = state.moveCardZone(
       playerId: sourcePlayerId,
       cardInstanceId: instanceId,
+      from: CardZone.hand,
       to: destinationZone,
     );
 

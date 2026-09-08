@@ -71,9 +71,10 @@ class ResolvePlayCardStatesService {
     PlayerId playerId,
     GameCardInstanceId instanceId,
   ) {
-    final newState = state.moveCardFromPlayArea(
+    final newState = state.moveCardZone(
       playerId: playerId,
       cardInstanceId: instanceId,
+      from: CardZone.playArea,
       to: CardZone.exhausted,
     );
 
@@ -104,9 +105,10 @@ class ResolvePlayCardStatesService {
     final isRecycleActive = updatedCard?.isRecycleActive ?? false;
 
     if (isRecycleActive) {
-      final newState = decrementedState.moveCardFromPlayArea(
+      final newState = decrementedState.moveCardZone(
         playerId: playerId,
         cardInstanceId: instanceId,
+        from: CardZone.playArea,
         to: CardZone.deck,
       );
 
