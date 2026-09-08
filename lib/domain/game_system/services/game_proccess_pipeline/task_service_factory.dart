@@ -1,6 +1,8 @@
 import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
+import 'package:dereruministic/domain/card/services/cleanup_play_card_service.dart';
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
 import 'package:dereruministic/domain/card/services/consume_cost_service.dart';
+import 'package:dereruministic/domain/card/services/move_card_zone_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_end_phase_card_states_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_play_card_states_service.dart';
@@ -57,6 +59,8 @@ TaskServiceFactory taskServiceFactory(Ref ref) {
     resolveTriggeredCardStatesService: ref.read(
       resolveTriggeredCardStatesServiceProvider,
     ),
+    moveCardZoneService: ref.read(moveCardZoneServiceProvider),
+    cleanupPlayCardService: ref.read(cleanupPlayCardServiceProvider),
   );
 }
 
@@ -80,6 +84,8 @@ class TaskServiceFactory {
     required this.resolvePlayCardStatesService,
     required this.resolveEndPhaseCardStatesService,
     required this.resolveTriggeredCardStatesService,
+    required this.moveCardZoneService,
+    required this.cleanupPlayCardService,
   });
 
   final TurnEndPhaseChangedEventService turnEndPhaseChangedEventService;
@@ -100,6 +106,8 @@ class TaskServiceFactory {
   final ResolvePlayCardStatesService resolvePlayCardStatesService;
   final ResolveEndPhaseCardStatesService resolveEndPhaseCardStatesService;
   final ResolveTriggeredCardStatesService resolveTriggeredCardStatesService;
+  final MoveCardZoneService moveCardZoneService;
+  final CleanupPlayCardService cleanupPlayCardService;
 
   ApplyActionResult executeAutoTask({
     required GameState state,
@@ -191,6 +199,28 @@ class TaskServiceFactory {
         state: state,
         sourcePlayerId: playerId,
         instanceId: instanceId,
+      ),
+    AutoGameTaskMoveCardZone(
+      :final playerId,
+      :final cardInstanceId,
+      :final zoneFrom,
+      :final zoneTo,
+    ) =>
+      moveCardZoneService.execute(
+        state: state,
+        playerId: playerId,
+        cardInstanceId: cardInstanceId,
+        zoneFrom: zoneFrom,
+        zoneTo: zoneTo,
+      ),
+    AutoGameTaskCleanupPlayCard(
+      :final playerId,
+      :final cardInstanceId,
+    ) =>
+      cleanupPlayCardService.execute(
+        state: state,
+        playerId: playerId,
+        cardInstanceId: cardInstanceId,
       ),
   };
 
