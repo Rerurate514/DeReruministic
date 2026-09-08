@@ -58,13 +58,13 @@ class ApplyPlayCardService {
 
     final tasks = <GameTask>[
       .auto(
-        .consumePlayCost(
+        .consumeCard(
           playerId: cardUsedPlayer.id,
           instanceId: usedCard.instanceId,
         ),
       ),
       .auto(
-        .consumeCard(
+        .consumePlayCost(
           playerId: cardUsedPlayer.id,
           instanceId: usedCard.instanceId,
         ),

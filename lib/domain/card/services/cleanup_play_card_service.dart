@@ -25,9 +25,10 @@ class CleanupPlayCardService {
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
   }) {
-    final card = state.findGameCard(
+    final card = state.findGameCardInZone(
       playerId: playerId,
       cardInstanceId: cardInstanceId,
+      zone: CardZone.playArea,
     );
 
     if (card == null) {

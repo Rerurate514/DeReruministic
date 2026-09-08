@@ -61,20 +61,18 @@ class ConsumeCardService {
       );
     }
 
-    const destinationZone = CardZone.playArea;
-
     final newState = state.moveCardZone(
       playerId: sourcePlayerId,
       cardInstanceId: instanceId,
       from: CardZone.hand,
-      to: destinationZone,
+      to: CardZone.playArea,
     );
 
     final step = GameStepEvent.cardMovedZone(
       playerId: sourcePlayerId,
       cardInstanceIds: [instanceId],
       zoneFrom: CardZone.hand,
-      zoneTo: destinationZone,
+      zoneTo: CardZone.playArea,
     );
 
     return ApplyActionResult.success(state: newState, steps: [step]);
