@@ -1,7 +1,7 @@
-import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -28,8 +28,10 @@ class ConsumeCostService {
       );
     }
 
-    final usedCard = cardUsedPlayer.hand.firstWhereOrNull(
-      (card) => card.instanceId == instanceId,
+    final usedCard = state.findGameCardInZone(
+      playerId: sourcePlayerId,
+      cardInstanceId: instanceId,
+      zone: CardZone.playArea,
     );
     if (usedCard == null) {
       return ApplyActionResult.failure(
