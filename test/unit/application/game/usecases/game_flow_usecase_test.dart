@@ -299,7 +299,7 @@ void main() {
         zoneTo: CardZone.hand,
       );
       when(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: const GameTask.gameStartDrawCards(),
         ),
@@ -311,7 +311,7 @@ void main() {
       final afterAdvance = afterDraw.popTask();
       final phaseStep = GameStepEvent.phaseChanged(phase: afterAdvance.phase);
       when(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: const GameTask.advanceToTurnStart(),
         ),
@@ -331,13 +331,13 @@ void main() {
       expect(success.steps, [setupStep, drawStep, phaseStep]);
 
       verify(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: const GameTask.gameStartDrawCards(),
         ),
       ).called(1);
       verify(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: const GameTask.advanceToTurnStart(),
         ),
@@ -379,7 +379,7 @@ void main() {
       );
       final phaseStep = GameStepEvent.phaseChanged(phase: afterAdvance.phase);
       when(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: const GameTask.advanceToMainPhase(),
         ),
@@ -398,7 +398,7 @@ void main() {
       expect(success.state.taskQueue.first, isA<GameTaskMainPhase>());
       // interactiveなタスクにはexecuteが呼ばれない
       verifyNever(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: const GameTask.mainPhase(activePlayerId: playerId),
         ),
@@ -438,7 +438,7 @@ void main() {
         reason: ActionFailureReason.playerNotFound,
       );
       when(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: const GameTask.gameStartDrawCards(),
         ),
@@ -451,7 +451,7 @@ void main() {
 
       expect(result, taskFailure);
       verifyNever(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: const GameTask.advanceToTurnStart(),
         ),
@@ -551,7 +551,7 @@ void main() {
 
       expect(result, failure);
       verifyNever(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: anyNamed('gameTask'),
         ),
@@ -584,7 +584,7 @@ void main() {
         phase: afterDefeatCheck.phase,
       );
       when(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: nextTask,
         ),
@@ -600,7 +600,7 @@ void main() {
       expect(success.steps, [defeatStep]);
 
       verify(
-        mockTaskServiceFactory.execute(
+        mockTaskServiceFactory.executeAutoTask(
           state: anyNamed('state'),
           gameTask: nextTask,
         ),

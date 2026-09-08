@@ -14,8 +14,9 @@ import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanc
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/tasks_factory.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
+import 'package:dereruministic/domain/game_system/value_objects/auto_game_task.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
+import 'package:dereruministic/domain/game_system/value_objects/interactive_game_task.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -70,80 +71,75 @@ class TaskServiceFactory {
   final CheckHandLimitService checkHandLimitService;
   final ApplyPlayCardService applyPlayCardService;
 
-  ApplyActionResult execute({
+  ApplyActionResult executeAutoTask({
     required GameState state,
-    required GameTask gameTask,
+    required AutoGameTask gameTask,
   }) => switch (gameTask) {
-    GameTaskGameStartDrawCards() => gameStartDrawCardsService.execute(
+    AutoGameTaskGameStartDrawCards() => gameStartDrawCardsService.execute(
       state,
     ),
-    GameTaskAdvanceToTurnStart() => advancedToTurnStartService.execute(
+    AutoGameTaskAdvanceToTurnStart() => advancedToTurnStartService.execute(
       state,
     ),
-    GameTaskCalculateCost() => calculateTurnCostService.execute(
+    AutoGameTaskCalculateCost() => calculateTurnCostService.execute(
       state,
     ),
-    GameTaskAdvanceToMainPhase() => advanceToMainPhaseService.execute(
+    AutoGameTaskAdvanceToMainPhase() => advanceToMainPhaseService.execute(
       state,
     ),
-    GameTaskTurnEndPhaseChanged() => turnEndPhaseChangedEventService.execute(
+    AutoGameTaskTurnEndPhaseChanged() =>
+      turnEndPhaseChangedEventService.execute(
+        state,
+      ),
+    AutoGameTaskUpdateCardCounter() => updateCardCounterService.execute(
       state,
     ),
-    GameTaskUpdateCardCounter() => updateCardCounterService.execute(
+    AutoGameTaskDefeatCheck() => defeatCheckService.execute(
       state,
     ),
-    GameTaskDefeatCheck() => defeatCheckService.execute(
+    AutoGameTaskSwitchTurnOwner() => switchTurnOwnerService.execute(
       state,
     ),
-    GameTaskSwitchTurnOwner() => switchTurnOwnerService.execute(
+    AutoGameTaskRemoveShield() => removeShieldService.execute(
       state,
     ),
-    GameTaskRemoveShield() => removeShieldService.execute(
+    AutoGameTaskCardDraw() => cardDrawStartTurnService.execute(
       state,
     ),
-    GameTaskCardDraw() => cardDrawStartTurnService.execute(
+    AutoGameTaskCheckHandLimit() => checkHandLimitService.execute(
       state,
-    ),
-    GameTaskCheckHandLimit() => checkHandLimitService.execute(
-      state,
-    ),
-    GameTaskMainPhase() => throw UnimplementedError(
-      'Service for GameTaskMainPhase is not registered.',
-    ),
-    GameTaskSelectOverflowDiscard() => throw UnimplementedError(
-      'Service for GameTaskSelectOverflowDiscard is not registered.',
     ),
   };
 
   ApplyActionResult handleAction({
     required GameState state,
-    required GameTask gameTask,
+    required InteractiveGameTask task,
     required GameActions action,
-  }) => switch (gameTask) {
-    GameTaskSelectOverflowDiscard() => () {
-      if (action is! GameActionSelectOverflowDiscards) {
-        return ApplyActionResult.failure(
-          state: state,
-          reason: ActionFailureReason.invalidActionSequence,
-        );
-      }
-      //return applyDiscardService.execute(state, action);
-      return ApplyActionResult.noSteps(state: state);
-    }(),
-
-    GameTaskMainPhase(:final activePlayerId) => _handleMainPhase(
+  }) => switch (task) {
+    InteractiveGameTaskMainPhase(:final activePlayerId) => _handleMainPhase(
       state,
       action,
       activePlayerId,
     ),
-
-    _ => ApplyActionResult.failure(
-      state: state,
-      reason: ActionFailureReason.invalidActionSequence,
+    InteractiveGameTaskSelectOverflowDiscard() => _handleSelectOverflowDiscards(
+      state,
+      action,
     ),
   };
 
-  ApplyActionResult _handleSelectOverflowDiscards(Game)
+  ApplyActionResult _handleSelectOverflowDiscards(
+    GameState state,
+    GameActions action,
+  ) {
+    if (action is! GameActionSelectOverflowDiscards) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.invalidActionSequence,
+      );
+    }
+    //return applyDiscardService.execute(state, action);
+    return ApplyActionResult.noSteps(state: state);
+  }
 
   ApplyActionResult _handleMainPhase(
     GameState state,

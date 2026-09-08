@@ -7,6 +7,7 @@ import 'package:dereruministic/domain/game_system/value_objects/action_failure_r
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_flow_usecase.g.dart';
@@ -32,41 +33,6 @@ class GameFlowUsecase {
 
   final TaskServiceFactory taskServiceFactory;
 
-  ApplyActionResult processQueue(
-    GameState state, {
-    List<GameStepEvent> steps = const [],
-  }) {
-    var currentState = state;
-    final accumulatedSteps = List<GameStepEvent>.from(steps);
-
-    while (currentState.taskQueue.isNotEmpty) {
-      final currentTask = currentState.taskQueue.first;
-
-      if (currentTask.isInteractive) {
-        return ApplyActionResult.success(
-          state: currentState,
-          steps: accumulatedSteps,
-        );
-      }
-
-      currentState = currentState.popTask();
-      final result = taskServiceFactory.execute(
-        state: currentState,
-        gameTask: currentTask,
-      );
-
-      if (result is! ApplyActionResultSuccess) return result;
-
-      currentState = result.state;
-      accumulatedSteps.addAll(result.steps);
-    }
-
-    return ApplyActionResult.success(
-      state: currentState,
-      steps: accumulatedSteps,
-    );
-  }
-
   ApplyActionResult applyAction({
     required GameState? current,
     required GameActions action,
@@ -79,42 +45,92 @@ class GameFlowUsecase {
       );
     }
 
-    if (action is GameActionGameStart) {
-      final initial = gameSetupService.execute(
-        playerAId: action.playerId,
-        playerBId: action.playerBId,
-        playerADeckRecipe: action.playerADeckRecipe,
-        playerBDeckRecipe: action.playerBDeckRecipe,
-        cardDefs: cardCatalog,
-        seed: action.seed,
-      );
-
-      return switch (initial) {
-        ApplyActionResultSuccess(:final state, :final steps) => processQueue(
-          state,
-          steps: steps,
-        ),
-        ApplyActionResultFailure() => throw UnimplementedError(),
-      };
-    }
+    if (action is GameActionGameStart) return _handleGameStart(action);
 
     final currentTask = current!.taskQueue.firstOrNull;
-    if (currentTask == null || !currentTask.isInteractive) {
+    if (currentTask == null) {
       return ApplyActionResult.failure(
         state: current,
         reason: ActionFailureReason.invalidActionSequence,
       );
     }
 
-    final result = taskServiceFactory.handleAction(
-      state: current,
-      gameTask: currentTask,
-      action: action,
+    switch (currentTask) {
+      case GameTaskAutoWrapper():
+        return ApplyActionResult.failure(
+          state: current,
+          reason: ActionFailureReason.invalidActionSequence,
+        );
+      case GameTaskInteractiveWrapper(:final task):
+        {
+          final result = taskServiceFactory.handleAction(
+            state: current,
+            task: task,
+            action: action,
+          );
+
+          if (result is! ApplyActionResultSuccess) return result;
+
+          return _processQueue(result.state.popTask());
+        }
+    }
+  }
+
+  ApplyActionResult _handleGameStart(GameActionGameStart action) {
+    final initial = gameSetupService.execute(
+      playerAId: action.playerId,
+      playerBId: action.playerBId,
+      playerADeckRecipe: action.playerADeckRecipe,
+      playerBDeckRecipe: action.playerBDeckRecipe,
+      cardDefs: cardCatalog,
+      seed: action.seed,
     );
 
-    if (result is! ApplyActionResultSuccess) return result;
+    return switch (initial) {
+      ApplyActionResultSuccess(:final state, :final steps) => _processQueue(
+        state,
+        steps: steps,
+      ),
+      ApplyActionResultFailure() => throw UnimplementedError(),
+    };
+  }
 
-    return processQueue(result.state.popTask());
+  ApplyActionResult _processQueue(
+    GameState state, {
+    List<GameStepEvent> steps = const [],
+  }) {
+    var currentState = state;
+    final accumulatedSteps = List<GameStepEvent>.from(steps);
+
+    while (currentState.taskQueue.isNotEmpty) {
+      final currentTask = currentState.taskQueue.first;
+
+      switch (currentTask) {
+        case GameTaskAutoWrapper(:final task):
+          {
+            currentState = currentState.popTask();
+            final result = taskServiceFactory.executeAutoTask(
+              state: currentState,
+              gameTask: task,
+            );
+
+            if (result is! ApplyActionResultSuccess) return result;
+
+            currentState = result.state;
+            accumulatedSteps.addAll(result.steps);
+          }
+        case GameTaskInteractiveWrapper():
+          return ApplyActionResult.success(
+            state: currentState,
+            steps: accumulatedSteps,
+          );
+      }
+    }
+
+    return ApplyActionResult.success(
+      state: currentState,
+      steps: accumulatedSteps,
+    );
   }
 
   GameState _requireState(GameState? current, GameActions action) {
