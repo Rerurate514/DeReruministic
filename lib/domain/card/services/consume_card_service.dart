@@ -1,4 +1,3 @@
-import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/services/play_card_validator.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
@@ -38,8 +37,10 @@ class ConsumeCardService {
       );
     }
 
-    final usedCard = sourcePlayer.hand.firstWhereOrNull(
-      (card) => card.instanceId == instanceId,
+    final usedCard = state.findGameCardInZone(
+      playerId: sourcePlayerId,
+      cardInstanceId: instanceId,
+      zone: CardZone.hand,
     );
     if (usedCard == null) {
       return ApplyActionResult.failure(
