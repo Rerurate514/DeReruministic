@@ -51,7 +51,7 @@ class GameFlowUsecase {
     if (currentTask == null) {
       return ApplyActionResult.failure(
         state: current,
-        reason: ActionFailureReason.invalidActionSequence,
+        reason: ActionFailureReason.invalidAction,
       );
     }
 
@@ -59,7 +59,7 @@ class GameFlowUsecase {
       case GameTaskAutoWrapper():
         return ApplyActionResult.failure(
           state: current,
-          reason: ActionFailureReason.invalidActionSequence,
+          reason: ActionFailureReason.invalidAction,
         );
       case GameTaskInteractiveWrapper(:final task):
         {
