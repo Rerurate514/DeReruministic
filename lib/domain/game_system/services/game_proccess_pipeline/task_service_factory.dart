@@ -73,8 +73,8 @@ class TaskServiceFactory {
 
   ApplyActionResult executeAutoTask({
     required GameState state,
-    required AutoGameTask gameTask,
-  }) => switch (gameTask) {
+    required AutoGameTask task,
+  }) => switch (task) {
     AutoGameTaskGameStartDrawCards() => gameStartDrawCardsService.execute(
       state,
     ),

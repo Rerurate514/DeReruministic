@@ -111,7 +111,7 @@ class GameFlowUsecase {
             currentState = currentState.popTask();
             final result = taskServiceFactory.executeAutoTask(
               state: currentState,
-              gameTask: task,
+              task: task,
             );
 
             if (result is! ApplyActionResultSuccess) return result;
