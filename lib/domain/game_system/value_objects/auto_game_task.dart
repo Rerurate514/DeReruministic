@@ -1,6 +1,7 @@
 import 'package:dereruministic/domain/card/converter/game_card_instance_id_converter.dart';
 import 'package:dereruministic/domain/card/value_objects/action_targets.dart';
 import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
+import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/player/converter/player_id_converter.dart';
@@ -63,14 +64,32 @@ sealed class AutoGameTask with _$AutoGameTask {
   }) = AutoGameTaskApplyCardEffect;
 
   const factory AutoGameTask.applyCardState({
-    @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
+    @PlayerIdConverter() required PlayerId playerId,
+    @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
     required CardStates state,
   }) = AutoGameTaskApplyCardState;
 
-  const factory AutoGameTask.triggerCardStateEffect({
+  const factory AutoGameTask.progressCardRuntimeState({
+    @PlayerIdConverter() required PlayerId playerId,
+    @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
+    required CardRuntimeStates runtimeState,
+  }) = AutoGameTaskProgressCardRuntimeState;
+
+  const factory AutoGameTask.resolveCardRuntimeStateTrigger({
+    @PlayerIdConverter() required PlayerId playerId,
+    @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
+    required CardRuntimeStates runtimeState,
+  }) = AutoGameTaskResolveCardRuntimeStateTrigger;
+
+  const factory AutoGameTask.consumePlayCost({
+    @PlayerIdConverter() required PlayerId playerId,
     @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
-    required CardStates state,
-  }) = AutoGameTaskTriggerCardStateEffect;
+  }) = AutoGameTaskConsumePlayCost;
+
+  const factory AutoGameTask.consumeCard({
+    @PlayerIdConverter() required PlayerId playerId,
+    @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
+  }) = AutoGameTaskConsumeCard;
 
   factory AutoGameTask.fromJson(Map<String, dynamic> json) =>
       _$AutoGameTaskFromJson(json);
