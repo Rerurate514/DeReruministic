@@ -150,7 +150,7 @@ class GameFlowUsecase {
         state,
         steps: steps,
       ),
-      ApplyActionResultFailure() => throw UnimplementedError(),
+      final ApplyActionResultFailure failure => failure,
     };
   }
 }
