@@ -79,6 +79,24 @@ extension GameStateEx on GameState {
     (gameCard) => gameCard.instanceId == cardInstanceId,
   );
 
+  GameCard? findGameCardInZone({
+    required PlayerId playerId,
+    required GameCardInstanceId cardInstanceId,
+    required CardZone zone,
+  }) {
+    final cards = switch (zone) {
+      CardZone.deck => players[playerId]?.deck,
+      CardZone.hand => players[playerId]?.hand,
+      CardZone.graveyard => players[playerId]?.graveyard,
+      CardZone.exhausted => players[playerId]?.exhausted,
+      CardZone.playArea => players[playerId]?.playArea,
+    };
+
+    return cards?.firstWhereOrNull(
+      (gameCard) => gameCard.instanceId == cardInstanceId,
+    );
+  }
+
   GameState moveCardZone({
     required PlayerId playerId,
     required GameCardInstanceId cardInstanceId,
