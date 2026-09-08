@@ -1,3 +1,10 @@
+import 'package:dereruministic/domain/card/converter/game_card_instance_id_converter.dart';
+import 'package:dereruministic/domain/card/value_objects/action_targets.dart';
+import 'package:dereruministic/domain/card/value_objects/card_effects.dart';
+import 'package:dereruministic/domain/card/value_objects/card_states.dart';
+import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/player/converter/player_id_converter.dart';
+import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'auto_game_task.freezed.dart';
@@ -47,6 +54,23 @@ sealed class AutoGameTask with _$AutoGameTask {
   // ドローフェーズ
   const factory AutoGameTask.cardDraw() = AutoGameTaskCardDraw;
   const factory AutoGameTask.checkHandLimit() = AutoGameTaskCheckHandLimit;
+
+  // カード効果
+  const factory AutoGameTask.applyCardEffect({
+    @PlayerIdConverter() required PlayerId playerId,
+    required CardEffects effect,
+    ActionTargets? target,
+  }) = AutoGameTaskApplyCardEffect;
+
+  const factory AutoGameTask.applyCardState({
+    @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
+    required CardStates state,
+  }) = AutoGameTaskApplyCardState;
+
+  const factory AutoGameTask.triggerCardStateEffect({
+    @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
+    required CardStates state,
+  }) = AutoGameTaskTriggerCardStateEffect;
 
   factory AutoGameTask.fromJson(Map<String, dynamic> json) =>
       _$AutoGameTaskFromJson(json);

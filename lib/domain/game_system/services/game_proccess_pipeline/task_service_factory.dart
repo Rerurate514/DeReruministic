@@ -109,6 +109,12 @@ class TaskServiceFactory {
     AutoGameTaskCheckHandLimit() => checkHandLimitService.execute(
       state,
     ),
+    // TODO: Handle this case.
+    AutoGameTaskApplyCardEffect() => throw UnimplementedError(),
+    // TODO: Handle this case.
+    AutoGameTaskApplyCardState() => throw UnimplementedError(),
+    // TODO: Handle this case.
+    AutoGameTaskTriggerCardStateEffect() => throw UnimplementedError(),
   };
 
   ApplyActionResult handleAction({
