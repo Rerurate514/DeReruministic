@@ -34,6 +34,7 @@ sealed class PlayerState with _$PlayerState {
     required int maxHandSize,
     required int pendingRecoilCost,
     required int pendingOverloadCost,
+    @Default([]) List<GameCard> playArea,
   }) = _PlayerState;
 
   factory PlayerState.create({
@@ -125,6 +126,10 @@ extension PlayerStateCardEx on PlayerState {
         deck: [...deck, card],
       ),
       CardZone.hand => this,
+      CardZone.playArea => copyWith(
+        hand: nextHand,
+        playArea: [...playArea, card],
+      ),
     };
   }
 }
