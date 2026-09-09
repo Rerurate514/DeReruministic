@@ -1,10 +1,10 @@
 import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/services/check_card_condition_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
+import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/tasks_factory.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'apply_play_card_service.g.dart';
@@ -56,44 +56,12 @@ class ApplyPlayCardService {
         )
         .map((details) => details.cardEffect);
 
-    final tasks = <GameTask>[
-      .auto(
-        .consumeCard(
-          playerId: cardUsedPlayer.id,
-          instanceId: usedCard.instanceId,
-        ),
-      ),
-      .auto(
-        .consumePlayCost(
-          playerId: cardUsedPlayer.id,
-          instanceId: usedCard.instanceId,
-        ),
-      ),
-      ...validEffects.map(
-        (effect) => .auto(
-          .applyCardEffect(
-            playerId: cardUsedPlayer.id,
-            effect: effect,
-            target: action.target,
-          ),
-        ),
-      ),
-      ...usedCard.definition.states.map(
-        (cardState) => .auto(
-          .applyCardState(
-            playerId: cardUsedPlayer.id,
-            cardInstanceId: usedCard.instanceId,
-            cardState: cardState,
-          ),
-        ),
-      ),
-      .auto(
-        .cleanupPlayCard(
-          playerId: cardUsedPlayer.id,
-          cardInstanceId: usedCard.instanceId,
-        ),
-      ),
-    ];
+    final tasks = TasksFactory.applyPlayCardTasks(
+      cardUsedPlayerId: cardUsedPlayer.id,
+      cardInstanceId: usedCard.instanceId,
+      validEffects: validEffects,
+      states: usedCard.definition.states,
+    );
 
     final newState = state.pushTasks(GameStateTaskPushPos.head, tasks);
 
