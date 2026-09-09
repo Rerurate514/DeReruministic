@@ -25,7 +25,6 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/auto_game_task.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/interactive_game_task.dart';
-import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'task_service_factory.g.dart';
@@ -229,10 +228,9 @@ class TaskServiceFactory {
     required InteractiveGameTask task,
     required GameActions action,
   }) => switch (task) {
-    InteractiveGameTaskMainPhase(:final activePlayerId) => _handleMainPhase(
+    InteractiveGameTaskMainPhase() => _handleMainPhase(
       state,
       action,
-      activePlayerId,
     ),
     InteractiveGameTaskSelectOverflowDiscard() => _handleSelectOverflowDiscards(
       state,
@@ -257,8 +255,8 @@ class TaskServiceFactory {
   ApplyActionResult _handleMainPhase(
     GameState state,
     GameActions action,
-    PlayerId activePlayerId,
   ) {
+    final activePlayerId = state.phase.turnOwner;
     if (action is! GameActionSurrender && action.playerId != activePlayerId) {
       return ApplyActionResult.failure(
         state: state,
@@ -286,7 +284,7 @@ class TaskServiceFactory {
   ApplyActionResult _handleTurnEndAction(GameState state) {
     final stateWithTasks = state.popTask().pushTasks(
       GameStateTaskPushPos.head,
-      TasksFactory.turnEndTasks(activePlayerId: state.phase.turnOwner),
+      TasksFactory.turnEndTasks,
     );
 
     return ApplyActionResult.noSteps(state: stateWithTasks);

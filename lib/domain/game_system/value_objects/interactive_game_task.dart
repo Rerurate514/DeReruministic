@@ -8,9 +8,7 @@ part 'interactive_game_task.g.dart';
 @freezed
 sealed class InteractiveGameTask with _$InteractiveGameTask {
   // ユーザー入力待ちタスク
-  const factory InteractiveGameTask.mainPhase({
-    @PlayerIdConverter() required PlayerId activePlayerId,
-  }) = InteractiveGameTaskMainPhase;
+  const factory InteractiveGameTask.mainPhase() = InteractiveGameTaskMainPhase;
 
   const factory InteractiveGameTask.selectOverflowDiscard({
     @PlayerIdConverter() required PlayerId targetPlayerId,

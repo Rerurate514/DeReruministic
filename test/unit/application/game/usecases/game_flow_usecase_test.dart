@@ -140,7 +140,7 @@ void main() {
         actionSequenceNumber: 5,
         taskQueue: QueueList<GameTask>.from([
           const GameTask.interactive(
-            InteractiveGameTask.mainPhase(activePlayerId: playerId),
+            InteractiveGameTask.mainPhase(),
           ),
         ]),
       );
@@ -356,7 +356,7 @@ void main() {
         },
         taskQueue: QueueList<GameTask>.from([
           const GameTask.auto(.advanceToMainPhase()),
-          const GameTask.interactive(.mainPhase(activePlayerId: playerId)),
+          const GameTask.interactive(.mainPhase()),
         ]),
       );
       const setupStep = GameStepEvent.gameStarted(
@@ -378,7 +378,7 @@ void main() {
 
       final afterAdvance = setupState.popTask().copyWith(
         taskQueue: QueueList<GameTask>.from([
-          const GameTask.interactive(.mainPhase(activePlayerId: playerId)),
+          const GameTask.interactive(.mainPhase()),
         ]),
       );
       final phaseStep = GameStepEvent.phaseChanged(phase: afterAdvance.phase);
@@ -499,7 +499,7 @@ void main() {
     test(
       'taskQueueの先頭がmainPhase(interactive)の場合、taskServiceFactory.handleActionに委譲される',
       () {
-        const task = InteractiveGameTask.mainPhase(activePlayerId: playerId);
+        const task = InteractiveGameTask.mainPhase();
         final state = buildStateWithMeta(
           players: {playerId: buildPlayer(id: playerId)},
           taskQueue: QueueList<GameTask>.from([
@@ -530,7 +530,7 @@ void main() {
     );
 
     test('handleActionが失敗を返す場合、その失敗がそのまま返りpopTask/processQueueは実行されない', () {
-      const task = InteractiveGameTask.mainPhase(activePlayerId: playerId);
+      const task = InteractiveGameTask.mainPhase();
       final state = buildStateWithMeta(
         players: {playerId: buildPlayer(id: playerId)},
         taskQueue: QueueList<GameTask>.from([const GameTask.interactive(task)]),
@@ -561,7 +561,7 @@ void main() {
     });
 
     test('handleActionが成功を返す場合、popTaskされた状態でprocessQueueが実行される', () {
-      const task = InteractiveGameTask.mainPhase(activePlayerId: playerId);
+      const task = InteractiveGameTask.mainPhase();
       const nextTask = AutoGameTask.defeatCheck();
       final state = buildStateWithMeta(
         players: {playerId: buildPlayer(id: playerId)},
