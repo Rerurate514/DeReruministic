@@ -4,10 +4,7 @@ enum BattlePhase {
   turnStart,
   mainPhase,
   turnEnd,
-  battleEnd,
-  selectDiscard;
+  battleEnd;
 
   bool get isFinished => this == BattlePhase.battleEnd;
-
-  bool get requiresPlayerInput => this == BattlePhase.selectDiscard;
 }

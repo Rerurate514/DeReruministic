@@ -118,7 +118,6 @@ void main() {
       final state = createTestGameState(handSize: 7);
 
       final result = service.execute(state) as ApplyActionResultSuccess;
-      expect(result.state.phase.battlePhase, equals(BattlePhase.selectDiscard));
       final step = result.steps.first as GameStepEventOverflowCheckTriggered;
       expect(step.overflowCount, equals(2));
     });

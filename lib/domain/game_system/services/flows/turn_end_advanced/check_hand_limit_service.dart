@@ -30,10 +30,13 @@ class CheckHandLimitService implements TurnProcessStep {
       return ApplyActionResult.noSteps(state: state);
     }
 
-    final newState = state.copyWith(
-      phase: state.phase.copyWith(
-        battlePhase: .selectDiscard,
-        interruptedPhase: state.phase.battlePhase,
+    final newState = state.pushTask(
+      GameStateTaskPushPos.head,
+      .interactive(
+        .selectOverflowDiscard(
+          targetPlayerId: player.id,
+          overflowCount: overflowCount,
+        ),
       ),
     );
 
