@@ -76,7 +76,7 @@
 //           players: {playerId: buildPlayer(id: playerId)},
 //         );
 //         final action = buildPlayCardAction(
-//           cardInstanceId: 'card1',
+//           instanceId: 'card1',
 //           playerId: unknownPlayerId,
 //           actionSequenceNumber: 2,
 //         );
@@ -99,7 +99,7 @@
 //       final state = buildState(players: {playerId: player});
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'not_in_hand',
+//         instanceId: 'not_in_hand',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -128,7 +128,7 @@
 //       final state = buildState(players: {playerId: player});
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'card1',
+//         instanceId: 'card1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -212,7 +212,7 @@
 //         final state = buildState(players: {playerId: player});
 //         final action = buildPlayCardAction(
 //           playerId: playerId,
-//           cardInstanceId: 'card1',
+//           instanceId: 'card1',
 //           actionSequenceNumber: 2,
 //         );
 
@@ -224,7 +224,7 @@
 //         );
 //         final consumeStep = GameStepEvent.cardMovedZone(
 //           playerId: playerId,
-//           cardInstanceIds: [card.instanceId],
+//           instanceIds: [card.instanceId],
 //           zoneFrom: CardZone.hand,
 //           zoneTo: CardZone.graveyard,
 //         );
@@ -354,12 +354,12 @@
 //       final stateAfterConsume = buildState(players: {playerId: player});
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'card1',
+//         instanceId: 'card1',
 //         actionSequenceNumber: 2,
 //       );
 //       final consumeStep = GameStepEvent.cardMovedZone(
 //         playerId: playerId,
-//         cardInstanceIds: [card.instanceId],
+//         instanceIds: [card.instanceId],
 //         zoneFrom: CardZone.hand,
 //         zoneTo: CardZone.graveyard,
 //       );

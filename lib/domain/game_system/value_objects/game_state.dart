@@ -74,14 +74,14 @@ extension GameStateEx on GameState {
 
   GameCard? findGameCard({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
   }) => players[playerId]?.hand.firstWhereOrNull(
-    (gameCard) => gameCard.instanceId == cardInstanceId,
+    (gameCard) => gameCard.instanceId == instanceId,
   );
 
   GameCard? findGameCardInZone({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     required CardZone zone,
   }) {
     final cards = switch (zone) {
@@ -93,13 +93,13 @@ extension GameStateEx on GameState {
     };
 
     return cards?.firstWhereOrNull(
-      (gameCard) => gameCard.instanceId == cardInstanceId,
+      (gameCard) => gameCard.instanceId == instanceId,
     );
   }
 
   GameState moveCardZone({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     required CardZone from,
     required CardZone to,
   }) {
@@ -109,7 +109,7 @@ extension GameStateEx on GameState {
     }
 
     final updatedPlayer = player.moveCardZone(
-      cardInstanceId,
+      instanceId,
       from,
       to,
     );
@@ -154,13 +154,13 @@ extension GameStateEx on GameState {
 
   GameState decrementRecycleCount({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
   }) {
     final player = players[playerId];
     if (player == null) return this;
 
     final updatedHand = player.hand.map((card) {
-      if (card.instanceId != cardInstanceId) return card;
+      if (card.instanceId != instanceId) return card;
 
       final updatedRuntimeStates = card.runtimeStates.map((state) {
         if (state is CardRuntimeStateRecycleState) {

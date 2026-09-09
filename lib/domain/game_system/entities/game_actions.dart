@@ -32,7 +32,7 @@ sealed class GameActions with _$GameActions {
     @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
     @PlayerIdConverter() required PlayerId playerId,
-    @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
+    @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
     ActionTargets? target,
   }) = GameActionPlayCard;
 
@@ -40,7 +40,7 @@ sealed class GameActions with _$GameActions {
     @GameActionsIdConverter() required GameActionsId id,
     required int actionSequenceNumber,
     @PlayerIdConverter() required PlayerId playerId,
-    @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
+    @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
   }) = GameActionDiscardCard;
 
   const factory GameActions.selectOverflowDiscards({

@@ -18,13 +18,13 @@ class ResolveTriggeredCardStatesService {
   ApplyActionResult execute({
     required GameState state,
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     required CardStatesTriggerType triggerType,
   }) => switch (triggerType) {
     CardStatesTriggerType.recycleExpired => _applyRecycle(
       state,
       playerId,
-      cardInstanceId,
+      instanceId,
     ),
     // TODO: Handle this case.
     CardStatesTriggerType.decayExpired => throw UnimplementedError(),
@@ -39,14 +39,14 @@ class ResolveTriggeredCardStatesService {
   ) {
     final newState = state.moveCardZone(
       playerId: playerId,
-      cardInstanceId: instanceId,
+      instanceId: instanceId,
       from: CardZone.playArea,
       to: CardZone.exhausted,
     );
 
     final step = GameStepEvent.cardMovedZone(
       playerId: playerId,
-      cardInstanceIds: [instanceId],
+      instanceIds: [instanceId],
       zoneFrom: CardZone.playArea,
       zoneTo: CardZone.exhausted,
     );

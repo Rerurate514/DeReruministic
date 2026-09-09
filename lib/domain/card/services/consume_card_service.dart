@@ -39,7 +39,7 @@ class ConsumeCardService {
 
     final usedCard = state.findGameCardInZone(
       playerId: sourcePlayerId,
-      cardInstanceId: instanceId,
+      instanceId: instanceId,
       zone: CardZone.hand,
     );
     if (usedCard == null) {
@@ -64,14 +64,14 @@ class ConsumeCardService {
 
     final newState = state.moveCardZone(
       playerId: sourcePlayerId,
-      cardInstanceId: instanceId,
+      instanceId: instanceId,
       from: CardZone.hand,
       to: CardZone.playArea,
     );
 
     final step = GameStepEvent.cardMovedZone(
       playerId: sourcePlayerId,
-      cardInstanceIds: [instanceId],
+      instanceIds: [instanceId],
       zoneFrom: CardZone.hand,
       zoneTo: CardZone.playArea,
     );

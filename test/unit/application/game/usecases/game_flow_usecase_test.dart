@@ -86,13 +86,13 @@ void main() {
 
   GameActionPlayCard buildPlayCardActionLocal({
     int actionSequenceNumber = 2,
-    String cardInstanceId = 'card1',
+    String instanceId = 'card1',
   }) {
     return GameActions.playCard(
           id: const GameActionsId(value: 'play_1'),
           actionSequenceNumber: actionSequenceNumber,
           playerId: playerId,
-          cardInstanceId: GameCardInstanceId(value: cardInstanceId),
+          instanceId: GameCardInstanceId(value: instanceId),
         )
         as GameActionPlayCard;
   }
@@ -298,7 +298,7 @@ void main() {
       );
       const drawStep = GameStepEvent.cardsDrawn(
         playerId: playerId,
-        cardInstanceIds: [],
+        instanceIds: [],
         zoneFrom: CardZone.deck,
         zoneTo: CardZone.hand,
       );

@@ -20,7 +20,7 @@ class ResolvePlayCardStatesService {
   ApplyActionResult execute({
     required GameState state,
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     required CardStates cardState,
   }) {
     final player = state.players[playerId];
@@ -37,7 +37,7 @@ class ResolvePlayCardStatesService {
         player,
         amount,
       ),
-      CardStateRecycle() => _applyRecycle(state, playerId, cardInstanceId),
+      CardStateRecycle() => _applyRecycle(state, playerId, instanceId),
       CardStateConceal() => _buildNoStep(state), //TODO(medium): このあたり実装する
       CardStateRetain() => _buildNoStep(state),
       CardStateEngrave() => _buildNoStep(state),
@@ -72,7 +72,7 @@ class ResolvePlayCardStatesService {
   ) {
     final newState = state.decrementRecycleCount(
       playerId: playerId,
-      cardInstanceId: instanceId,
+      instanceId: instanceId,
     );
 
     return ApplyActionResult.success(state: newState, steps: []);

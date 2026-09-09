@@ -44,7 +44,7 @@ class DeckRestorationService {
 
     final moveStep = GameStepEvent.cardMovedZone(
       playerId: targetPlayerId,
-      cardInstanceIds: restoredCards.map((card) => card.instanceId).toList(),
+      instanceIds: restoredCards.map((card) => card.instanceId).toList(),
       zoneFrom: CardZone.graveyard,
       zoneTo: CardZone.deck,
     );

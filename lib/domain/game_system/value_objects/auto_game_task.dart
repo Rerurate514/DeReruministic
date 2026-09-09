@@ -66,7 +66,7 @@ sealed class AutoGameTask with _$AutoGameTask {
 
   const factory AutoGameTask.applyCardState({
     @PlayerIdConverter() required PlayerId playerId,
-    @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
+    @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
     required CardStates cardState,
   }) = AutoGameTaskApplyCardState;
 
@@ -76,7 +76,7 @@ sealed class AutoGameTask with _$AutoGameTask {
 
   const factory AutoGameTask.resolveCardStatesTrigger({
     @PlayerIdConverter() required PlayerId playerId,
-    @GameCardInstanceIdConverter() required GameCardInstanceId cardInstanceId,
+    @GameCardInstanceIdConverter() required GameCardInstanceId instanceId,
     required CardStatesTriggerType triggerType,
   }) = AutoGameTaskResolveCardStatesTrigger;
 
@@ -92,14 +92,14 @@ sealed class AutoGameTask with _$AutoGameTask {
 
   const factory AutoGameTask.moveCardZone({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     required CardZone zoneFrom,
     required CardZone zoneTo,
   }) = AutoGameTaskMoveCardZone;
 
   const factory AutoGameTask.cleanupPlayCard({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
   }) = AutoGameTaskCleanupPlayCard;
 
   factory AutoGameTask.fromJson(Map<String, dynamic> json) =>

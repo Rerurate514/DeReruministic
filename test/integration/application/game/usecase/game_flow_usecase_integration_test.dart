@@ -219,7 +219,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'strike1',
+//         instanceId: 'strike1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -271,7 +271,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'potion1',
+//         instanceId: 'potion1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -319,7 +319,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'cond1',
+//         instanceId: 'cond1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -369,7 +369,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'cond1',
+//         instanceId: 'cond1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -410,7 +410,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'nuke1',
+//         instanceId: 'nuke1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -456,7 +456,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'recycle1',
+//         instanceId: 'recycle1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -519,7 +519,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'recycle1',
+//         instanceId: 'recycle1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -574,7 +574,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'combo1',
+//         instanceId: 'combo1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -624,7 +624,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'finisher1',
+//         instanceId: 'finisher1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -668,7 +668,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'finisher1',
+//         instanceId: 'finisher1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -710,7 +710,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'punish1',
+//         instanceId: 'punish1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -742,7 +742,7 @@
 //       );
 //       final actionAgain = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'punish2',
+//         instanceId: 'punish2',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -781,7 +781,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'heal1',
+//         instanceId: 'heal1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -827,7 +827,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'weak1',
+//         instanceId: 'weak1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -882,7 +882,7 @@
 //         );
 //         final action = buildPlayCardAction(
 //           playerId: playerId,
-//           cardInstanceId: 'flags1',
+//           instanceId: 'flags1',
 //           actionSequenceNumber: 2,
 //         );
 
@@ -931,7 +931,7 @@
 //         );
 //         final action = buildPlayCardAction(
 //           playerId: playerId,
-//           cardInstanceId: 'timed1',
+//           instanceId: 'timed1',
 //           actionSequenceNumber: 2,
 //         );
 
@@ -974,7 +974,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'exhaustPriority1',
+//         instanceId: 'exhaustPriority1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -1016,7 +1016,7 @@
 //       );
 //       final action = buildPlayCardAction(
 //         playerId: playerId,
-//         cardInstanceId: 'infiniteRecycle1',
+//         instanceId: 'infiniteRecycle1',
 //         actionSequenceNumber: 2,
 //       );
 
@@ -1069,7 +1069,7 @@
 //         );
 //         final action = buildPlayCardAction(
 //           playerId: playerId,
-//           cardInstanceId: 'zeroRecycle1',
+//           instanceId: 'zeroRecycle1',
 //           actionSequenceNumber: 2,
 //         );
 
@@ -1544,7 +1544,7 @@
 //           id: const GameActionsId(value: 'action_play'),
 //           actionSequenceNumber: 2,
 //           playerId: turnOwnerId,
-//           cardInstanceId: cardToPlay.instanceId,
+//           instanceId: cardToPlay.instanceId,
 //         ),
 //       );
 

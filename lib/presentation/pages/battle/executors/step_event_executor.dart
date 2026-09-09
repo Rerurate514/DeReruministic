@@ -66,12 +66,12 @@ class StepEventExecutor {
         {}
       case GameStepEventDeckRestored():
         {}
-      case GameStepEventCardsDrawn(:final playerId, :final cardInstanceIds):
+      case GameStepEventCardsDrawn(:final playerId, :final instanceIds):
         {
           if (id != playerId) return;
           ref
               .read(displayedCardDrawnAnimationProvider.notifier)
-              .apply(cardInstanceIds);
+              .apply(instanceIds);
           await _awaitAnimation();
         }
       case GameStepEventCardMovedZone():

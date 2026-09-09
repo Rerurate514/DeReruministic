@@ -36,7 +36,7 @@ class ApplyPlayCardService {
     }
 
     final usedCard = cardUsedPlayer.hand.firstWhereOrNull(
-      (card) => card.instanceId == action.cardInstanceId,
+      (card) => card.instanceId == action.instanceId,
     );
     if (usedCard == null) {
       return ApplyActionResult.failure(
@@ -58,7 +58,7 @@ class ApplyPlayCardService {
 
     final tasks = TasksFactory.applyPlayCardTasks(
       cardUsedPlayerId: cardUsedPlayer.id,
-      cardInstanceId: usedCard.instanceId,
+      instanceId: usedCard.instanceId,
       validEffects: validEffects,
       states: usedCard.definition.states,
     );

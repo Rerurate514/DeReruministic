@@ -207,7 +207,7 @@ void main() {
       expect(success.steps, hasLength(1));
       final step = success.steps.single as GameStepEventCardMovedZone;
       expect(step.playerId, playerId);
-      expect(step.cardInstanceIds, [card.instanceId]);
+      expect(step.instanceIds, [card.instanceId]);
       expect(step.zoneFrom, CardZone.hand);
       expect(step.zoneTo, CardZone.graveyard);
     });

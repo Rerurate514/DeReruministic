@@ -123,11 +123,11 @@ void main() {
       final valueChangedStep = result.steps[0] as GameStepEventCardsDrawn;
       expect(valueChangedStep, isA<GameStepEventCardsDrawn>());
       expect(valueChangedStep.playerId, equals(targetPlayerId));
-      expect(valueChangedStep.cardInstanceIds.length, equals(1));
+      expect(valueChangedStep.instanceIds.length, equals(1));
 
       final cardMovedStep = result.steps[1] as GameStepEventCardMovedZone;
       expect(cardMovedStep.playerId, equals(targetPlayerId));
-      expect(cardMovedStep.cardInstanceIds, equals([card1InstanceId]));
+      expect(cardMovedStep.instanceIds, equals([card1InstanceId]));
       expect(cardMovedStep.zoneFrom, equals(CardZone.deck));
       expect(cardMovedStep.zoneTo, equals(CardZone.hand));
 

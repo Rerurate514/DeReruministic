@@ -159,13 +159,13 @@ class TaskServiceFactory {
       ),
     AutoGameTaskApplyCardState(
       :final playerId,
-      :final cardInstanceId,
+      :final instanceId,
       :final cardState,
     ) =>
       resolvePlayCardStatesService.execute(
         state: state,
         playerId: playerId,
-        cardInstanceId: cardInstanceId,
+        instanceId: instanceId,
         cardState: cardState,
       ),
     AutoGameTaskResolveEndPhaseCardStates(:final playerId) =>
@@ -175,13 +175,13 @@ class TaskServiceFactory {
       ),
     AutoGameTaskResolveCardStatesTrigger(
       :final playerId,
-      :final cardInstanceId,
+      :final instanceId,
       :final triggerType,
     ) =>
       resolveTriggeredCardStatesService.execute(
         state: state,
         playerId: playerId,
-        cardInstanceId: cardInstanceId,
+        instanceId: instanceId,
         triggerType: triggerType,
       ),
     AutoGameTaskConsumePlayCost(
@@ -201,25 +201,25 @@ class TaskServiceFactory {
       ),
     AutoGameTaskMoveCardZone(
       :final playerId,
-      :final cardInstanceId,
+      :final instanceId,
       :final zoneFrom,
       :final zoneTo,
     ) =>
       moveCardZoneService.execute(
         state: state,
         playerId: playerId,
-        cardInstanceId: cardInstanceId,
+        instanceId: instanceId,
         zoneFrom: zoneFrom,
         zoneTo: zoneTo,
       ),
     AutoGameTaskCleanupPlayCard(
       :final playerId,
-      :final cardInstanceId,
+      :final instanceId,
     ) =>
       cleanupPlayCardService.execute(
         state: state,
         playerId: playerId,
-        cardInstanceId: cardInstanceId,
+        instanceId: instanceId,
       ),
   };
 

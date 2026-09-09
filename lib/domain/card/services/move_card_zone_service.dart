@@ -20,7 +20,7 @@ class MoveCardZoneService {
   ApplyActionResult execute({
     required GameState state,
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     required CardZone zoneFrom,
     required CardZone zoneTo,
   }) {
@@ -38,7 +38,7 @@ class MoveCardZoneService {
 
     final card = state.findGameCardInZone(
       playerId: playerId,
-      cardInstanceId: cardInstanceId,
+      instanceId: instanceId,
       zone: zoneFrom,
     );
     if (card == null) {
@@ -50,14 +50,14 @@ class MoveCardZoneService {
 
     final newState = state.moveCardZone(
       playerId: playerId,
-      cardInstanceId: cardInstanceId,
+      instanceId: instanceId,
       from: zoneFrom,
       to: zoneTo,
     );
 
     final step = GameStepEvent.cardMovedZone(
       playerId: playerId,
-      cardInstanceIds: [cardInstanceId],
+      instanceIds: [instanceId],
       zoneFrom: zoneFrom,
       zoneTo: zoneTo,
     );

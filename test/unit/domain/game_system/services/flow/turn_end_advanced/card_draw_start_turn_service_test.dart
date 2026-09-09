@@ -99,7 +99,7 @@ void main() {
     test('山札+墓地が十分な場合、defaultDrawCount分のドロー処理がCardDrawServiceに委譲される', () {
       const step = GameStepEventCardsDrawn(
         playerId: PlayerId(value: 'player_a'),
-        cardInstanceIds: [],
+        instanceIds: [],
         zoneFrom: CardZone.deck,
         zoneTo: CardZone.hand,
       );

@@ -52,7 +52,7 @@ class CardDrawService {
 
     final drawStep = GameStepEvent.cardsDrawn(
       playerId: targetPlayerId,
-      cardInstanceIds: drawnCards.map((card) => card.instanceId).toList(),
+      instanceIds: drawnCards.map((card) => card.instanceId).toList(),
       zoneFrom: CardZone.deck,
       zoneTo: CardZone.hand,
     );
@@ -63,7 +63,7 @@ class CardDrawService {
 
     final cardMoveStep = GameStepEvent.cardMovedZone(
       playerId: targetPlayerId,
-      cardInstanceIds: drawnCards.map((card) => card.instanceId).toList(),
+      instanceIds: drawnCards.map((card) => card.instanceId).toList(),
       zoneFrom: CardZone.deck,
       zoneTo: CardZone.hand,
     );

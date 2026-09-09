@@ -104,7 +104,7 @@ class GameNotifier extends _$GameNotifier {
       id: GameActionsId.generate(),
       actionSequenceNumber: currentState.metadata.actionSequenceNumber + 1,
       playerId: cardUsedPlayerId,
-      cardInstanceId: card.instanceId,
+      instanceId: card.instanceId,
     );
 
     await _dispatch(action: action);

@@ -122,9 +122,9 @@ void main() {
       expect(moveEvent.playerId, equals(targetPlayerId));
       expect(moveEvent.zoneFrom, equals(CardZone.graveyard));
       expect(moveEvent.zoneTo, equals(CardZone.deck));
-      expect(moveEvent.cardInstanceIds.length, equals(2));
+      expect(moveEvent.instanceIds.length, equals(2));
       expect(
-        moveEvent.cardInstanceIds,
+        moveEvent.instanceIds,
         containsAll([card1InstanceId, card2InstanceId]),
       );
 
@@ -156,7 +156,7 @@ void main() {
       expect(result.steps.length, equals(2));
 
       final moveEvent = result.steps[0] as GameStepEventCardMovedZone;
-      expect(moveEvent.cardInstanceIds, isEmpty);
+      expect(moveEvent.instanceIds, isEmpty);
 
       final restoredEvent = result.steps[1] as GameStepEventDeckRestored;
       expect(restoredEvent.count, equals(0));

@@ -34,14 +34,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: playerId,
-        cardInstanceId: 'card1',
+        instanceId: 'card1',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(result, const ValidationResultSuccess());
@@ -56,14 +56,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: playerId,
-        cardInstanceId: 'card1',
+        instanceId: 'card1',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(result, const ValidationResultSuccess());
@@ -79,14 +79,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: playerId,
-        cardInstanceId: 'card1',
+        instanceId: 'card1',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(
@@ -107,14 +107,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: playerId,
-        cardInstanceId: 'card1',
+        instanceId: 'card1',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(
@@ -136,14 +136,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: playerId,
-        cardInstanceId: 'card1',
+        instanceId: 'card1',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(
@@ -161,14 +161,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: otherPlayerId, // playersマップに存在しない
-        cardInstanceId: 'card1',
+        instanceId: 'card1',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(
@@ -179,7 +179,7 @@ void main() {
       );
     });
 
-    test('指定したcardInstanceIdが手札にない場合、cardNotFoundで失敗する', () {
+    test('指定したinstanceIdが手札にない場合、cardNotFoundで失敗する', () {
       final player = buildPlayer(id: playerId);
       final state = buildState(
         players: {playerId: player},
@@ -187,14 +187,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: playerId,
-        cardInstanceId: 'not_in_hand',
+        instanceId: 'not_in_hand',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(
@@ -214,14 +214,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: playerId,
-        cardInstanceId: 'card1',
+        instanceId: 'card1',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(
@@ -245,14 +245,14 @@ void main() {
       );
       final action = buildPlayCardAction(
         playerId: playerId,
-        cardInstanceId: 'cheap',
+        instanceId: 'cheap',
         actionSequenceNumber: 2,
       );
 
       final result = validator.validate(
         state: state,
         cardUsedPlayerId: action.playerId,
-        usedCardInstanceId: action.cardInstanceId,
+        usedCardInstanceId: action.instanceId,
       );
 
       expect(result, const ValidationResultSuccess());

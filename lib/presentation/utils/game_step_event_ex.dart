@@ -128,21 +128,21 @@ extension GameStepEventEx on GameStepEvent {
                 targetPlayerId.value,
               ),
 
-      GameStepEventCardExhausted(:final cardInstanceId) =>
-        l10n.game_step_event_card_exhausted(cardInstanceId.value),
+      GameStepEventCardExhausted(:final instanceId) =>
+        l10n.game_step_event_card_exhausted(instanceId.value),
 
       GameStepEventDeckRestored(:final playerId, :final count) =>
         l10n.game_step_event_deck_restored(playerId.value, count),
 
-      GameStepEventCardsDrawn(:final playerId, :final cardInstanceIds) =>
+      GameStepEventCardsDrawn(:final playerId, :final instanceIds) =>
         l10n.game_step_event_cards_drawn(
           playerId.value,
-          cardInstanceIds.length,
+          instanceIds.length,
         ),
 
       GameStepEventCardMovedZone(
         :final playerId,
-        :final cardInstanceIds,
+        :final instanceIds,
         :final zoneFrom,
         :final zoneTo,
       ) =>
@@ -150,7 +150,7 @@ extension GameStepEventEx on GameStepEvent {
           playerId.value,
           zoneFrom.name,
           zoneTo.name,
-          cardInstanceIds.length,
+          instanceIds.length,
         ),
 
       GameStepEventTurnOwnerSwitched(:final newTurnPlayerId) =>

@@ -23,11 +23,11 @@ class CleanupPlayCardService {
   ApplyActionResult execute({
     required GameState state,
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
   }) {
     final card = state.findGameCardInZone(
       playerId: playerId,
-      cardInstanceId: cardInstanceId,
+      instanceId: instanceId,
       zone: CardZone.playArea,
     );
 
@@ -40,22 +40,22 @@ class CleanupPlayCardService {
 
     if (card.definition.hasState<CardStateRecycle>()) {
       if (card.isRecycleActive) {
-        return _enqueueMove(state, playerId, cardInstanceId, CardZone.deck);
+        return _enqueueMove(state, playerId, instanceId, CardZone.deck);
       } else {
         return _enqueueTrigger(
           state,
           playerId,
-          cardInstanceId,
+          instanceId,
           CardStatesTriggerType.recycleExpired,
         );
       }
     }
 
     if (card.definition.hasState<CardStateExhaust>()) {
-      return _enqueueMove(state, playerId, cardInstanceId, CardZone.exhausted);
+      return _enqueueMove(state, playerId, instanceId, CardZone.exhausted);
     }
 
-    return _enqueueMove(state, playerId, cardInstanceId, CardZone.graveyard);
+    return _enqueueMove(state, playerId, instanceId, CardZone.graveyard);
   }
 
   ApplyActionResult _enqueueMove(
@@ -69,7 +69,7 @@ class CleanupPlayCardService {
       .auto(
         .moveCardZone(
           playerId: playerId,
-          cardInstanceId: instanceId,
+          instanceId: instanceId,
           zoneFrom: CardZone.playArea,
           zoneTo: zoneTo,
         ),
@@ -89,7 +89,7 @@ class CleanupPlayCardService {
       .auto(
         .resolveCardStatesTrigger(
           playerId: playerId,
-          cardInstanceId: instanceId,
+          instanceId: instanceId,
           triggerType: triggerType,
         ),
       ),

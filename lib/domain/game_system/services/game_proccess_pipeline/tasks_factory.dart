@@ -30,7 +30,7 @@ class TasksFactory {
 
   static QueueList<GameTask> applyPlayCardTasks({
     required PlayerId cardUsedPlayerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     required Iterable<CardEffects> validEffects,
     required Iterable<CardStates> states,
     ActionTargets? target,
@@ -38,13 +38,13 @@ class TasksFactory {
     .auto(
       .consumeCard(
         playerId: cardUsedPlayerId,
-        instanceId: cardInstanceId,
+        instanceId: instanceId,
       ),
     ),
     .auto(
       .consumePlayCost(
         playerId: cardUsedPlayerId,
-        instanceId: cardInstanceId,
+        instanceId: instanceId,
       ),
     ),
     ...validEffects.map(
@@ -60,7 +60,7 @@ class TasksFactory {
       (cardState) => .auto(
         .applyCardState(
           playerId: cardUsedPlayerId,
-          cardInstanceId: cardInstanceId,
+          instanceId: instanceId,
           cardState: cardState,
         ),
       ),
@@ -68,7 +68,7 @@ class TasksFactory {
     .auto(
       .cleanupPlayCard(
         playerId: cardUsedPlayerId,
-        cardInstanceId: cardInstanceId,
+        instanceId: instanceId,
       ),
     ),
   ]);

@@ -112,7 +112,7 @@ GameState buildState({
 
 GameActionPlayCard buildPlayCardAction({
   required PlayerId playerId,
-  required String cardInstanceId,
+  required String instanceId,
   required int actionSequenceNumber,
   String actionId = 'action_1',
 }) {
@@ -120,7 +120,7 @@ GameActionPlayCard buildPlayCardAction({
     id: GameActionsId(value: actionId),
     actionSequenceNumber: actionSequenceNumber,
     playerId: playerId,
-    cardInstanceId: GameCardInstanceId(value: cardInstanceId),
+    instanceId: GameCardInstanceId(value: instanceId),
   );
 }
 

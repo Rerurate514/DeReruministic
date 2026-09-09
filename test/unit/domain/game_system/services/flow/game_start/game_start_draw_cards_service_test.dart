@@ -91,14 +91,14 @@ void main() {
     test('全プレイヤーに対してCardDrawServiceが順次実行され、State更新とStepの累積が行われる', () {
       const stepA = GameStepEventCardsDrawn(
         playerId: playerAId,
-        cardInstanceIds: [GameCardInstanceId(value: 'inst_a1')],
+        instanceIds: [GameCardInstanceId(value: 'inst_a1')],
         zoneFrom: CardZone.deck,
         zoneTo: CardZone.hand,
       );
 
       const stepB = GameStepEventCardsDrawn(
         playerId: playerBId,
-        cardInstanceIds: [GameCardInstanceId(value: 'inst_b1')],
+        instanceIds: [GameCardInstanceId(value: 'inst_b1')],
         zoneFrom: CardZone.deck,
         zoneTo: CardZone.hand,
       );

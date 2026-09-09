@@ -30,7 +30,7 @@ class ConsumeCostService {
 
     final usedCard = state.findGameCardInZone(
       playerId: sourcePlayerId,
-      cardInstanceId: instanceId,
+      instanceId: instanceId,
       zone: CardZone.playArea,
     );
     if (usedCard == null) {
