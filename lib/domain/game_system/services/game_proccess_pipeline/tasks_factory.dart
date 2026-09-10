@@ -9,6 +9,7 @@ import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 class TasksFactory {
   static QueueList<GameTask> get gameStart => QueueList.from([
     const .auto(.gameStartDrawCards()),
+    const .auto(.checkHandLimit()),
     const .auto(.advanceToTurnStart()),
     const .auto(.calculateCost()),
     const .auto(.advanceToMainPhase()),
