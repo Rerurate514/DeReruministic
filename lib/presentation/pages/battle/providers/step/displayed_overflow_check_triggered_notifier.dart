@@ -7,7 +7,7 @@ class DisplayedOverflowCheckTriggeredNotifier
     extends _$DisplayedOverflowCheckTriggeredNotifier {
   @override
   int? build() {
-    return 0;
+    return null;
   }
 
   void apply(int overflowCount) => state = overflowCount;
