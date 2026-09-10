@@ -55,7 +55,8 @@ sealed class PlayerState with _$PlayerState {
       buffs: [],
       debuffs: [],
       cardsPlayedThisTurn: 0,
-      maxHandSize: PlayerConstants.defaultMaxHandSize,
+      //maxHandSize: PlayerConstants.defaultMaxHandSize,
+      maxHandSize: 2,
       pendingRecoilCost: 0,
       pendingOverloadCost: 0,
     );
