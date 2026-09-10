@@ -32,23 +32,39 @@ class BattlePageStack extends StatelessWidget {
         const Positioned.fill(
           child: BackgroundTextLines(),
         ),
-        Column(
-          children: [
-            EnemyState(
-              enemy: enemy,
-            ),
-            Expanded(
-              child: CardDragArea(
+        Positioned.fill(
+          child: Column(
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        EnemyState(
+                          enemy: enemy,
+                        ),
+                        Expanded(
+                          child: CardDragArea(
+                            player: player,
+                          ),
+                        ),
+                        PlayerState(
+                          player: player,
+                        ),
+                      ],
+                    ),
+                    const Align(
+                      child: OverflowedDiscardAreaSwitcher(),
+                    ),
+                  ],
+                ),
+              ),
+
+              HandComponent(
                 player: player,
               ),
-            ),
-            PlayerState(
-              player: player,
-            ),
-            HandComponent(
-              player: player,
-            ),
-          ],
+            ],
+          ),
         ),
         Align(
           alignment: Alignment.centerRight,
@@ -56,9 +72,7 @@ class BattlePageStack extends StatelessWidget {
             player: player,
           ),
         ),
-        const Align(
-          child: OverflowedDiscardAreaSwitcher(),
-        ),
+
         const Align(
           child: GameStartBannerAnimationContainer(),
         ),
