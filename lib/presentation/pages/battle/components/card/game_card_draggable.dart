@@ -4,13 +4,19 @@ import 'package:dereruministic/presentation/pages/battle/state/in_card_hand_area
 import 'package:flutter/material.dart';
 
 class GameCardDraggable extends StatelessWidget {
-  const GameCardDraggable({required this.gameCard, super.key});
+  const GameCardDraggable({
+    required this.gameCard,
+    this.isDraggable = true,
+    super.key,
+  });
 
   final GameCard gameCard;
+  final bool isDraggable;
 
   @override
   Widget build(BuildContext context) {
     return Draggable<InCardHandArea>(
+      maxSimultaneousDrags: isDraggable ? 1 : 0,
       data: InCardHandArea(gameCard: gameCard),
       feedback: Material(
         color: Colors.transparent,

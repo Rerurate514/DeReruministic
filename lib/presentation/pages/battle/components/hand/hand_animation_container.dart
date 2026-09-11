@@ -1,5 +1,5 @@
 import 'package:dereruministic/domain/card/entities/game_card.dart';
-import 'package:dereruministic/presentation/pages/battle/components/card/game_card_draggable.dart';
+import 'package:dereruministic/presentation/pages/battle/components/overflowed_discard_area/overflow_hand_card_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class HandAnimationContainer extends StatelessWidget {
@@ -16,7 +16,7 @@ class HandAnimationContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animation,
-      child: GameCardDraggable(gameCard: gameCard),
+      child: OverflowHandCardWrapper(gameCard: gameCard),
       builder: (context, child) {
         final dx = animation.value.clamp(0.0, 1.0);
         return FractionalTranslation(
