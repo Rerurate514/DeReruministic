@@ -20,8 +20,6 @@ class OverflowHandCardWrapper extends ConsumerWidget {
         .map((card) => card.instanceId)
         .contains(gameCard.instanceId);
 
-    print(isDraggable);
-
     final path = Path()
       ..lineTo(180, 0)
       ..lineTo(180, 240)
