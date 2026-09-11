@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/presentation/pages/battle/components/card/game_card_component.dart';
+import 'package:dereruministic/presentation/pages/battle/state/in_card_hand_area.dart';
 import 'package:flutter/material.dart';
 
 class GameCardDraggable extends StatelessWidget {
@@ -9,8 +10,8 @@ class GameCardDraggable extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Draggable<GameCard>(
-      data: gameCard,
+    return Draggable<InCardHandArea>(
+      data: InCardHandArea(gameCard: gameCard),
       feedback: Material(
         color: Colors.transparent,
         child: Transform.scale(
