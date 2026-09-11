@@ -31,7 +31,7 @@ class OverflowedDiscardAreaContainer extends StatelessWidget {
                   color: theme.textPrimary.withAlpha(100),
                 ),
                 Text(
-                  'DISCARD OVERFLOWED CARD',
+                  l10n.battle_page_discard_overflowed_card,
                   style: GoogleFonts.shareTechMono(
                     letterSpacing: 2,
                     color: theme.textPrimary.withAlpha(100),

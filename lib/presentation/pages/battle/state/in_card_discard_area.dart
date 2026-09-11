@@ -7,5 +7,6 @@ part 'in_card_discard_area.freezed.dart';
 sealed class InCardDiscardArea with _$InCardDiscardArea {
   const factory InCardDiscardArea({
     required GameCard gameCard,
+    required int index,
   }) = _InCardDiscardArea;
 }
