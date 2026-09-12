@@ -205,14 +205,14 @@ class TaskServiceFactory {
       ),
     AutoGameTaskMoveCardZone(
       :final playerId,
-      :final instanceId,
+      :final instanceIds,
       :final zoneFrom,
       :final zoneTo,
     ) =>
       moveCardZoneService.execute(
         state: state,
         playerId: playerId,
-        instanceId: instanceId,
+        instanceIds: instanceIds,
         zoneFrom: zoneFrom,
         zoneTo: zoneTo,
       ),

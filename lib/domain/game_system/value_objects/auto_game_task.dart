@@ -92,7 +92,7 @@ sealed class AutoGameTask with _$AutoGameTask {
 
   const factory AutoGameTask.moveCardZone({
     required PlayerId playerId,
-    required GameCardInstanceId instanceId,
+    required List<GameCardInstanceId> instanceIds,
     required CardZone zoneFrom,
     required CardZone zoneTo,
   }) = AutoGameTaskMoveCardZone;

@@ -69,7 +69,7 @@ class CleanupPlayCardService {
       .auto(
         .moveCardZone(
           playerId: playerId,
-          instanceId: instanceId,
+          instanceIds: [instanceId],
           zoneFrom: CardZone.playArea,
           zoneTo: zoneTo,
         ),

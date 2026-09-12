@@ -26,22 +26,18 @@ class ApplyDiscardService {
       );
     }
 
-    final tasks = action.selectedCardInstanceIds
-        .map(
-          (instanceId) => GameTask.auto(
-            .moveCardZone(
-              playerId: action.playerId,
-              instanceId: instanceId,
-              zoneFrom: CardZone.hand,
-              zoneTo: CardZone.graveyard,
-            ),
-          ),
-        )
-        .toList();
+    final task = GameTask.auto(
+      .moveCardZone(
+        playerId: action.playerId,
+        instanceIds: action.selectedCardInstanceIds,
+        zoneFrom: CardZone.hand,
+        zoneTo: CardZone.graveyard,
+      ),
+    );
 
-    final newState = state.popTask().pushTasks(
+    final newState = state.popTask().pushTask(
       GameStateTaskPushPos.head,
-      tasks,
+      task,
     );
 
     return ApplyActionResult.success(state: newState, steps: []);

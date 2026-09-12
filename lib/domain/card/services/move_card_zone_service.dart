@@ -20,7 +20,7 @@ class MoveCardZoneService {
   ApplyActionResult execute({
     required GameState state,
     required PlayerId playerId,
-    required GameCardInstanceId instanceId,
+    required List<GameCardInstanceId> instanceIds,
     required CardZone zoneFrom,
     required CardZone zoneTo,
   }) {
@@ -36,34 +36,38 @@ class MoveCardZoneService {
       return ApplyActionResult.noSteps(state: state);
     }
 
-    final card = state.findGameCardInZone(
-      playerId: playerId,
-      instanceId: instanceId,
-      zone: zoneFrom,
-    );
-    if (card == null) {
-      return ApplyActionResult.failure(
-        state: state,
-        reason: ActionFailureReason.cardNotFound,
+    var currentState = state;
+
+    for (final instanceId in instanceIds) {
+      final card = currentState.findGameCardInZone(
+        playerId: playerId,
+        instanceId: instanceId,
+        zone: zoneFrom,
+      );
+      if (card == null) {
+        return ApplyActionResult.failure(
+          state: currentState,
+          reason: ActionFailureReason.cardNotFound,
+        );
+      }
+
+      currentState = currentState.moveCardZone(
+        playerId: playerId,
+        instanceId: instanceId,
+        from: zoneFrom,
+        to: zoneTo,
       );
     }
 
-    final newState = state.moveCardZone(
-      playerId: playerId,
-      instanceId: instanceId,
-      from: zoneFrom,
-      to: zoneTo,
-    );
-
     final step = GameStepEvent.cardMovedZone(
       playerId: playerId,
-      instanceIds: [instanceId],
+      instanceIds: instanceIds,
       zoneFrom: zoneFrom,
       zoneTo: zoneTo,
     );
 
     return ApplyActionResult.success(
-      state: newState,
+      state: currentState,
       steps: [step],
     );
   }
