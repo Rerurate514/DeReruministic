@@ -10,8 +10,6 @@ class OverflowedDiscardAreaSwitcher extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final overflowCount = ref.watch(displayedOverflowCheckTriggeredProvider);
 
-    print(overflowCount);
-
     return AnimatedSwitcher(
       duration: const Duration(milliseconds: 200),
       transitionBuilder: (child, animation) {
