@@ -28,6 +28,7 @@ class DiscardDecideButton extends ConsumerWidget {
               ref
                   .read(displayedOverflowCheckTriggeredProvider.notifier)
                   .clear();
+              ref.read(selectDiscardCardsProvider.notifier).clear();
               ref.read(animationSignalProvider.notifier).done();
               await ref
                   .read(gameProvider.notifier)
