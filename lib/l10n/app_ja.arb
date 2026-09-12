@@ -146,6 +146,7 @@
             }
         }
     },
+    "battle_page_discard_decide_button_text": "捨て札を確定する",
 
     "battle_page_guide_header_command": "_>",
     "battle_page_guide_header_text": "TACTICAL_GUIDE",
