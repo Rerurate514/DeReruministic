@@ -70,7 +70,7 @@ void main() {
         final result = service.execute(
           state: state,
           sourcePlayerId: otherPlayerId,
-          card: card,
+          instanceId: card.instanceId,
         );
 
         expect(result, isA<ApplyActionResultFailure>());
@@ -110,7 +110,7 @@ void main() {
       final result = service.execute(
         state: state,
         sourcePlayerId: playerId,
-        card: card,
+        instanceId: card.instanceId,
       );
 
       expect(result, isA<ApplyActionResultFailure>());
@@ -140,7 +140,7 @@ void main() {
       final result = service.execute(
         state: state,
         sourcePlayerId: playerId,
-        card: card,
+        instanceId: card.instanceId,
       );
 
       expect(result, isA<ApplyActionResultSuccess>());
@@ -170,7 +170,7 @@ void main() {
       final result = service.execute(
         state: state,
         sourcePlayerId: playerId,
-        card: card,
+        instanceId: card.instanceId,
       );
 
       expect(result, isA<ApplyActionResultSuccess>());
@@ -200,14 +200,14 @@ void main() {
       final result = service.execute(
         state: state,
         sourcePlayerId: playerId,
-        card: card,
+        instanceId: card.instanceId,
       );
 
       final success = result as ApplyActionResultSuccess;
       expect(success.steps, hasLength(1));
       final step = success.steps.single as GameStepEventCardMovedZone;
       expect(step.playerId, playerId);
-      expect(step.cardInstanceIds, [card.instanceId]);
+      expect(step.instanceIds, [card.instanceId]);
       expect(step.zoneFrom, CardZone.hand);
       expect(step.zoneTo, CardZone.graveyard);
     });
@@ -231,7 +231,7 @@ void main() {
       final result = service.execute(
         state: state,
         sourcePlayerId: playerId,
-        card: card,
+        instanceId: card.instanceId,
       );
 
       final success = result as ApplyActionResultSuccess;
@@ -259,7 +259,11 @@ void main() {
           ),
         ).thenReturn(const ValidationResultSuccess());
 
-        service.execute(state: state, sourcePlayerId: playerId, card: card);
+        service.execute(
+          state: state,
+          sourcePlayerId: playerId,
+          instanceId: card.instanceId,
+        );
 
         verify(
           mockValidator.validate(
@@ -291,7 +295,7 @@ void main() {
       final result = service.execute(
         state: state,
         sourcePlayerId: playerId,
-        card: card,
+        instanceId: card.instanceId,
       );
 
       final success = result as ApplyActionResultSuccess;

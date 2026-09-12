@@ -131,6 +131,23 @@
     "battle_page_sp_banner_game_start_terminal_access_granted_text": "TERMINAL ACCESS GRANTED",
     "battle_page_sp_banner_game_start_data_link_established_text": "DATA LINK ESTABLISHED",
 
+    "battle_page_discard_overflowed_card": "DISCARD OVERFLOWED CARD /// 捨て札を選択する",
+    "battle_page_in_deck_card_remove_card_area_text": "このカードを捨て札から除外する",
+    "battle_page_in_discarded_card_text": "DISCARDED",
+    "battle_page_overflow_count": "残り: {currentSelectedCount} / {overflowCount}",
+    "@battlePageOverflowCount": {
+        "description": "溢れたカードの選択状況を表示するテキスト",
+        "placeholders": {
+            "currentSelectedCount": {
+                "type": "int"
+            },
+            "overflowCount": {
+                "type": "int"
+            }
+        }
+    },
+    "battle_page_discard_decide_button_text": "捨て札を確定する",
+
     "battle_page_guide_header_command": "_>",
     "battle_page_guide_header_text": "TACTICAL_GUIDE",
 

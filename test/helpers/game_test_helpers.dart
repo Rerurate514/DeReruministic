@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
@@ -101,6 +102,7 @@ GameState buildState({
     ),
     turnCount: turnCount,
     initialTurnOwner: players.keys.first,
+    taskQueue: QueueList.from([]),
     metadata: SystemMetadata(
       seed: seed,
       actionSequenceNumber: actionSequenceNumber,
@@ -110,7 +112,7 @@ GameState buildState({
 
 GameActionPlayCard buildPlayCardAction({
   required PlayerId playerId,
-  required String cardInstanceId,
+  required String instanceId,
   required int actionSequenceNumber,
   String actionId = 'action_1',
 }) {
@@ -118,7 +120,7 @@ GameActionPlayCard buildPlayCardAction({
     id: GameActionsId(value: actionId),
     actionSequenceNumber: actionSequenceNumber,
     playerId: playerId,
-    cardInstanceId: GameCardInstanceId(value: cardInstanceId),
+    instanceId: GameCardInstanceId(value: instanceId),
   );
 }
 

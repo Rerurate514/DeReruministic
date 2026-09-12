@@ -9,6 +9,8 @@ import 'package:dereruministic/presentation/pages/battle/components/game_sp_bann
 import 'package:dereruministic/presentation/pages/battle/components/game_sp_banner/game_start/game_start_banner_animation_container.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/tactical_guide_switcher.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_component.dart';
+import 'package:dereruministic/presentation/pages/battle/components/overflowed_discard_area/in_discard_card_remove_area.dart';
+import 'package:dereruministic/presentation/pages/battle/components/overflowed_discard_area/overflowed_discard_area_switcher.dart';
 import 'package:dereruministic/presentation/pages/battle/components/phase/phase_banner_animation_container.dart';
 import 'package:dereruministic/presentation/pages/battle/components/player_state/player_state.dart';
 import 'package:flutter/material.dart';
@@ -31,23 +33,46 @@ class BattlePageStack extends StatelessWidget {
         const Positioned.fill(
           child: BackgroundTextLines(),
         ),
-        Column(
-          children: [
-            EnemyState(
-              enemy: enemy,
-            ),
-            Expanded(
-              child: CardDragArea(
-                player: player,
+        Positioned.fill(
+          child: Column(
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    Column(
+                      children: [
+                        EnemyState(
+                          enemy: enemy,
+                        ),
+                        Expanded(
+                          child: CardDragArea(
+                            player: player,
+                          ),
+                        ),
+                        PlayerState(
+                          player: player,
+                        ),
+                      ],
+                    ),
+                    const Align(
+                      child: OverflowedDiscardAreaSwitcher(),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            PlayerState(
-              player: player,
-            ),
-            HandComponent(
-              player: player,
-            ),
-          ],
+
+              Stack(
+                children: [
+                  HandComponent(
+                    player: player,
+                  ),
+                  const Positioned.fill(
+                    child: InDiscardCardRemoveArea(),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
         Align(
           alignment: Alignment.centerRight,
@@ -55,6 +80,7 @@ class BattlePageStack extends StatelessWidget {
             player: player,
           ),
         ),
+
         const Align(
           child: GameStartBannerAnimationContainer(),
         ),

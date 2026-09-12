@@ -1,9 +1,12 @@
 import 'package:collection/collection.dart';
+import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/game_system/converter/game_task_queue_converter.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
 import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/converter/player_map_converter.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
@@ -20,6 +23,7 @@ sealed class GameState with _$GameState {
     required GamePhase phase,
     required int turnCount,
     required PlayerId initialTurnOwner,
+    @GameTaskQueueConverter() required QueueList<GameTask> taskQueue,
     required SystemMetadata metadata,
   }) = _GameState;
 
@@ -68,9 +72,35 @@ extension GameStateEx on GameState {
     return players.entries.firstWhereOrNull((e) => e.key != playerId)?.value;
   }
 
-  GameState moveCardFromHand({
+  GameCard? findGameCard({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
+  }) => players[playerId]?.hand.firstWhereOrNull(
+    (gameCard) => gameCard.instanceId == instanceId,
+  );
+
+  GameCard? findGameCardInZone({
+    required PlayerId playerId,
+    required GameCardInstanceId instanceId,
+    required CardZone zone,
+  }) {
+    final cards = switch (zone) {
+      CardZone.deck => players[playerId]?.deck,
+      CardZone.hand => players[playerId]?.hand,
+      CardZone.graveyard => players[playerId]?.graveyard,
+      CardZone.exhausted => players[playerId]?.exhausted,
+      CardZone.playArea => players[playerId]?.playArea,
+    };
+
+    return cards?.firstWhereOrNull(
+      (gameCard) => gameCard.instanceId == instanceId,
+    );
+  }
+
+  GameState moveCardZone({
+    required PlayerId playerId,
+    required GameCardInstanceId instanceId,
+    required CardZone from,
     required CardZone to,
   }) {
     final player = players[playerId];
@@ -78,8 +108,9 @@ extension GameStateEx on GameState {
       return this;
     }
 
-    final updatedPlayer = player.moveCardFromHand(
-      cardInstanceId,
+    final updatedPlayer = player.moveCardZone(
+      instanceId,
+      from,
       to,
     );
 
@@ -123,13 +154,13 @@ extension GameStateEx on GameState {
 
   GameState decrementRecycleCount({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
   }) {
     final player = players[playerId];
     if (player == null) return this;
 
     final updatedHand = player.hand.map((card) {
-      if (card.instanceId != cardInstanceId) return card;
+      if (card.instanceId != instanceId) return card;
 
       final updatedRuntimeStates = card.runtimeStates.map((state) {
         if (state is CardRuntimeStateRecycleState) {
@@ -148,5 +179,39 @@ extension GameStateEx on GameState {
     return copyWith(
       players: {...players, playerId: updatedPlayer},
     );
+  }
+}
+
+enum GameStateTaskPushPos { head, tail }
+
+extension GameStateTaskQueueX on GameState {
+  GameTask? get currentTask => taskQueue.firstOrNull;
+
+  GameState pushTask(GameStateTaskPushPos pos, GameTask task) {
+    final nextQueue = QueueList<GameTask>.from(taskQueue);
+    switch (pos) {
+      case GameStateTaskPushPos.head:
+        nextQueue.addFirst(task);
+      case GameStateTaskPushPos.tail:
+        nextQueue.add(task);
+    }
+    return copyWith(taskQueue: nextQueue);
+  }
+
+  GameState pushTasks(GameStateTaskPushPos pos, List<GameTask> tasks) {
+    final nextQueue = QueueList<GameTask>.from(taskQueue);
+    switch (pos) {
+      case GameStateTaskPushPos.head:
+        tasks.reversed.forEach(nextQueue.addFirst);
+      case GameStateTaskPushPos.tail:
+        nextQueue.addAll(tasks);
+    }
+    return copyWith(taskQueue: nextQueue);
+  }
+
+  GameState popTask() {
+    if (taskQueue.isEmpty) return this;
+    final nextQueue = QueueList<GameTask>.from(taskQueue)..removeFirst();
+    return copyWith(taskQueue: nextQueue);
   }
 }

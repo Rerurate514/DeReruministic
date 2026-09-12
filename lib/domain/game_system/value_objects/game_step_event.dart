@@ -130,14 +130,14 @@ sealed class GameStepEvent with _$GameStepEvent {
   // --- カードアクション系 ---
   const factory GameStepEvent.cardPlayed({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     required CardDefinitionId cardDefId,
     PlayerId? targetPlayerId,
   }) = GameStepEventCardPlayed;
 
   const factory GameStepEvent.cardExhausted({
     required PlayerId playerId,
-    required GameCardInstanceId cardInstanceId,
+    required GameCardInstanceId instanceId,
     PlayerId? targetPlayerId,
   }) = GameStepEventCardExhausted;
 
@@ -150,14 +150,14 @@ sealed class GameStepEvent with _$GameStepEvent {
   // --- カードゾーン移動系 ---
   const factory GameStepEvent.cardsDrawn({
     required PlayerId playerId,
-    required List<GameCardInstanceId> cardInstanceIds,
+    required List<GameCardInstanceId> instanceIds,
     required CardZone zoneFrom,
     required CardZone zoneTo,
   }) = GameStepEventCardsDrawn;
 
   const factory GameStepEvent.cardMovedZone({
     required PlayerId playerId,
-    required List<GameCardInstanceId> cardInstanceIds,
+    required List<GameCardInstanceId> instanceIds,
     required CardZone zoneFrom,
     required CardZone zoneTo,
   }) = GameStepEventCardMovedZone;

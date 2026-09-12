@@ -1,6 +1,4 @@
-import 'package:dereruministic/domain/card/entities/card_definition.dart';
-import 'package:dereruministic/domain/card/entities/game_card.dart';
-import 'package:dereruministic/domain/card/value_objects/card_states.dart';
+import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/services/play_card_validator.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
@@ -28,7 +26,7 @@ class ConsumeCardService {
   ApplyActionResult execute({
     required GameState state,
     required PlayerId sourcePlayerId,
-    required GameCard card,
+    required GameCardInstanceId instanceId,
   }) {
     final sourcePlayer = state.players[sourcePlayerId];
 
@@ -39,10 +37,22 @@ class ConsumeCardService {
       );
     }
 
+    final usedCard = state.findGameCardInZone(
+      playerId: sourcePlayerId,
+      instanceId: instanceId,
+      zone: CardZone.hand,
+    );
+    if (usedCard == null) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.cardNotFound,
+      );
+    }
+
     final validateResult = playCardValidator.validate(
       state: state,
       cardUsedPlayerId: sourcePlayer.id,
-      usedCardInstanceId: card.instanceId,
+      usedCardInstanceId: instanceId,
     );
 
     if (validateResult case ValidationResultFailure()) {
@@ -52,32 +62,18 @@ class ConsumeCardService {
       );
     }
 
-    final decrementedState = state.decrementRecycleCount(
+    final newState = state.moveCardZone(
       playerId: sourcePlayerId,
-      cardInstanceId: card.instanceId,
-    );
-
-    final updatedCard = decrementedState.players[sourcePlayerId]?.hand
-        .firstWhere((c) => c.instanceId == card.instanceId, orElse: () => card);
-
-    final destinationZone =
-        updatedCard?.definition.hasState<CardStateExhaust>() ?? false
-        ? CardZone.exhausted
-        : updatedCard?.isRecycleActive ?? false
-        ? CardZone.deck
-        : CardZone.graveyard;
-
-    final newState = decrementedState.moveCardFromHand(
-      playerId: sourcePlayerId,
-      cardInstanceId: card.instanceId,
-      to: destinationZone,
+      instanceId: instanceId,
+      from: CardZone.hand,
+      to: CardZone.playArea,
     );
 
     final step = GameStepEvent.cardMovedZone(
       playerId: sourcePlayerId,
-      cardInstanceIds: [card.instanceId],
+      instanceIds: [instanceId],
       zoneFrom: CardZone.hand,
-      zoneTo: destinationZone,
+      zoneTo: CardZone.playArea,
     );
 
     return ApplyActionResult.success(state: newState, steps: [step]);

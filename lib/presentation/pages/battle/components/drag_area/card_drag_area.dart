@@ -5,6 +5,7 @@ import 'package:dereruministic/presentation/pages/battle/components/card/game_ca
 import 'package:dereruministic/presentation/pages/battle/components/drag_area/drag_area_card.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/state/in_card_hand_area.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
@@ -57,7 +58,7 @@ class CardDragArea extends HookConsumerWidget {
 
     return Padding(
       padding: const EdgeInsets.all(16),
-      child: DragTarget<GameCard>(
+      child: DragTarget<InCardHandArea>(
         onWillAcceptWithDetails: (details) {
           final gameState = ref.read(gameProvider);
           final playerState = ref.read(myPlayerUiStateProvider(player));
@@ -65,7 +66,7 @@ class CardDragArea extends HookConsumerWidget {
           if (gameState == null || playerState == null) return false;
 
           final playerCost = playerState.cost;
-          final cardCost = details.data.currentCost;
+          final cardCost = details.data.gameCard.currentCost;
 
           return gameState.phase.turnOwner == player.id &&
               isMainPhase &&
@@ -77,7 +78,7 @@ class CardDragArea extends HookConsumerWidget {
               ? renderBox.globalToLocal(detail.offset)
               : detail.offset;
 
-          droppedCard.value = (card: detail.data, offset: localOffset);
+          droppedCard.value = (card: detail.data.gameCard, offset: localOffset);
         },
         builder: (context, candidateData, rejectedData) {
           final isHovering = candidateData.isNotEmpty;

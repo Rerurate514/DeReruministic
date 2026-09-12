@@ -34,6 +34,7 @@ sealed class PlayerState with _$PlayerState {
     required int maxHandSize,
     required int pendingRecoilCost,
     required int pendingOverloadCost,
+    @Default([]) List<GameCard> playArea,
   }) = _PlayerState;
 
   factory PlayerState.create({
@@ -54,7 +55,8 @@ sealed class PlayerState with _$PlayerState {
       buffs: [],
       debuffs: [],
       cardsPlayedThisTurn: 0,
-      maxHandSize: PlayerConstants.defaultMaxHandSize,
+      //maxHandSize: PlayerConstants.defaultMaxHandSize,
+      maxHandSize: 2,
       pendingRecoilCost: 0,
       pendingOverloadCost: 0,
     );
@@ -103,28 +105,57 @@ extension PlayerStateCardEx on PlayerState {
     );
   }
 
-  PlayerState moveCardFromHand(GameCardInstanceId instanceId, CardZone to) {
-    final card = hand.firstWhereOrNull((c) => c.instanceId == instanceId);
+  PlayerState moveCardZone(
+    GameCardInstanceId instanceId,
+    CardZone from,
+    CardZone to,
+  ) {
+    final sourceList = switch (from) {
+      CardZone.deck => deck,
+      CardZone.hand => hand,
+      CardZone.graveyard => graveyard,
+      CardZone.exhausted => exhausted,
+      CardZone.playArea => playArea,
+    };
+    final card = sourceList.firstWhereOrNull((c) => c.instanceId == instanceId);
     if (card == null) {
       return this;
     }
 
-    final nextHand = hand.where((c) => c.instanceId != instanceId).toList();
-
-    return switch (to) {
+    final nextCards = switch (from) {
+      CardZone.deck => copyWith(
+        deck: deck.where((c) => c.instanceId != instanceId).toList(),
+      ),
+      CardZone.hand => copyWith(
+        hand: hand.where((c) => c.instanceId != instanceId).toList(),
+      ),
       CardZone.graveyard => copyWith(
-        hand: nextHand,
-        graveyard: [...graveyard, card],
+        graveyard: graveyard.where((c) => c.instanceId != instanceId).toList(),
       ),
       CardZone.exhausted => copyWith(
-        hand: nextHand,
-        exhausted: [...exhausted, card],
+        exhausted: exhausted.where((c) => c.instanceId != instanceId).toList(),
       ),
-      CardZone.deck => copyWith(
-        hand: nextHand,
-        deck: [...deck, card],
+      CardZone.playArea => copyWith(
+        playArea: playArea.where((c) => c.instanceId != instanceId).toList(),
       ),
-      CardZone.hand => this,
+    };
+
+    return switch (to) {
+      CardZone.graveyard => nextCards.copyWith(
+        graveyard: [...nextCards.graveyard, card],
+      ),
+      CardZone.exhausted => nextCards.copyWith(
+        exhausted: [...nextCards.exhausted, card],
+      ),
+      CardZone.deck => nextCards.copyWith(
+        deck: [...nextCards.deck, card],
+      ),
+      CardZone.hand => nextCards.copyWith(
+        hand: [...nextCards.hand, card],
+      ),
+      CardZone.playArea => nextCards.copyWith(
+        playArea: [...nextCards.playArea, card],
+      ),
     };
   }
 }

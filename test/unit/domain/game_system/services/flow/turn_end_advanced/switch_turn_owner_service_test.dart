@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
@@ -32,6 +33,7 @@ void main() {
     phase: GamePhase.init(playerAId),
     turnCount: 1,
     initialTurnOwner: playerAId,
+    taskQueue: QueueList.from([]),
     metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 1),
   );
 

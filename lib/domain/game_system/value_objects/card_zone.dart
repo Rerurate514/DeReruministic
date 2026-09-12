@@ -1,1 +1,1 @@
-enum CardZone { deck, hand, graveyard, exhausted }
+enum CardZone { deck, hand, graveyard, exhausted, playArea }

@@ -1,6 +1,7 @@
-import 'package:dereruministic/domain/card/entities/game_card.dart';
+import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
@@ -17,7 +18,7 @@ class ConsumeCostService {
   ApplyActionResult execute({
     required GameState state,
     required PlayerId sourcePlayerId,
-    required GameCard card,
+    required GameCardInstanceId instanceId,
   }) {
     final cardUsedPlayer = state.players[sourcePlayerId];
     if (cardUsedPlayer == null) {
@@ -27,7 +28,19 @@ class ConsumeCostService {
       );
     }
 
-    final newPlayerState = cardUsedPlayer.consumeCost(card.currentCost);
+    final usedCard = state.findGameCardInZone(
+      playerId: sourcePlayerId,
+      instanceId: instanceId,
+      zone: CardZone.playArea,
+    );
+    if (usedCard == null) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.cardNotFound,
+      );
+    }
+
+    final newPlayerState = cardUsedPlayer.consumeCost(usedCard.currentCost);
 
     return ApplyActionResult.success(
       state: state.copyWith(

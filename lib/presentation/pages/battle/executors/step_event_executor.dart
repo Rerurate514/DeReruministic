@@ -5,6 +5,7 @@ import 'package:dereruministic/presentation/pages/battle/providers/step/displaye
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_cost_calculated_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_end_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_overflow_check_triggered_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_phase_notifier.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -27,8 +28,17 @@ class StepEventExecutor {
         {}
       case GameStepEventDeckShuffled():
         {}
-      case GameStepEventOverflowCheckTriggered():
-        {}
+      case GameStepEventOverflowCheckTriggered(
+        :final playerId,
+        :final overflowCount,
+      ):
+        {
+          if (id != playerId) return;
+          ref
+              .read(displayedOverflowCheckTriggeredProvider.notifier)
+              .apply(overflowCount);
+          await _awaitAnimation();
+        }
       case GameStepEventPhaseChanged(:final phase):
         {
           ref.read(displayedPhaseProvider.notifier).apply(phase);
@@ -66,12 +76,12 @@ class StepEventExecutor {
         {}
       case GameStepEventDeckRestored():
         {}
-      case GameStepEventCardsDrawn(:final playerId, :final cardInstanceIds):
+      case GameStepEventCardsDrawn(:final playerId, :final instanceIds):
         {
           if (id != playerId) return;
           ref
               .read(displayedCardDrawnAnimationProvider.notifier)
-              .apply(cardInstanceIds);
+              .apply(instanceIds);
           await _awaitAnimation();
         }
       case GameStepEventCardMovedZone():

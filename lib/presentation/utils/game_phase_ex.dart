@@ -11,7 +11,6 @@ extension GamePhaseEx on GamePhase {
       BattlePhase.mainPhase => l10n.battle_page_phase_main_phase,
       BattlePhase.turnEnd => l10n.battle_page_phase_turn_end,
       BattlePhase.battleEnd => l10n.battle_page_phase_turn_end,
-      BattlePhase.selectDiscard => l10n.battle_page_phase_select_discard,
     };
   }
 }
@@ -25,7 +24,6 @@ extension BattlePhaseEx on BattlePhase {
       BattlePhase.mainPhase => l10n.battle_page_phase_main_phase,
       BattlePhase.turnEnd => l10n.battle_page_phase_turn_end,
       BattlePhase.battleEnd => l10n.battle_page_phase_turn_end,
-      BattlePhase.selectDiscard => l10n.battle_page_phase_select_discard,
     };
   }
 }

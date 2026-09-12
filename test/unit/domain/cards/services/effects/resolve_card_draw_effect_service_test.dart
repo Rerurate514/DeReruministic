@@ -116,12 +116,12 @@ void main() {
       expect(success.steps, hasLength(2));
       final drawStep = success.steps[0] as GameStepEventCardsDrawn;
       expect(drawStep.playerId, playerId);
-      expect(drawStep.cardInstanceIds, [card1.instanceId, card2.instanceId]);
+      expect(drawStep.instanceIds, [card1.instanceId, card2.instanceId]);
       expect(drawStep.zoneFrom, CardZone.deck);
       expect(drawStep.zoneTo, CardZone.hand);
 
       final moveStep = success.steps[1] as GameStepEventCardMovedZone;
-      expect(moveStep.cardInstanceIds, [card1.instanceId, card2.instanceId]);
+      expect(moveStep.instanceIds, [card1.instanceId, card2.instanceId]);
       expect(moveStep.zoneFrom, CardZone.deck);
       expect(moveStep.zoneTo, CardZone.hand);
 
@@ -153,7 +153,7 @@ void main() {
       expect(result, isA<ApplyActionResultSuccess>());
       final success = result as ApplyActionResultSuccess;
       final drawStep = success.steps[0] as GameStepEventCardsDrawn;
-      expect(drawStep.cardInstanceIds, [card1.instanceId]); // 1枚だけ引く
+      expect(drawStep.instanceIds, [card1.instanceId]); // 1枚だけ引く
     });
 
     test('デッキを引き切った場合、deckRestorationServiceが呼ばれその結果のstateと合成したstepsが返る', () {
@@ -189,7 +189,7 @@ void main() {
       );
       const restoreStep = GameStepEvent.cardMovedZone(
         playerId: playerId,
-        cardInstanceIds: [GameCardInstanceId(value: 'graveyardCard1')],
+        instanceIds: [GameCardInstanceId(value: 'graveyardCard1')],
         zoneFrom: CardZone.graveyard,
         zoneTo: CardZone.deck,
       );

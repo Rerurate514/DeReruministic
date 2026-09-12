@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/card_draw_service.dart';
@@ -61,6 +62,7 @@ void main() {
     phase: GamePhase.init(targetPlayerId),
     turnCount: 1,
     initialTurnOwner: targetPlayerId,
+    taskQueue: QueueList.from([]),
     metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 1),
   );
 
@@ -121,11 +123,11 @@ void main() {
       final valueChangedStep = result.steps[0] as GameStepEventCardsDrawn;
       expect(valueChangedStep, isA<GameStepEventCardsDrawn>());
       expect(valueChangedStep.playerId, equals(targetPlayerId));
-      expect(valueChangedStep.cardInstanceIds.length, equals(1));
+      expect(valueChangedStep.instanceIds.length, equals(1));
 
       final cardMovedStep = result.steps[1] as GameStepEventCardMovedZone;
       expect(cardMovedStep.playerId, equals(targetPlayerId));
-      expect(cardMovedStep.cardInstanceIds, equals([card1InstanceId]));
+      expect(cardMovedStep.instanceIds, equals([card1InstanceId]));
       expect(cardMovedStep.zoneFrom, equals(CardZone.deck));
       expect(cardMovedStep.zoneTo, equals(CardZone.hand));
 

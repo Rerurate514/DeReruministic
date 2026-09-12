@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/card_draw_service.dart';
@@ -68,6 +69,7 @@ void main() {
     phase: GamePhase.init(playerAId),
     turnCount: 0,
     initialTurnOwner: playerAId,
+    taskQueue: QueueList.from([]),
     metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 1),
   );
 
@@ -89,14 +91,14 @@ void main() {
     test('全プレイヤーに対してCardDrawServiceが順次実行され、State更新とStepの累積が行われる', () {
       const stepA = GameStepEventCardsDrawn(
         playerId: playerAId,
-        cardInstanceIds: [GameCardInstanceId(value: 'inst_a1')],
+        instanceIds: [GameCardInstanceId(value: 'inst_a1')],
         zoneFrom: CardZone.deck,
         zoneTo: CardZone.hand,
       );
 
       const stepB = GameStepEventCardsDrawn(
         playerId: playerBId,
-        cardInstanceIds: [GameCardInstanceId(value: 'inst_b1')],
+        instanceIds: [GameCardInstanceId(value: 'inst_b1')],
         zoneFrom: CardZone.deck,
         zoneTo: CardZone.hand,
       );

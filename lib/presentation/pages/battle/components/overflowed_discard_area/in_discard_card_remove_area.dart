@@ -1,0 +1,63 @@
+import 'package:dereruministic/l10n/app_localizations.dart';
+import 'package:dereruministic/presentation/components/app_card.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/is_dragging_in_deck_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/select_discard_cards_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/state/in_card_discard_area.dart';
+import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:material_symbols_icons/material_symbols_icons.dart';
+
+class InDiscardCardRemoveArea extends ConsumerWidget {
+  const InDiscardCardRemoveArea({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
+    final theme = context.themePalette;
+
+    final isDragging = ref.watch(isDraggingInDiscardCardProvider);
+    return DragTarget<InCardDiscardArea>(
+      onAcceptWithDetails: (details) {
+        ref
+            .read(selectDiscardCardsProvider.notifier)
+            .removeAt(details.data.index);
+      },
+      builder:
+          (
+            context,
+            candidateData,
+            rejectedData,
+          ) {
+            final isHovering = candidateData.isNotEmpty;
+
+            if (!isDragging) return const SizedBox.shrink();
+
+            return AppCard(
+              isBlur: true,
+              borderRadius: 8,
+              borderColor: isHovering ? theme.brandTertiary : null,
+              child: Column(
+                mainAxisAlignment: .center,
+                spacing: 8,
+                children: [
+                  Icon(
+                    Symbols.delete,
+                    color: theme.brandTertiary,
+                    size: 32,
+                  ),
+                  Text(
+                    l10n.battle_page_in_deck_card_remove_card_area_text,
+                    style: GoogleFonts.shareTechMono(
+                      color: theme.brandTertiary,
+                      fontWeight: .bold,
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+    );
+  }
+}

@@ -10,7 +10,6 @@ sealed class GamePhase with _$GamePhase {
   const factory GamePhase({
     required BattlePhase battlePhase,
     required PlayerId turnOwner,
-    BattlePhase? interruptedPhase,
   }) = _GamePhase;
 
   factory GamePhase.init(PlayerId firstTurnOwner) {

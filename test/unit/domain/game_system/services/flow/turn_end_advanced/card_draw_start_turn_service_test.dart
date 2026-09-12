@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/services/card_draw_service.dart';
@@ -28,6 +29,7 @@ void main() {
         phase: GamePhase.init(const PlayerId(value: '')),
         turnCount: 0,
         initialTurnOwner: const PlayerId(value: ''),
+        taskQueue: QueueList.from([]),
         metadata: const SystemMetadata(seed: 0, actionSequenceNumber: 1),
       ),
       steps: const [],
@@ -83,6 +85,7 @@ void main() {
       phase: GamePhase.init(playerAId),
       turnCount: 1,
       initialTurnOwner: playerAId,
+      taskQueue: QueueList.from([]),
       metadata: const SystemMetadata(seed: 12345, actionSequenceNumber: 1),
     );
 
@@ -96,7 +99,7 @@ void main() {
     test('山札+墓地が十分な場合、defaultDrawCount分のドロー処理がCardDrawServiceに委譲される', () {
       const step = GameStepEventCardsDrawn(
         playerId: PlayerId(value: 'player_a'),
-        cardInstanceIds: [],
+        instanceIds: [],
         zoneFrom: CardZone.deck,
         zoneTo: CardZone.hand,
       );

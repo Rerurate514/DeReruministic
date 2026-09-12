@@ -7,6 +7,7 @@ import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart'
 import 'package:dereruministic/application/remote_sync/in_game/state/game_actions_watch_provider.dart';
 import 'package:dereruministic/application/remote_sync/in_game/usecases/append_game_actions_usecase.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
+import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
@@ -104,7 +105,7 @@ class GameNotifier extends _$GameNotifier {
       id: GameActionsId.generate(),
       actionSequenceNumber: currentState.metadata.actionSequenceNumber + 1,
       playerId: cardUsedPlayerId,
-      cardInstanceId: card.instanceId,
+      instanceId: card.instanceId,
     );
 
     await _dispatch(action: action);
@@ -118,6 +119,21 @@ class GameNotifier extends _$GameNotifier {
       id: GameActionsId.generate(),
       actionSequenceNumber: currentState.metadata.actionSequenceNumber + 1,
       playerId: currentState.phase.turnOwner,
+    );
+
+    await _dispatch(action: action);
+  }
+
+  Future<void> selectOverflowDiscards(
+    List<GameCardInstanceId> selectedCardInstanceId,
+  ) async {
+    final currentState = state;
+    if (currentState == null) return;
+    final action = GameActions.selectOverflowDiscards(
+      id: GameActionsId.generate(),
+      actionSequenceNumber: currentState.metadata.actionSequenceNumber + 1,
+      playerId: currentState.phase.turnOwner,
+      selectedCardInstanceIds: selectedCardInstanceId,
     );
 
     await _dispatch(action: action);
