@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/card/services/apply_discard_service.dart';
 import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';
 import 'package:dereruministic/domain/card/services/cleanup_play_card_service.dart';
 import 'package:dereruministic/domain/card/services/consume_card_service.dart';
@@ -60,6 +61,7 @@ TaskServiceFactory taskServiceFactory(Ref ref) {
     ),
     moveCardZoneService: ref.read(moveCardZoneServiceProvider),
     cleanupPlayCardService: ref.read(cleanupPlayCardServiceProvider),
+    applyDiscardService: ref.read(applyDiscardServiceProvider),
   );
 }
 
@@ -85,6 +87,7 @@ class TaskServiceFactory {
     required this.resolveTriggeredCardStatesService,
     required this.moveCardZoneService,
     required this.cleanupPlayCardService,
+    required this.applyDiscardService,
   });
 
   final TurnEndPhaseChangedEventService turnEndPhaseChangedEventService;
@@ -107,6 +110,7 @@ class TaskServiceFactory {
   final ResolveTriggeredCardStatesService resolveTriggeredCardStatesService;
   final MoveCardZoneService moveCardZoneService;
   final CleanupPlayCardService cleanupPlayCardService;
+  final ApplyDiscardService applyDiscardService;
 
   ApplyActionResult executeAutoTask({
     required GameState state,
@@ -248,8 +252,10 @@ class TaskServiceFactory {
         reason: ActionFailureReason.invalidActionSequence,
       );
     }
-    //return applyDiscardService.execute(state, action);
-    return ApplyActionResult.noSteps(state: state);
+    return applyDiscardService.execute(
+      state,
+      action,
+    );
   }
 
   ApplyActionResult _handleMainPhase(

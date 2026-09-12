@@ -1,6 +1,7 @@
 import 'package:dereruministic/application/game/state/game_notifier.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_highlight_transparency_button.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/select_discard_cards_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_overflow_check_triggered_notifier.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,10 @@ class DiscardDecideButton extends ConsumerWidget {
       width: 150,
       onPressed: isEnabled
           ? () async {
+              ref
+                  .read(displayedOverflowCheckTriggeredProvider.notifier)
+                  .clear();
+              ref.read(animationSignalProvider.notifier).done();
               await ref
                   .read(gameProvider.notifier)
                   .selectOverflowDiscards(
