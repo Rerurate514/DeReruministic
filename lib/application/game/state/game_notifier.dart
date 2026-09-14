@@ -148,8 +148,16 @@ class GameNotifier extends _$GameNotifier {
     _applyResult(result);
   }
 
-  void surrender() {
+  Future<void> surrender() async {
     final currentState = state;
     if (currentState == null) return;
+
+    final action = GameActions.surrender(
+      id: GameActionsId.generate(),
+      actionSequenceNumber: currentState.metadata.actionSequenceNumber + 1,
+      playerId: currentState.phase.turnOwner,
+    );
+
+    await _dispatch(action: action);
   }
 }

@@ -10,6 +10,7 @@ import 'package:dereruministic/domain/card/services/resolve_play_card_states_ser
 import 'package:dereruministic/domain/card/services/resolve_triggered_card_states_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/services/flows/common/defeat_check_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/common/surrender_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_main_phase_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/advanced_to_turn_start_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/game_start/game_start_draw_cards_service.dart';
@@ -62,6 +63,7 @@ TaskServiceFactory taskServiceFactory(Ref ref) {
     moveCardZoneService: ref.read(moveCardZoneServiceProvider),
     cleanupPlayCardService: ref.read(cleanupPlayCardServiceProvider),
     applyDiscardService: ref.read(applyDiscardServiceProvider),
+    surrenderService: ref.read(surrenderServiceProvider),
   );
 }
 
@@ -88,6 +90,7 @@ class TaskServiceFactory {
     required this.moveCardZoneService,
     required this.cleanupPlayCardService,
     required this.applyDiscardService,
+    required this.surrenderService,
   });
 
   final TurnEndPhaseChangedEventService turnEndPhaseChangedEventService;
@@ -111,6 +114,7 @@ class TaskServiceFactory {
   final MoveCardZoneService moveCardZoneService;
   final CleanupPlayCardService cleanupPlayCardService;
   final ApplyDiscardService applyDiscardService;
+  final SurrenderService surrenderService;
 
   ApplyActionResult executeAutoTask({
     required GameState state,
@@ -225,6 +229,11 @@ class TaskServiceFactory {
         playerId: playerId,
         instanceId: instanceId,
       ),
+    AutoGameTaskGameEnd() => throw UnimplementedError(),
+    AutoGameTaskSurrender(:final playerId) => surrenderService.execute(
+      state: state,
+      winPlayerId: state.getOtherPlayer(playerId)!.id,
+    ),
   };
 
   ApplyActionResult handleAction({
