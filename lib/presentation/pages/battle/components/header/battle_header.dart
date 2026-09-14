@@ -2,6 +2,7 @@ import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/components/header/data_link_widget.dart';
 import 'package:dereruministic/presentation/pages/battle/components/header/sys_active_widget.dart';
 import 'package:dereruministic/presentation/pages/battle/components/header/turn/game_phase_chip.dart';
+import 'package:dereruministic/presentation/pages/battle/components/surrender/surrender_button_wrapper.dart';
 import 'package:flutter/material.dart';
 
 class BattleHeader extends StatelessWidget {
@@ -27,7 +28,9 @@ class BattleHeader extends StatelessWidget {
             ),
           ),
           Center(
-            child: GamePhaseChip(),
+            child: SurrenderButtonWrapper(
+              child: GamePhaseChip(),
+            ),
           ),
         ],
       ),
