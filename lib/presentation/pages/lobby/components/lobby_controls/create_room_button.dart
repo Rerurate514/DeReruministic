@@ -19,7 +19,7 @@ class CreateRoomButton extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     final room = ref.watch(createRoomProvider);
-    final playerId = ref.watch(currentUserProfileProvider.select((s) => s.id));
+    final player = ref.watch(currentUserProfileProvider).value;
 
     ref.listen(createRoomProvider, (p, n) {
       n.whenData((room) {
@@ -37,6 +37,9 @@ class CreateRoomButton extends ConsumerWidget {
       isGlow: true,
       borderRadius: 4,
       onPressed: () async {
+        final playerId = player?.id;
+        if (playerId == null) return;
+
         unawaited(
           ref
               .read(createRoomProvider.notifier)

@@ -9,7 +9,9 @@ part 'draft_deck_recipe_notifier.g.dart';
 class DraftDeckRecipeNotifier extends _$DraftDeckRecipeNotifier {
   @override
   DraftDeckRecipe build() {
-    return DraftDeckRecipe.empty();
+    final deckRecipe = ref.watch(currentUserProfileProvider).value?.deckRecipe;
+    if (deckRecipe == null) return DraftDeckRecipe.empty();
+    return DraftDeckRecipe.fromDeckRecipe(deckRecipe);
   }
 
   TryAddCardResult addCard(CardDefinitionId newCardDefId) {

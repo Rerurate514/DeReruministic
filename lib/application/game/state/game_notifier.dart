@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:dereruministic/application/auth/state/current_user_profile.dart';
+import 'package:dereruministic/application/auth/state/auth_provider.dart';
 import 'package:dereruministic/application/game/state/seed_generator.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/application/game/usecases/game_flow_usecase.dart';
@@ -16,7 +16,6 @@ import 'package:dereruministic/domain/game_system/value_objects/game_state.dart'
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/remote_sync/room/value_objects/room_id.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'game_notifier.g.dart';
@@ -141,7 +140,10 @@ class GameNotifier extends _$GameNotifier {
 
   void applyRemoteAction(GameActions action) {
     final currentState = state;
-    final playerId = ref.read(currentUserProfileProvider.select((s) => s.id));
+    final userId = ref.read(authProvider).value?.uid;
+    if (userId == null) return;
+
+    final playerId = PlayerId(value: userId);
     if (action.playerId == playerId) return;
 
     final result = _flow.applyAction(current: currentState, action: action);
