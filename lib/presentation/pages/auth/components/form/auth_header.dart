@@ -25,7 +25,9 @@ class AuthHeader extends StatelessWidget {
           size: 42,
         ),
         const UiGap.m(),
-        const AppTitle(),
+        const FittedBox(
+          child: AppTitle(),
+        ),
         const UiGap.s(),
         Text(
           switch (mode) {
