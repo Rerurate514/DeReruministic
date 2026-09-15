@@ -1,3 +1,4 @@
+import 'package:dereruministic/application/auth/state/current_user_profile.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/create_deck_recipe/entities/draft_deck_recipe.dart';
 import 'package:dereruministic/domain/create_deck_recipe/value_objects/try_add_card_result.dart';

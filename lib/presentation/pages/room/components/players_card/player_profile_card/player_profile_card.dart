@@ -16,6 +16,7 @@ class PlayerProfileCard extends StatelessWidget {
     required this.level,
     required this.isHost,
     required this.isYou,
+    required this.isDeckReady,
     super.key,
   });
 
@@ -23,6 +24,7 @@ class PlayerProfileCard extends StatelessWidget {
   final int level;
   final bool isHost;
   final bool isYou;
+  final bool isDeckReady;
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +52,8 @@ class PlayerProfileCard extends StatelessWidget {
                       name: name,
                       isHost: isHost,
                     ),
-                    const PlayerProfileCardDeckReady(
-                      isReady: true,
+                    PlayerProfileCardDeckReady(
+                      isReady: isDeckReady,
                     ),
                     Text(
                       l10n.room_page_player_profile_level(level),
