@@ -12,14 +12,12 @@ class AuthPage extends StatelessWidget {
       child: Stack(
         children: [
           const AuthBackground(),
-          SafeArea(
-            child: Center(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(24),
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 440),
-                  child: const AuthPanel(),
-                ),
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(24),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 440),
+                child: const AuthPanel(),
               ),
             ),
           ),
