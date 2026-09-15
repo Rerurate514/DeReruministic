@@ -24,7 +24,7 @@ class AuthHeader extends StatelessWidget {
           color: theme.brandSecondary,
           size: 42,
         ),
-        const UiGap.m(),
+        const UiGap.xs(),
         const FittedBox(
           child: AppTitle(),
         ),
