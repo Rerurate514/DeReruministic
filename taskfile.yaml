@@ -11,3 +11,7 @@ tasks:
       - dart format .
       - dart fix --apply
       - flutter analyze
+  review-architecture:
+    desc: "アーキテクチャ境界のカスタムチェックを実行"
+    cmds:
+      - dart run tools/architecture_lint.dart
