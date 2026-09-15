@@ -47,6 +47,14 @@
     "home_page_start_battle_button_text": "START BATTLE",
     "home_page_deck_editor_button_text": "DECK EDITOR",
     "home_page_setting_button_text": "SETTING",
+    "home_page_sign_out_button_text": "SIGN OUT",
+    "home_page_user_deck_count": "DECK {current}/{max}",
+    "@home_page_user_deck_count": {
+        "placeholders": {
+            "current": { "type": "int" },
+            "max": { "type": "int" }
+        }
+    },
 
     "lobby_page_controls_panel_title": "LOBBY CONTROLS",
     "lobby_page_controls_panel_create_room_button_text": "CREATE ROOM",
