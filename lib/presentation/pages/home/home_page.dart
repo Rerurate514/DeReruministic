@@ -2,9 +2,9 @@ import 'package:dereruministic/presentation/components/app_subtitle.dart';
 import 'package:dereruministic/presentation/components/app_subtitle_trailing.dart';
 import 'package:dereruministic/presentation/components/app_title.dart';
 import 'package:dereruministic/presentation/pages/home/components/deck_editor_button.dart';
-import 'package:dereruministic/presentation/pages/home/components/player_info.dart';
-import 'package:dereruministic/presentation/pages/home/components/player_info_system_chip.dart';
+import 'package:dereruministic/presentation/pages/home/components/home_footer.dart';
 import 'package:dereruministic/presentation/pages/home/components/setting_button.dart';
+import 'package:dereruministic/presentation/pages/home/components/sign_out_button.dart';
 import 'package:dereruministic/presentation/pages/home/components/start_battle_button.dart';
 import 'package:dereruministic/presentation/widgets/ui_gap.dart';
 import 'package:dereruministic/presentation/widgets/ui_page_wrapper.dart';
@@ -31,17 +31,10 @@ class HomePage extends ConsumerWidget {
           DeckEditorButton(),
           UiGap.s(),
           SettingButton(),
+          UiGap.s(),
+          SignOutButton(),
           Expanded(
-            child: FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  PlayerInfo(),
-                  PlayerInfoSystemChip(),
-                ],
-              ),
-            ),
+            child: HomeFooter(),
           ),
         ],
       ),

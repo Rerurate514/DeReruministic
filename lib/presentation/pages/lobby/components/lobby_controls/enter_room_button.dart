@@ -20,7 +20,7 @@ class EnterRoomButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
-    final playerId = ref.watch(currentUserProfileProvider.select((s) => s.id));
+    final player = ref.watch(currentUserProfileProvider).value;
 
     final roomIdinput = ref.watch(roomIdTextProvider);
     final roomId = RoomId(value: roomIdinput);
@@ -28,6 +28,9 @@ class EnterRoomButton extends ConsumerWidget {
     return AppHighlightTransparencyButton(
       borderRadius: 4,
       onPressed: () async {
+        final playerId = player?.id;
+        if (playerId == null) return;
+
         final result = await ref
             .read(joinRoomUseCaseProvider)
             .execute(

@@ -17,9 +17,12 @@ class LeaveRoomButton extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final playerId = ref.watch(currentUserProfileProvider.select((s) => s.id));
+    final player = ref.watch(currentUserProfileProvider).value;
     return AppBackButton(
       onPressed: () async {
+        final playerId = player?.id;
+        if (playerId == null) return;
+
         unawaited(
           ref
               .read(leaveRoomUseCaseProvider)

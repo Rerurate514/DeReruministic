@@ -1,3 +1,4 @@
+import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:material_symbols_icons/symbols.dart';
 
 class PlayerInfo extends StatelessWidget {
-  const PlayerInfo({super.key});
+  const PlayerInfo({required this.player, super.key});
+
+  final Player player;
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +26,11 @@ class PlayerInfo extends StatelessWidget {
             crossAxisAlignment: .start,
             children: [
               Text(
-                'Player_01', //TODO(text): l10n
+                player.name,
                 style: GoogleFonts.shareTechMono(color: theme.brandSecondary),
               ),
               Text(
-                'LVL 1 BEGINNER', //TODO(text): l10n
+                player.id.value,
                 style: GoogleFonts.shareTechMono(color: theme.textSecondary),
               ),
             ],

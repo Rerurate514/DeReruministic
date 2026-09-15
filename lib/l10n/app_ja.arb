@@ -11,10 +11,50 @@
 
     "snack_bar_clipboard_copy_success": "クリップボードにコピーしました。",
 
+    "auth_page_defaultErrorMessage": "認証に失敗しました。しばらくしてから再試行してください。",
+    "auth_page_subtitleSignUp": "新規アクセスキーを発行",
+    "auth_page_subtitleSignIn": "認証プロトコルへ接続",
+    "auth_page_emailLabel": "Email",
+    "auth_page_emailHint": "operator@example.com",
+    "auth_page_passwordLabel": "Password",
+    "auth_page_passwordHint": "minimum 6 characters",
+    "auth_page_buttonSignUp": "SIGN UP",
+    "auth_page_buttonSignIn": "SIGN IN",
+    "auth_page_toggleToSignIn": "既存アカウントでサインイン",
+    "auth_page_toggleToSignUp": "新規アカウントを作成",
+    "auth_page_providerDivider": "OR",
+    "auth_page_googleProvider": "Google",
+    "auth_page_githubProvider": "GitHub",
+    "auth_page_errorGoogleCanceled": "Google ログインを完了できませんでした。",
+    "auth_page_errorGithubCanceled": "GitHub ログインを完了できませんでした。",
+    "auth_page_errorInvalidEmail": "メールアドレスの形式が正しくありません。",
+    "auth_page_errorUserDisabled": "このアカウントは無効化されています。",
+    "auth_page_errorInvalidCredential": "メールアドレスまたはパスワードが違います。",
+    "auth_page_errorEmailAlreadyInUse": "このメールアドレスは既に登録されています。",
+    "auth_page_errorWeakPassword": "パスワードは6文字以上で入力してください。",
+    "auth_page_errorOperationNotAllowed": "Firebase Console でこのログイン方式を有効化してください。",
+    "auth_page_errorAccountExistsWithDifferentCredential": "同じメールアドレスの別ログイン方式が既に使われています。",
+    "auth_page_errorUnknown": "認証に失敗しました。{details}",
+    "@auth_page_errorUnknown": {
+        "placeholders": {
+        "details": {
+            "type": "String"
+        }
+        }
+    },
+
     "home_page_title": "ホームページ",
     "home_page_start_battle_button_text": "START BATTLE",
     "home_page_deck_editor_button_text": "DECK EDITOR",
     "home_page_setting_button_text": "SETTING",
+    "home_page_sign_out_button_text": "SIGN OUT",
+    "home_page_user_deck_count": "DECK {current}/{max}",
+    "@home_page_user_deck_count": {
+        "placeholders": {
+            "current": { "type": "int" },
+            "max": { "type": "int" }
+        }
+    },
 
     "lobby_page_controls_panel_title": "LOBBY CONTROLS",
     "lobby_page_controls_panel_create_room_button_text": "CREATE ROOM",
