@@ -17,7 +17,9 @@ class AuthButtonLabel extends StatelessWidget {
     if (isLoading) {
       return const SizedBox.square(
         dimension: 22,
-        child: UiLoadingIndicator(),
+        child: FittedBox(
+          child: UiLoadingIndicator(),
+        ),
       );
     }
 
