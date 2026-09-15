@@ -2,6 +2,7 @@ import 'package:dereruministic/domain/card/converter/card_definition_id_converte
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
 import 'package:dereruministic/domain/create_deck_recipe/constants/create_deck_recipe_rules.dart';
 import 'package:dereruministic/domain/create_deck_recipe/converter/deck_recipe_id_converter.dart';
+import 'package:dereruministic/domain/create_deck_recipe/entities/deck_recipe.dart';
 import 'package:dereruministic/domain/create_deck_recipe/value_objects/deck_recipe_id.dart';
 import 'package:dereruministic/domain/create_deck_recipe/value_objects/try_add_card_result.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -27,6 +28,13 @@ abstract class DraftDeckRecipe with _$DraftDeckRecipe {
 
   factory DraftDeckRecipe.create(List<CardDefinitionId> ids) {
     return DraftDeckRecipe(id: DeckRecipeId.generate(), cardDefIds: ids);
+  }
+
+  factory DraftDeckRecipe.fromDeckRecipe(DeckRecipe deckRecipe) {
+    return DraftDeckRecipe(
+      id: deckRecipe.id,
+      cardDefIds: deckRecipe.cardDefIds,
+    );
   }
 
   factory DraftDeckRecipe.fromJson(Map<String, dynamic> json) =>
