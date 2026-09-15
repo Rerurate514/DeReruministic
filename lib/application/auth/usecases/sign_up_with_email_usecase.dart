@@ -7,33 +7,39 @@ import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'sign_in_with_google_usecase.g.dart';
+part 'sign_up_with_email_usecase.g.dart';
 
 @riverpod
-SignInWithGoogleUsecase signInWithGoogleUsecase(Ref ref) {
-  return SignInWithGoogleUsecase(
+SignUpWithEmailUsecase signUpWithEmailUsecase(Ref ref) {
+  return SignUpWithEmailUsecase(
     authRepository: ref.watch(authRepositoryProvider),
     userRepository: ref.watch(userRepositoryProvider),
   );
 }
 
-class SignInWithGoogleUsecase {
-  SignInWithGoogleUsecase({
-    required this.userRepository,
+class SignUpWithEmailUsecase {
+  SignUpWithEmailUsecase({
     required this.authRepository,
+    required this.userRepository,
   });
 
   final IAuthRepository authRepository;
   final IUserRepository userRepository;
 
-  Future<PlayerId?> signIn() async {
-    final playerId = await authRepository.signInWithGoogle();
+  Future<PlayerId?> signUp({
+    required String email,
+    required String password,
+  }) async {
+    final playerId = await authRepository.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
     if (playerId == null) return null;
 
     await userRepository.save(
       Player(
         id: playerId,
-        name: 'Player_${playerId.value.substring(0, 6)}',
+        name: email.split('@').first,
         deckRecipe: DeckRecipe.empty(),
       ),
     );
