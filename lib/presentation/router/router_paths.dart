@@ -1,8 +1,9 @@
-enum RouterPaths { home, deckEditor, lobby, room, battle, result }
+enum RouterPaths { auth, home, deckEditor, lobby, room, battle, result }
 
 extension RouterPathsEx on RouterPaths {
   String get path {
     return switch (this) {
+      RouterPaths.auth => '/${RouterPaths.auth.name}',
       RouterPaths.home => '/${RouterPaths.home.name}',
       RouterPaths.deckEditor => '/${RouterPaths.deckEditor.name}',
       RouterPaths.lobby => '/${RouterPaths.lobby.name}',
