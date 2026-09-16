@@ -72,22 +72,24 @@ void main() {
         case 'infrastructure':
           if (importedLayer == 'presentation' ||
               importedLayer == 'application') {
+            final vals = '${importedLayer!}: ${import.uri}';
             findings.add(
               Finding.error(
                 relativePath,
                 import.lineNumber,
-                'infrastructure must not import ${importedLayer!}: ${import.uri}',
+                'infrastructure must not import $vals',
               ),
             );
           }
         case 'di':
           if (importedLayer == 'presentation' ||
               importedLayer == 'application') {
+            final vals = '${importedLayer!}: ${import.uri}';
             findings.add(
               Finding.error(
                 relativePath,
                 import.lineNumber,
-                'di providers must not depend on ${importedLayer!}: ${import.uri}',
+                'di providers must not depend on $vals',
               ),
             );
           }
@@ -107,8 +109,11 @@ void main() {
     (finding) => finding.severity == Severity.warning,
   );
 
+  final error = '${errors.length} error(s)';
+  final warning = '${warnings.length} warning(s)';
+
   stdout.writeln(
-    'architecture_lint: found ${errors.length} error(s), ${warnings.length} warning(s).',
+    'architecture_lint: found $error, $warning.',
   );
   findings.forEach(stdout.writeln);
 
