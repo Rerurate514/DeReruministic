@@ -52,6 +52,7 @@ class MyDeckArea extends ConsumerWidget {
                   final isHovering = candidateData.isNotEmpty;
 
                   return AppCard(
+                    padding: EdgeInsets.zero,
                     borderColor: isHovering ? theme.brandSecondary : null,
                     child: const CustomScrollView(
                       scrollDirection: Axis.horizontal,

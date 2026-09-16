@@ -42,7 +42,7 @@ class DeckEditorPage extends StatelessWidget {
 
           Divider(),
 
-          Expanded(child: CardPackArea()),
+          CardPackArea(),
         ],
       ),
     );

@@ -30,7 +30,8 @@ class CardPackArea extends StatelessWidget {
             const Text('ここにセレクタ'),
           ],
         ),
-        const Expanded(
+        const SizedBox(
+          height: 240,
           child: Stack(
             children: [
               CardPacksComponent(),

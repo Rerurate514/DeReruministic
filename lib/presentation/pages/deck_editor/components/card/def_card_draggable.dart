@@ -19,27 +19,33 @@ class DefCardDraggable<T extends InCardPlace> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Draggable<T>(
-      data: createPlace(defCard),
-      onDragStarted: onDragStarted,
-      onDragEnd: onDragEnd,
-      feedback: Material(
-        color: Colors.transparent,
-        child: Transform.scale(
-          scale: 1.1,
+    return SizedBox(
+      width: 180,
+      height: 240,
+      child: Align(
+        child: Draggable<T>(
+          data: createPlace(defCard),
+          onDragStarted: onDragStarted,
+          onDragEnd: onDragEnd,
+          feedback: Material(
+            color: Colors.transparent,
+            child: Transform.scale(
+              scale: 1.1,
+              child: DefCardComponent(
+                defCard: defCard,
+              ),
+            ),
+          ),
+          childWhenDragging: Opacity(
+            opacity: 0.3,
+            child: DefCardComponent(
+              defCard: defCard,
+            ),
+          ),
           child: DefCardComponent(
             defCard: defCard,
           ),
         ),
-      ),
-      childWhenDragging: Opacity(
-        opacity: 0.3,
-        child: DefCardComponent(
-          defCard: defCard,
-        ),
-      ),
-      child: DefCardComponent(
-        defCard: defCard,
       ),
     );
   }
