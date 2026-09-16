@@ -230,10 +230,6 @@ class TaskServiceFactory {
         instanceId: instanceId,
       ),
     AutoGameTaskGameEnd() => throw UnimplementedError(),
-    AutoGameTaskSurrender(:final playerId) => surrenderService.execute(
-      state: state,
-      winPlayerId: state.getOtherPlayer(playerId)!.id,
-    ),
   };
 
   ApplyActionResult handleAction({
@@ -285,9 +281,11 @@ class TaskServiceFactory {
         action: action,
       ),
       // GameActionDiscardCard() => discardCardService.execute(state, action),
-      // GameActionSurrender() => surrenderService.execute(state, action),
+      GameActionSurrender(:final playerId) => surrenderService.execute(
+        state: state,
+        winPlayerId: state.getOtherPlayer(playerId)!.id,
+      ),
       GameActionDiscardCard() => throw UnimplementedError(),
-      GameActionSurrender() => throw UnimplementedError(),
       GameActionTurnEnd() => _handleTurnEndAction(state),
       _ => ApplyActionResult.failure(
         state: state,
