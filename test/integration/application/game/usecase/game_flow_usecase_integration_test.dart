@@ -15,7 +15,9 @@ import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
+import 'package:dereruministic/domain/game_system/value_objects/defeat_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_actions_id.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_end_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
 import 'package:dereruministic/domain/game_system/value_objects/interactive_game_task.dart';
@@ -660,22 +662,36 @@ void main() {
       );
     });
 
-    test('surrenderをメインフェーズで適用すると未実装エラーになる', () {
+    test('surrenderをメインフェーズで適用すると相手プレイヤーの勝利でゲームが終了する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(usecase);
       final startState = startResult.state;
+      final surrenderPlayerId = startState.phase.turnOwner;
+      final winnerPlayerId = surrenderPlayerId == playerAId
+          ? playerBId
+          : playerAId;
 
-      expect(
-        () => usecase.applyAction(
-          current: startState,
-          action: GameActions.surrender(
-            id: const GameActionsId(value: 'surrender'),
-            actionSequenceNumber: startState.metadata.actionSequenceNumber + 1,
-            playerId: startState.phase.turnOwner,
-          ),
+      final result = usecase.applyAction(
+        current: startState,
+        action: GameActions.surrender(
+          id: const GameActionsId(value: 'surrender'),
+          actionSequenceNumber: startState.metadata.actionSequenceNumber + 1,
+          playerId: surrenderPlayerId,
         ),
-        throwsA(isA<UnimplementedError>()),
       );
+
+      expect(result, isA<ApplyActionResultSuccess>());
+      final success = result as ApplyActionResultSuccess;
+      final state = success.state;
+      final gameEnded = success.steps
+          .whereType<GameStepEventGameEnded>()
+          .single;
+
+      expect(state.phase.battlePhase, BattlePhase.battleEnd);
+      expect(gameEnded.endResult, GameEndResult.winnerDecided);
+      expect(gameEnded.winnerPlayerId, winnerPlayerId);
+      expect(gameEnded.loserPlayerId, surrenderPlayerId);
+      expect(gameEnded.reason, DefeatReason.surrender);
     });
   });
 }

@@ -71,7 +71,7 @@ class GameFlowUsecase {
 
           if (result is! ApplyActionResultSuccess) return result;
 
-          return _processQueue(result.state);
+          return _processQueue(result.state, steps: result.steps);
         }
     }
   }
