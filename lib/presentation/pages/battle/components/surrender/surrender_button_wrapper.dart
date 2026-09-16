@@ -26,8 +26,8 @@ class SurrenderButtonWrapper extends ConsumerWidget {
           await showSimpleOkDialog(
             context: context,
             l10n: l10n,
-            onOkTapped: () {
-              ref.read(gameProvider.notifier).surrender();
+            onOkTapped: () async {
+              await ref.read(gameProvider.notifier).surrender();
             },
             title: Column(
               spacing: 4,
@@ -37,7 +37,7 @@ class SurrenderButtonWrapper extends ConsumerWidget {
                   color: theme.brandSecondary,
                 ),
                 Text(
-                  "降参しますか？",
+                  '降参しますか？',
                   style: GoogleFonts.shareTechMono(),
                 ),
               ],

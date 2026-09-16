@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/executors/step_event_executor.dart';
@@ -18,7 +20,7 @@ class EventStepDriverNotifier extends _$EventStepDriverNotifier {
       _,
       hasItems,
     ) {
-      if (hasItems) _pump();
+      if (hasItems) unawaited(_pump());
     }, fireImmediately: true);
 
     return;
