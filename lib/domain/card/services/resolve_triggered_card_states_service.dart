@@ -26,9 +26,9 @@ class ResolveTriggeredCardStatesService {
       playerId,
       instanceId,
     ),
-    // TODO: Handle this case.
+    //TODO(medium): ここかく
     CardStatesTriggerType.decayExpired => throw UnimplementedError(),
-    // TODO: Handle this case.
+    //TODO(medium): ここかく
     CardStatesTriggerType.countdownExpired => throw UnimplementedError(),
   };
 
