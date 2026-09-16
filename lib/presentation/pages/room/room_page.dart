@@ -26,10 +26,6 @@ class RoomPage extends ConsumerWidget {
         switch (data) {
           case RoomWatchResultAvailable(:final room):
             {
-              if (room.status == RoomStatus.closed) {
-                if (context.canPop()) context.pop();
-              }
-
               if (room.status == RoomStatus.playing) {
                 await context.pushNamed(
                   RouterPaths.battle.name,
