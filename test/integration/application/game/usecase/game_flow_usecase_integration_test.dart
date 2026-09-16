@@ -20,6 +20,7 @@ import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
 import 'package:dereruministic/domain/game_system/value_objects/interactive_game_task.dart';
 import 'package:dereruministic/domain/player/constants/player_constants.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:collection/collection.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -203,8 +204,8 @@ void main() {
     );
   }
 
-  group('GameFlowUsecase integration', () {
-    test('gameStart processes setup auto tasks and stops at main phase', () {
+  group('GameFlowUsecase 統合テスト', () {
+    test('gameStartを適用するとセットアップの自動タスクを処理してメインフェーズで停止する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
 
       final result = usecase.applyAction(
@@ -230,7 +231,7 @@ void main() {
     });
 
     test(
-      'playCard consumes the active player hand card and resolves damage',
+      'playCardを適用するとアクティブプレイヤーの手札を消費してダメージを解決する',
       () {
         final usecase = createContainer().read(gameFlowUsecaseProvider);
         final startResult = startGame(usecase);
@@ -279,7 +280,7 @@ void main() {
     );
 
     test(
-      'playCard resolves self shield gain and moves the card to graveyard',
+      'playCardを適用すると自身へのシールド付与を解決してカードを墓地へ移動する',
       () {
         final usecase = createContainer().read(gameFlowUsecaseProvider);
         final startResult = startGame(usecase);
@@ -316,7 +317,7 @@ void main() {
       },
     );
 
-    test('playCard moves exhaust cards to exhausted instead of graveyard', () {
+    test('playCardを適用すると廃棄カードは墓地ではなく廃棄済みへ移動する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(
         usecase,
@@ -354,7 +355,7 @@ void main() {
       expectMainPhaseTask(success);
     });
 
-    test('conditional effect is skipped when the condition is not met', () {
+    test('条件を満たさないplayCardを適用すると条件付き効果はスキップされる', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(
         usecase,
@@ -389,7 +390,7 @@ void main() {
       expectMainPhaseTask(success);
     });
 
-    test('conditional effect is applied when the condition is met', () {
+    test('条件を満たすplayCardを適用すると条件付き効果が発動する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(
         usecase,
@@ -426,7 +427,7 @@ void main() {
       expectMainPhaseTask(success);
     });
 
-    test('playCard fails when the card cost is higher than current cost', () {
+    test('現在コストより高いカードでplayCardを適用すると失敗する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(
         usecase,
@@ -460,7 +461,7 @@ void main() {
       expect(failure.state.players[targetPlayerId]!.hp, 100);
     });
 
-    test('playCard fails when the card is not in hand', () {
+    test('手札にないカードでplayCardを適用すると失敗する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(usecase);
       final startState = startResult.state;
@@ -482,7 +483,7 @@ void main() {
       );
     });
 
-    test('non-active player cannot play a card during main phase', () {
+    test('非アクティブプレイヤーがメインフェーズ中にplayCardを適用すると失敗する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(usecase);
       final startState = startResult.state;
@@ -510,7 +511,7 @@ void main() {
       expect(result.state, startState);
     });
 
-    test('turnEnd advances to the next player main phase', () {
+    test('turnEndを適用すると次プレイヤーのメインフェーズへ進む', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(usecase);
       final startState = startResult.state;
@@ -545,7 +546,7 @@ void main() {
       expect(success.steps.whereType<GameStepEventCardsDrawn>(), isEmpty);
     });
 
-    test('non-active player cannot end the active player turn', () {
+    test('非アクティブプレイヤーがturnEndを適用すると失敗する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(usecase);
       final startState = startResult.state;
@@ -571,7 +572,7 @@ void main() {
       expect(result.state, startState);
     });
 
-    test('action sequence mismatch fails before domain processing', () {
+    test('actionSequenceNumberが一致しないactionを適用するとドメイン処理前に失敗する', () {
       final usecase = createContainer().read(gameFlowUsecaseProvider);
       final startResult = startGame(usecase);
 
@@ -590,6 +591,91 @@ void main() {
         ActionFailureReason.invalidActionSequence,
       );
       expect(result.state, startResult.state);
+    });
+
+    test('selectOverflowDiscardsを適用すると選択した手札が墓地へ移動する', () {
+      final usecase = createContainer().read(gameFlowUsecaseProvider);
+      final startResult = startGame(usecase);
+      final startState = startResult.state;
+      final activePlayerId = startState.phase.turnOwner;
+      final activePlayer = startState.players[activePlayerId]!;
+      final selectedCard = activePlayer.hand.first;
+      final overflowState = startState.copyWith(
+        taskQueue: QueueList.from([
+          GameTask.interactive(
+            InteractiveGameTask.selectOverflowDiscard(
+              targetPlayerId: activePlayerId,
+              overflowCount: 1,
+            ),
+          ),
+        ]),
+      );
+
+      final result = usecase.applyAction(
+        current: overflowState,
+        action: GameActions.selectOverflowDiscards(
+          id: const GameActionsId(value: 'select_overflow_discards'),
+          actionSequenceNumber: overflowState.metadata.actionSequenceNumber + 1,
+          playerId: activePlayerId,
+          selectedCardInstanceIds: [selectedCard.instanceId],
+        ),
+      );
+
+      expect(result, isA<ApplyActionResultSuccess>());
+      final success = result as ApplyActionResultSuccess;
+      final updatedPlayer = success.state.players[activePlayerId]!;
+
+      expect(updatedPlayer.hand, isNot(contains(selectedCard)));
+      expect(updatedPlayer.graveyard.map((card) => card.instanceId), [
+        selectedCard.instanceId,
+      ]);
+      expect(success.state.taskQueue, isEmpty);
+      expect(
+        success.steps
+            .whereType<GameStepEventCardMovedZone>()
+            .single
+            .instanceIds,
+        [selectedCard.instanceId],
+      );
+    });
+
+    test('discardCardをメインフェーズで適用すると未実装エラーになる', () {
+      final usecase = createContainer().read(gameFlowUsecaseProvider);
+      final startResult = startGame(usecase);
+      final startState = startResult.state;
+      final activePlayerId = startState.phase.turnOwner;
+      final card = startState.players[activePlayerId]!.hand.first;
+
+      expect(
+        () => usecase.applyAction(
+          current: startState,
+          action: GameActions.discardCard(
+            id: const GameActionsId(value: 'discard_card'),
+            actionSequenceNumber: startState.metadata.actionSequenceNumber + 1,
+            playerId: activePlayerId,
+            instanceId: card.instanceId,
+          ),
+        ),
+        throwsA(isA<UnimplementedError>()),
+      );
+    });
+
+    test('surrenderをメインフェーズで適用すると未実装エラーになる', () {
+      final usecase = createContainer().read(gameFlowUsecaseProvider);
+      final startResult = startGame(usecase);
+      final startState = startResult.state;
+
+      expect(
+        () => usecase.applyAction(
+          current: startState,
+          action: GameActions.surrender(
+            id: const GameActionsId(value: 'surrender'),
+            actionSequenceNumber: startState.metadata.actionSequenceNumber + 1,
+            playerId: startState.phase.turnOwner,
+          ),
+        ),
+        throwsA(isA<UnimplementedError>()),
+      );
     });
   });
 }
