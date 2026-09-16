@@ -6,6 +6,8 @@ const allowedExternalInDomain = {
   'freezed_annotation',
   'json_annotation',
   'collection',
+  'uuid',
+  'riverpod_annotation',
 };
 
 const allowedDartInDomain = {
