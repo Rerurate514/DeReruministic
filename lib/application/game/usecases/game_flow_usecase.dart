@@ -47,6 +47,10 @@ class GameFlowUsecase {
 
     if (action is GameActionGameStart) return _handleGameStart(action);
 
+    if (action is GameActionSurrender) {
+      return _handleSurrenderAction(current!, action);
+    }
+
     final currentTask = current!.taskQueue.firstOrNull;
     if (currentTask == null) {
       return ApplyActionResult.failure(
@@ -152,5 +156,15 @@ class GameFlowUsecase {
       ),
       final ApplyActionResultFailure failure => failure,
     };
+  }
+
+  ApplyActionResult _handleSurrenderAction(
+    GameState current,
+    GameActionSurrender action,
+  ) {
+    return taskServiceFactory.handleSurrenderAction(
+      state: current,
+      action: action,
+    );
   }
 }

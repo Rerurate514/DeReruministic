@@ -232,6 +232,23 @@ class TaskServiceFactory {
     AutoGameTaskGameEnd() => throw UnimplementedError(),
   };
 
+  ApplyActionResult handleSurrenderAction({
+    required GameState state,
+    required GameActionSurrender action,
+  }) {
+    if (!state.players.containsKey(action.playerId)) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.playerNotFound,
+      );
+    }
+
+    return surrenderService.execute(
+      state: state,
+      winPlayerId: state.getOtherPlayer(action.playerId)!.id,
+    );
+  }
+
   ApplyActionResult handleAction({
     required GameState state,
     required InteractiveGameTask task,
@@ -281,9 +298,9 @@ class TaskServiceFactory {
         action: action,
       ),
       // GameActionDiscardCard() => discardCardService.execute(state, action),
-      GameActionSurrender(:final playerId) => surrenderService.execute(
+      final GameActionSurrender surrenderAction => handleSurrenderAction(
         state: state,
-        winPlayerId: state.getOtherPlayer(playerId)!.id,
+        action: surrenderAction,
       ),
       GameActionDiscardCard() => throw UnimplementedError(),
       GameActionTurnEnd() => _handleTurnEndAction(state),

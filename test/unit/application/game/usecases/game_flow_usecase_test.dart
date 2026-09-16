@@ -97,6 +97,18 @@ void main() {
         as GameActionPlayCard;
   }
 
+  GameActionSurrender buildSurrenderAction({
+    int actionSequenceNumber = 2,
+    PlayerId surrenderPlayerId = playerId,
+  }) {
+    return GameActions.surrender(
+          id: const GameActionsId(value: 'surrender_1'),
+          actionSequenceNumber: actionSequenceNumber,
+          playerId: surrenderPlayerId,
+        )
+        as GameActionSurrender;
+  }
+
   group('GameFlowUsecase.applyAction - actionSequenceNumberの検証', () {
     test(
       'GameStart以外で、currentがnullの場合invalidActionSequenceで失敗しStateErrorにならない',
@@ -610,6 +622,79 @@ void main() {
           task: nextTask,
         ),
       ).called(1);
+    });
+
+    test('SurrenderActionはtaskQueueが空でも専用処理に委譲される', () {
+      final state = buildStateWithMeta(
+        players: {
+          playerId: buildPlayer(id: playerId),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        taskQueue: QueueList<GameTask>(),
+      );
+      final action = buildSurrenderAction();
+      final expected = ApplyActionResult.noSteps(state: state);
+
+      when(
+        mockTaskServiceFactory.handleSurrenderAction(
+          state: state,
+          action: action,
+        ),
+      ).thenReturn(expected);
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      expect(result, expected);
+      verify(
+        mockTaskServiceFactory.handleSurrenderAction(
+          state: state,
+          action: action,
+        ),
+      ).called(1);
+      verifyNever(
+        mockTaskServiceFactory.handleAction(
+          state: anyNamed('state'),
+          task: anyNamed('task'),
+          action: anyNamed('action'),
+        ),
+      );
+    });
+
+    test('SurrenderActionはtaskQueueの先頭がautoでも専用処理に委譲される', () {
+      final state = buildStateWithMeta(
+        players: {
+          playerId: buildPlayer(id: playerId),
+          enemyId: buildPlayer(id: enemyId),
+        },
+        taskQueue: QueueList<GameTask>.from([
+          const GameTask.auto(.defeatCheck()),
+        ]),
+      );
+      final action = buildSurrenderAction();
+      final expected = ApplyActionResult.noSteps(state: state);
+
+      when(
+        mockTaskServiceFactory.handleSurrenderAction(
+          state: state,
+          action: action,
+        ),
+      ).thenReturn(expected);
+
+      final result = usecase.applyAction(current: state, action: action);
+
+      expect(result, expected);
+      verify(
+        mockTaskServiceFactory.handleSurrenderAction(
+          state: state,
+          action: action,
+        ),
+      ).called(1);
+      verifyNever(
+        mockTaskServiceFactory.executeAutoTask(
+          state: anyNamed('state'),
+          task: anyNamed('task'),
+        ),
+      );
     });
   });
 }
