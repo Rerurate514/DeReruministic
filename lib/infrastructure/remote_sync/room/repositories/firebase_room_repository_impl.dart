@@ -9,6 +9,8 @@ import 'package:dereruministic/domain/remote_sync/room/value_objects/room_start_
 import 'package:dereruministic/domain/remote_sync/room/value_objects/room_status.dart';
 import 'package:dereruministic/domain/remote_sync/room/value_objects/room_watch_result.dart';
 import 'package:dereruministic/infrastructure/auth/constants/collections.dart';
+import 'package:dereruministic/infrastructure/remote_sync/room/mapper/room_mapper.dart';
+import 'package:dereruministic/infrastructure/remote_sync/room/models/room_dto.dart';
 
 class FirebaseRoomRepositoryImpl implements IRoomRepository {
   FirebaseRoomRepositoryImpl({required this.firestore});
@@ -24,8 +26,8 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
       roomId: RoomId.generate(),
       hostPlayerId: hostPlayerId,
       status: RoomStatus.waiting,
-      createdAt: Timestamp.now(), //TODO(low): クライアント時間ではなく、サーバー時間を使用する
-      updatedAt: Timestamp.now(), //TODO(low): クライアント時間ではなく、サーバー時間を使用する
+      createdAt: DateTime.now(), //TODO(low): クライアント時間ではなく、サーバー時間を使用する
+      updatedAt: DateTime.now(), //TODO(low): クライアント時間ではなく、サーバー時間を使用する
     );
 
     await _getRoomRef(room.roomId).set(room.toJson());
@@ -59,7 +61,7 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
       const updatedStatus = RoomStatus.ready;
       final updatedAt = Timestamp.now();
 
-      final updatedRoom = Room.fromJson(data).copyWith(
+      final updatedRoomDto = RoomDto.fromJson(data).copyWith(
         guestPlayerId: guestPlayerId,
         status: updatedStatus,
         updatedAt: updatedAt,
@@ -70,6 +72,8 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
         'status': updatedStatus.name,
         'updatedAt': FieldValue.serverTimestamp(),
       });
+
+      final updatedRoom = updatedRoomDto.toEntity();
 
       return JoinRoomResult.success(room: updatedRoom);
     });
@@ -98,11 +102,11 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
       });
 
       return RoomStartGameResult.success(
-        room: Room.fromJson({
+        room: RoomDto.fromJson({
           ...data,
           'status': RoomStatus.playing.name,
-          'updatedAt': DateTime.now().toIso8601String(),
-        }),
+          'updatedAt': Timestamp.now(),
+        }).toEntity(),
       );
     });
   }
@@ -115,10 +119,10 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
       }
 
       return RoomWatchResult.available(
-        room: Room.fromJson({
+        room: RoomDto.fromJson({
           ...snapshot.data()!,
           'roomId': snapshot.id,
-        }),
+        }).toEntity(),
       );
     });
   }
@@ -161,6 +165,6 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
 
     if (data == null) return null;
 
-    return Room.fromJson(data);
+    return RoomDto.fromJson(data).toEntity();
   }
 }
