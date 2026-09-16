@@ -1,4 +1,5 @@
 import 'package:dereruministic/application/card/state/card_catalog_provider.dart';
+import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card_packs/data/card_packs.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_card_cross_paint.dart';
@@ -17,7 +18,6 @@ class CardPacksComponent extends ConsumerWidget {
     final l10n = AppLocalizations.of(context);
 
     final catalogMap = ref.watch(cardCatalogMapProvider);
-
     final list = CardPackTypes.values
         .map((cardPackType) => cardPacksTypes[cardPackType]!)
         .toList();
@@ -34,11 +34,10 @@ class CardPacksComponent extends ConsumerWidget {
             SliverList.builder(
               itemCount: list.length,
               itemBuilder: (context, index) {
-                return AppCardCrossPaint(
+                return _MaxLimitCardOverlay(
                   label: l10n.deck_editor_page_in_deck_card_max_limit_label,
-                  isVisible: ref
-                      .read(draftDeckRecipeProvider)
-                      .isSameCardMax(pack.cardDefIds[index]),
+
+                  defCard: catalogMap[pack.cardDefIds[index]]!,
                   child: DefCardDraggable<InCardPack>(
                     defCard: catalogMap[pack.cardDefIds[index]]!,
                     createPlace: (defCard) =>
@@ -51,5 +50,26 @@ class CardPacksComponent extends ConsumerWidget {
         );
       }).toList(),
     );
+  }
+}
+
+class _MaxLimitCardOverlay extends ConsumerWidget {
+  const _MaxLimitCardOverlay({
+    required this.label,
+    required this.defCard,
+    required this.child,
+  });
+
+  final String label;
+  final CardDefinition defCard;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isMaxLimit = ref.watch(
+      draftDeckRecipeProvider.select((s) => s.isSameCardMax(defCard.cardDefId)),
+    );
+
+    return AppCardCrossPaint(label: label, isVisible: isMaxLimit, child: child);
   }
 }
