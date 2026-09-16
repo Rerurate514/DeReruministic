@@ -19,7 +19,7 @@ import '../../../../helpers/game_test_helpers.dart';
 
 void main() async {
   final basicPackCardDefIds = DeckRecipe.create(
-    basicPack.map((defs) => defs.cardDefId).take(19).toList(),
+    basicPack.map((defs) => defs.cardDefId).take(2).toList(),
   );
 
   late ProviderContainer container;
@@ -162,20 +162,27 @@ void main() async {
     //       currentState = container.read(gameProvider)!;
 
     //       final expectedOwnerId = i.isOdd ? playerBId : playerAId;
-    //       if (currentState.initialTurnOwner == currentState.phase.turnOwner) {
+    //       if (currentState.initialTurnOwner ==
+    //           currentState.phase.turnOwner) {
     //         expectedTurn++;
     //       }
 
     //       expect(currentState.turnCount, equals(expectedTurn));
     //       expect(currentState.phase.turnOwner, equals(expectedOwnerId));
-    //       expect(currentState.phase.battlePhase, equals(BattlePhase.mainPhase));
+    //       expect(
+    //         currentState.phase.battlePhase,
+    //         equals(BattlePhase.mainPhase),
+    //       );
     //     }
 
     //     await notifier.endTurn();
 
     //     currentState = container.read(gameProvider)!;
 
-    //     expect(currentState.phase.battlePhase, equals(BattlePhase.battleEnd));
+    //     expect(
+    //       currentState.phase.battlePhase,
+    //       equals(BattlePhase.battleEnd),
+    //     );
 
     //     expect(currentState.turnCount, equals(5));
     //     expect(currentState.phase.turnOwner, equals(playerBId));

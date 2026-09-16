@@ -12,6 +12,34 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 void main() {
+  DeckRecipe createDeckRecipe() {
+    return DeckRecipe.create(
+      basicPack.map((defs) => defs.cardDefId).take(2).toList(),
+    );
+  }
+
+  GameActionGameStart createGameStartAction({required int seed}) {
+    return GameActions.gameStart(
+          id: const GameActionsId(value: 'act_1'),
+          actionSequenceNumber: 1,
+          playerId: const PlayerId(value: 'player_a'),
+          playerBId: const PlayerId(value: 'player_b'),
+          playerADeckRecipe: createDeckRecipe(),
+          playerBDeckRecipe: createDeckRecipe(),
+          seed: seed,
+        )
+        as GameActionGameStart;
+  }
+
+  GameActionTurnEnd createTurnEndAction(GameState state) {
+    return GameActions.turnEnd(
+          id: const GameActionsId(value: 'act_2'),
+          actionSequenceNumber: state.metadata.actionSequenceNumber + 1,
+          playerId: state.phase.turnOwner,
+        )
+        as GameActionTurnEnd;
+  }
+
   group('Event Sourcing Determinism Test', () {
     test('同じActionシーケンスを適用した場合、両者のStateとStep履歴が完全に一致すること', () {
       final containerA = ProviderContainer(
@@ -31,29 +59,13 @@ void main() {
       final usecaseA = containerA.read(gameFlowUsecaseProvider);
       final usecaseB = containerB.read(gameFlowUsecaseProvider);
 
-      final actionLogs = <GameActions>[
-        GameActions.gameStart(
-          id: const GameActionsId(value: 'act_1'),
-          actionSequenceNumber: 1,
-          playerId: const PlayerId(value: 'player_a'),
-          playerBId: const PlayerId(value: 'player_b'),
-          playerADeckRecipe: DeckRecipe.empty(),
-          playerBDeckRecipe: DeckRecipe.empty(),
-          seed: 42,
-        ),
-        const GameActions.turnEnd(
-          id: GameActionsId(value: 'act_2'),
-          actionSequenceNumber: 2,
-          playerId: PlayerId(value: 'player_a'),
-        ),
-      ];
-
       GameState? stateA;
       GameState? stateB;
       final stepsA = <GameStepEvent>[];
       final stepsB = <GameStepEvent>[];
 
-      for (final action in actionLogs) {
+      final startAction = createGameStartAction(seed: 42);
+      for (final action in [startAction]) {
         final resultA = usecaseA.applyAction(current: stateA, action: action);
         stateA = resultA.state;
         stepsA.addAll((resultA as ApplyActionResultSuccess).steps);
@@ -62,6 +74,21 @@ void main() {
         stateB = resultB.state;
         stepsB.addAll((resultB as ApplyActionResultSuccess).steps);
       }
+
+      final turnEndAction = createTurnEndAction(stateA!);
+      final resultA = usecaseA.applyAction(
+        current: stateA,
+        action: turnEndAction,
+      );
+      stateA = resultA.state;
+      stepsA.addAll((resultA as ApplyActionResultSuccess).steps);
+
+      final resultB = usecaseB.applyAction(
+        current: stateB,
+        action: turnEndAction,
+      );
+      stateB = resultB.state;
+      stepsB.addAll((resultB as ApplyActionResultSuccess).steps);
 
       expect(stateA, equals(stateB));
       expect(stepsA, equals(stepsB));
@@ -83,54 +110,36 @@ void main() {
       final usecaseA = containerA.read(gameFlowUsecaseProvider);
       final usecaseB = containerB.read(gameFlowUsecaseProvider);
 
-      final actionLogsA = <GameActions>[
-        GameActions.gameStart(
-          id: const GameActionsId(value: 'act_1'),
-          actionSequenceNumber: 1,
-          playerId: const PlayerId(value: 'player_a'),
-          playerBId: const PlayerId(value: 'player_b'),
-          playerADeckRecipe: DeckRecipe.empty(),
-          playerBDeckRecipe: DeckRecipe.empty(),
-          seed: 42,
-        ),
-        const GameActions.turnEnd(
-          id: GameActionsId(value: 'act_2'),
-          actionSequenceNumber: 2,
-          playerId: PlayerId(value: 'player_a'),
-        ),
-      ];
-      final actionLogsB = <GameActions>[
-        GameActions.gameStart(
-          id: const GameActionsId(value: 'act_1'),
-          actionSequenceNumber: 1,
-          playerId: const PlayerId(value: 'player_a'),
-          playerBId: const PlayerId(value: 'player_b'),
-          playerADeckRecipe: DeckRecipe.empty(),
-          playerBDeckRecipe: DeckRecipe.empty(),
-          seed: 12345,
-        ),
-        const GameActions.turnEnd(
-          id: GameActionsId(value: 'act_2'),
-          actionSequenceNumber: 2,
-          playerId: PlayerId(value: 'player_a'),
-        ),
-      ];
-
       GameState? stateA;
       GameState? stateB;
       final stepsA = <GameStepEvent>[];
       final stepsB = <GameStepEvent>[];
 
-      for (final action in actionLogsA) {
-        final resultA = usecaseA.applyAction(current: stateA, action: action);
-        stateA = resultA.state;
-        stepsA.addAll((resultA as ApplyActionResultSuccess).steps);
-      }
-      for (final action in actionLogsB) {
-        final resultB = usecaseB.applyAction(current: stateB, action: action);
-        stateB = resultB.state;
-        stepsB.addAll((resultB as ApplyActionResultSuccess).steps);
-      }
+      final startResultA = usecaseA.applyAction(
+        current: null,
+        action: createGameStartAction(seed: 42),
+      );
+      stateA = startResultA.state;
+      stepsA.addAll((startResultA as ApplyActionResultSuccess).steps);
+      final turnEndResultA = usecaseA.applyAction(
+        current: stateA,
+        action: createTurnEndAction(stateA),
+      );
+      stateA = turnEndResultA.state;
+      stepsA.addAll((turnEndResultA as ApplyActionResultSuccess).steps);
+
+      final startResultB = usecaseB.applyAction(
+        current: null,
+        action: createGameStartAction(seed: 12345),
+      );
+      stateB = startResultB.state;
+      stepsB.addAll((startResultB as ApplyActionResultSuccess).steps);
+      final turnEndResultB = usecaseB.applyAction(
+        current: stateB,
+        action: createTurnEndAction(stateB),
+      );
+      stateB = turnEndResultB.state;
+      stepsB.addAll((turnEndResultB as ApplyActionResultSuccess).steps);
 
       final isSameState = stateA == stateB;
       final isSameSteps = stepsA.toString() == stepsB.toString();
@@ -159,35 +168,25 @@ void main() {
       final usecaseA = containerA.read(gameFlowUsecaseProvider);
       final usecaseReplay = containerReplay.read(gameFlowUsecaseProvider);
 
-      final actionLogs = <GameActions>[
-        GameActions.gameStart(
-          id: const GameActionsId(value: 'act_1'),
-          actionSequenceNumber: 1,
-          playerId: const PlayerId(value: 'player_a'),
-          playerBId: const PlayerId(value: 'player_b'),
-          playerADeckRecipe: DeckRecipe.empty(),
-          playerBDeckRecipe: DeckRecipe.empty(),
-          seed: 42,
-        ),
-        const GameActions.turnEnd(
-          id: GameActionsId(value: 'act_2'),
-          actionSequenceNumber: 2,
-          playerId: PlayerId(value: 'player_a'),
-        ),
-      ];
-
       GameState? stateDirect;
       final allSteps = <GameStepEvent>[];
-      for (final action in actionLogs) {
-        final result = usecaseA.applyAction(
-          current: stateDirect,
-          action: action,
-        );
-        stateDirect = result.state;
-        allSteps.addAll((result as ApplyActionResultSuccess).steps);
-      }
+      final startAction = createGameStartAction(seed: 42);
+      final startResult = usecaseA.applyAction(
+        current: stateDirect,
+        action: startAction,
+      );
+      stateDirect = startResult.state;
+      allSteps.addAll((startResult as ApplyActionResultSuccess).steps);
 
-      final stateFromReplay = actionLogs.fold<GameState?>(
+      final turnEndAction = createTurnEndAction(stateDirect);
+      final turnEndResult = usecaseA.applyAction(
+        current: stateDirect,
+        action: turnEndAction,
+      );
+      stateDirect = turnEndResult.state;
+      allSteps.addAll((turnEndResult as ApplyActionResultSuccess).steps);
+
+      final stateFromReplay = [startAction, turnEndAction].fold<GameState?>(
         null,
         (currentState, action) => usecaseReplay
             .applyAction(

@@ -121,7 +121,7 @@ void main() {
       expect(failure.state.players[playerId]!.graveyard, isEmpty);
     });
 
-    test('validatorが成功を返しexhaustカードでない場合、カードは手札からgraveyardへ移動する', () {
+    test('validatorが成功を返しexhaustカードでない場合、カードは手札からplayAreaへ移動する', () {
       final card = buildCard(instanceId: 'card1');
       final player = buildPlayer(id: playerId, hand: [card]);
       final state = buildState(
@@ -147,11 +147,12 @@ void main() {
       final success = result as ApplyActionResultSuccess;
       final updatedPlayer = success.state.players[playerId]!;
       expect(updatedPlayer.hand, isEmpty);
-      expect(updatedPlayer.graveyard, [card]);
+      expect(updatedPlayer.playArea, [card]);
+      expect(updatedPlayer.graveyard, isEmpty);
       expect(updatedPlayer.exhausted, isEmpty);
     });
 
-    test('validatorが成功を返しexhaustカードの場合、カードは手札からexhaustedへ移動する', () {
+    test('validatorが成功を返しexhaustカードの場合も、カードは手札からplayAreaへ移動する', () {
       final card = buildCard(instanceId: 'card1', definition: exhaustCardDef);
       final player = buildPlayer(id: playerId, hand: [card]);
       final state = buildState(
@@ -177,7 +178,8 @@ void main() {
       final success = result as ApplyActionResultSuccess;
       final updatedPlayer = success.state.players[playerId]!;
       expect(updatedPlayer.hand, isEmpty);
-      expect(updatedPlayer.exhausted, [card]);
+      expect(updatedPlayer.playArea, [card]);
+      expect(updatedPlayer.exhausted, isEmpty);
       expect(updatedPlayer.graveyard, isEmpty);
     });
 
@@ -209,7 +211,7 @@ void main() {
       expect(step.playerId, playerId);
       expect(step.instanceIds, [card.instanceId]);
       expect(step.zoneFrom, CardZone.hand);
-      expect(step.zoneTo, CardZone.graveyard);
+      expect(step.zoneTo, CardZone.playArea);
     });
 
     test('成功時、GameStepEvent.cardMovedZoneが正しい内容で1件返る(exhaustカード)', () {
@@ -238,7 +240,7 @@ void main() {
       expect(success.steps, hasLength(1));
       final step = success.steps.single as GameStepEventCardMovedZone;
       expect(step.zoneFrom, CardZone.hand);
-      expect(step.zoneTo, CardZone.exhausted);
+      expect(step.zoneTo, CardZone.playArea);
     });
 
     test(

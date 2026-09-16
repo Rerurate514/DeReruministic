@@ -1,3 +1,5 @@
+void main() {}
+
 // TODO(low): これのテスト書く
 // import 'package:dereruministic/domain/card/entities/card_definition.dart';
 // import 'package:dereruministic/domain/card/services/apply_play_card_service.dart';

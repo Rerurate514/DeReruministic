@@ -114,7 +114,8 @@ void main() {
     );
 
     test(
-      'actionSequenceNumberがstate.metadata.actionSequenceNumber+1と一致しない場合、invalidActionSequenceで失敗する',
+      'actionSequenceNumberがstate.metadata.actionSequenceNumber+1と'
+      '一致しない場合、invalidActionSequenceで失敗する',
       () {
         final state = buildStateWithMeta(
           players: {playerId: buildPlayer(id: playerId)},
@@ -252,13 +253,12 @@ void main() {
         ),
       ).thenReturn(failure);
 
-      expect(
-        () => usecase.applyAction(
-          current: null,
-          action: buildGameStartAction(),
-        ),
-        throwsA(isA<UnimplementedError>()),
+      final result = usecase.applyAction(
+        current: null,
+        action: buildGameStartAction(),
       );
+
+      expect(result, failure);
       verifyZeroInteractions(mockTaskServiceFactory);
     });
 
@@ -399,8 +399,9 @@ void main() {
       final success = result as ApplyActionResultSuccess;
       // mainPhaseタスクが残ったまま止まっている
       expect(success.state.taskQueue, hasLength(1));
+      expect(success.state.taskQueue.first, isA<GameTaskInteractiveWrapper>());
       expect(
-        success.state.taskQueue.first,
+        (success.state.taskQueue.first as GameTaskInteractiveWrapper).task,
         isA<InteractiveGameTaskMainPhase>(),
       );
     });
@@ -472,7 +473,7 @@ void main() {
       expect(result, isA<ApplyActionResultFailure>());
       expect(
         (result as ApplyActionResultFailure).reason,
-        ActionFailureReason.invalidActionSequence,
+        ActionFailureReason.invalidAction,
       );
       verifyZeroInteractions(mockTaskServiceFactory);
     });
@@ -491,13 +492,14 @@ void main() {
       expect(result, isA<ApplyActionResultFailure>());
       expect(
         (result as ApplyActionResultFailure).reason,
-        ActionFailureReason.invalidActionSequence,
+        ActionFailureReason.invalidAction,
       );
       verifyZeroInteractions(mockTaskServiceFactory);
     });
 
     test(
-      'taskQueueの先頭がmainPhase(interactive)の場合、taskServiceFactory.handleActionに委譲される',
+      'taskQueueの先頭がmainPhase(interactive)の場合、'
+      'taskServiceFactory.handleActionに委譲される',
       () {
         const task = InteractiveGameTask.mainPhase();
         final state = buildStateWithMeta(
@@ -572,8 +574,8 @@ void main() {
       );
       final action = buildPlayCardActionLocal();
 
-      // handleAction成功時、まだtaskQueueにはtaskが残った状態のstateを返す想定
-      final afterHandle = state; // task, nextTask がまだ残っている
+      // handleAction成功時、interactive taskはhandleAction側で消化済みの状態を返す想定
+      final afterHandle = state.popTask();
       when(
         mockTaskServiceFactory.handleAction(
           state: state,
@@ -582,9 +584,7 @@ void main() {
         ),
       ).thenReturn(ApplyActionResult.noSteps(state: afterHandle));
 
-      // processQueueはafterHandle.popTask()から始まるので、
-      // 先頭はnextTask(defeatCheck)になる
-      final afterDefeatCheck = afterHandle.popTask().popTask();
+      final afterDefeatCheck = afterHandle.popTask();
       final defeatStep = GameStepEvent.phaseChanged(
         phase: afterDefeatCheck.phase,
       );
