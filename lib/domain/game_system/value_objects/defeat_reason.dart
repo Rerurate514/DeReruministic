@@ -1,1 +1,1 @@
-enum DefeatReason { simultaneousDefeat, hpZero, deckOut }
+enum DefeatReason { simultaneousDefeat, hpZero, deckOut, surrender }
