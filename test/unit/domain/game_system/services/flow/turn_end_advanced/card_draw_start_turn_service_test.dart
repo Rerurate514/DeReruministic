@@ -14,6 +14,10 @@ import 'package:dereruministic/domain/game_system/value_objects/game_step_event.
 import 'package:dereruministic/domain/game_system/value_objects/system_metadata.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/buff_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -134,6 +138,83 @@ void main() {
           baseState,
           playerAId,
           GameSystemConstants.defaultDrawCount,
+        ),
+      ).called(1);
+
+      expect(result, equals(expectedResult));
+    });
+
+    test('drawBoostとdrawReductionのスタックを反映した枚数でCardDrawServiceに委譲される', () {
+      final boostedPlayer = playerAState.copyWith(
+        buffs: const [BuffState(buff: BuffTypes.drawBoost, stack: 2)],
+        debuffs: const [
+          DebuffState(debuff: DebuffTypes.drawReduction, stack: 1),
+        ],
+      );
+      final boostedState = baseState.copyWith(
+        players: {
+          playerAId: boostedPlayer,
+          playerBId: playerBState,
+        },
+      );
+      final expectedResult = ApplyActionResult.success(
+        state: boostedState,
+        steps: const [],
+      );
+
+      when(
+        mockCardDrawService.execute(
+          boostedState,
+          playerAId,
+          GameSystemConstants.defaultDrawCount + 1,
+        ),
+      ).thenReturn(expectedResult);
+
+      final result = cardDrawStartTurnService.execute(boostedState);
+
+      verify(
+        mockCardDrawService.execute(
+          boostedState,
+          playerAId,
+          GameSystemConstants.defaultDrawCount + 1,
+        ),
+      ).called(1);
+
+      expect(result, equals(expectedResult));
+    });
+
+    test('drawReductionが基本ドロー数を超えた場合は0枚でCardDrawServiceに委譲される', () {
+      final reducedPlayer = playerAState.copyWith(
+        debuffs: const [
+          DebuffState(debuff: DebuffTypes.drawReduction, stack: 99),
+        ],
+      );
+      final reducedState = baseState.copyWith(
+        players: {
+          playerAId: reducedPlayer,
+          playerBId: playerBState,
+        },
+      );
+      final expectedResult = ApplyActionResult.success(
+        state: reducedState,
+        steps: const [],
+      );
+
+      when(
+        mockCardDrawService.execute(
+          reducedState,
+          playerAId,
+          0,
+        ),
+      ).thenReturn(expectedResult);
+
+      final result = cardDrawStartTurnService.execute(reducedState);
+
+      verify(
+        mockCardDrawService.execute(
+          reducedState,
+          playerAId,
+          0,
         ),
       ).called(1);
 

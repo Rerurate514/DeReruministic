@@ -4,6 +4,8 @@ import 'package:dereruministic/domain/game_system/services/game_proccess_pipelin
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/debuff_types.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'card_draw_start_turn_service.g.dart';
@@ -38,8 +40,8 @@ class CardDrawStartTurnService implements TurnProcessStep {
 
   int _calculateDrawAmount(PlayerState player) {
     var amount = GameSystemConstants.defaultDrawCount;
-    //バフ/デバフの補正 TODO
-    amount += 0;
-    return amount;
+    amount += player.getBuffStack(BuffTypes.drawBoost);
+    amount -= player.getDebuffStack(DebuffTypes.drawReduction);
+    return amount < 0 ? 0 : amount;
   }
 }
