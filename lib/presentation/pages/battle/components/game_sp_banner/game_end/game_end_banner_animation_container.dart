@@ -1,9 +1,8 @@
 import 'dart:async';
 
-import 'package:dereruministic/presentation/pages/battle/components/game_sp_banner/game_start/game_start_banner.dart';
+import 'package:dereruministic/presentation/pages/battle/components/game_sp_banner/game_end/game_end_banner.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_end_notifier.dart';
-import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -54,7 +53,7 @@ class GameEndBannerAnimationContainer extends HookConsumerWidget {
               () => ref.read(animationSignalProvider.notifier).done(),
             );
         if (!isMounted()) return;
-        ref.read(displayedGameStartProvider.notifier).setFalse();
+        ref.read(displayedGameEndProvider.notifier).setFalse();
       }
 
       unawaited(runAnimationSequence());
@@ -66,7 +65,7 @@ class GameEndBannerAnimationContainer extends HookConsumerWidget {
 
     return AnimatedBuilder(
       animation: animation,
-      child: const GameStartBanner(),
+      child: const GameEndBanner(),
       builder: (context, child) {
         final dx = 1 - (animation.value);
         return FractionalTranslation(

@@ -170,6 +170,10 @@
     "battle_page_sp_banner_game_start_game_sequence_start_text": "_> GAME SEQUENCE START",
     "battle_page_sp_banner_game_start_terminal_access_granted_text": "TERMINAL ACCESS GRANTED",
     "battle_page_sp_banner_game_start_data_link_established_text": "DATA LINK ESTABLISHED",
+    "battle_page_sp_banner_game_end_terminating_combat_protocol_text": "TERMINATING COMBAT PROTOCOL",
+    "battle_page_sp_banner_game_end_game_sequence_end_text": "_> GAME SEQUENCE END",
+    "battle_page_sp_banner_game_end_terminal_access_closed_text": "TERMINAL ACCESS CLOSED",
+    "battle_page_sp_banner_game_end_data_link_disconnected_text": "DATA LINK DISCONNECTED",
 
     "battle_page_discard_overflowed_card": "DISCARD OVERFLOWED CARD /// 捨て札を選択する",
     "battle_page_in_deck_card_remove_card_area_text": "このカードを捨て札から除外する",
