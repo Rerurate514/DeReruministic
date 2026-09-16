@@ -4,7 +4,7 @@ import 'package:dereruministic/presentation/pages/battle/components/guide/guides
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/card_states_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/hp_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/player_cost_system_description.dart';
-import 'package:dereruministic/presentation/pages/battle/components/guide/guides/shield_system_description%20copy.dart';
+import 'package:dereruministic/presentation/pages/battle/components/guide/guides/shield_system_description.dart';
 import 'package:flutter/material.dart';
 
 class TacticalGuide extends StatelessWidget {

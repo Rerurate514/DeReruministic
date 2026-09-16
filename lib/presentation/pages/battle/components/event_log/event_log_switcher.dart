@@ -28,7 +28,7 @@ class EventLogSwitcher extends ConsumerWidget {
           child: child,
         );
       },
-      child: isShow ? EventLogComponent() : const SizedBox.shrink(),
+      child: isShow ? const EventLogComponent() : const SizedBox.shrink(),
     );
   }
 }
