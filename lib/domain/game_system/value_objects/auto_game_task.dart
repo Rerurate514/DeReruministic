@@ -102,10 +102,6 @@ sealed class AutoGameTask with _$AutoGameTask {
     required GameCardInstanceId instanceId,
   }) = AutoGameTaskCleanupPlayCard;
 
-  const factory AutoGameTask.surrender({
-    required PlayerId playerId,
-  }) = AutoGameTaskSurrender;
-
   const factory AutoGameTask.gameEnd({
     required PlayerId winPlayer,
   }) = AutoGameTaskGameEnd;
