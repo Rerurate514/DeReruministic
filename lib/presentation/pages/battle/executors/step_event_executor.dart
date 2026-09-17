@@ -31,13 +31,10 @@ class StepEventExecutor {
         {}
       case GameStepEventOverflowCheckTriggered(
         :final playerId,
-        :final overflowCount,
       ):
         {
           if (id != playerId) return;
-          ref
-              .read(displayedOverflowCheckTriggeredProvider.notifier)
-              .apply(overflowCount);
+          ref.read(displayedOverflowCheckTriggeredProvider.notifier).apply();
           await _awaitAnimation();
         }
       case GameStepEventPhaseChanged(:final phase):
@@ -73,7 +70,7 @@ class StepEventExecutor {
         {}
       case GameStepEventCardPlayed(:final playerId):
         {
-          if (id != playerId) return;
+          if (id == playerId) return;
           ref.read(displayedCardPlayedProvider.notifier).apply();
           await _awaitAnimation();
         }
