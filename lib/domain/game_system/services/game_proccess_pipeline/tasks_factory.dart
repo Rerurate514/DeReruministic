@@ -72,5 +72,8 @@ class TasksFactory {
         instanceId: instanceId,
       ),
     ),
+    const .auto(
+      .defeatCheck(),
+    ),
   ]);
 }
