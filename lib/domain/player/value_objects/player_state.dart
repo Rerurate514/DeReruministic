@@ -40,14 +40,18 @@ sealed class PlayerState with _$PlayerState {
   factory PlayerState.create({
     required PlayerId id,
     required List<GameCard> deck,
+    int hp = PlayerConstants.defaultInitialHp,
+    int currentCost = PlayerConstants.defaultInitialCost,
+    int maxCost = PlayerConstants.defaultMaxCost,
+    int maxHandSize = PlayerConstants.defaultMaxHandSize,
   }) {
     return PlayerState(
       id: id,
-      hp: PlayerConstants.defaultInitialHp,
+      hp: hp,
       maxHp: PlayerConstants.defaultMaxHp,
       shield: 0,
-      currentCost: PlayerConstants.defaultInitialCost,
-      maxCost: PlayerConstants.defaultMaxCost,
+      currentCost: currentCost,
+      maxCost: maxCost,
       deck: deck,
       hand: [],
       graveyard: [],
@@ -55,8 +59,7 @@ sealed class PlayerState with _$PlayerState {
       buffs: [],
       debuffs: [],
       cardsPlayedThisTurn: 0,
-      //maxHandSize: PlayerConstants.defaultMaxHandSize,
-      maxHandSize: 2,
+      maxHandSize: maxHandSize,
       pendingRecoilCost: 0,
       pendingOverloadCost: 0,
     );
