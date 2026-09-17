@@ -31,8 +31,8 @@ class AuthHeader extends StatelessWidget {
         const UiGap.s(),
         Text(
           switch (mode) {
-            AuthMode.signUp => l10n.auth_page_subtitleSignUp,
-            AuthMode.signIn => l10n.auth_page_subtitleSignIn,
+            AuthMode.signUp => l10n.auth_page_subtitle_sign_up,
+            AuthMode.signIn => l10n.auth_page_subtitle_sign_in,
           },
           textAlign: TextAlign.center,
           style: GoogleFonts.shareTechMono(

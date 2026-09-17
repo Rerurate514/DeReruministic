@@ -36,7 +36,7 @@ class SupportedProvidersSection extends ConsumerWidget {
                 horizontal: 12,
               ),
               child: Text(
-                l10n.auth_page_providerDivider,
+                l10n.auth_page_provider_divider,
                 style: GoogleFonts.shareTechMono(
                   color: theme.textSecondary,
                 ),
@@ -51,7 +51,7 @@ class SupportedProvidersSection extends ConsumerWidget {
           onPressed: isLoading
               ? null
               : ref.read(authActionProvider.notifier).signInWithGoogle,
-          child: Text(l10n.auth_page_googleProvider),
+          child: Text(l10n.auth_page_google_provider),
         ),
         const UiGap.s(),
         ProviderButton(
@@ -59,7 +59,7 @@ class SupportedProvidersSection extends ConsumerWidget {
           onPressed: isLoading
               ? null
               : ref.read(authActionProvider.notifier).signInWithGitHub,
-          child: Text(l10n.auth_page_githubProvider),
+          child: Text(l10n.auth_page_github_provider),
         ),
       ],
     );

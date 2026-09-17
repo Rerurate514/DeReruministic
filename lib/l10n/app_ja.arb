@@ -3,46 +3,41 @@
     "app_title": "DeReruministic",
     "app_subtitle": "TACTICAL COMBAT SIMULATION",
     "app_subtitle_trailing": "DETERMINATION INITIALIZED",
-
     "game_state_is_null": "NULL",
-
     "dialogs_simple_ok_dialog_cancel_button_text": "cancel",
     "dialogs_simple_ok_dialog_ok_button_text": "ok",
-
     "snack_bar_clipboard_copy_success": "クリップボードにコピーしました。",
-
-    "auth_page_defaultErrorMessage": "認証に失敗しました。しばらくしてから再試行してください。",
-    "auth_page_subtitleSignUp": "新規アクセスキーを発行",
-    "auth_page_subtitleSignIn": "認証プロトコルへ接続",
-    "auth_page_emailLabel": "Email",
-    "auth_page_emailHint": "operator@example.com",
-    "auth_page_passwordLabel": "Password",
-    "auth_page_passwordHint": "minimum 6 characters",
-    "auth_page_buttonSignUp": "SIGN UP",
-    "auth_page_buttonSignIn": "SIGN IN",
-    "auth_page_toggleToSignIn": "既存アカウントでサインイン",
-    "auth_page_toggleToSignUp": "新規アカウントを作成",
-    "auth_page_providerDivider": "OR",
-    "auth_page_googleProvider": "Google",
-    "auth_page_githubProvider": "GitHub",
-    "auth_page_errorGoogleCanceled": "Google ログインを完了できませんでした。",
-    "auth_page_errorGithubCanceled": "GitHub ログインを完了できませんでした。",
-    "auth_page_errorInvalidEmail": "メールアドレスの形式が正しくありません。",
-    "auth_page_errorUserDisabled": "このアカウントは無効化されています。",
-    "auth_page_errorInvalidCredential": "メールアドレスまたはパスワードが違います。",
-    "auth_page_errorEmailAlreadyInUse": "このメールアドレスは既に登録されています。",
-    "auth_page_errorWeakPassword": "パスワードは6文字以上で入力してください。",
-    "auth_page_errorOperationNotAllowed": "Firebase Console でこのログイン方式を有効化してください。",
-    "auth_page_errorAccountExistsWithDifferentCredential": "同じメールアドレスの別ログイン方式が既に使われています。",
-    "auth_page_errorUnknown": "認証に失敗しました。{details}",
-    "@auth_page_errorUnknown": {
+    "auth_page_default_error_message": "認証に失敗しました。しばらくしてから再試行してください。",
+    "auth_page_subtitle_sign_up": "新規アクセスキーを発行",
+    "auth_page_subtitle_sign_in": "認証プロトコルへ接続",
+    "auth_page_email_label": "Email",
+    "auth_page_email_hint": "operator@example.com",
+    "auth_page_password_label": "Password",
+    "auth_page_password_hint": "minimum 6 characters",
+    "auth_page_button_sign_up": "SIGN UP",
+    "auth_page_button_sign_in": "SIGN IN",
+    "auth_page_toggle_to_sign_in": "既存アカウントでサインイン",
+    "auth_page_toggle_to_sign_up": "新規アカウントを作成",
+    "auth_page_provider_divider": "OR",
+    "auth_page_google_provider": "Google",
+    "auth_page_github_provider": "GitHub",
+    "auth_page_error_google_canceled": "Google ログインを完了できませんでした。",
+    "auth_page_error_github_canceled": "GitHub ログインを完了できませんでした。",
+    "auth_page_error_invalid_email": "メールアドレスの形式が正しくありません。",
+    "auth_page_error_user_disabled": "このアカウントは無効化されています。",
+    "auth_page_error_invalid_credential": "メールアドレスまたはパスワードが違います。",
+    "auth_page_error_email_already_in_use": "このメールアドレスは既に登録されています。",
+    "auth_page_error_weak_password": "パスワードは6文字以上で入力してください。",
+    "auth_page_error_operation_not_allowed": "Firebase Console でこのログイン方式を有効化してください。",
+    "auth_page_error_account_exists_with_different_credential": "同じメールアドレスの別ログイン方式が既に使われています。",
+    "auth_page_error_unknown": "認証に失敗しました。{details}",
+    "@auth_page_error_unknown": {
         "placeholders": {
-        "details": {
-            "type": "String"
-        }
+            "details": {
+                "type": "String"
+            }
         }
     },
-
     "home_page_title": "ホームページ",
     "home_page_start_battle_button_text": "START BATTLE",
     "home_page_deck_editor_button_text": "DECK EDITOR",
@@ -51,11 +46,14 @@
     "home_page_user_deck_count": "DECK {current}/{max}",
     "@home_page_user_deck_count": {
         "placeholders": {
-            "current": { "type": "int" },
-            "max": { "type": "int" }
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
         }
     },
-
     "lobby_page_controls_panel_title": "LOBBY CONTROLS",
     "lobby_page_controls_panel_create_room_button_text": "CREATE ROOM",
     "lobby_page_controls_panel_enter_room_button_text": "ENTER ROOM",
@@ -64,7 +62,6 @@
     "lobby_page_match_parameters_panel_title": "MATCH PARAMETERS",
     "lobby_page_match_parameters_panel_format": "FORMAT",
     "lobby_page_match_parameters_panel_time_limit": "TIME LIMIT",
-
     "room_page_room_id_card_title": "SECURE MATCH PROTOCOL",
     "room_page_room_id_card_id_text": "Room Id Code",
     "room_page_room_id_card_id_prefix": "# ",
@@ -94,9 +91,9 @@
     "room_page_player_profile_ping": "PING: {ping}ms",
     "@room_page_player_profile_ping": {
         "placeholders": {
-        "ping": {
-            "type": "int"
-        }
+            "ping": {
+                "type": "int"
+            }
         }
     },
     "room_page_player_profile_link_encrypted": "LINK ENCRYPTED",
@@ -118,28 +115,27 @@
     "room_page_join_error_room_already_full": "ルームが満員のため参加できません。",
     "room_page_join_error_room_already_closed": "このルームはすでに閉鎖されています。",
     "room_page_game_start_button_text": "GAME START",
-
     "battle_page_header_sys_active_text": "SYS_ACTV",
     "battle_page_header_turn_text": "Turn",
     "battle_page_header_data_link_text": "DATA_LINK",
-    "battle_page_header_hp_bar": "HP: {hp} / {maxHp}",
+    "battle_page_header_hp_bar": "HP: {hp} / {max_hp}",
     "@battle_page_header_hp_bar": {
         "placeholders": {
             "hp": {
                 "type": "int"
             },
-            "maxHp": {
+            "max_hp": {
                 "type": "int"
             }
         }
     },
-    "battle_page_header_cost": "{cost} / {maxCost}",
+    "battle_page_header_cost": "{cost} / {max_cost}",
     "@battle_page_header_cost": {
         "placeholders": {
             "cost": {
                 "type": "int"
             },
-            "maxCost": {
+            "max_cost": {
                 "type": "int"
             }
         }
@@ -152,20 +148,16 @@
     "battle_page_phase_turn_end": "TURN END",
     "battle_page_phase_battle_end": "BATTLE END",
     "battle_page_phase_select_discard": "SD",
-
     "battle_page_user_id_text": "USER ID",
     "battle_page_opponent_id_text": "OPPONENT ID",
-
     "battle_page_player_deck_count_text": "[DK]",
     "battle_page_player_graveyard_count_text": "[GY]",
     "battle_page_player_exhausted_count_text": "[EX]",
-
     "battle_page_card_drag_area_text": "<< FIELD_EFFECT_SYS >> - STATUS:=//WAIT::[USE_CARD]",
     "battle_page_combat_log_text": "COMBAT LOG",
     "battle_page_background_text_lines_left": "0x4F 0x50 0x50 0x5F 0x43 0x4F 0x53 0x54 :: INITIALIZING... LOAD OK.",
     "battle_page_background_text_lines_right": "SYS_TICK: 4598201 :: TARGET_LOCK: ACTIVE",
     "battle_page_turn_end_button_text": "EXECUTED",
-
     "battle_page_sp_banner_game_start_initializing_combat_protocol_text": "INITIALIZING COMBAT PROTOCOL",
     "battle_page_sp_banner_game_start_game_sequence_start_text": "_> GAME SEQUENCE START",
     "battle_page_sp_banner_game_start_terminal_access_granted_text": "TERMINAL ACCESS GRANTED",
@@ -174,45 +166,37 @@
     "battle_page_sp_banner_game_end_game_sequence_end_text": "_> GAME SEQUENCE END",
     "battle_page_sp_banner_game_end_terminal_access_closed_text": "TERMINAL ACCESS CLOSED",
     "battle_page_sp_banner_game_end_data_link_disconnected_text": "DATA LINK DISCONNECTED",
-
     "battle_page_discard_overflowed_card": "DISCARD OVERFLOWED CARD /// 捨て札を選択する",
     "battle_page_in_deck_card_remove_card_area_text": "このカードを捨て札から除外する",
     "battle_page_in_discarded_card_text": "DISCARDED",
-    "battle_page_overflow_count": "残り: {currentSelectedCount} / {overflowCount}",
-    "@battlePageOverflowCount": {
+    "battle_page_overflow_count": "残り: {current_selected_count} / {overflow_count}",
+    "@battle_page_overflow_count": {
         "description": "溢れたカードの選択状況を表示するテキスト",
         "placeholders": {
-            "currentSelectedCount": {
+            "current_selected_count": {
                 "type": "int"
             },
-            "overflowCount": {
+            "overflow_count": {
                 "type": "int"
             }
         }
     },
     "battle_page_discard_decide_button_text": "捨て札を確定する",
-
     "battle_page_guide_header_command": "_>",
     "battle_page_guide_header_text": "TACTICAL_GUIDE",
-
     "battle_page_card_cost_system_title": "CARD COST SYSTEM",
     "battle_page_card_cost_system_details_1": "カードの右上にカードを使用するときに消費するコスト量を示しています。\n自身の所持コストを超えるカードを使用することはできません。\nまたこの表記されているコストは変動することがあります。",
     "battle_page_card_cost_system_details_2": "のコスト消費量のカードを",
     "battle_page_card_cost_system_details_3": "の時に使用することはできません。",
-
     "battle_page_hp_system_title": "HP SYSTEM",
     "battle_page_hp_system_details_1": "HPシステムはとても単純なHPとして表されています。画面下のこのHPバーが数値を視覚的に表しています。線の数は現在のHPと一致しています。このHPが0になると敗北となります。",
-
     "battle_page_player_cost_system_title": "PLAYER COST SYSTEM",
     "battle_page_player_cost_system_detail_1": "コストはカードを使用するために必要なパラメータです。\nゲーム開始時の上限は4になります(これはバフやデバフなどで変動することがあります)。\nターン開始時には4、コストが回復します(これはバフやデバフなどで変動することがあります)。\nコストが0になっても、使うことができるカードは存在しています。",
-
     "battle_page_shield_system_title": "SHIELD SYSTEM",
     "battle_page_shield_system_detail_1": "シールドはHPの右に表記されています。シールド数値の上限はありません。これは自分のターンが開始する際に0に毎回リセットされます。シールドの数値を超えてダメージを受けた場合は、超過分がHPのダメージとして計算されます。",
     "battle_page_shield_system_detail_2": "シールドの時に20ダメージを受けると、10ダメージはシールドが肩代わりして、HPは10ダメージを受ける。",
-
     "battle_page_card_state_system_title": "CARD STATES",
     "battle_page_card_state_system_details_1": "カード状態はカードのメイン効果とは別に、は定義、発動される効果です。\n以下にその効果を示します。",
-
     "battle_page_card_state_system_exhaust_title": "焼却",
     "battle_page_card_state_system_exhaust_details": "使用すると山札や捨て札に戻らず、この戦闘中は使用不可になります。",
     "battle_page_card_state_system_undiscardable_title": "停滞",
@@ -235,387 +219,565 @@
     "battle_page_card_state_system_decay_details": "指定ターン数が経過すると、手札から消滅（焼却）します。",
     "battle_page_card_state_system_infect_title": "感染",
     "battle_page_card_state_system_infect_details": "使用するとカードが使用されるのではなく、相手の山札の一番下に混ざります。",
-
-    "battle_page_card_runtime_states_recycle_text": "{remainingCount}/{maxCount}",
+    "battle_page_card_runtime_states_recycle_text": "{remaining_count}/{max_count}",
     "@battle_page_card_runtime_states_recycle_text": {
         "placeholders": {
-            "remainingCount": {
+            "remaining_count": {
                 "type": "int"
             },
-            "maxCount": {
+            "max_count": {
                 "type": "int"
             }
         }
     },
     "battle_page_card_runtime_states_recycle_infinity_text": "∞",
-    "battle_page_card_runtime_states_countdown_text": "{remainingTurns}",
+    "battle_page_card_runtime_states_countdown_text": "{remaining_turns}",
     "@battle_page_card_runtime_states_countdown_text": {
         "placeholders": {
-            "remainingTurns": {
+            "remaining_turns": {
                 "type": "int"
             }
         }
     },
-    "battle_page_card_runtime_states_decay_text": "{remainingTurns}",
+    "battle_page_card_runtime_states_decay_text": "{remaining_turns}",
     "@battle_page_card_runtime_states_decay_text": {
         "placeholders": {
-            "remainingTurns": {
+            "remaining_turns": {
                 "type": "int"
             }
         }
     },
-    "battle_page_card_runtime_states_retain_text": "{turnsInHand}",
+    "battle_page_card_runtime_states_retain_text": "{turns_in_hand}",
     "@battle_page_card_runtime_states_retain_text": {
         "placeholders": {
-            "turnsInHand": {
+            "turns_in_hand": {
                 "type": "int"
             }
         }
     },
-
     "card_effect_damage": "{target}に{amount}ダメージを与える",
     "@card_effect_damage": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "card_effect_draw": "カードを{amount}枚引く",
     "@card_effect_draw": {
         "placeholders": {
-        "amount": { "type": "int" }
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "card_effect_discard": "手札から{card_name}を1枚捨てる",
     "@card_effect_discard": {
         "placeholders": {
-        "card_name": { "type": "String" }
+            "card_name": {
+                "type": "String"
+            }
         }
     },
     "card_effect_fetch_card": "山札から{card_name}を1枚獲得する",
     "@card_effect_fetch_card": {
         "placeholders": {
-        "card_name": { "type": "String" }
+            "card_name": {
+                "type": "String"
+            }
         }
     },
     "card_effect_heal": "{target}のHPを{amount}回復する",
     "@card_effect_heal": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "card_effect_grant_shield": "{target}にシールドを{amount}付与する",
     "@card_effect_grant_shield": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "card_effect_grant_cost": "{target}のコストを{amount}増やす",
     "@card_effect_grant_cost": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "card_effect_steal_cost": "相手からコストを{amount}奪う",
     "@card_effect_steal_cost": {
         "placeholders": {
-        "amount": { "type": "int" }
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "card_effect_steal_shield": "相手からシールドを{amount}奪う",
     "@card_effect_steal_shield": {
         "placeholders": {
-        "amount": { "type": "int" }
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "card_effect_apply_buff": "{target}に{buff}を{stacks}スタック付与する",
     "@card_effect_apply_buff": {
         "placeholders": {
-        "target": { "type": "String" },
-        "buff": { "type": "String" },
-        "stacks": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "buff": {
+                "type": "String"
+            },
+            "stacks": {
+                "type": "int"
+            }
         }
     },
     "card_effect_apply_debuff": "{target}に{debuff}を{stacks}スタック付与する",
     "@card_effect_apply_debuff": {
         "placeholders": {
-        "target": { "type": "String" },
-        "debuff": { "type": "String" },
-        "stacks": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "debuff": {
+                "type": "String"
+            },
+            "stacks": {
+                "type": "int"
+            }
         }
     },
     "card_effect_remove_buffs": "{target}から{buff}を{stacks}スタック解除する",
     "@card_effect_remove_buffs": {
         "placeholders": {
-        "target": { "type": "String" },
-        "buff": { "type": "String" },
-        "stacks": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "buff": {
+                "type": "String"
+            },
+            "stacks": {
+                "type": "int"
+            }
         }
     },
     "card_effect_remove_debuffs": "{target}から{debuff}を{stacks}スタック解除する",
     "@card_effect_remove_debuffs": {
         "placeholders": {
-        "target": { "type": "String" },
-        "debuff": { "type": "String" },
-        "stacks": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "debuff": {
+                "type": "String"
+            },
+            "stacks": {
+                "type": "int"
+            }
         }
     },
-
     "card_target_type_self": "自分",
     "card_target_type_enemy": "敵",
-
     "comparison_operator_equal": "と等しい",
     "comparison_operator_greater_than": "より大きい",
     "comparison_operator_less_than": "未満",
     "comparison_operator_not_equal": "と等しくない",
     "comparison_operator_greater_or_equal": "以上",
     "comparison_operator_less_or_equal": "以下",
-
     "effect_condition_target_has_buff": "{target}が{buff}状態の場合",
     "@effect_condition_target_has_buff": {
         "placeholders": {
-        "target": { "type": "String" },
-        "buff": { "type": "String" }
+            "target": {
+                "type": "String"
+            },
+            "buff": {
+                "type": "String"
+            }
         }
     },
-
     "effect_condition_target_has_debuff": "{target}が{debuff}状態の場合",
     "@effect_condition_target_has_debuff": {
         "placeholders": {
-        "target": { "type": "String" },
-        "debuff": { "type": "String" }
+            "target": {
+                "type": "String"
+            },
+            "debuff": {
+                "type": "String"
+            }
         }
     },
-
     "effect_condition_target_hp_percentage": "{target}のHPが{percentage}%{operator}の場合",
     "@effect_condition_target_hp_percentage": {
         "placeholders": {
-        "target": { "type": "String" },
-        "percentage": { "type": "int" },
-        "operator": { "type": "String" }
+            "target": {
+                "type": "String"
+            },
+            "percentage": {
+                "type": "int"
+            },
+            "operator": {
+                "type": "String"
+            }
         }
     },
-
     "effect_condition_target_hp_value": "{target}のHPが{value}{operator}の場合",
     "@effect_condition_target_hp_value": {
         "placeholders": {
-        "target": { "type": "String" },
-        "value": { "type": "int" },
-        "operator": { "type": "String" }
+            "target": {
+                "type": "String"
+            },
+            "value": {
+                "type": "int"
+            },
+            "operator": {
+                "type": "String"
+            }
         }
     },
-
     "game_step_event_combo_reset": "> COMBO RESET",
     "game_step_event_deck_shuffled": "> DECK SHUFFLED",
     "game_step_event_overflow_check_triggered": "> {player} OVERFLOW CHECK :: {count}",
     "@game_step_event_overflow_check_triggered": {
         "placeholders": {
-        "player": { "type": "String" },
-        "count": { "type": "int" }
+            "player": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_phase_changed": "> PHASE >> {phase}",
     "@game_step_event_phase_changed": {
         "placeholders": {
-        "phase": { "type": "String" }
+            "phase": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_turn_end_effects_resolved": "> TURN END EFFECTS RESOLVED",
     "game_step_event_regen_applied": "> {target} REGEN +{amount}",
     "@game_step_event_regen_applied": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_cost_calculated": "> {target} COST CALCULATED :: {amount}",
     "@game_step_event_cost_calculated": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_draw_calculated": "> {target} DRAW CALCULATED :: {amount}",
     "@game_step_event_draw_calculated": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_combo_updated": "> {target} COMBO >> {amount}",
     "@game_step_event_combo_updated": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_damage_dealt": "> Damage Taken {hp_damage} HP (SHIELD -{shield_damage})",
     "@game_step_event_damage_dealt": {
         "placeholders": {
-        "hp_damage": { "type": "int" },
-        "shield_damage": { "type": "int" }
+            "hp_damage": {
+                "type": "int"
+            },
+            "shield_damage": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_reflect_damage_applied": "> {target} REFLECT DAMAGE {amount}",
     "@game_step_event_reflect_damage_applied": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_shield_gained": "> {target} SHIELD +{amount}",
     "@game_step_event_shield_gained": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_shield_removed": "> {target} SHIELD -{amount}",
     "@game_step_event_shield_removed": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_shield_cleared": "> {target} SHIELD CLEARED",
     "@game_step_event_shield_cleared": {
         "placeholders": {
-        "target": { "type": "String" }
+            "target": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_healed": "> {target} HP +{amount}",
     "@game_step_event_healed": {
         "placeholders": {
-        "target": { "type": "String" },
-        "amount": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "amount": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_hand_card_counters_updated": "> {player} HAND COUNTER SYNCED",
     "@game_step_event_hand_card_counters_updated": {
         "placeholders": {
-        "player": { "type": "String" }
+            "player": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_buff_applied": "> {target} BUFF [{buff}] +{stack} (TOTAL {total_stack})",
     "@game_step_event_buff_applied": {
         "placeholders": {
-        "target": { "type": "String" },
-        "buff": { "type": "String" },
-        "stack": { "type": "int" },
-        "total_stack": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "buff": {
+                "type": "String"
+            },
+            "stack": {
+                "type": "int"
+            },
+            "total_stack": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_debuff_applied": "> {target} DEBUFF [{debuff}] +{stack} (TOTAL {total_stack})",
     "@game_step_event_debuff_applied": {
         "placeholders": {
-        "target": { "type": "String" },
-        "debuff": { "type": "String" },
-        "stack": { "type": "int" },
-        "total_stack": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "debuff": {
+                "type": "String"
+            },
+            "stack": {
+                "type": "int"
+            },
+            "total_stack": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_buff_removed": "> {target} BUFF [{buff}] CLEARED",
     "@game_step_event_buff_removed": {
         "placeholders": {
-        "target": { "type": "String" },
-        "buff": { "type": "String" }
+            "target": {
+                "type": "String"
+            },
+            "buff": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_debuff_removed": "> {target} DEBUFF [{debuff}] CLEARED",
     "@game_step_event_debuff_removed": {
         "placeholders": {
-        "target": { "type": "String" },
-        "debuff": { "type": "String" }
+            "target": {
+                "type": "String"
+            },
+            "debuff": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_status_effect_changed": "> {target} STATUS [{effect_type}] >> {stack_count}",
     "@game_step_event_status_effect_changed": {
         "placeholders": {
-        "target": { "type": "String" },
-        "effect_type": { "type": "String" },
-        "stack_count": { "type": "int" }
+            "target": {
+                "type": "String"
+            },
+            "effect_type": {
+                "type": "String"
+            },
+            "stack_count": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_card_played": "> {player} played [{card}]",
     "@game_step_event_card_played": {
         "placeholders": {
-        "player": { "type": "String" },
-        "card": { "type": "String" }
+            "player": {
+                "type": "String"
+            },
+            "card": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_card_played_with_target": "> {player} played [{card}] >> {target}",
     "@game_step_event_card_played_with_target": {
         "placeholders": {
-        "player": { "type": "String" },
-        "card": { "type": "String" },
-        "target": { "type": "String" }
+            "player": {
+                "type": "String"
+            },
+            "card": {
+                "type": "String"
+            },
+            "target": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_card_exhausted": "> [{card}] EXHAUSTED",
     "@game_step_event_card_exhausted": {
         "placeholders": {
-        "card": { "type": "String" }
+            "card": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_deck_restored": "> {player} DECK RESTORED x{count}",
     "@game_step_event_deck_restored": {
         "placeholders": {
-        "player": { "type": "String" },
-        "count": { "type": "int" }
+            "player": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_cards_drawn": "> {player} drew {count} card",
     "@game_step_event_cards_drawn": {
         "placeholders": {
-        "player": { "type": "String" },
-        "count": { "type": "int" }
+            "player": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_card_moved_zone": "> {player} CARD MOVE :: {zone_from} >> {zone_to} x{count}",
     "@game_step_event_card_moved_zone": {
         "placeholders": {
-        "player": { "type": "String" },
-        "zone_from": { "type": "String" },
-        "zone_to": { "type": "String" },
-        "count": { "type": "int" }
+            "player": {
+                "type": "String"
+            },
+            "zone_from": {
+                "type": "String"
+            },
+            "zone_to": {
+                "type": "String"
+            },
+            "count": {
+                "type": "int"
+            }
         }
     },
     "game_step_event_turn_owner_switched": "> TURN OWNER >> {player}",
     "@game_step_event_turn_owner_switched": {
         "placeholders": {
-        "player": { "type": "String" }
+            "player": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_game_started": "> SYSTEM ONLINE :: FIRST TURN {player}",
     "@game_step_event_game_started": {
         "placeholders": {
-        "player": { "type": "String" }
+            "player": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_game_ended": "> GAME OVER :: {result} ({reason})",
     "@game_step_event_game_ended": {
         "placeholders": {
-        "result": { "type": "String" },
-        "reason": { "type": "String" }
+            "result": {
+                "type": "String"
+            },
+            "reason": {
+                "type": "String"
+            }
         }
     },
     "game_step_event_turn_commenced": "> Turn {turn} Commenced",
     "@game_step_event_turn_commenced": {
         "placeholders": {
-        "turn": { "type": "int" }
+            "turn": {
+                "type": "int"
+            }
         }
     },
-
     "deck_editor_page_deck_save_button_text": "Save",
     "deck_editor_page_cards_count_text_title": "CARDS:",
     "deck_editor_page_cards_count_text_count": "{current}/{max}",
     "@deck_editor_page_cards_count_text_count": {
         "placeholders": {
-            "current": { "type": "int" },
-            "max": { "type": "int" }
+            "current": {
+                "type": "int"
+            },
+            "max": {
+                "type": "int"
+            }
         }
     },
     "deck_editor_page_deck_clear_all_button_text": "CLEAR ALL",

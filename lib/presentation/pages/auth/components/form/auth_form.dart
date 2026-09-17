@@ -34,8 +34,8 @@ class AuthForm extends HookConsumerWidget {
         AuthHeader(mode: mode.value),
         const UiGap.l(),
         AppTextField(
-          labelText: l10n.auth_page_emailLabel,
-          hintText: l10n.auth_page_emailHint,
+          labelText: l10n.auth_page_email_label,
+          hintText: l10n.auth_page_email_hint,
           controller: emailController,
           keyboardType: TextInputType.emailAddress,
           prefixIcon: Icon(
@@ -45,8 +45,8 @@ class AuthForm extends HookConsumerWidget {
         ),
         const UiGap.m(),
         AppTextField(
-          labelText: l10n.auth_page_passwordLabel,
-          hintText: l10n.auth_page_passwordHint,
+          labelText: l10n.auth_page_password_label,
+          hintText: l10n.auth_page_password_hint,
           controller: passwordController,
           obscureText: true,
           prefixIcon: Icon(
@@ -68,8 +68,8 @@ class AuthForm extends HookConsumerWidget {
           child: AuthButtonLabel(
             isLoading: isLoading,
             text: switch (mode.value) {
-              AuthMode.signUp => l10n.auth_page_buttonSignUp,
-              AuthMode.signIn => l10n.auth_page_buttonSignIn,
+              AuthMode.signUp => l10n.auth_page_button_sign_up,
+              AuthMode.signIn => l10n.auth_page_button_sign_in,
             },
           ),
         ),
@@ -78,8 +78,8 @@ class AuthForm extends HookConsumerWidget {
           onPressed: isLoading ? null : () => mode.value = mode.value.toggled,
           child: Text(
             switch (mode.value) {
-              AuthMode.signUp => l10n.auth_page_toggleToSignIn,
-              AuthMode.signIn => l10n.auth_page_toggleToSignUp,
+              AuthMode.signUp => l10n.auth_page_toggle_to_sign_in,
+              AuthMode.signIn => l10n.auth_page_toggle_to_sign_up,
             },
             style: TextStyle(color: theme.brandSecondary),
           ),

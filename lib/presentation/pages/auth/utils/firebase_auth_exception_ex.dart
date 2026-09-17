@@ -9,29 +9,29 @@ String resolveAuthErrorMessage({
   return switch (error) {
     FirebaseAuthException() => error.toAuthErrorMessage(l10n),
     AuthActionFailure.googleSignInCanceled =>
-      l10n.auth_page_errorGoogleCanceled,
+      l10n.auth_page_error_google_canceled,
     AuthActionFailure.githubSignInCanceled =>
-      l10n.auth_page_errorGithubCanceled,
-    _ => l10n.auth_page_defaultErrorMessage,
+      l10n.auth_page_error_github_canceled,
+    _ => l10n.auth_page_default_error_message,
   };
 }
 
 extension FirebaseAuthExceptionEx on FirebaseAuthException {
   String toAuthErrorMessage(AppLocalizations l10n) {
     return switch (code) {
-      'invalid-email' => l10n.auth_page_errorInvalidEmail,
-      'user-disabled' => l10n.auth_page_errorUserDisabled,
+      'invalid-email' => l10n.auth_page_error_invalid_email,
+      'user-disabled' => l10n.auth_page_error_user_disabled,
       'user-not-found' ||
       'wrong-password' ||
-      'invalid-credential' => l10n.auth_page_errorInvalidCredential,
-      'email-already-in-use' => l10n.auth_page_errorEmailAlreadyInUse,
-      'weak-password' => l10n.auth_page_errorWeakPassword,
-      'operation-not-allowed' => l10n.auth_page_errorOperationNotAllowed,
+      'invalid-credential' => l10n.auth_page_error_invalid_credential,
+      'email-already-in-use' => l10n.auth_page_error_email_already_in_use,
+      'weak-password' => l10n.auth_page_error_weak_password,
+      'operation-not-allowed' => l10n.auth_page_error_operation_not_allowed,
       'account-exists-with-different-credential' =>
-        l10n.auth_page_errorAccountExistsWithDifferentCredential,
-      'google-sign-in-canceled' => l10n.auth_page_errorGoogleCanceled,
-      'github-sign-in-canceled' => l10n.auth_page_errorGithubCanceled,
-      _ => l10n.auth_page_errorUnknown(message ?? code),
+        l10n.auth_page_error_account_exists_with_different_credential,
+      'google-sign-in-canceled' => l10n.auth_page_error_google_canceled,
+      'github-sign-in-canceled' => l10n.auth_page_error_github_canceled,
+      _ => l10n.auth_page_error_unknown(message ?? code),
     };
   }
 }
