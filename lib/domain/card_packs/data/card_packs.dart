@@ -25,6 +25,7 @@ export 'virus_pack.dart';
 
 /// パック識別子。ドロップテーブルやショップの抽選対象に使う想定。
 enum CardPackTypes {
+  all,
   basic,
   command,
   virus,
@@ -39,6 +40,7 @@ enum CardPackTypes {
 
 /// パック種別 -> 収録カード定義。
 const Map<CardPackTypes, List<CardDefinition>> cardPacks = {
+  CardPackTypes.all: allCardDefinitions,
   CardPackTypes.basic: basicPack,
   CardPackTypes.command: commandPack,
   CardPackTypes.virus: virusPack,
@@ -53,6 +55,10 @@ const Map<CardPackTypes, List<CardDefinition>> cardPacks = {
 
 /// パック種別 -> CardPack インスタンスのマップ
 final Map<CardPackTypes, CardPack> cardPacksTypes = {
+  CardPackTypes.all: CardPack(
+    packName: 'All Packs',
+    cardDefIds: allCardDefinitions.map((card) => card.cardDefId).toList(),
+  ),
   CardPackTypes.basic: CardPack(
     packName: 'Basic Pack',
     cardDefIds: basicPack.map((card) => card.cardDefId).toList(),
