@@ -2,6 +2,7 @@ import 'package:dereruministic/domain/game_system/value_objects/game_step_event.
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_animation_notifier.dart';
+import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_played_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_cost_calculated_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_end_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_game_start_notifier.dart';
@@ -70,8 +71,12 @@ class StepEventExecutor {
         {}
       case GameStepEventStatusEffectChanged():
         {}
-      case GameStepEventCardPlayed():
-        {}
+      case GameStepEventCardPlayed(:final playerId):
+        {
+          if (id != playerId) return;
+          ref.read(displayedCardPlayedProvider.notifier).apply();
+          await _awaitAnimation();
+        }
       case GameStepEventCardExhausted():
         {}
       case GameStepEventDeckRestored():
