@@ -79,6 +79,21 @@ extension GameStateEx on GameState {
     (gameCard) => gameCard.instanceId == instanceId,
   );
 
+  GameCard? findPlayedCardInAllZone({
+    required PlayerId playerId,
+    required GameCardInstanceId instanceId,
+  }) {
+    for (final zone in CardZone.values) {
+      final card = findGameCardInZone(
+        playerId: playerId,
+        instanceId: instanceId,
+        zone: zone,
+      );
+      if (card != null) return card;
+    }
+    return null;
+  }
+
   GameCard? findGameCardInZone({
     required PlayerId playerId,
     required GameCardInstanceId instanceId,
