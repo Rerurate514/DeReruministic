@@ -33,6 +33,7 @@ void main() {
   const guardId = CardDefinitionId(value: 'guard');
   const exhaustStrikeId = CardDefinitionId(value: 'exhaust_strike');
   const expensiveStrikeId = CardDefinitionId(value: 'expensive_strike');
+  const lethalStrikeId = CardDefinitionId(value: 'lethal_strike');
   const conditionalTrueStrikeId = CardDefinitionId(
     value: 'conditional_true_strike',
   );
@@ -100,6 +101,21 @@ void main() {
     states: [],
   );
 
+  const lethalStrike = CardDefinition(
+    cardDefId: lethalStrikeId,
+    name: 'Lethal Strike',
+    baseCost: 1,
+    effects: [
+      CardEffectsDetails(
+        cardEffect: CardEffects.damage(
+          amount: 25,
+          target: CardTargetTypes.enemy,
+        ),
+      ),
+    ],
+    states: [],
+  );
+
   const conditionalTrueStrike = CardDefinition(
     cardDefId: conditionalTrueStrikeId,
     name: 'Conditional Strike',
@@ -145,6 +161,7 @@ void main() {
     guard,
     exhaustStrike,
     expensiveStrike,
+    lethalStrike,
     conditionalTrueStrike,
     conditionalFalseStrike,
   ];
@@ -204,6 +221,90 @@ void main() {
       (success.state.taskQueue.first as GameTaskInteractiveWrapper).task,
       isA<InteractiveGameTaskMainPhase>(),
     );
+  }
+
+  ApplyActionResultSuccess applySuccess(
+    GameFlowUsecase usecase,
+    ApplyActionResultSuccess current,
+    GameActions action,
+  ) {
+    final result = usecase.applyAction(
+      current: current.state,
+      action: action,
+    );
+
+    expect(result, isA<ApplyActionResultSuccess>());
+    return result as ApplyActionResultSuccess;
+  }
+
+  GameActionsId nextActionId(String prefix, int sequenceNumber) {
+    return GameActionsId(value: '${prefix}_$sequenceNumber');
+  }
+
+  ApplyActionResultSuccess playAllPossibleCardsOrEndTurn(
+    GameFlowUsecase usecase,
+    ApplyActionResultSuccess current,
+  ) {
+    var latest = current;
+
+    while (latest.state.phase.battlePhase != BattlePhase.battleEnd) {
+      final currentTask = latest.state.taskQueue.firstOrNull;
+      if (currentTask is GameTaskInteractiveWrapper &&
+          currentTask.task is InteractiveGameTaskSelectOverflowDiscard) {
+        final task =
+            currentTask.task as InteractiveGameTaskSelectOverflowDiscard;
+        final targetPlayer = latest.state.players[task.targetPlayerId]!;
+        final selectedCardIds = targetPlayer.hand
+            .take(task.overflowCount)
+            .map((card) => card.instanceId)
+            .toList();
+        final sequenceNumber = latest.state.metadata.actionSequenceNumber + 1;
+        latest = applySuccess(
+          usecase,
+          latest,
+          GameActions.selectOverflowDiscards(
+            id: nextActionId('overflow_discard', sequenceNumber),
+            actionSequenceNumber: sequenceNumber,
+            playerId: task.targetPlayerId,
+            selectedCardInstanceIds: selectedCardIds,
+          ),
+        );
+        continue;
+      }
+
+      final activePlayerId = latest.state.phase.turnOwner;
+      final activePlayer = latest.state.players[activePlayerId]!;
+      final playableCard = activePlayer.hand.firstWhereOrNull(
+        (card) => card.currentCost <= activePlayer.currentCost,
+      );
+
+      if (playableCard == null) {
+        final sequenceNumber = latest.state.metadata.actionSequenceNumber + 1;
+        return applySuccess(
+          usecase,
+          latest,
+          GameActions.turnEnd(
+            id: nextActionId('turn_end', sequenceNumber),
+            actionSequenceNumber: sequenceNumber,
+            playerId: activePlayerId,
+          ),
+        );
+      }
+
+      final sequenceNumber = latest.state.metadata.actionSequenceNumber + 1;
+      latest = applySuccess(
+        usecase,
+        latest,
+        GameActions.playCard(
+          id: nextActionId('play', sequenceNumber),
+          actionSequenceNumber: sequenceNumber,
+          playerId: activePlayerId,
+          instanceId: playableCard.instanceId,
+        ),
+      );
+    }
+
+    return latest;
   }
 
   group('GameFlowUsecase 統合テスト', () {
@@ -688,6 +789,110 @@ void main() {
           .single;
 
       expect(state.phase.battlePhase, BattlePhase.battleEnd);
+      expect(gameEnded.endResult, GameEndResult.winnerDecided);
+      expect(gameEnded.winnerPlayerId, winnerPlayerId);
+      expect(gameEnded.loserPlayerId, surrenderPlayerId);
+      expect(gameEnded.reason, DefeatReason.surrender);
+    });
+
+    test('ゲーム開始後に双方がカードを使い切るまで行動し、ターンを進めてGameEndまで到達する', () {
+      final usecase = createContainer().read(gameFlowUsecaseProvider);
+      var current = startGame(
+        usecase,
+        playerADeck: const [
+          lethalStrikeId,
+          lethalStrikeId,
+          lethalStrikeId,
+          lethalStrikeId,
+          lethalStrikeId,
+          lethalStrikeId,
+        ],
+        playerBDeck: const [
+          lethalStrikeId,
+          lethalStrikeId,
+          lethalStrikeId,
+          lethalStrikeId,
+          lethalStrikeId,
+          lethalStrikeId,
+        ],
+      );
+      final firstTurnPlayerId = current.state.phase.turnOwner;
+      var observedTurnSwitch = false;
+      var observedCardPlay = false;
+      var observedGameEnd = false;
+      var actionCount = 0;
+
+      while (current.state.phase.battlePhase != BattlePhase.battleEnd) {
+        current = playAllPossibleCardsOrEndTurn(usecase, current);
+        actionCount++;
+
+        observedCardPlay =
+            observedCardPlay ||
+            current.steps.whereType<GameStepEventCardMovedZone>().isNotEmpty;
+        observedTurnSwitch =
+            observedTurnSwitch ||
+            current.steps
+                .whereType<GameStepEventTurnOwnerSwitched>()
+                .isNotEmpty;
+        observedGameEnd =
+            observedGameEnd ||
+            current.steps.whereType<GameStepEventGameEnded>().isNotEmpty;
+
+        expect(actionCount, lessThan(100));
+      }
+
+      final state = current.state;
+      final gameEnded = current.steps
+          .whereType<GameStepEventGameEnded>()
+          .single;
+
+      expect(observedCardPlay, isTrue);
+      expect(observedTurnSwitch, isTrue);
+      expect(observedGameEnd, isTrue);
+      expect(state.phase.battlePhase, BattlePhase.battleEnd);
+      expect(state.turnCount, greaterThan(0));
+      expect(state.phase.turnOwner, firstTurnPlayerId);
+      expect(gameEnded.endResult, GameEndResult.winnerDecided);
+      expect(gameEnded.winnerPlayerId, firstTurnPlayerId);
+      expect(gameEnded.reason, DefeatReason.hpZero);
+    });
+
+    test('surrenderは手札破棄選択中でも適用されて相手勝利でGameEndになる', () {
+      final usecase = createContainer().read(gameFlowUsecaseProvider);
+      final startResult = startGame(usecase);
+      final startState = startResult.state;
+      final surrenderPlayerId = startState.phase.turnOwner;
+      final winnerPlayerId = surrenderPlayerId == playerAId
+          ? playerBId
+          : playerAId;
+      final overflowState = startState.copyWith(
+        taskQueue: QueueList.from([
+          GameTask.interactive(
+            InteractiveGameTask.selectOverflowDiscard(
+              targetPlayerId: surrenderPlayerId,
+              overflowCount: 1,
+            ),
+          ),
+          ...startState.taskQueue,
+        ]),
+      );
+
+      final result = usecase.applyAction(
+        current: overflowState,
+        action: GameActions.surrender(
+          id: const GameActionsId(value: 'surrender_during_overflow'),
+          actionSequenceNumber: overflowState.metadata.actionSequenceNumber + 1,
+          playerId: surrenderPlayerId,
+        ),
+      );
+
+      expect(result, isA<ApplyActionResultSuccess>());
+      final success = result as ApplyActionResultSuccess;
+      final gameEnded = success.steps
+          .whereType<GameStepEventGameEnded>()
+          .single;
+
+      expect(success.state.phase.battlePhase, BattlePhase.battleEnd);
       expect(gameEnded.endResult, GameEndResult.winnerDecided);
       expect(gameEnded.winnerPlayerId, winnerPlayerId);
       expect(gameEnded.loserPlayerId, surrenderPlayerId);
