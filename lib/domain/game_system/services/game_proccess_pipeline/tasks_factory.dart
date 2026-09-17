@@ -23,6 +23,7 @@ class TasksFactory {
     const .auto(.switchTurnOwner()),
     const .auto(.cardDraw()),
     const .auto(.checkHandLimit()),
+    const .auto(.calculateCost()),
     const .auto(.advanceToMainPhase()),
     const .interactive(
       .mainPhase(),
