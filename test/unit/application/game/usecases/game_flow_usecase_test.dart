@@ -644,7 +644,15 @@ void main() {
 
       final result = usecase.applyAction(current: state, action: action);
 
-      expect(result, expected);
+      expect(result, isA<ApplyActionResultSuccess>());
+      expect(
+        (result as ApplyActionResultSuccess).state,
+        expected.state.copyWith(
+          metadata: expected.state.metadata.copyWith(
+            actionSequenceNumber: action.actionSequenceNumber,
+          ),
+        ),
+      );
       verify(
         mockTaskServiceFactory.handleSurrenderAction(
           state: state,
@@ -682,7 +690,15 @@ void main() {
 
       final result = usecase.applyAction(current: state, action: action);
 
-      expect(result, expected);
+      expect(result, isA<ApplyActionResultSuccess>());
+      expect(
+        (result as ApplyActionResultSuccess).state,
+        expected.state.copyWith(
+          metadata: expected.state.metadata.copyWith(
+            actionSequenceNumber: action.actionSequenceNumber,
+          ),
+        ),
+      );
       verify(
         mockTaskServiceFactory.handleSurrenderAction(
           state: state,

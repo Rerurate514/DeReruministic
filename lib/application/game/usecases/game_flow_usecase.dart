@@ -45,10 +45,18 @@ class GameFlowUsecase {
       );
     }
 
-    if (action is GameActionGameStart) return _handleGameStart(action);
+    if (action is GameActionGameStart) {
+      return _applyActionSequence(
+        _handleGameStart(action),
+        action,
+      );
+    }
 
     if (action is GameActionSurrender) {
-      return _handleSurrenderAction(current!, action);
+      return _applyActionSequence(
+        _handleSurrenderAction(current!, action),
+        action,
+      );
     }
 
     final currentTask = current!.taskQueue.firstOrNull;
@@ -75,9 +83,30 @@ class GameFlowUsecase {
 
           if (result is! ApplyActionResultSuccess) return result;
 
-          return _processQueue(result.state, steps: result.steps);
+          return _applyActionSequence(
+            _processQueue(result.state, steps: result.steps),
+            action,
+          );
         }
     }
+  }
+
+  ApplyActionResult _applyActionSequence(
+    ApplyActionResult result,
+    GameActions action,
+  ) {
+    return switch (result) {
+      ApplyActionResultSuccess(:final state, :final steps) =>
+        ApplyActionResult.success(
+          state: state.copyWith(
+            metadata: state.metadata.copyWith(
+              actionSequenceNumber: action.actionSequenceNumber,
+            ),
+          ),
+          steps: steps,
+        ),
+      final ApplyActionResultFailure failure => failure,
+    };
   }
 
   ApplyActionResult _processQueue(

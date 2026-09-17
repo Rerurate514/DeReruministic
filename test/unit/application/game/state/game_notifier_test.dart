@@ -72,6 +72,7 @@ void main() async {
       expect(state, isNotNull);
       expect(state?.players[dummyPlayer.id]!.maxHp, equals(100));
       expect(state?.players[dummyEnemy.id]!.maxHp, equals(100));
+      expect(state?.metadata.actionSequenceNumber, equals(1));
 
       final queue = container.read(stepEventQueueProvider);
 
@@ -134,6 +135,7 @@ void main() async {
       expect(updatedState.phase.turnOwner, equals(expectedNextPlayerId));
       expect(updatedState.turnCount, equals(1));
       expect(updatedState.phase.battlePhase, equals(BattlePhase.mainPhase));
+      expect(updatedState.metadata.actionSequenceNumber, equals(2));
     });
 
     // test(
