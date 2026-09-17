@@ -84,7 +84,9 @@ class _HandComponentState extends ConsumerState<HandComponent>
 
     ref.listen(displayedCardDrawnAnimationProvider, (_, req) {
       if (req == null) return;
-      unawaited(_play(req.targets));
+      final handIds = hand.map((c) => c.instanceId).toSet();
+      final targets = req.targets.where(handIds.contains).toList();
+      unawaited(_play(targets));
     });
 
     return SizedBox(
