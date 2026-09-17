@@ -1,5 +1,4 @@
 import 'package:dereruministic/application/game/state/game_notifier.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/l10n/app_localizations.dart';
 import 'package:dereruministic/presentation/components/app_highlight_transparency_button.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
@@ -15,23 +14,20 @@ class DiscardDecideButton extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context);
 
-    final overflowTriggered = ref.watch(
-      displayedOverflowCheckTriggeredProvider,
-    );
+    final overflowCount = ref.watch(displayedOverflowCheckTriggeredProvider);
     final selectOverflowDiscards = ref.watch(selectDiscardCardsProvider);
 
-    if (overflowTriggered == null ||
-        overflowTriggered is! GameStepEventOverflowCheckTriggered) {
-      return const SizedBox.shrink();
-    }
+    if (overflowCount == null) return const SizedBox.shrink();
 
-    final isEnabled =
-        overflowTriggered.overflowCount <= selectOverflowDiscards.length;
+    final isEnabled = overflowCount <= selectOverflowDiscards.length;
 
     return AppHighlightTransparencyButton(
       width: 150,
       onPressed: isEnabled
           ? () async {
+              ref
+                  .read(displayedOverflowCheckTriggeredProvider.notifier)
+                  .clear();
               ref.read(selectDiscardCardsProvider.notifier).clear();
               ref.read(animationSignalProvider.notifier).done();
               await ref

@@ -1,4 +1,3 @@
-import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/components/overflowed_discard_area/in_discard_cards.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/select_discard_cards_notifier.dart';
@@ -15,18 +14,12 @@ class OverflowedDiscardArea extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final theme = context.themePalette;
 
-    final overflowTriggered = ref.watch(
-      displayedOverflowCheckTriggeredProvider,
-    );
-    if (overflowTriggered == null ||
-        overflowTriggered is! GameStepEventOverflowCheckTriggered) {
-      return const SizedBox.shrink();
-    }
+    final overflowCount = ref.watch(displayedOverflowCheckTriggeredProvider);
+    if (overflowCount == null) return const SizedBox.shrink();
 
     return DragTarget<InCardHandArea>(
       onWillAcceptWithDetails: (details) {
-        return ref.read(selectDiscardCardsProvider).length <
-            overflowTriggered.overflowCount;
+        return ref.read(selectDiscardCardsProvider).length < overflowCount;
       },
       onAcceptWithDetails: (details) {
         ref
