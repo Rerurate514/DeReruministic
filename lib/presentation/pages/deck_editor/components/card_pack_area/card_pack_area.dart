@@ -1,4 +1,5 @@
 import 'package:dereruministic/l10n/app_localizations.dart';
+import 'package:dereruministic/presentation/pages/deck_editor/components/card_pack_area/card_pack_selector.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/components/card_pack_area/card_packs_component.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/components/card_pack_area/in_deck_card_remove_area.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ class CardPackArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
+
     return Column(
       crossAxisAlignment: .start,
       children: [
@@ -27,7 +29,7 @@ class CardPackArea extends StatelessWidget {
                 ),
               ],
             ),
-            const Text('ここにセレクタ'),
+            const CardPackSelector(),
           ],
         ),
         const SizedBox(
