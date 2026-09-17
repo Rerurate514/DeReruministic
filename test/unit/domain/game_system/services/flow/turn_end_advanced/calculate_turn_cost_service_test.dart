@@ -74,7 +74,6 @@ void main() {
     test('計算後のコストが最大コストを超える場合は最大コストに丸められる', () {
       final playerAState = buildPlayer(
         id: playerAId,
-        currentCost: 3,
         maxCost: 5,
         buffs: const [
           BuffState(buff: BuffTypes.costRecovery, stack: 10),
@@ -96,7 +95,6 @@ void main() {
     test('計算後のコストが0未満になる場合は0に丸められる', () {
       final playerAState = buildPlayer(
         id: playerAId,
-        currentCost: 3,
         maxCost: 10,
         debuffs: const [
           DebuffState(debuff: DebuffTypes.costReduction, stack: 7),
