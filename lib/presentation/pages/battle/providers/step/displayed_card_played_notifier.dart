@@ -22,4 +22,6 @@ class DisplayedCardPlayedNotifier extends _$DisplayedCardPlayedNotifier {
 
     state = step.first;
   }
+
+  void clear() => state = null;
 }

@@ -71,11 +71,9 @@ class StepEventExecutor {
         {}
       case GameStepEventStatusEffectChanged():
         {}
-      case GameStepEventCardPlayed(:final playerId):
+      case GameStepEventCardPlayed():
         {
-          if (id != playerId) return;
           ref.read(displayedCardPlayedProvider.notifier).apply();
-          await _awaitAnimation();
         }
       case GameStepEventCardExhausted():
         {}
