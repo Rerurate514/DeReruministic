@@ -68,3 +68,5 @@ app.*.map.json
 
 # intlファイル
 **/app_localizations*.dart
+# Widget Preview related
+.widget_preview/
