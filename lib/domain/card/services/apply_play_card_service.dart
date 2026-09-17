@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/game_system/services/game_proccess_pipelin
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'apply_play_card_service.g.dart';
@@ -65,6 +66,12 @@ class ApplyPlayCardService {
 
     final newState = state.pushTasks(GameStateTaskPushPos.head, tasks);
 
-    return ApplyActionResult.success(state: newState, steps: []);
+    final step = GameStepEvent.cardPlayed(
+      playerId: cardUsedPlayer.id,
+      instanceId: usedCard.instanceId,
+      cardDefId: usedCard.definition.cardDefId,
+    );
+
+    return ApplyActionResult.success(state: newState, steps: [step]);
   }
 }
