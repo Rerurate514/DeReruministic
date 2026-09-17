@@ -5,6 +5,7 @@ import 'package:dereruministic/presentation/pages/battle/battle_page.dart';
 import 'package:dereruministic/presentation/pages/deck_editor/deck_editor_page.dart';
 import 'package:dereruministic/presentation/pages/home/home_page.dart';
 import 'package:dereruministic/presentation/pages/lobby/lobby_page.dart';
+import 'package:dereruministic/presentation/pages/result/result_page.dart';
 import 'package:dereruministic/presentation/pages/room/room_page.dart';
 import 'package:dereruministic/presentation/router/router_paths.dart';
 import 'package:flutter/material.dart';
@@ -77,7 +78,7 @@ GoRouter router(Ref ref) {
       GoRoute(
         path: RouterPaths.result.path,
         name: RouterPaths.result.name,
-        builder: (context, state) => const Placeholder(),
+        builder: (context, state) => const ResultPage(),
       ),
     ],
   );
