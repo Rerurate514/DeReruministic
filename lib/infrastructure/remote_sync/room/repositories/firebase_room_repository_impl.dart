@@ -20,6 +20,12 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
   DocumentReference<Map<String, dynamic>> _getRoomRef(RoomId roomId) =>
       firestore.collection(Collections.rooms).doc(roomId.value);
 
+  CollectionReference<Map<String, dynamic>> _getGameActionsRef(RoomId roomId) =>
+      firestore
+          .collection(Collections.rooms)
+          .doc(roomId.value)
+          .collection(Collections.gameActions);
+
   @override
   Future<Room> createRoom({required PlayerId hostPlayerId}) async {
     final room = Room(
@@ -169,20 +175,21 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
   }
 
   @override
-  Future<void> endGame({required RoomId roomId}) {
+  Future<void> endGame({required RoomId roomId}) async {
     final roomRef = _getRoomRef(roomId);
+    final gameActionRef = _getGameActionsRef(roomId);
+
+    final snapshot = await gameActionRef.get();
 
     return firestore.runTransaction((transaction) async {
-      final snapshot = await transaction.get(roomRef);
-
-      if (!snapshot.exists) {
-        return;
-      }
-
       transaction.update(roomRef, {
         'status': RoomStatus.ready.name,
         'updatedAt': FieldValue.serverTimestamp(),
       });
+
+      for (final doc in snapshot.docs) {
+        transaction.delete(doc.reference);
+      }
     });
   }
 }

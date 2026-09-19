@@ -57,9 +57,11 @@ class BattleSession extends HookConsumerWidget {
           if (n) {
             await ref.read(endGameUseCaseProvider).execute(roomId: room.roomId);
             if (!context.mounted) return;
-            await context.pushNamed(
+            context.goNamed(
               RouterPaths.room.name,
-              pathParameters: {'roomId': room.roomId.value},
+              pathParameters: {
+                'roomId': room.roomId.value,
+              },
             );
           }
         }),
