@@ -167,4 +167,22 @@ class FirebaseRoomRepositoryImpl implements IRoomRepository {
 
     return RoomDto.fromJson(data).toEntity();
   }
+
+  @override
+  Future<void> endGame({required RoomId roomId}) {
+    final roomRef = _getRoomRef(roomId);
+
+    return firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(roomRef);
+
+      if (!snapshot.exists) {
+        return;
+      }
+
+      transaction.update(roomRef, {
+        'status': RoomStatus.ready.name,
+        'updatedAt': FieldValue.serverTimestamp(),
+      });
+    });
+  }
 }

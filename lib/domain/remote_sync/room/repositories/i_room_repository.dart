@@ -18,4 +18,5 @@ abstract interface class IRoomRepository {
     required PlayerId playerId,
   });
   Future<Room?> getRoom({required RoomId roomId});
+  Future<void> endGame({required RoomId roomId});
 }

@@ -1,4 +1,5 @@
 import 'package:dereruministic/application/game/state/game_notifier.dart';
+import 'package:dereruministic/application/remote_sync/in_game/usecases/end_game_usecase.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/domain/remote_sync/room/entities/room.dart';
 import 'package:dereruministic/presentation/pages/battle/components/battle_page_stack.dart';
@@ -52,8 +53,15 @@ class BattleSession extends HookConsumerWidget {
 
     useEffect(() {
       final subs = [
-        ref.listenManual(battleEndNavigationCoordinatorProvider, (_, n) {
-          if (n) context.goNamed(RouterPaths.result.name, pathParameters: {});
+        ref.listenManual(battleEndNavigationCoordinatorProvider, (_, n) async {
+          if (n) {
+            await ref.read(endGameUseCaseProvider).execute(roomId: room.roomId);
+            if (!context.mounted) return;
+            await context.pushNamed(
+              RouterPaths.room.name,
+              pathParameters: {'roomId': room.roomId.value},
+            );
+          }
         }),
         ref.listenManual(eventStepDriverProvider(player.id), (_, _) {}),
         ref.listenManual(animationSignalProvider, (_, _) {}),
