@@ -30,6 +30,11 @@ class ResolveTriggeredCardStatesService {
     CardStatesTriggerType.decayExpired => throw UnimplementedError(),
     //TODO(medium): ここかく
     CardStatesTriggerType.countdownExpired => throw UnimplementedError(),
+    CardStatesTriggerType.retainCostReduced => _applyRetain(
+      state,
+      playerId,
+      instanceId,
+    ),
   };
 
   ApplyActionResult _applyRecycle(
@@ -51,5 +56,41 @@ class ResolveTriggeredCardStatesService {
       zoneTo: CardZone.exhausted,
     );
     return ApplyActionResult.success(state: newState, steps: [step]);
+  }
+
+  ApplyActionResult _applyRetain(
+    GameState state,
+    PlayerId playerId,
+    GameCardInstanceId instanceId,
+  ) {
+    final targetPlayer = state.players[playerId];
+    if (targetPlayer == null) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: .playerNotFound,
+      );
+    }
+
+    final updatedPlayer = targetPlayer.copyWith(
+      hand: targetPlayer.hand.map((card) {
+        if (card.instanceId != instanceId) return card;
+
+        return card.copyWith(
+          currentCost: card.currentCost > 0 ? card.currentCost - 1 : 0,
+        );
+      }).toList(),
+    );
+
+    final newState = state.copyWith(
+      players: {
+        ...state.players,
+        playerId: updatedPlayer,
+      },
+    );
+
+    return ApplyActionResult.success(
+      state: newState,
+      steps: [],
+    );
   }
 }

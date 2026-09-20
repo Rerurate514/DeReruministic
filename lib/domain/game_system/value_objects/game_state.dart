@@ -224,6 +224,11 @@ extension GameStateEx on GameState {
               triggerType: CardStatesTriggerType.decayExpired,
             ));
 
+          case CardRuntimeStateRetainState():
+            triggeredCards.add((
+              card: card,
+              triggerType: CardStatesTriggerType.retainCostReduced,
+            ));
           default:
             break;
         }
