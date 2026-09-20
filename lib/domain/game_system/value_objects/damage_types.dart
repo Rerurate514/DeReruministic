@@ -1,0 +1,4 @@
+enum DamageTypes {
+  normal,
+  piercing,
+}

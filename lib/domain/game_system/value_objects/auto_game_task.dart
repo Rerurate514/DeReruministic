@@ -5,6 +5,7 @@ import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_states_trigger_type.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
+import 'package:dereruministic/domain/game_system/value_objects/damage_types.dart';
 import 'package:dereruministic/domain/player/converter/player_id_converter.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
@@ -23,6 +24,12 @@ sealed class AutoGameTask with _$AutoGameTask {
   const factory AutoGameTask.calculateCost() = AutoGameTaskCalculateCost;
   const factory AutoGameTask.advanceToMainPhase() =
       AutoGameTaskAdvanceToMainPhase;
+
+  const factory AutoGameTask.applyDamage({
+    @PlayerIdConverter() required PlayerId targetPlayerId,
+    required int damage,
+    required DamageTypes type,
+  }) = AutoGameTaskApplyDamage;
 
   // ターン終了パイプライン
   const factory AutoGameTask.turnEndPhaseChanged() =
