@@ -18,27 +18,18 @@ class DiscardDecideButton extends ConsumerWidget {
     final selectOverflowDiscards = ref.watch(selectDiscardCardsProvider);
 
     if (overflowCount == null) return const SizedBox.shrink();
-
-    final isEnabled = overflowCount <= selectOverflowDiscards.length;
-
     return AppHighlightTransparencyButton(
       width: 150,
-      onPressed: isEnabled
-          ? () async {
-              ref
-                  .read(displayedOverflowCheckTriggeredProvider.notifier)
-                  .clear();
-              ref.read(selectDiscardCardsProvider.notifier).clear();
-              ref.read(animationSignalProvider.notifier).done();
-              await ref
-                  .read(gameProvider.notifier)
-                  .selectOverflowDiscards(
-                    selectOverflowDiscards
-                        .map((card) => card.instanceId)
-                        .toList(),
-                  );
-            }
-          : null,
+      onPressed: () async {
+        ref.read(displayedOverflowCheckTriggeredProvider.notifier).clear();
+        ref.read(selectDiscardCardsProvider.notifier).clear();
+        ref.read(animationSignalProvider.notifier).done();
+        await ref
+            .read(gameProvider.notifier)
+            .selectOverflowDiscards(
+              selectOverflowDiscards.map((card) => card.instanceId).toList(),
+            );
+      },
       child: Text(l10n.battle_page_discard_decide_button_text),
     );
   }

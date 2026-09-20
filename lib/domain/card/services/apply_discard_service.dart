@@ -1,7 +1,9 @@
+import 'package:dereruministic/domain/card/constants/card_constants.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
+import 'package:dereruministic/domain/game_system/value_objects/damage_types.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -26,18 +28,33 @@ class ApplyDiscardService {
       );
     }
 
-    final task = GameTask.auto(
-      .moveCardZone(
-        playerId: action.playerId,
-        instanceIds: action.selectedCardInstanceIds,
-        zoneFrom: CardZone.hand,
-        zoneTo: CardZone.graveyard,
-      ),
-    );
+    final overflowCount = player.hand.length - player.maxHandSize;
+    final isOverflowed = overflowCount != 0;
 
-    final newState = state.popTask().pushTask(
+    final tasks = <GameTask>[
+      if (action.selectedCardInstanceIds.isNotEmpty)
+        .auto(
+          .moveCardZone(
+            playerId: action.playerId,
+            instanceIds: action.selectedCardInstanceIds,
+            zoneFrom: CardZone.hand,
+            zoneTo: CardZone.graveyard,
+          ),
+        ),
+
+      if (isOverflowed)
+        .auto(
+          .applyDamage(
+            targetPlayerId: player.id,
+            damage: overflowCount * CardConstants.overflowCardDamage,
+            type: DamageTypes.piercing,
+          ),
+        ),
+    ];
+
+    final newState = state.popTask().pushTasks(
       GameStateTaskPushPos.head,
-      task,
+      tasks,
     );
 
     return ApplyActionResult.success(state: newState, steps: []);
