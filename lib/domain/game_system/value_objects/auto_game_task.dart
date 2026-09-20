@@ -34,8 +34,6 @@ sealed class AutoGameTask with _$AutoGameTask {
   // ターン終了パイプライン
   const factory AutoGameTask.turnEndPhaseChanged() =
       AutoGameTaskTurnEndPhaseChanged;
-  const factory AutoGameTask.updateCardCounter() =
-      AutoGameTaskUpdateCardCounter;
   // const factory AutoGameTask.resolveTimedCardEffects() =
   //     AutoGameTaskResolveTimedCardEffects;
   // const factory AutoGameTask.resolveTurnEndStatus() =
@@ -77,9 +75,8 @@ sealed class AutoGameTask with _$AutoGameTask {
     required CardStates cardState,
   }) = AutoGameTaskApplyCardState;
 
-  const factory AutoGameTask.resolveEndPhaseCardStates({
-    @PlayerIdConverter() required PlayerId playerId,
-  }) = AutoGameTaskResolveEndPhaseCardStates;
+  const factory AutoGameTask.resolveEndPhaseCardStates() =
+      AutoGameTaskResolveEndPhaseCardStates;
 
   const factory AutoGameTask.resolveCardStatesTrigger({
     @PlayerIdConverter() required PlayerId playerId,

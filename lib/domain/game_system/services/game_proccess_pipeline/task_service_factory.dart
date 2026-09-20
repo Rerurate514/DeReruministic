@@ -21,7 +21,6 @@ import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanc
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/turn_end_phase_changed_event_service.dart';
-import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/update_card_counter_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/tasks_factory.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
@@ -38,7 +37,6 @@ TaskServiceFactory taskServiceFactory(Ref ref) {
     turnEndPhaseChangedEventService: ref.read(
       turnEndPhaseChangedEventServiceProvider,
     ),
-    updateCardCounterService: ref.read(updateCardCounterServiceProvider),
     defeatCheckService: ref.read(defeatCheckServiceProvider),
     gameStartDrawCardsService: ref.read(gameStartDrawCardsServiceProvider),
     advancedToTurnStartService: ref.read(advancedToTurnStartServiceProvider),
@@ -72,7 +70,6 @@ TaskServiceFactory taskServiceFactory(Ref ref) {
 class TaskServiceFactory {
   const TaskServiceFactory({
     required this.turnEndPhaseChangedEventService,
-    required this.updateCardCounterService,
     required this.defeatCheckService,
     required this.gameStartDrawCardsService,
     required this.advancedToTurnStartService,
@@ -97,7 +94,6 @@ class TaskServiceFactory {
   });
 
   final TurnEndPhaseChangedEventService turnEndPhaseChangedEventService;
-  final UpdateCardCounterService updateCardCounterService;
   final DefeatCheckService defeatCheckService;
   final GameStartDrawCardsService gameStartDrawCardsService;
   final AdvancedToTurnStartService advancedToTurnStartService;
@@ -151,9 +147,6 @@ class TaskServiceFactory {
       turnEndPhaseChangedEventService.execute(
         state,
       ),
-    AutoGameTaskUpdateCardCounter() => updateCardCounterService.execute(
-      state,
-    ),
     AutoGameTaskDefeatCheck() => defeatCheckService.execute(
       state,
     ),
@@ -191,10 +184,9 @@ class TaskServiceFactory {
         instanceId: instanceId,
         cardState: cardState,
       ),
-    AutoGameTaskResolveEndPhaseCardStates(:final playerId) =>
+    AutoGameTaskResolveEndPhaseCardStates() =>
       resolveEndPhaseCardStatesService.execute(
         state: state,
-        playerId: playerId,
       ),
     AutoGameTaskResolveCardStatesTrigger(
       :final playerId,

@@ -19,6 +19,7 @@ class TasksFactory {
   ]);
 
   static QueueList<GameTask> get turnEndTasks => QueueList.from([
+    const .auto(.resolveEndPhaseCardStates()),
     const .auto(.turnEndPhaseChanged()),
     const .auto(.switchTurnOwner()),
     const .auto(.cardDraw()),
