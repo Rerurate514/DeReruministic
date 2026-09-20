@@ -196,7 +196,7 @@
     "battle_page_shield_system_detail_1": "シールドはHPの右に表記されています。シールド数値の上限はありません。これは自分のターンが開始する際に0に毎回リセットされます。シールドの数値を超えてダメージを受けた場合は、超過分がHPのダメージとして計算されます。",
     "battle_page_shield_system_detail_2": "シールドの時に20ダメージを受けると、10ダメージはシールドが肩代わりして、HPは10ダメージを受ける。",
     "battle_page_card_state_system_title": "CARD STATES",
-    "battle_page_card_state_system_details_1": "カード状態はカードのメイン効果とは別に、は定義、発動される効果です。\n以下にその効果を示します。",
+    "battle_page_card_state_system_details_1": "カード状態はカードのメイン効果とは別に、定義され、発動される効果です。\n以下にその効果を示します。",
     "battle_page_card_state_system_exhaust_title": "焼却",
     "battle_page_card_state_system_exhaust_details": "使用すると山札や捨て札に戻らず、この戦闘中は使用不可になります。",
     "battle_page_card_state_system_undiscardable_title": "停滞",
