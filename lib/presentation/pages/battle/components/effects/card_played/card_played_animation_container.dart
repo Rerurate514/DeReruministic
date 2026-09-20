@@ -2,9 +2,12 @@ import 'dart:async';
 
 import 'package:dereruministic/application/auth/state/current_user_profile.dart';
 import 'package:dereruministic/application/game/state/game_notifier.dart';
+import 'package:dereruministic/domain/card/entities/card_definition.dart';
+import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/presentation/pages/battle/components/card/game_card_component.dart';
+import 'package:dereruministic/presentation/pages/battle/components/effects/card_played/conceal/conceal_card.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_played_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -74,9 +77,11 @@ class CardPlayedAnimationContainer extends HookConsumerWidget {
 
     return AnimatedBuilder(
       animation: animation,
-      child: GameCardComponent(
-        gameCard: gameCard,
-      ),
+      child: gameCard.definition.hasState<CardStateConceal>() && !isMe
+          ? const ConcealCard()
+          : GameCardComponent(
+              gameCard: gameCard,
+            ),
       builder: (context, child) {
         final dy = 1 - animation.value;
         return FractionalTranslation(

@@ -168,6 +168,9 @@
     "battle_page_sp_banner_game_end_data_link_disconnected_text": "DATA LINK DISCONNECTED",
     "battle_page_discard_overflowed_card": "DISCARD OVERFLOWED CARD /// 捨て札を選択する",
     "battle_page_in_deck_card_remove_card_area_text": "このカードを捨て札から除外する",
+    "battle_page_conceal_card_text": "Concealed",
+    "battle_page_conceal_card_detail": "Unknown Card",
+    "battle_page_conceal_card_cost": "XXX",
     "battle_page_in_discarded_card_text": "DISCARDED",
     "battle_page_overflow_count": "残り: {current_selected_count} / {overflow_count}",
     "@battle_page_overflow_count": {
@@ -206,7 +209,7 @@
     "battle_page_card_state_system_overload_title": "反動",
     "battle_page_card_state_system_overload_details": "使用後、次のターン獲得できるコストが数値分減ります。",
     "battle_page_card_state_system_conceal_title": "潜伏",
-    "battle_page_card_state_system_conceal_details": "(未実装) 相手に使ったカードが分からないようにします。",
+    "battle_page_card_state_system_conceal_details": "相手に使ったカードが分からないようにします。",
     "battle_page_card_state_system_retain_title": "保留",
     "battle_page_card_state_system_retain_details": "(未実装) 手札に一定ターン留めておくことで、コストが軽減されます。",
     "battle_page_card_state_system_engrave_title": "刻印",
