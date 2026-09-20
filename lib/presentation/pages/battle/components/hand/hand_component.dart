@@ -5,7 +5,6 @@ import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/pages/battle/components/hand/hand_animation_container.dart';
-import 'package:dereruministic/presentation/pages/battle/providers/animation_signal_notifier.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/player_ui_state_provider.dart';
 import 'package:dereruministic/presentation/pages/battle/providers/step/displayed_card_drawn_animation_notifier.dart';
 import 'package:dereruministic/presentation/widgets/ui_size_fade_no_clip.dart';
@@ -33,7 +32,6 @@ class _HandComponentState extends ConsumerState<HandComponent>
   Future<void> _play(List<GameCardInstanceId> handIds) async {
     final targets = handIds.where((id) => !_revealed.contains(id)).toList();
     if (targets.isEmpty) {
-      ref.read(animationSignalProvider.notifier).done();
       return;
     }
     try {
@@ -47,7 +45,6 @@ class _HandComponentState extends ConsumerState<HandComponent>
           _revealed.addAll(targets);
           _targets = const [];
         });
-        ref.read(animationSignalProvider.notifier).done();
       }
     }
   }
