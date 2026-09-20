@@ -27,7 +27,11 @@ class ResolveTriggeredCardStatesService {
       instanceId,
     ),
     //TODO(medium): ここかく
-    CardStatesTriggerType.decayExpired => throw UnimplementedError(),
+    CardStatesTriggerType.decayExpired => _applyDecay(
+      state,
+      playerId,
+      instanceId,
+    ),
     //TODO(medium): ここかく
     CardStatesTriggerType.countdownExpired => throw UnimplementedError(),
     CardStatesTriggerType.retainCostReduced => _applyRetain(
@@ -56,6 +60,31 @@ class ResolveTriggeredCardStatesService {
       zoneTo: CardZone.exhausted,
     );
     return ApplyActionResult.success(state: newState, steps: [step]);
+  }
+
+  ApplyActionResult _applyDecay(
+    GameState state,
+    PlayerId playerId,
+    GameCardInstanceId instanceId,
+  ) {
+    final newState = state.moveCardZone(
+      playerId: playerId,
+      instanceId: instanceId,
+      from: CardZone.hand,
+      to: CardZone.exhausted,
+    );
+
+    final step = GameStepEvent.cardMovedZone(
+      playerId: playerId,
+      instanceIds: [instanceId],
+      zoneFrom: CardZone.hand,
+      zoneTo: CardZone.exhausted,
+    );
+
+    return ApplyActionResult.success(
+      state: newState,
+      steps: [step],
+    );
   }
 
   ApplyActionResult _applyRetain(
