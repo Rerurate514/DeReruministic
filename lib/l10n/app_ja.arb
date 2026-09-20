@@ -171,6 +171,7 @@
     "battle_page_conceal_card_text": "Concealed",
     "battle_page_conceal_card_detail": "Unknown Card",
     "battle_page_conceal_card_cost": "XXX",
+    "battle_page_in_undiscarded_card_text": "UNDISCARDABLE",
     "battle_page_in_discarded_card_text": "DISCARDED",
     "battle_page_overflow_count": "残り: {current_selected_count} / {overflow_count}",
     "@battle_page_overflow_count": {

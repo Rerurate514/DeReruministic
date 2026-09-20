@@ -36,7 +36,7 @@ class OverflowHandCardWrapper extends ConsumerWidget {
         gameCard.definition.hasState<CardStateUndiscardable>() && isDiscardFlow;
 
     final label = isUndiscard
-        ? 'Undiscardable'
+        ? l10n.battle_page_in_undiscarded_card_text
         : l10n.battle_page_in_discarded_card_text;
 
     return AppCardCrossPaint(
