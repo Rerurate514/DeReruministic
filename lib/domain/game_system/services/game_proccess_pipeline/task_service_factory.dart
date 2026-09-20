@@ -5,7 +5,6 @@ import 'package:dereruministic/domain/card/services/consume_card_service.dart';
 import 'package:dereruministic/domain/card/services/consume_cost_service.dart';
 import 'package:dereruministic/domain/card/services/move_card_zone_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_card_effects_service.dart';
-import 'package:dereruministic/domain/card/services/resolve_end_phase_card_states_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_play_card_states_service.dart';
 import 'package:dereruministic/domain/card/services/resolve_triggered_card_states_service.dart';
 import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
@@ -19,6 +18,7 @@ import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanc
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/card_draw_start_turn_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/check_hand_limit_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/resolve_end_phase_card_states_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/turn_end_phase_changed_event_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/tasks_factory.dart';
