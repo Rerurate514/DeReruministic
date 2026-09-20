@@ -27,6 +27,7 @@ class ResolveDrawEffectService {
     required CardEffectDraw effect,
     required PlayerId sourcePlayerId,
   }) {
+    final currentState = state;
     final targetPlayer = state.players[sourcePlayerId];
 
     if (targetPlayer == null) {
@@ -36,8 +37,13 @@ class ResolveDrawEffectService {
       );
     }
 
+    final newState = currentState.pushTask(
+      GameStateTaskPushPos.head,
+      const .auto(.checkHandLimit()),
+    );
+
     return cardDrawService.execute(
-      state,
+      newState,
       targetPlayer.id,
       effect.amount,
     );
