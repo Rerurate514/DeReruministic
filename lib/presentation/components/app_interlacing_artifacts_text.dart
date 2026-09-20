@@ -1,11 +1,12 @@
 import 'package:animated_text_effects/animated_text_effects.dart';
+import 'package:dereruministic/presentation/painter/scanline_painter.dart';
 import 'package:dereruministic/presentation/theme/app_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class UiInterlacingArtifactsText extends HookWidget {
-  const UiInterlacingArtifactsText({
+class AppInterlacingArtifactsText extends HookWidget {
+  const AppInterlacingArtifactsText({
     required this.text,
     super.key,
     this.fontSize = 48.0,
@@ -83,7 +84,7 @@ class UiInterlacingArtifactsText extends HookWidget {
             ],
           ),
         ),
-        Positioned.fill(
+        const Positioned.fill(
           child: CustomPaint(
             painter: ScanlinePainter(),
           ),
@@ -91,22 +92,4 @@ class UiInterlacingArtifactsText extends HookWidget {
       ],
     );
   }
-}
-
-class ScanlinePainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.black.withAlpha(50)
-      ..strokeWidth = 1.0;
-
-    const lineSpacing = 3.0;
-
-    for (double y = 0; y < size.height; y += lineSpacing) {
-      canvas.drawLine(Offset(0, y), Offset(size.width, y), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
