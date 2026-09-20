@@ -4,6 +4,7 @@ import 'package:dereruministic/domain/card/value_objects/card_runtime_states.dar
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/converter/game_task_queue_converter.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
+import 'package:dereruministic/domain/game_system/value_objects/card_states_trigger_type.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
@@ -194,6 +195,42 @@ extension GameStateEx on GameState {
     return copyWith(
       players: {...players, playerId: updatedPlayer},
     );
+  }
+
+  List<({GameCard card, CardStatesTriggerType triggerType})>
+  findTriggeredGameCardByCardStates({
+    required PlayerId playerId,
+  }) {
+    final player = players[playerId];
+    if (player == null) return [];
+
+    final triggeredCards =
+        <({GameCard card, CardStatesTriggerType triggerType})>[];
+
+    for (final card in player.hand) {
+      for (final state in card.runtimeStates) {
+        switch (state) {
+          case CardRuntimeStateCountdownState(:final remainingTurns)
+              when remainingTurns == 0:
+            triggeredCards.add((
+              card: card,
+              triggerType: CardStatesTriggerType.countdownExpired,
+            ));
+
+          case CardRuntimeStateDecayState(:final remainingTurns)
+              when remainingTurns == 0:
+            triggeredCards.add((
+              card: card,
+              triggerType: CardStatesTriggerType.decayExpired,
+            ));
+
+          default:
+            break;
+        }
+      }
+    }
+
+    return triggeredCards;
   }
 }
 
