@@ -103,6 +103,7 @@ class _HandComponentState extends ConsumerState<HandComponent>
             child: HandAnimationContainer(
               key: ValueKey(card.instanceId),
               gameCard: card,
+              playerId: widget.player.id,
               animation: _animationFor(card.instanceId),
             ),
           );
@@ -113,6 +114,7 @@ class _HandComponentState extends ConsumerState<HandComponent>
             child: HandAnimationContainer(
               key: ValueKey(card.instanceId),
               gameCard: card,
+              playerId: widget.player.id,
               animation: const AlwaysStoppedAnimation(0),
             ),
           );
