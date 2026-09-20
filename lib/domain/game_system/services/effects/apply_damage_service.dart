@@ -46,12 +46,19 @@ class ApplyDamageService {
       hp: (targetPlayer.hp - hpDamage).clamp(0, targetPlayer.maxHp),
     );
 
-    final newState = state.copyWith(
-      players: {
-        ...state.players,
-        newPlayer.id: newPlayer,
-      },
-    );
+    final newState = state
+        .copyWith(
+          players: {
+            ...state.players,
+            newPlayer.id: newPlayer,
+          },
+        )
+        .pushTask(
+          GameStateTaskPushPos.head,
+          const .auto(
+            .defeatCheck(),
+          ),
+        );
 
     return ApplyActionResult.success(
       state: newState,
