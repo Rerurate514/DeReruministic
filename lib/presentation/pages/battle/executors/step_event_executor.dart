@@ -85,7 +85,6 @@ class StepEventExecutor {
           ref
               .read(displayedCardDrawnAnimationProvider.notifier)
               .apply(instanceIds);
-          await _awaitAnimation();
         }
       case GameStepEventCardMovedZone():
         {
