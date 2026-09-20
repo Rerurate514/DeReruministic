@@ -233,6 +233,10 @@
     "battle_page_card_state_system_decay_details": "(未実装) 指定ターン数が経過すると、手札から消滅（焼却）します。",
     "battle_page_card_state_system_infect_title": "感染",
     "battle_page_card_state_system_infect_details": "(未実装) 使用するとカードが使用されるのではなく、相手の山札の一番下に混ざります。",
+    "battle_page_surrender_system_title": "SURRENDER SYSTEM",
+    "battle_page_surrender_system_detail_1": "この戦闘はいつでも降参することができます。",
+    "battle_page_surrender_system_detail_2": "この要素をタップすると、降参するかのダイアログが出現します。",
+
     "battle_page_card_runtime_states_recycle_text": "{remaining_count}/{max_count}",
     "@battle_page_card_runtime_states_recycle_text": {
         "placeholders": {
