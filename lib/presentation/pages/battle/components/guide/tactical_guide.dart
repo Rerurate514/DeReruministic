@@ -3,6 +3,7 @@ import 'package:dereruministic/presentation/pages/battle/components/guide/guide_
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/card_cost_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/card_states_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/hp_system_description.dart';
+import 'package:dereruministic/presentation/pages/battle/components/guide/guides/overflow_card_discard_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/player_cost_system_description.dart';
 import 'package:dereruministic/presentation/pages/battle/components/guide/guides/shield_system_description.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class TacticalGuide extends StatelessWidget {
               ShieldSystemDescription(),
               PlayerCostSystemDescription(),
               CardCostSystemDescription(),
+              OverflowCardDiscardSystemDescription(),
               CardStateSystemDescription(),
             ],
           ),
