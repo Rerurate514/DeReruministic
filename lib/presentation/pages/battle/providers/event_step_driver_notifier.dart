@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dereruministic/application/game/state/consumed_step_event_notifier.dart';
 import 'package:dereruministic/application/game/state/step_event_queue_notifier.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:dereruministic/presentation/pages/battle/executors/step_event_executor.dart';
@@ -39,13 +40,14 @@ class EventStepDriverNotifier extends _$EventStepDriverNotifier {
         final queue = ref.read(stepEventQueueProvider);
         if (queue.isEmpty) return;
 
-        await ref
-            .read(stepEventExecutorProvider(_playerId!))
-            .execute(queue.first);
+        final step = queue.first;
+
+        await ref.read(stepEventExecutorProvider(_playerId!)).execute(step);
 
         if (!ref.mounted) return;
 
         ref.read(stepEventQueueProvider.notifier).consumeCurrentStep();
+        ref.read(consumedStepEventProvider.notifier).notify(step);
       }
     } finally {
       _running = false;
