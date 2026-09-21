@@ -37,6 +37,7 @@ class TasksFactory {
     required Iterable<CardEffects> validEffects,
     required Iterable<CardStates> states,
     ActionTargets? target,
+    bool isConsumeCost = true,
   }) => QueueList.from([
     .auto(
       .consumeCard(
@@ -44,12 +45,13 @@ class TasksFactory {
         instanceId: instanceId,
       ),
     ),
-    .auto(
-      .consumePlayCost(
-        playerId: cardUsedPlayerId,
-        instanceId: instanceId,
+    if (isConsumeCost)
+      .auto(
+        .consumePlayCost(
+          playerId: cardUsedPlayerId,
+          instanceId: instanceId,
+        ),
       ),
-    ),
     ...validEffects.map(
       (effect) => .auto(
         .applyCardEffect(
