@@ -50,7 +50,6 @@ class ApplyPlayCardService {
         .where(
           (details) => checkCardConditionService.execute(
             state: state,
-            action: action,
             condition: details.effectCondition,
             cardUsedPlayer: cardUsedPlayer,
           ),

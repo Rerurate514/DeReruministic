@@ -1,6 +1,5 @@
 import 'package:dereruministic/domain/card/services/conditions/conditions_resolver.dart';
 import 'package:dereruministic/domain/card/value_objects/effect_conditions.dart';
-import 'package:dereruministic/domain/game_system/entities/game_actions.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/player/value_objects/player_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -23,7 +22,6 @@ class CheckCardConditionService {
 
   bool execute({
     required GameState state,
-    required GameActionPlayCard action,
     required EffectConditions? condition,
     required PlayerState cardUsedPlayer,
   }) {
