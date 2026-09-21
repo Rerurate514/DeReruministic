@@ -28,7 +28,11 @@ class ApplyDiscardService {
       );
     }
 
-    final overflowCount = player.hand.length - player.maxHandSize;
+    final overflowCount =
+        player.hand.length -
+        player.maxHandSize -
+        action.selectedCardInstanceIds.length;
+
     final isOverflowed = overflowCount != 0;
 
     final tasks = <GameTask>[
