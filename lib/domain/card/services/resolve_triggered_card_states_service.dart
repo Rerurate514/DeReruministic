@@ -1,9 +1,11 @@
+import 'package:dereruministic/domain/card/services/states/apply_countdown_state_service.dart';
+import 'package:dereruministic/domain/card/services/states/apply_decay_state_service.dart';
+import 'package:dereruministic/domain/card/services/states/apply_recycle_state_service.dart';
+import 'package:dereruministic/domain/card/services/states/apply_retain_state_service.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/apply_action_result.dart';
 import 'package:dereruministic/domain/game_system/value_objects/card_states_trigger_type.dart';
-import 'package:dereruministic/domain/game_system/value_objects/card_zone.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
-import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -11,115 +13,53 @@ part 'resolve_triggered_card_states_service.g.dart';
 
 @riverpod
 ResolveTriggeredCardStatesService resolveTriggeredCardStatesService(Ref ref) {
-  return ResolveTriggeredCardStatesService();
+  return ResolveTriggeredCardStatesService(
+    applyRecycleStateService: ref.watch(applyRecycleStateServiceProvider),
+    applyRetainStateService: ref.watch(applyRetainStateServiceProvider),
+    applyDecayStateService: ref.watch(applyDecayStateServiceProvider),
+    applyCountdownStateService: ref.watch(applyCountdownStateServiceProvider),
+  );
 }
 
 class ResolveTriggeredCardStatesService {
+  ResolveTriggeredCardStatesService({
+    required this.applyRecycleStateService,
+    required this.applyRetainStateService,
+    required this.applyDecayStateService,
+    required this.applyCountdownStateService,
+  });
+
+  final ApplyRecycleStateService applyRecycleStateService;
+  final ApplyRetainStateService applyRetainStateService;
+  final ApplyDecayStateService applyDecayStateService;
+  final ApplyCountdownStateService applyCountdownStateService;
+
   ApplyActionResult execute({
     required GameState state,
     required PlayerId playerId,
     required GameCardInstanceId instanceId,
     required CardStatesTriggerType triggerType,
   }) => switch (triggerType) {
-    CardStatesTriggerType.recycleExpired => _applyRecycle(
+    CardStatesTriggerType.recycleExpired => applyRecycleStateService.execute(
       state,
       playerId,
       instanceId,
     ),
-    //TODO(medium): ここかく
-    CardStatesTriggerType.decayExpired => _applyDecay(
+    CardStatesTriggerType.decayExpired => applyDecayStateService.execute(
       state,
       playerId,
       instanceId,
     ),
-    //TODO(medium): ここかく
-    CardStatesTriggerType.countdownExpired => throw UnimplementedError(),
-    CardStatesTriggerType.retainCostReduced => _applyRetain(
+    CardStatesTriggerType.countdownExpired =>
+      applyCountdownStateService.execute(
+        state,
+        playerId,
+        instanceId,
+      ),
+    CardStatesTriggerType.retainCostReduced => applyRetainStateService.execute(
       state,
       playerId,
       instanceId,
     ),
   };
-
-  ApplyActionResult _applyRecycle(
-    GameState state,
-    PlayerId playerId,
-    GameCardInstanceId instanceId,
-  ) {
-    final newState = state.moveCardZone(
-      playerId: playerId,
-      instanceId: instanceId,
-      from: CardZone.playArea,
-      to: CardZone.exhausted,
-    );
-
-    final step = GameStepEvent.cardMovedZone(
-      playerId: playerId,
-      instanceIds: [instanceId],
-      zoneFrom: CardZone.playArea,
-      zoneTo: CardZone.exhausted,
-    );
-    return ApplyActionResult.success(state: newState, steps: [step]);
-  }
-
-  ApplyActionResult _applyDecay(
-    GameState state,
-    PlayerId playerId,
-    GameCardInstanceId instanceId,
-  ) {
-    final newState = state.moveCardZone(
-      playerId: playerId,
-      instanceId: instanceId,
-      from: CardZone.hand,
-      to: CardZone.exhausted,
-    );
-
-    final step = GameStepEvent.cardMovedZone(
-      playerId: playerId,
-      instanceIds: [instanceId],
-      zoneFrom: CardZone.hand,
-      zoneTo: CardZone.exhausted,
-    );
-
-    return ApplyActionResult.success(
-      state: newState,
-      steps: [step],
-    );
-  }
-
-  ApplyActionResult _applyRetain(
-    GameState state,
-    PlayerId playerId,
-    GameCardInstanceId instanceId,
-  ) {
-    final targetPlayer = state.players[playerId];
-    if (targetPlayer == null) {
-      return ApplyActionResult.failure(
-        state: state,
-        reason: .playerNotFound,
-      );
-    }
-
-    final updatedPlayer = targetPlayer.copyWith(
-      hand: targetPlayer.hand.map((card) {
-        if (card.instanceId != instanceId) return card;
-
-        return card.copyWith(
-          currentCost: card.currentCost > 0 ? card.currentCost - 1 : 0,
-        );
-      }).toList(),
-    );
-
-    final newState = state.copyWith(
-      players: {
-        ...state.players,
-        playerId: updatedPlayer,
-      },
-    );
-
-    return ApplyActionResult.success(
-      state: newState,
-      steps: [],
-    );
-  }
 }
