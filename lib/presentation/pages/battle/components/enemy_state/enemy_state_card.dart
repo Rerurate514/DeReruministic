@@ -1,7 +1,9 @@
 import 'package:dereruministic/domain/player/entities/player.dart';
 import 'package:dereruministic/presentation/components/app_card.dart';
 import 'package:dereruministic/presentation/pages/battle/components/common/state_status.dart';
+import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_buffs.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_cost.dart';
+import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_debuffs.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_hp.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_name.dart';
 import 'package:dereruministic/presentation/pages/battle/components/enemy_state/enemy_state_shield.dart';
@@ -43,9 +45,8 @@ class EnemyStateCard extends StatelessWidget {
                 enemy: enemy,
               ),
             ),
-            // EnemyStateBuffs(enemy: enemy),
-            // EnemyStateDebuffs(enemy: enemy),
-            // EnemyStateCost(enemy: enemy),
+            EnemyStateBuffs(enemy: enemy),
+            EnemyStateDebuffs(enemy: enemy),
           ],
         ),
       ),

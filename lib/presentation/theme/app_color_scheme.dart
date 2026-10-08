@@ -38,6 +38,18 @@ sealed class AppColorScheme extends ThemeExtension<AppColorScheme>
     required Color debuff,
     required Color poison,
     required Color recoil,
+    required Color buffAttack,
+    required Color buffRegeneration,
+    required Color buffCostRecovery,
+    required Color buffGuardBoost,
+    required Color buffReflect,
+    required Color buffCombo,
+    required Color buffDrawBoost,
+    required Color debuffAttack,
+    required Color debuffPoison,
+    required Color debuffVulnerable,
+    required Color debuffCostReduction,
+    required Color debuffDrawReduction,
 
     // 6. カード領域 (Card Zones)
     required Color zoneDeck,
