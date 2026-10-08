@@ -18,7 +18,10 @@ import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanc
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/card_draw_start_turn_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/check_hand_limit_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/remove_shield_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/reset_combo_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/resolve_end_phase_card_states_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/resolve_poison_service.dart';
+import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/resolve_regen_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/switch_turn_owner_service.dart';
 import 'package:dereruministic/domain/game_system/services/flows/turn_end_advanced/turn_end_phase_changed_event_service.dart';
 import 'package:dereruministic/domain/game_system/services/game_proccess_pipeline/tasks_factory.dart';
@@ -44,6 +47,9 @@ TaskServiceFactory taskServiceFactory(Ref ref) {
     advanceToMainPhaseService: ref.read(advanceToMainPhaseServiceProvider),
     switchTurnOwnerService: ref.read(switchTurnOwnerServiceProvider),
     removeShieldService: ref.read(removeShieldServiceProvider),
+    resolveRegenService: ref.read(resolveRegenServiceProvider),
+    resolvePoisonService: ref.read(resolvePoisonServiceProvider),
+    resetComboService: ref.read(resetComboServiceProvider),
     cardDrawStartTurnService: ref.read(cardDrawStartTurnServiceProvider),
     checkHandLimitService: ref.read(checkHandLimitServiceProvider),
     applyPlayCardService: ref.read(applyPlayCardServiceProvider),
@@ -77,6 +83,9 @@ class TaskServiceFactory {
     required this.advanceToMainPhaseService,
     required this.switchTurnOwnerService,
     required this.removeShieldService,
+    required this.resolveRegenService,
+    required this.resolvePoisonService,
+    required this.resetComboService,
     required this.cardDrawStartTurnService,
     required this.checkHandLimitService,
     required this.applyPlayCardService,
@@ -101,6 +110,9 @@ class TaskServiceFactory {
   final AdvanceToMainPhaseService advanceToMainPhaseService;
   final SwitchTurnOwnerService switchTurnOwnerService;
   final RemoveShieldService removeShieldService;
+  final ResolveRegenService resolveRegenService;
+  final ResolvePoisonService resolvePoisonService;
+  final ResetComboService resetComboService;
   final CardDrawStartTurnService cardDrawStartTurnService;
   final CheckHandLimitService checkHandLimitService;
   final ApplyPlayCardService applyPlayCardService;
@@ -160,6 +172,9 @@ class TaskServiceFactory {
     AutoGameTaskRemoveShield() => removeShieldService.execute(
       state,
     ),
+    AutoGameTaskResolveRegen() => resolveRegenService.execute(state),
+    AutoGameTaskResolvePoison() => resolvePoisonService.execute(state),
+    AutoGameTaskResetCombo() => resetComboService.execute(state),
     AutoGameTaskCardDraw() => cardDrawStartTurnService.execute(
       state,
     ),

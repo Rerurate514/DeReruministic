@@ -51,14 +51,9 @@ sealed class AutoGameTask with _$AutoGameTask {
 
   // ターン開始フェーズ
   const factory AutoGameTask.removeShield() = AutoGameTaskRemoveShield;
-  // const factory AutoGameTask.resolveRegen() = AutoGameTaskResolveRegen;
-  // const factory AutoGameTask.resolvePoison() = AutoGameTaskResolvePoison;
-  // (defeatCheck を再利用)
-  // (calculateCost を再利用)
-  // const factory AutoGameTask.applyGuardBoost() = AutoGameTaskApplyGuardBoost;
-  // const factory AutoGameTask.resetCombo() = AutoGameTaskResetCombo;
-  // const factory AutoGameTask.triggerOnTurnStartEvent() =
-  //     AutoGameTaskTriggerOnTurnStartEvent;
+  const factory AutoGameTask.resolveRegen() = AutoGameTaskResolveRegen;
+  const factory AutoGameTask.resolvePoison() = AutoGameTaskResolvePoison;
+  const factory AutoGameTask.resetCombo() = AutoGameTaskResetCombo;
 
   // ドローフェーズ
   const factory AutoGameTask.cardDraw() = AutoGameTaskCardDraw;

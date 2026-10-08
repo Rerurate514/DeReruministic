@@ -164,6 +164,9 @@ extension PlayerStateCardEx on PlayerState {
 }
 
 extension PlayerStateBuffDebuffEx on PlayerState {
+  PlayerState removeBuff(BuffTypes buff) =>
+      copyWith(buffs: buffs.where((state) => state.buff != buff).toList());
+
   PlayerState applyBuffState(BuffTypes buff, int stacks) {
     if (stacks <= 0) return this;
 
