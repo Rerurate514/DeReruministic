@@ -15,6 +15,7 @@ extension BuffTypesDamageModifier on BuffTypes {
   };
 
   bool get isIncomingDamageModifier => switch (this) {
+    BuffTypes.guardBoost => true,
     _ => false,
   };
 }

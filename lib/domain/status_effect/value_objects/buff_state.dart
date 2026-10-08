@@ -35,6 +35,7 @@ extension BuffStateDamageModifier on BuffState {
 
   int modifyIncomingDamage(int currentDamage) {
     return switch (buff) {
+      BuffTypes.guardBoost => currentDamage - stack,
       _ => currentDamage,
     };
   }

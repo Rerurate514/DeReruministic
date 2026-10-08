@@ -122,7 +122,7 @@ void main() {
       expect(result, 13);
     });
 
-    test('防御側のダメージ非修正buff(guardBoostなど)は無視される', () {
+    test('防御側のguardBoostで被ダメージが減少する', () {
       final attacker = buildPlayer(id: attackerId);
       final defender = buildPlayer(
         id: defenderId,
@@ -135,7 +135,7 @@ void main() {
         defender: defender,
       );
 
-      expect(result, 10);
+      expect(result, 5);
     });
 
     test('複数の修正が組み合わさった場合、順番通りに適用される', () {
