@@ -5,7 +5,10 @@ import 'package:dereruministic/domain/game_system/value_objects/apply_action_res
 import 'package:dereruministic/domain/game_system/value_objects/damage_types.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_step_event.dart';
+import 'package:dereruministic/domain/game_system/value_objects/game_task.dart';
 import 'package:dereruministic/domain/player/value_objects/player_id.dart';
+import 'package:dereruministic/domain/player/value_objects/player_state.dart';
+import 'package:dereruministic/domain/status_effect/value_objects/buff_types.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'apply_damage_service.g.dart';
@@ -21,6 +24,8 @@ class ApplyDamageService {
     required PlayerId targetPlayerId,
     required int damage,
     required DamageTypes type,
+    PlayerId? sourcePlayerId,
+    bool isReflectDamage = false,
   }) {
     final targetPlayer = state.players[targetPlayerId];
 
@@ -46,6 +51,12 @@ class ApplyDamageService {
       hp: (targetPlayer.hp - hpDamage).clamp(0, targetPlayer.maxHp),
     );
 
+    final reflectDamage = _calculateReflectDamage(
+      targetPlayer.getBuffStack(BuffTypes.reflect),
+      damage,
+      sourcePlayerId,
+      isReflectDamage,
+    );
     final newState = state
         .copyWith(
           players: {
@@ -53,16 +64,27 @@ class ApplyDamageService {
             newPlayer.id: newPlayer,
           },
         )
-        .pushTask(
-          GameStateTaskPushPos.head,
-          const .auto(
-            .defeatCheck(),
-          ),
-        );
+        .pushTasks(GameStateTaskPushPos.head, [
+          if (reflectDamage != null)
+            GameTask.auto(
+              .applyDamage(
+                targetPlayerId: sourcePlayerId!,
+                damage: reflectDamage,
+                type: DamageTypes.normal,
+                isReflectDamage: true,
+              ),
+            ),
+          const GameTask.auto(.defeatCheck()),
+        ]);
 
     return ApplyActionResult.success(
       state: newState,
       steps: [
+        if (isReflectDamage)
+          GameStepEvent.reflectDamageApplied(
+            targetPlayerId: targetPlayerId,
+            amount: damage,
+          ),
         GameStepEvent.damageDealt(
           targetPlayerId: newPlayer.id,
           shieldDamage: shieldDamage,
@@ -70,5 +92,15 @@ class ApplyDamageService {
         ),
       ],
     );
+  }
+
+  int? _calculateReflectDamage(
+    int reflectStack,
+    int damage,
+    PlayerId? sourcePlayerId,
+    bool isReflectDamage,
+  ) {
+    if (sourcePlayerId == null || isReflectDamage || damage <= 0) return null;
+    return reflectStack > 0 ? reflectStack : null;
   }
 }

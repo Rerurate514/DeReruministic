@@ -29,6 +29,8 @@ sealed class AutoGameTask with _$AutoGameTask {
     @PlayerIdConverter() required PlayerId targetPlayerId,
     required int damage,
     required DamageTypes type,
+    @PlayerIdConverter() PlayerId? sourcePlayerId,
+    @Default(false) bool isReflectDamage,
   }) = AutoGameTaskApplyDamage;
 
   // ターン終了パイプライン

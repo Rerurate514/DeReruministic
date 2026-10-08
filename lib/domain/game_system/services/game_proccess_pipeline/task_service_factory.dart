@@ -133,12 +133,16 @@ class TaskServiceFactory {
       :final targetPlayerId,
       :final damage,
       :final type,
+      :final sourcePlayerId,
+      :final isReflectDamage,
     ) =>
       applyDamageService.execute(
         state: state,
         targetPlayerId: targetPlayerId,
         damage: damage,
         type: type,
+        sourcePlayerId: sourcePlayerId,
+        isReflectDamage: isReflectDamage,
       ),
     AutoGameTaskAdvanceToMainPhase() => advanceToMainPhaseService.execute(
       state,

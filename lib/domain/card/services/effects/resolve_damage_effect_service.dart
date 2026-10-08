@@ -55,6 +55,7 @@ class ResolveDamageEffectService {
         targetPlayerId: targetPlayer.id,
         damage: finalDamage,
         type: DamageTypes.normal,
+        sourcePlayerId: sourcePlayerId,
       ),
     );
 
