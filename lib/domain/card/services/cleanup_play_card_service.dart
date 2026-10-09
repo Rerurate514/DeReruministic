@@ -38,6 +38,10 @@ class CleanupPlayCardService {
       );
     }
 
+    if (card.definition.hasState<CardStateInfect>()) {
+      return _moveToOpponentDeck(state, playerId, card);
+    }
+
     if (card.definition.hasState<CardStateRecycle>()) {
       if (card.isRecycleActive) {
         return _enqueueMove(state, playerId, instanceId, CardZone.deck);
@@ -56,6 +60,39 @@ class CleanupPlayCardService {
     }
 
     return _enqueueMove(state, playerId, instanceId, CardZone.graveyard);
+  }
+
+  ApplyActionResult _moveToOpponentDeck(
+    GameState state,
+    PlayerId sourcePlayerId,
+    GameCard card,
+  ) {
+    final sourcePlayer = state.players[sourcePlayerId];
+    final targetPlayer = state.getOtherPlayer(sourcePlayerId);
+    if (sourcePlayer == null || targetPlayer == null) {
+      return ApplyActionResult.failure(
+        state: state,
+        reason: ActionFailureReason.playerNotFound,
+      );
+    }
+
+    final updatedSourcePlayer = sourcePlayer.copyWith(
+      playArea: sourcePlayer.playArea
+          .where((playAreaCard) => playAreaCard.instanceId != card.instanceId)
+          .toList(),
+    );
+    final updatedTargetPlayer = targetPlayer.copyWith(
+      deck: [...targetPlayer.deck, card],
+    );
+    final updatedState = state.copyWith(
+      players: {
+        ...state.players,
+        sourcePlayerId: updatedSourcePlayer,
+        targetPlayer.id: updatedTargetPlayer,
+      },
+    );
+
+    return ApplyActionResult.success(state: updatedState, steps: []);
   }
 
   ApplyActionResult _enqueueMove(
