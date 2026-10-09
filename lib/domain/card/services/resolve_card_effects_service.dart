@@ -39,8 +39,17 @@ class ResolveCardEffectsService {
         effect: effect,
         sourcePlayerId: playerId,
       ),
-      CardEffectDiscard() => throw UnimplementedError(),
-      CardEffectFetchCard() => throw UnimplementedError(),
+      CardEffectDiscard() => effectResolver.resolveDiscardEffectService.execute(
+        state: state,
+        effect: effect,
+        sourcePlayerId: playerId,
+      ),
+      CardEffectFetchCard() =>
+        effectResolver.resolveFetchCardEffectService.execute(
+          state: state,
+          effect: effect,
+          sourcePlayerId: playerId,
+        ),
       CardEffectHeal() => effectResolver.resolveHealEffectService.execute(
         state: state,
         effect: effect,

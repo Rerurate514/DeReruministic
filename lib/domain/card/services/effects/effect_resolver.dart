@@ -1,7 +1,9 @@
 import 'package:dereruministic/domain/card/services/effects/resolve_apply_buff_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_apply_debuff_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_damage_effect_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_discard_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_draw_effect_service.dart';
+import 'package:dereruministic/domain/card/services/effects/resolve_fetch_card_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_grant_cost_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_grant_shield_effect_service.dart';
 import 'package:dereruministic/domain/card/services/effects/resolve_heal_effect_service.dart';
@@ -17,7 +19,11 @@ part 'effect_resolver.g.dart';
 EffectResolver effectResolver(Ref ref) {
   return EffectResolver(
     resolveDamageEffectService: ref.read(resolveDamageEffectServiceProvider),
+    resolveDiscardEffectService: ref.read(resolveDiscardEffectServiceProvider),
     resolveDrawEffectsService: ref.read(resolveDrawEffectServiceProvider),
+    resolveFetchCardEffectService: ref.read(
+      resolveFetchCardEffectServiceProvider,
+    ),
     resolveHealEffectService: ref.read(resolveHealEffectServiceProvider),
     resolveGrantShieldEffectService: ref.read(
       resolveGrantShieldEffectServiceProvider,
@@ -45,7 +51,9 @@ EffectResolver effectResolver(Ref ref) {
 class EffectResolver {
   const EffectResolver({
     required this.resolveDamageEffectService,
+    required this.resolveDiscardEffectService,
     required this.resolveDrawEffectsService,
+    required this.resolveFetchCardEffectService,
     required this.resolveHealEffectService,
     required this.resolveGrantShieldEffectService,
     required this.resolveGrantCostEffectService,
@@ -58,7 +66,9 @@ class EffectResolver {
   });
 
   final ResolveDamageEffectService resolveDamageEffectService;
+  final ResolveDiscardEffectService resolveDiscardEffectService;
   final ResolveDrawEffectService resolveDrawEffectsService;
+  final ResolveFetchCardEffectService resolveFetchCardEffectService;
   final ResolveHealEffectService resolveHealEffectService;
   final ResolveGrantShieldEffectService resolveGrantShieldEffectService;
   final ResolveGrantCostEffectService resolveGrantCostEffectService;
