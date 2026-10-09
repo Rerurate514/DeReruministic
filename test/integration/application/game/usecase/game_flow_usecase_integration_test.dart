@@ -33,7 +33,6 @@ void main() {
   const guardId = CardDefinitionId(value: 'guard');
   const exhaustStrikeId = CardDefinitionId(value: 'exhaust_strike');
   const expensiveStrikeId = CardDefinitionId(value: 'expensive_strike');
-  const lethalStrikeId = CardDefinitionId(value: 'lethal_strike');
   const conditionalTrueStrikeId = CardDefinitionId(
     value: 'conditional_true_strike',
   );
@@ -101,21 +100,6 @@ void main() {
     states: [],
   );
 
-  const lethalStrike = CardDefinition(
-    cardDefId: lethalStrikeId,
-    name: 'Lethal Strike',
-    baseCost: 1,
-    effects: [
-      CardEffectsDetails(
-        cardEffect: CardEffects.damage(
-          amount: 25,
-          target: CardTargetTypes.enemy,
-        ),
-      ),
-    ],
-    states: [],
-  );
-
   const conditionalTrueStrike = CardDefinition(
     cardDefId: conditionalTrueStrikeId,
     name: 'Conditional Strike',
@@ -161,7 +145,6 @@ void main() {
     guard,
     exhaustStrike,
     expensiveStrike,
-    lethalStrike,
     conditionalTrueStrike,
     conditionalFalseStrike,
   ];
@@ -800,20 +783,20 @@ void main() {
       var current = startGame(
         usecase,
         playerADeck: const [
-          lethalStrikeId,
-          lethalStrikeId,
-          lethalStrikeId,
-          lethalStrikeId,
-          lethalStrikeId,
-          lethalStrikeId,
+          strikeId,
+          strikeId,
+          strikeId,
+          strikeId,
+          strikeId,
+          strikeId,
         ],
         playerBDeck: const [
-          lethalStrikeId,
-          lethalStrikeId,
-          lethalStrikeId,
-          lethalStrikeId,
-          lethalStrikeId,
-          lethalStrikeId,
+          strikeId,
+          strikeId,
+          strikeId,
+          strikeId,
+          strikeId,
+          strikeId,
         ],
       );
       final firstTurnPlayerId = current.state.phase.turnOwner;

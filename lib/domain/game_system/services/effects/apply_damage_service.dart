@@ -74,7 +74,6 @@ class ApplyDamageService {
                 isReflectDamage: true,
               ),
             ),
-          const GameTask.auto(.defeatCheck()),
         ]);
 
     return ApplyActionResult.success(

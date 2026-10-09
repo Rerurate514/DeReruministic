@@ -59,7 +59,7 @@ class ResolveDamageEffectService {
       ),
     );
 
-    final newState = state.popTask().pushTask(
+    final newState = state.pushTask(
       GameStateTaskPushPos.head,
       task,
     );
