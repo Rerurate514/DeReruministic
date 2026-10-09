@@ -38,7 +38,7 @@ class ResolvePlayCardStatesService {
         amount,
       ),
       CardStateRecycle() => _applyRecycle(state, playerId, instanceId),
-      CardStateConceal() => _buildNoStep(state), //TODO(medium): このあたり実装する
+      CardStateConceal() => _buildNoStep(state),
       CardStateRetain() => _buildNoStep(state),
       CardStateEngrave() => _buildNoStep(state),
       CardStateChain() => _buildNoStep(state),
