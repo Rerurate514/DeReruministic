@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
+import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
 import 'package:dereruministic/domain/game_system/value_objects/game_state.dart';
@@ -39,6 +40,16 @@ class PlayCardValidator {
     }
 
     if (card.isCountdownActive) {
+      return const ValidationResultFailure(
+        reason: ActionFailureReason.invalidAction,
+      );
+    }
+
+    final chainState = card.definition.states
+        .whereType<CardStateChain>()
+        .firstOrNull;
+    if (chainState != null &&
+        cardUsedPlayer.cardsPlayedThisTurn + 1 != chainState.order) {
       return const ValidationResultFailure(
         reason: ActionFailureReason.invalidAction,
       );

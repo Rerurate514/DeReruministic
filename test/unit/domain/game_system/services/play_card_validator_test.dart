@@ -26,6 +26,14 @@ const countdownCardDef = CardDefinition(
   states: [CardStates.countdown(turns: 2)],
 );
 
+const chainCardDef = CardDefinition(
+  cardDefId: CardDefinitionId(value: 'def_chain'),
+  name: 'Chain',
+  baseCost: 1,
+  effects: [],
+  states: [CardStates.chain(subTypeEffect: 'chain', order: 2)],
+);
+
 void main() {
   const playerId = PlayerId(value: 'player1');
   const otherPlayerId = PlayerId(value: 'player2');
@@ -101,6 +109,49 @@ void main() {
           reason: ActionFailureReason.invalidAction,
         ),
       );
+    });
+
+    test('連携の順番とそのターンの使用枚数が一致しない場合はinvalidActionで失敗する', () {
+      final card = buildCard(instanceId: 'card1', definition: chainCardDef);
+      final player = buildPlayer(id: playerId, hand: [card]);
+      final state = buildState(
+        players: {playerId: player},
+        turnOwner: playerId,
+      );
+
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: playerId,
+        usedCardInstanceId: card.instanceId,
+      );
+
+      expect(
+        result,
+        const ValidationResultFailure(
+          reason: ActionFailureReason.invalidAction,
+        ),
+      );
+    });
+
+    test('連携の順番とそのターンの使用枚数が一致する場合は成功する', () {
+      final card = buildCard(instanceId: 'card1', definition: chainCardDef);
+      final player = buildPlayer(
+        id: playerId,
+        hand: [card],
+        cardsPlayedThisTurn: 1,
+      );
+      final state = buildState(
+        players: {playerId: player},
+        turnOwner: playerId,
+      );
+
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: playerId,
+        usedCardInstanceId: card.instanceId,
+      );
+
+      expect(result, const ValidationResultSuccess());
     });
 
     test('mainPhaseでない場合、invalidPhaseで失敗する', () {

@@ -62,11 +62,17 @@ class ConsumeCardService {
       );
     }
 
-    final newState = state.moveCardZone(
+    final movedState = state.moveCardZone(
       playerId: sourcePlayerId,
       instanceId: instanceId,
       from: CardZone.hand,
       to: CardZone.playArea,
+    );
+    final updatedPlayer = movedState.players[sourcePlayerId]!.copyWith(
+      cardsPlayedThisTurn: sourcePlayer.cardsPlayedThisTurn + 1,
+    );
+    final newState = movedState.copyWith(
+      players: {...movedState.players, sourcePlayerId: updatedPlayer},
     );
 
     final step = GameStepEvent.cardMovedZone(

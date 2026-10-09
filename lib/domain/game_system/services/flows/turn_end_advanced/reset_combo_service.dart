@@ -22,7 +22,9 @@ class ResetComboService implements TurnProcessStep {
         reason: ActionFailureReason.playerNotFound,
       );
     }
-    final updatedPlayer = targetPlayer.removeBuff(BuffTypes.combo);
+    final updatedPlayer = targetPlayer
+        .removeBuff(BuffTypes.combo)
+        .copyWith(cardsPlayedThisTurn: 0);
 
     return ApplyActionResult.success(
       state: state.copyWith(

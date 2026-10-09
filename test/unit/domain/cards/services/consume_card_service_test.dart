@@ -303,5 +303,39 @@ void main() {
       final success = result as ApplyActionResultSuccess;
       expect(success.state.players[otherPlayerId], other);
     });
+
+    test('成功時にそのターンのカード使用枚数を1増やす', () {
+      final card = buildCard(instanceId: 'card1');
+      final player = buildPlayer(
+        id: playerId,
+        hand: [card],
+        cardsPlayedThisTurn: 2,
+      );
+      final state = buildState(
+        players: {playerId: player},
+        turnOwner: playerId,
+      );
+      when(
+        mockValidator.validate(
+          state: state,
+          cardUsedPlayerId: playerId,
+          usedCardInstanceId: card.instanceId,
+        ),
+      ).thenReturn(const ValidationResultSuccess());
+
+      final result = service.execute(
+        state: state,
+        sourcePlayerId: playerId,
+        instanceId: card.instanceId,
+      );
+
+      expect(
+        (result as ApplyActionResultSuccess)
+            .state
+            .players[playerId]!
+            .cardsPlayedThisTurn,
+        3,
+      );
+    });
   });
 }

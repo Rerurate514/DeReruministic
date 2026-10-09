@@ -12,7 +12,7 @@ import '../../../../../../helpers/game_test_helpers.dart';
 void main() {
   const playerId = PlayerId(value: 'player_a');
 
-  test('comboのみを解除する', () {
+  test('comboを解除してそのターンのカード使用枚数をリセットする', () {
     final state = buildState(
       players: {
         playerId: buildPlayer(
@@ -21,6 +21,7 @@ void main() {
             BuffState(buff: BuffTypes.combo, stack: 3),
             BuffState(buff: BuffTypes.atkBuff, stack: 2),
           ],
+          cardsPlayedThisTurn: 2,
         ),
       },
     );
@@ -30,6 +31,7 @@ void main() {
 
     expect(result.state.players[playerId]!.getBuffStack(BuffTypes.combo), 0);
     expect(result.state.players[playerId]!.getBuffStack(BuffTypes.atkBuff), 2);
+    expect(result.state.players[playerId]!.cardsPlayedThisTurn, 0);
     expect(result.steps, [GameStepEvent.comboReset(phase: state.phase)]);
   });
 }
