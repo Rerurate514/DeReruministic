@@ -1,4 +1,5 @@
 import 'package:collection/collection.dart';
+import 'package:dereruministic/domain/card/entities/game_card.dart';
 import 'package:dereruministic/domain/card/value_objects/game_card_instance_id.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
@@ -34,6 +35,12 @@ class PlayCardValidator {
     if (card == null) {
       return const ValidationResultFailure(
         reason: ActionFailureReason.cardNotFound,
+      );
+    }
+
+    if (card.isCountdownActive) {
+      return const ValidationResultFailure(
+        reason: ActionFailureReason.invalidAction,
       );
     }
 

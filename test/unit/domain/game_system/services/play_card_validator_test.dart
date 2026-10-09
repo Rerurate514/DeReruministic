@@ -1,5 +1,6 @@
 import 'package:dereruministic/domain/card/entities/card_definition.dart';
 import 'package:dereruministic/domain/card/value_objects/card_definition_id.dart';
+import 'package:dereruministic/domain/card/value_objects/card_states.dart';
 import 'package:dereruministic/domain/game_system/services/play_card_validator.dart';
 import 'package:dereruministic/domain/game_system/value_objects/action_failure_reason.dart';
 import 'package:dereruministic/domain/game_system/value_objects/battle_phase.dart';
@@ -15,6 +16,14 @@ const cardDef = CardDefinition(
   baseCost: 1,
   effects: [],
   states: [],
+);
+
+const countdownCardDef = CardDefinition(
+  cardDefId: CardDefinitionId(value: 'def_countdown'),
+  name: 'Countdown',
+  baseCost: 1,
+  effects: [],
+  states: [CardStates.countdown(turns: 2)],
 );
 
 void main() {
@@ -67,6 +76,31 @@ void main() {
       );
 
       expect(result, const ValidationResultSuccess());
+    });
+
+    test('時限が有効なカードはinvalidActionで失敗する', () {
+      final card = buildCard(
+        instanceId: 'card1',
+        definition: countdownCardDef,
+      );
+      final player = buildPlayer(id: playerId, hand: [card]);
+      final state = buildState(
+        players: {playerId: player},
+        turnOwner: playerId,
+      );
+
+      final result = validator.validate(
+        state: state,
+        cardUsedPlayerId: playerId,
+        usedCardInstanceId: card.instanceId,
+      );
+
+      expect(
+        result,
+        const ValidationResultFailure(
+          reason: ActionFailureReason.invalidAction,
+        ),
+      );
     });
 
     test('mainPhaseでない場合、invalidPhaseで失敗する', () {
