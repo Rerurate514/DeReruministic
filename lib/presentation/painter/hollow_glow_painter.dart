@@ -16,31 +16,18 @@ class HollowGlowPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final rect = Offset.zero & size;
-
     final innerRRect = RRect.fromRectAndRadius(
       rect,
       Radius.circular(borderRadius),
     );
-
-    final innerPath = Path()..addRRect(innerRRect);
-
     final outerRect = rect.inflate(blurRadius + spreadWidth);
-    final outerPath = Path()..addRect(outerRect);
-
-    final hollowPath = Path.combine(
-      PathOperation.difference,
-      outerPath,
-      innerPath,
-    );
-
     final paint = Paint()
       ..color = color
       ..maskFilter = MaskFilter.blur(BlurStyle.normal, blurRadius);
-
     canvas
-      ..save()
-      ..clipPath(hollowPath)
+      ..saveLayer(outerRect, Paint())
       ..drawRRect(innerRRect, paint)
+      ..drawRRect(innerRRect, Paint()..blendMode = BlendMode.clear)
       ..restore();
   }
 
